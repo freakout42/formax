@@ -15,7 +15,7 @@ working time are possible.
 The basic concepts of Oracle SQL-Forms 3.0 are combined with
 curses as the terminal interface, ODBC for universal
 database access and the best ideas for a powerful user
-interfaces from Emacs, Clipper, SAP and Lotus/1-2-3. The
+interface from Emacs, Clipper, SAP and Lotus/1-2-3. The
 result is the most effective solution possible.
 
 In every system of decent size is the need for something
@@ -57,7 +57,7 @@ setting up a PuTTY-session on any windows machine with
 zero-administration on the client. This works from anywhere
 without any bandwidth-requirements.
 
-Only the concepts is inherited from SQL-Forms 3. There is no
+Only the concept is inherited from SQL-Forms 3. There is no
 compatibility or migration utility for Oracle Forms sources.
 
 ### license
