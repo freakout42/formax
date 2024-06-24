@@ -48,7 +48,8 @@ Block *blk;
 while ((i = getopt(argc, argv, "l:kVy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
-    case 'y': printf("%s\n", xencrypt(optarg,0)); exit(99);
+    case 'y': printf("%s\n", xencrypt(optarg,0));
+              printf("%s\n", xencrypt(optarg,1)); exit(99);
     case 'l': let(drv, optarg); break;
     case 'k': monochrome = 1; break;
     default: usage(1);

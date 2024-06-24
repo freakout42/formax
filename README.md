@@ -166,9 +166,9 @@ Expected 08/2024.
 Feature roadmap
 ---------------
 
+ - import block/field config
  - current block field
  - CRUD
- - encrypted password for database connection
  - man pages
  - import script for page layout
  - multiple blocks master-detail

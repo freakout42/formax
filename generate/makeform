@@ -78,10 +78,10 @@ INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
 INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
 INSERT INTO pages  (form_id, name) VALUES (1, '$TABLE-0');
 EOF
-LINE=2
+LINE=1
 for COLUMN; do
   cat <<EOF
-INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE, ' [$LINE]$COLUMN');
+INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' [$LINE]$COLUMN');
 EOF
   LINE=`expr $LINE + 1`
 done
