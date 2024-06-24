@@ -1,24 +1,24 @@
 formax: enterprise-applications on terminals
 ============================================
 
-ALPHA - ALPHA - ALPHA - ALPHA - ALPHA - ALPHA
+# ALPHA - ALPHA - ALPHA - ALPHA - ALPHA - ALPHA
 
 **formax** is a tool for developing and executing fast,
-powerful and user-friedly character-based interactive
+powerful and user-friedly character-based, interactive
 database applications. The basic concepts of Oracle
 SQL-Forms 3.0 are combined with curses as the terminal
 interface, ODBC for universal database access and the best
 ideas for a powerful user interface from Emacs, Clipper, SAP
 and Lotus/1-2-3. The result is the most effective solution
-possible.
+possible for the end-user.
 
 Introduction
 ============
 
 **formax** forms access the database and generate a screen
-that presents the data. The source form (*.inp in practice a
+that presents the data. The source form (.inp in practice a
 sql-script to create a sqlite3 database) is compiled into a
-binary (*.frm in practice a sqlite3 database), that is run
+binary (.frm in practice a sqlite3 database), that is run
 (interpreted) by the runtime module. The form is used to
 view and edit data in a database-driven manner. The
 environment supplies built-in record creation, query, delete
@@ -169,17 +169,16 @@ Feature roadmap
  - encrypted password for database connection
  - man pages
  - import script for page layout
+ - multiple blocks master-detail
  - form for forms
  - menue multiple forms
  - cqy.y: resolv 5 shift/reduce conflicts
  - sap-like batchinput
  - triggers with embedded javascript (elk)
- - multiple blocks master-detail
  - help
  - domains with central maintaining
  - dev guide en
  - user guide in en, de, fr, ...
- - trigger
  - direct field keys 1..9 ?
  - key macro
 
@@ -195,7 +194,7 @@ Development
 ===========
 
 **formax** is implemented in pure C++ without calls to the
-os. Interface to the user is solely done with curses-lib.
+OS. Interface to the user is solely done with curses-lib.
 Interface to the database is solely through ODBC. Both
 libraries are not used directly but wrapped by the Screen
 and Record classes. Record is a simple ORM inspired by rails
@@ -207,7 +206,7 @@ Modules
  - makeform
  - runform
  - colquery
- - tiny-regex-c elk
+ - regex
  - elk
 
 Skills
@@ -225,10 +224,10 @@ Style
 
  - structure
  - variable names
- - intenting
+ - indenting
  - commenting
  - style
- - if bool
+ - bool
 
 License
 =======

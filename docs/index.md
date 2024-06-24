@@ -1,5 +1,5 @@
 **formax** is a tool for developing and executing fast,
-powerful and user-friedly character-based interactive
+powerful and user-friedly character-based, interactive
 database applications. Do not confuse these applications
 with data-management tools like Toad, phpMyAdmin or
 SQLServer Management Studio. These are for database-admins.
