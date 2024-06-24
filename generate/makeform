@@ -1,0 +1,88 @@
+#!/bin/sh
+USAGE="makeform name title table cols..."
+FORM=$1
+TITLE=$2
+TABLE=$3
+shift 3
+cat <<EOF
+#PRAGMA encoding="ISO-8859-15";
+CREATE TABLE forms
+  (id        INTEGER PRIMARY KEY NOT NULL,
+   name      TEXT    NOT NULL,
+   title     TEXT    NOT NULL DEFAULT '',
+   mnunam    TEXT    NOT NULL DEFAULT '',
+   mnugrp    TEXT    NOT NULL DEFAULT ''
+  );
+CREATE TABLE blocks
+  (id        INTEGER PRIMARY KEY NOT NULL,
+   form_id   INTEGER NOT NULL,
+   name      TEXT    NOT NULL,
+   seq       INTEGER NOT NULL DEFAULT 1,
+   norec     INTEGER NOT NULL DEFAULT 1,    /* number of records to display */
+   prikey    TEXT    NOT NULL DEFAULT 'id', /* primary key */
+   whereand  TEXT    NOT NULL DEFAULT '',   /* default where clause */
+   orderby   TEXT    NOT NULL DEFAULT ''    /* default order clause */
+  );
+CREATE TABLE fields
+  (id        INTEGER PRIMARY KEY NOT NULL,
+   block_id  INTEGER NOT NULL,
+   page_id   INTEGER NOT NULL,
+   name      TEXT    NOT NULL,
+   seq       INTEGER NOT NULL DEFAULT 1,
+   ftype     INTEGER NOT NULL DEFAULT 1,    /* 1:CHAR 2:INT 3:FLOAT 4:DATE */
+   len       INTEGER NOT NULL DEFAULT 30,   /* field length */
+   dlen      INTEGER NOT NULL DEFAULT 11,   /* display length */
+   btab      INTEGER NOT NULL DEFAULT 1,    /* if the field is a base table field */
+   key       INTEGER NOT NULL DEFAULT 0,    /* if the field is a primary key field */
+   dflt      TEXT    NOT NULL DEFAULT '',   /* default value */
+   disp      INTEGER NOT NULL DEFAULT 1,    /* if the field is displayed */
+   line      INTEGER NOT NULL DEFAULT 0,    /* page location */
+   col       INTEGER NOT NULL DEFAULT 0,    /* column location */
+   enter     INTEGER NOT NULL DEFAULT 1,    /* if the field is enterable */
+   query     INTEGER NOT NULL DEFAULT 1,    /* if the field can be queried */
+   upd       INTEGER NOT NULL DEFAULT 1,    /* if the field can be updated */
+   updnul    INTEGER NOT NULL DEFAULT 1,    /* if the field can be updated when NULL */
+   mand      INTEGER NOT NULL DEFAULT 0,    /* if the field is requeried */
+   upper     INTEGER NOT NULL DEFAULT 0,    /* if the field converts to uppercase */
+   lovtit    TEXT    NOT NULL DEFAULT '',   /* title for list of values */
+   lov_id    INTEGER,                       /* block for list of values */
+   lovi_id   INTEGER,                       /* page for list of values */
+   low       INTEGER NOT NULL DEFAULT -99999999999, /* low range value */
+   high      INTEGER NOT NULL DEFAULT 99999999999,  /* high range value */
+   valpatn   TEXT    NOT NULL DEFAULT '',   /* validation regex pattern */
+   help      TEXT    NOT NULL DEFAULT ''    /* help text */
+  );
+CREATE TABLE maps
+  (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   page_id   INTEGER NOT NULL,
+   line      INTEGER NOT NULL,
+   mtext     TEXT    NOT NULL
+  );
+CREATE TABLE pages
+  (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   form_id   INTEGER NOT NULL,
+   name      TEXT    NOT NULL,
+   num       INTEGER NOT NULL DEFAULT 1,
+   title     TEXT    NOT NULL DEFAULT '',
+   ysiz      INTEGER NOT NULL DEFAULT 23,   /* heigth of page */
+   xsiz      INTEGER NOT NULL DEFAULT 80,   /* width of page */
+/* vwys      INTEGER NOT NULL DEFAULT 0,       height of view */
+/* vwxs      INTEGER NOT NULL DEFAULT 0,       width of view */
+   vwpy0     INTEGER NOT NULL DEFAULT 1,    /* y coordinate of view position on page */
+   vwpx0     INTEGER NOT NULL DEFAULT 0,    /* x coordinate of view position on page */
+   popup     INTEGER NOT NULL DEFAULT 0,    /* if the page is a pop-up page */
+   border    INTEGER NOT NULL DEFAULT 1,    /* if the view has a border */
+   dislv     INTEGER NOT NULL DEFAULT 0     /* if the page dissolves when exited */
+  );
+INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
+INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
+INSERT INTO pages  (form_id, name) VALUES (1, '$TABLE-0');
+EOF
+LINE=2
+for COLUMN; do
+  cat <<EOF
+INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE, ' $COLUMN');
+EOF
+  LINE=`expr $LINE + 1`
+done
+exit
