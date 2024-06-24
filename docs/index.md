@@ -12,7 +12,7 @@ fast C++ keyboard optimized, no mouse application and the
 minimal bandwidth need of a terminal massive savings in
 working time are possible.
 
-The basic concepts of Oracle SQL*Forms 3.0 are combined with
+The basic concepts of Oracle SQL-Forms 3.0 are combined with
 curses as the terminal interface, ODBC for universal
 database access and the best ideas for a powerful user
 interfaces from Emacs, Clipper, SAP and Lotus/1-2-3. The
@@ -33,10 +33,10 @@ a fast terminal-application.
 
 ### History/Motivation
 
-Oracle SQL*Forms 3 was superior to all other character-based
+Oracle SQL-Forms 3 was superior to all other character-based
 applications that came after it. This very popular option
 was lost in the late 1990s when Oracle decided not to patch
-SQL*Forms 3 for the Y2K-problem. The following versions
+SQL-Forms 3 for the Y2K-problem. The following versions
 neglected this feature and focused on client-server
 frontends, which was also abandoned later in favour of web
 based as the only option. The result was a massive increase
@@ -57,7 +57,7 @@ setting up a PuTTY-session on any windows machine with
 zero-administration on the client. This works from anywhere
 without any bandwidth-requirements.
 
-Only the concepts is inherited from SQL*Forms 3. There is no
+Only the concepts is inherited from SQL-Forms 3. There is no
 compatibility or migration utility for Oracle Forms sources.
 
 ### license
