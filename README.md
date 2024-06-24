@@ -89,71 +89,140 @@ for reading the form-database and for processing.
 Forms
 -----
 
-TODO
+The primary object of a **formax** application is the form.
+A form is made up of additional objects. These objects link
+the form to database elements, such as columns and tables,
+and provide control over the flow of execution.
 
 Blocks
 ------
 
-TODO
+Describe each section or subsection of the form, and serve
+as the basis of default database interaction.
 
 Fields
 ------
 
-TODO
+Represent columns or data entry areas and describe how the
+data should be displayed and validated an how an operator
+should interact with the data while it is entered.
 
 Pages
 -----
 
-TODO
+Are collections of display information, such as constant
+text. All fields are displayed on some page.
 
 Triggers
 --------
 
-TODO
+Are sets of processing commands associated with event
+points, such as when a particular function key is pressed by
+the operator.
 
 Processing
 ==========
 
-TODO
+When a form is executed **fromax** follows a pre-defined set
+of rules for how actions should occur. These actions include
+navigation whithin the application and the validation of
+data. Within the processing rules, you can customize the
+default behaviour to meet the needs of your application.
 
-Events
-------
+Events and Functions
+--------------------
 
-TODO
-
-Functions
----------
-
-TODO
+All processing centers around events. Put simply, events are
+things that occur when a form is exeecuted. **formax** knows
+about events and handles them by executing functions. Note
+that during processing, events are usually nested. That is,
+the occurence of one event usually invokes functions that
+invoke other events. Inherent in the functions that events
+invoke - and that are invoked by your tiggers - are the
+processes of navigation and validation.
 
 Trigger Points
 --------------
 
-TODO
+Every function that an event calls might have on or more
+trigger point associated with it. A trigger point is
+temporal place in an event with a specific trigger type is
+associated. Trigger points and triggers are your primary
+tools for modifying the way that **formax** handles, or
+processes, a particular event.
 
 Navigation
 ==========
 
-TODO
+Navigation is an internal function that is invoked by
+specific events. **formax** perfoms navigation primarily to
+move the cursor from one location to another. The main
+concepts of navigation are the navigation unit and the
+cursor. The navigation unit is always defined as a specific
+form, block, record or field in the form, or as outside the
+form.
 
 Validation
 ==========
 
-TODO
+Validation is an internal function that is invoked by
+specific events. Validation is the process by which
+**formax** determines whether the data in an object is valid
+or correct.
 
 Trigger Processing
 ==================
 
-TODO
+Events invoke functions, which have trigger points. When
+**formax** processes a trigger point, it executes, or fires,
+the associated trigger. Every trigger pont has a specific
+type of trigger associated with it.
+
+Form Terms
+==========
+
+ - Anonymous block
+ - Application
+ - Base table
+ - Base table field
+ - Block
+ - Constant text
+ - Context
+ - Designer
+ - Field
+ - Form
+ - Form database
+ - Form-level procedure
+ - Global variable
+ - Login account
+ - Multi-record block
+ - Object
+ - Operator
+ - Page
+ - Pop-up window
+ - Record
+ - Scope
+ - Screen painter
+ - Single-record block
+ - System variable
+ - Trigger
 
 Database Terms
 ==============
 
- - Application
- - Base table
- - Base table field
- - Form database
- - ... TODO
+ - Column
+ - Constraint
+ - Data dictionary
+ - Database
+ - DBA
+ - Foreign key
+ - Index
+ - Lock
+ - Primary key
+ - Row
+ - SQL
+ - Table
+ - Transaction
 
 Status
 ======
