@@ -12,9 +12,9 @@ database-admins. **formax** builds and runs end-user
 applications, which can be used without any SQL-knowledge
 and ensure only valid data operations. The user is typically
 an enterprise employee in the office or home-office. He is
-trained to use these forms with the full potential with an
+trained to use these forms with the full potential with
 unmatched efficiency. With the fast C++ keyboard optimized,
-no mouse application and the minimal bandwidth needs of a
+no mouse application and the minimal bandwidth need of a
 terminal massive savings in working time are possible.
 
 The basic concepts of Oracle SQL*Forms 3.0 are combined with
@@ -44,11 +44,10 @@ applications that came after it. This very popular option
 was lost in the late 1990s when Oracle decided not to patch
 SQL*Forms 3 for the Y2K-problem. The following versions
 neglected this feature and focused on client-server
-frontends, which were also abandoned later in favour of
-web-based as the only option. The result was a massive
-increase of complexity and bandwidth requirements in
-magnitudes of millions and leaving a big technology hole in
-the industry.
+frontends, which was also abandoned later in favour of web
+based as the only option. The result was a massive increase
+of complexity and bandwidth requirements in magnitudes of
+millions and leaving a big technology hole in the industry.
 
 Goals
 =====
@@ -64,6 +63,9 @@ two seconds. Secure access to the form is easily managed by
 setting up a PuTTY-session on any windows machine with
 zero-administration on the client. This works from anywhere
 without any bandwidth-requirements.
+
+Only the concepts is inherited from SQL*Forms 3. There is no
+compatibility or migration utility for Oracle Forms sources.
 
 Introduction
 ============
@@ -217,15 +219,20 @@ Expected 08/2024.
 Feature roadmap
 ---------------
 
+ - current block field
+ - CRUD
  - encrypted password for database connection
  - man pages
  - import script for page layout
+ - form for forms
+ - menue multiple forms
  - cqy.y: resolv 5 shift/reduce conflicts
  - sap-like batchinput
  - triggers with embedded javascript (elk)
  - multiple blocks master-detail
  - help
  - domains with central maintaining
+ - dev guide en
  - user guide in en, de, fr, ...
  - trigger
  - direct field keys 1..9 ?
