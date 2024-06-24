@@ -46,10 +46,14 @@ millions and leaving a big technology hole in the industry.
 ### Goals
 
 **formax** wants to provide a user-friendly, fast method for
-entering valid data into the database. The trained user can
-enter data with minimal effort and time. The form
-application can be build without code by setting up some
-data in a couple of tables with minimal programming. A
+entering valid data into the database. This does not mean a
+good looking gui. Users will hate the application with the
+first look. After using it for a while they usally will love
+it due to the time savings they can achieve. The trained
+user can enter data with minimal effort and time.
+
+The form application can be build without code by setting up
+some data in a couple of tables with minimal programming. A
 minimal form to maintain a single table with complete CRUD
 functionality can be build with a single line of code within
 two seconds. Secure access to the form is easily managed by

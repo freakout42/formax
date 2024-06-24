@@ -7,10 +7,11 @@ formax: enterprise-applications on terminals
 powerful and user-friedly character-based, interactive
 database applications. The basic concepts of Oracle
 SQL-Forms 3.0 are combined with curses as the terminal
-interface, ODBC for universal database access and the best
-ideas for a powerful user interface from Emacs, Clipper, SAP
-and Lotus/1-2-3. The result is the most effective solution
-possible for the end-user.
+interface, ODBC for universal database access and Javascript
+as the trigger language. The best ideas for a powerful user
+interface from Emacs, Clipper, SAP and Lotus/1-2-3. The
+result is the most effective solution possible for the
+end-user.
 
 Introduction
 ============
@@ -18,14 +19,13 @@ Introduction
 **formax** forms access the database and generate a screen
 that presents the data. The source form (.inp in practice a
 sql-script to create a sqlite3 database) is compiled into a
-binary (.frm in practice a sqlite3 database), that is run
-(interpreted) by the runtime module. The form is used to
-view and edit data in a database-driven manner. The
-environment supplies built-in record creation, query, delete
-and update modes, each with its own default data
-manipulations. This minimizes the need for program code.
-**formax** can be seen as a "No-code RAD" (Rapid Application
-Development).
+binary (.frm in practice a sqlite3 database), that is run by
+the runtime component. The form is used to view and edit
+data in a database-driven manner. The environment supplies
+built-in record creation, query, delete and update modes,
+each with its own default data manipulations. This minimizes
+the need for program code. **formax** can be seen as a
+"No-code RAD" (Rapid Application Development).
 
 The running form has an event driven interface and
 implements event-handling functions called triggers which
@@ -41,10 +41,13 @@ necessary.
 Components
 ==========
 
-TODO
-
 generator
 ---------
+
+TODO
+
+designer
+--------
 
 TODO
 
