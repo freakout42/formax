@@ -1,21 +1,21 @@
-**formax** is a tool for developing and executing forms
-based, interactive, fast, powerful and user-friedly
-terminal-based database applications. Do not confuse these
-applications with data-management tools like Toad,
-phpMyAdmin or SQLServer Management Studio. These are for
-database-admins. **formax** builds and runs end-user
-applications, which can be used without any SQL-knowledge
-and ensure only valid data operations. The user is typically
-an enterprise employee in the office or home-office. He is
-trained to use these forms with the full potential with
-unmatched efficiency. With the fast C++ keyboard optimized,
-no mouse application and the minimal bandwidth need of a
-terminal massive savings in working time are possible.
+**formax** is a tool for developing and executing fast,
+powerful and user-friedly character-based interactive
+database applications. Do not confuse these applications
+with data-management tools like Toad, phpMyAdmin or
+SQLServer Management Studio. These are for database-admins.
+**formax** builds and runs end-user applications, which can
+be used without any SQL-knowledge and ensure only valid data
+operations. The user is typically an enterprise employee in
+the office or home-office. He is trained to use these forms
+with the full potential with unmatched efficiency. With the
+fast C++ keyboard optimized, no mouse application and the
+minimal bandwidth need of a terminal massive savings in
+working time are possible.
 
 The basic concepts of Oracle SQL*Forms 3.0 are combined with
 curses as the terminal interface, ODBC for universal
 database access and the best ideas for a powerful user
-interface from Emacs, Clipper, SAP and Lotus/1-2-3. The
+interfaces from Emacs, Clipper, SAP and Lotus/1-2-3. The
 result is the most effective solution possible.
 
 In every system of decent size is the need for something
