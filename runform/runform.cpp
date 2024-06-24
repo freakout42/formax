@@ -45,15 +45,17 @@ Form rform;
 Block *blk;
 
 // command-line arguments and options check and process
-while ((i = getopt(argc, argv, "l:kV")) != -1) {
+while ((i = getopt(argc, argv, "l:kVy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
+    case 'y': printf("%s\n", xencrypt(optarg,0)); exit(99);
     case 'l': let(drv, optarg); break;
     case 'k': monochrome = 1; break;
     default: usage(1);
   }
 }
 if (argc - optind < 2) usage(2);
+if (argc - optind > 2) xencrypt(FORMPAS,1);
 
 // check, open and read the form - sqlite3 file named %.frm
 if ((filesq3 = fopen(FORMFRM, "r")) == NULL) usage(3);

@@ -81,7 +81,7 @@ EOF
 LINE=2
 for COLUMN; do
   cat <<EOF
-INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE, ' $COLUMN');
+INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE, ' [$LINE]$COLUMN');
 EOF
   LINE=`expr $LINE + 1`
 done
