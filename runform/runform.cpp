@@ -44,8 +44,6 @@ FILE *filesq3;
 Form rform;
 Block *blk;
 
-rform.locale(CHARSET);
-
 // command-line arguments and options check and process
 while ((i = getopt(argc, argv, "l:kV")) != -1) {
   switch (i) {
@@ -61,6 +59,7 @@ if (argc - optind < 2) usage(2);
 if ((filesq3 = fopen(FORMFRM, "r")) == NULL) usage(3);
 fclose(filesq3); // check for file existence because sqlite creates empty db
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, FORMFRM);
+rform.locale(CHARSET);
 if (rform.connect(dsn)) usage(4);
 if (!(blk = rform.init())) usage(5);
 

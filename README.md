@@ -24,6 +24,8 @@ view and edit data in a database-driven manner. The
 environment supplies built-in record creation, query, delete
 and update modes, each with its own default data
 manipulations. This minimizes the need for program code.
+**formax** can be seen as a "No-code RAD" (Rapid Application
+Development).
 
 The running form has an event driven interface and
 implements event-handling functions called triggers which
