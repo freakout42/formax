@@ -14,9 +14,12 @@ working time are possible.
 
 The basic concepts of Oracle SQL-Forms 3.0 are combined with
 curses as the terminal interface, ODBC for universal
-database access and the best ideas for a powerful user
-interface from Emacs, Clipper, SAP and Lotus/1-2-3. The
-result is the most effective solution possible.
+database access and Javascript as the trigger language. The
+best ideas for a powerful user interface came from Emacs,
+Clipper, SAP and Lotus/1-2-3. The result is the most
+effective solution possible. By eleminating all proprietary
+dependencies und being open-source with a permissive license
+the system is future-proof.
 
 In every system of decent size is the need for something
 like **formax**. The system-adminstrator needs to change a
