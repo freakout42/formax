@@ -19,32 +19,35 @@ best ideas for a powerful user interface came from Emacs,
 Clipper, SAP and Lotus/1-2-3. The result is the most
 effective solution possible. By eleminating all proprietary
 dependencies und being open-source with a permissive license
-the system is future-proof.
+the system is future-proof. The minimal costs to build a
+**formax** form makes adapting this technology a no-brainer.
 
 In every system of decent size is the need for something
 like **formax**. The system-adminstrator needs to change a
 base-table or master-data. Most of the times he is forced to
 use error-prone and dangerous SQL or a database-admin-tool
 like phpMyAdmin because there was no web-application build
-for all these small things. Or maintaining customer
+for all these small things. Or for maintaining customer
 information. Beside the new address-data itself there are
 only around 20 keystrokes required to edit the record - no
-mouse-moving - no scrolling. Frequently used apps like
-order-entry for which the initial training to use a keyboard
-application pays off thousand times are also candidates for
-a fast terminal-application.
+mouse-moving - no scrolling - with milliseconds response
+time. Frequently used apps like order-entry for which the
+initial training to use a powerful keyboard application pays
+off thousand times are even natch candidates for it.
 
 ### History/Motivation
 
 Oracle SQL-Forms 3 was superior to all other character-based
-applications that came after it. This very popular option
-was lost in the late 1990s when Oracle decided not to patch
-SQL-Forms 3 for the Y2K-problem. The following versions
-neglected this feature and focused on client-server
-frontends, which was also abandoned later in favour of web
-based as the only option. The result was a massive increase
-of complexity and bandwidth requirements in magnitudes of
-millions and leaving a big technology hole in the industry.
+enterprise applications that came after it. The terminal
+option was very popular and got in the late 1990s when
+Oracle decided not to patch SQL-Forms 3 for the Y2K-problem.
+The following versions neglected this feature and focused on
+client-server frontends, which were also abandoned later in
+favour of web based as the only option. The result was a
+massive increase of complexity and bandwidth requirements in
+magnitudes of millions and leaving a big technology hole in
+the industry. **formax** wants to bring back this option to
+the market.
 
 ### Goals
 
@@ -53,7 +56,9 @@ entering valid data into the database. This does not mean a
 good looking gui. Users will hate the application with the
 first look. After using it for a while they usally will love
 it due to the time savings they can achieve. The trained
-user can enter data with minimal effort and time.
+user can enter data with minimal effort and time, due to the
+fast application, optimized keyboard handling and ultra low
+bandwidth usage.
 
 The form application can be build without code by setting up
 some data in a couple of tables with minimal programming. A
