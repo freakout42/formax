@@ -1,8 +1,5 @@
 #include <string.h>
 #include "version.h"
-#include "qdata.h"
-#include "record.h"
-#include "rblock.h"
 
 int rBlock::init(SQLHDBC dbc0) {
 int s;

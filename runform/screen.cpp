@@ -5,7 +5,6 @@
 #include <termio.h>
 #include <term.h>
 #include "version.h"
-#include "screen.h"
 #include "curkeys.h"
 
 static attrel attrels[] = {

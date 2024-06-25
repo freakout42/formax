@@ -5,8 +5,6 @@
 #include <string.h>
 #include <locale.h>
 #include "version.h"
-#include "qdata.h"
-#include "record.h"
 
 static char buf[HUGSIZE];
 
@@ -79,5 +77,5 @@ while (SQL_SUCCEEDED(ret = SQLFetch(stmt))) {
     else return 14;
   }
 }
-return 0;
+return SQLFreeStmt(stmt, SQL_CLOSE);
 }

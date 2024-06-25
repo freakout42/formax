@@ -8,15 +8,15 @@ cat <<EOF
 #PRAGMA encoding="ISO-8859-15";
 CREATE TABLE forms
   (id        INTEGER PRIMARY KEY NOT NULL,
-   name      TEXT    NOT NULL,
+   name      TEXT    NOT NULL DEFAULT 'form0',
    title     TEXT    NOT NULL DEFAULT '',
    mnunam    TEXT    NOT NULL DEFAULT '',
    mnugrp    TEXT    NOT NULL DEFAULT ''
   );
 CREATE TABLE blocks
   (id        INTEGER PRIMARY KEY NOT NULL,
-   form_id   INTEGER NOT NULL,
-   name      TEXT    NOT NULL,
+   form_id   INTEGER NOT NULL DEFAULT 1,
+   name      TEXT    NOT NULL DEFAULT 'block0',
    seq       INTEGER NOT NULL DEFAULT 1,
    norec     INTEGER NOT NULL DEFAULT 1,    /* number of records to display */
    prikey    TEXT    NOT NULL DEFAULT 'id', /* primary key */
@@ -25,9 +25,9 @@ CREATE TABLE blocks
   );
 CREATE TABLE fields
   (id        INTEGER PRIMARY KEY NOT NULL,
-   block_id  INTEGER NOT NULL,
-   page_id   INTEGER NOT NULL,
-   name      TEXT    NOT NULL,
+   block_id  INTEGER NOT NULL DEFAULT 1,
+   page_id   INTEGER NOT NULL DEFAULT 1,
+   name      TEXT    NOT NULL DEFAULT 'field0',
    seq       INTEGER NOT NULL DEFAULT 1,
    ftype     INTEGER NOT NULL DEFAULT 1,    /* 1:CHAR 2:INT 3:FLOAT 4:DATE */
    len       INTEGER NOT NULL DEFAULT 30,   /* field length */
@@ -54,14 +54,14 @@ CREATE TABLE fields
   );
 CREATE TABLE maps
   (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-   page_id   INTEGER NOT NULL,
-   line      INTEGER NOT NULL,
-   mtext     TEXT    NOT NULL
+   page_id   INTEGER NOT NULL DEFAULT 1,
+   line      INTEGER NOT NULL DEFAULT 1,
+   mtext     TEXT    NOT NULL DEFAULT ''
   );
 CREATE TABLE pages
   (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-   form_id   INTEGER NOT NULL,
-   name      TEXT    NOT NULL,
+   form_id   INTEGER NOT NULL DEFAULT 1,
+   name      TEXT    NOT NULL DEFAULT 'page0',
    num       INTEGER NOT NULL DEFAULT 1,
    title     TEXT    NOT NULL DEFAULT '',
    ysiz      INTEGER NOT NULL DEFAULT 23,   /* heigth of page */
@@ -77,6 +77,7 @@ CREATE TABLE pages
 INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
 INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
 INSERT INTO pages  (form_id, name) VALUES (1, '$TABLE-0');
+INSERT INTO pages  (id, form_id, name, ysiz, vwpy0, border) VALUES (0, 1, 'formax', 1, 0, 0);
 EOF
 LINE=1
 for COLUMN; do

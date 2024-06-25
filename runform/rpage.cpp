@@ -1,8 +1,5 @@
 #include <string.h>
 #include "version.h"
-#include "qdata.h"
-#include "record.h"
-#include "rpage.h"
 
 int rPage::init(SQLHDBC dbc0) {
 int s;

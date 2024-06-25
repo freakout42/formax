@@ -14,7 +14,7 @@ int Qdata::alloc(int coln) {
 freed();
 rows = 0;
 cols = coln;
-allocaterows = 10;
+allocaterows = 1;
 if (!(d = (char*(*)[])malloc(allocaterows * cols * (sizeof(void*))))) return 13;
 return 0;
 }

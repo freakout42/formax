@@ -9,10 +9,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "version.h"
-#include "qdata.h"
-#include "record.h"
-#include "block.h"
-#include "form.h"
 
 static void usage(int ecd) {
 char *est[] = {
@@ -34,14 +30,16 @@ char *est[] = {
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
 }
-int monochrome = 0; // global from command-line
+
+// global
+int monochrome = 0;
+Form f;
 
 int main(int argc, char *argv[]) { //, char **envp
 int i;
 char dsn[SMLSIZE];
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
-Form rform;
 Block *blk;
 
 // command-line arguments and options check and process
@@ -62,9 +60,9 @@ if (argc - optind > 2) xencrypt(FORMPAS,1);
 if ((filesq3 = fopen(FORMFRM, "r")) == NULL) usage(3);
 fclose(filesq3); // check for file existence because sqlite creates empty db
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, FORMFRM);
-rform.locale(CHARSET);
-if (rform.connect(dsn)) usage(4);
-if (!(blk = rform.init())) usage(5);
+f.locale(CHARSET);
+if (f.connect(dsn)) usage(4);
+if (!(blk = f.init())) usage(5);
 
 // check and open the database connection - if simple rw-filepath use sqlite
 if (strcspn(FORMDSN,";") == strlen(FORMDSN) && (filesq3 = fopen(FORMDSN, "r+"))) {
@@ -73,10 +71,10 @@ if (strcspn(FORMDSN,";") == strlen(FORMDSN) && (filesq3 = fopen(FORMDSN, "r+")))
 } else strncpy(dsn, FORMDSN, sizeof(dsn));
 if (blk->connect(dsn)) usage(8);
 
-if ((i = rform.fill(1))) usage(i);
-if ((i = rform.run())) usage(i);
+if ((i = f.fill(1))) usage(i);
+if ((i = f.run())) usage(i);
 
-rform.disconnect();
+f.disconnect();
 blk->disconnect();
 exit(i);
 }

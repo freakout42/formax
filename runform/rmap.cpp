@@ -1,8 +1,5 @@
 #include <string.h>
 #include "version.h"
-#include "qdata.h"
-#include "record.h"
-#include "rmap.h"
 
 int rMap::init(SQLHDBC dbc0, int page_id) {
 int s;

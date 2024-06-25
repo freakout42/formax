@@ -1,18 +1,7 @@
+#include <stdio.h>
+#include <assert.h>
 #include <string.h>
 #include "version.h"
-#include "qdata.h"
-#include "record.h"
-#include "rblock.h"
-#include "rpage.h"
-#include "rmap.h"
-#include "block.h"
-#include "screen.h"
-#include "page.h"
-#include "form.h"
-
-Screen display;
-Block b[NBLOCKS];
-Page  p[NBLOCKS];
 
 Block *Form::init() {
 stmt = NULL;
@@ -28,7 +17,7 @@ int Form::fill(int fid) {
 rBlock rblock;
 rPage rpage;
 rMap rmap;
-int s;
+int i, s;
 
 letf(t(where), "id = %d", fid);
 if ((s = query("id,name,title"))) return s;
@@ -43,12 +32,10 @@ if (rblock.q.rows != 1) return 7;
 if (b[0].init(rblock.q, 1));
 rblock.close();
 
-if (display.init()) return 6;
 if (rpage.init(dbc)) return 9;
 if ((s = rpage.query("name,ysiz,xsiz,vwpy0,vwpx0,border"))) return s;
-if (rpage.q.rows != 1) return 7;
-if (p[0].init(rpage.q, 0));
-if (p[1].init(rpage.q, 1)) return 9;
+if (rpage.q.rows > NBLOCKS) return 7;
+for (i=0; i<rpage.q.rows; i++) if (p[i].init(rpage.q, i+1)) return 9;
 rpage.close();
 if (rmap.init(dbc, 1)) return 9;
 if ((s = rmap.query("line,mtext"))) return s;
@@ -59,6 +46,11 @@ return 0;
 }
 
 int Form::run() {
+Screen display;
+fprintf(stderr,"%d\n", p[0].ysiz);
+if (display.init()) return 6;
+p[0].create();
+p[1].create();
 p[0].writes(STATUSL, 2,                 title);
 p[0].writef(STATUSL, 12, 0, 4,  "%3s-", id);
 p[0].writes(STATUSL, 16,                name);
