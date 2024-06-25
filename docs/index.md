@@ -7,10 +7,9 @@ SQLServer Management Studio. These are for database-admins.
 be used without any SQL-knowledge and ensure only valid data
 operations. The user is typically an enterprise employee in
 the office or home-office. He is trained to use these forms
-with the full potential with unmatched efficiency. With the
-fast C++ keyboard optimized, no mouse application and the
-minimal bandwidth need of a terminal massive savings in
-working time are possible.
+with unmatched efficiency. The fast, keyboard-optimized,
+no-mouse C++-application and the minimal bandwidth needs
+result in massive savings of working time.
 
 The basic concepts of Oracle SQL-Forms 3.0 are combined with
 curses as the terminal interface, ODBC for universal

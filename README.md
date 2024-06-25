@@ -71,11 +71,6 @@ elk
 
 TODO
 
-docs
-----
-
-TODO
-
 Objects
 =======
 
@@ -181,9 +176,10 @@ type of trigger associated with it.
 Form Terms
 ==========
 
- - Anonymous block
  - Application
+A form or a series of forms that satisfies a business function.
  - Base table
+The database table on which a block is based.
  - Base table field
  - Block
  - Constant text
