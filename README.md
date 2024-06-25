@@ -177,10 +177,12 @@ Form Terms
 ==========
 
  - Application
-A form or a series of forms that satisfies a business function.
+    A form or a series of forms that satisfies a business function.
  - Base table
-The database table on which a block is based.
+    The database table on which a block is based.
  - Base table field
+    A field that corresponds to a column in the base table
+    of the block that owned the field.
  - Block
  - Constant text
  - Context
