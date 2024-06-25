@@ -73,7 +73,15 @@ without any bandwidth-requirements.
 Only the concept is inherited from SQL-Forms 3. There is no
 compatibility or migration utility for Oracle Forms sources.
 
-### license
+### Status
+
+Current version 0.9.0 can do nothing. We expect 1.0.0 be
+released 08/2024 with the ability to Insert, Query, Update
+and Delete (CRUD) in one table with single-row mode. Full
+Forms3 functionality is a big task and depends highly on the
+community participation.
+
+### License
 
 Simplified BSD License  
 Copyright (c) 2024, Axel K. Reinhold  
