@@ -39,7 +39,7 @@ off thousand times are even natch candidates for it.
 
 Oracle SQL-Forms 3 was superior to all other character-based
 enterprise applications that came after it. The terminal
-option was very popular and got in the late 1990s when
+option was very popular and got lost in the late 1990s when
 Oracle decided not to patch SQL-Forms 3 for the Y2K-problem.
 The following versions neglected this feature and focused on
 client-server frontends, which were also abandoned later in
@@ -47,7 +47,8 @@ favour of web based as the only option. The result was a
 massive increase of complexity and bandwidth requirements in
 magnitudes of millions and leaving a big technology hole in
 the industry. **formax** wants to bring back this option to
-the market.
+the market for all popular databases and all kinds of
+terminals and emulations.
 
 ### Goals
 
