@@ -190,11 +190,34 @@ Form Terms
     of the block that owned the field.
 
  - Block
+
+    A logical collection of fields in a form. A block can
+    correspond to one table in the database or to no table.
+
  - Constant text
+
+    Text that appears in a form time it is run.
+
  - Context
+
+    A concept that you can use to determine what parts of a
+    form you can currently access from within the interface.
+
  - Designer
+
+    An application developer or programmer who uses
+    **formax** to create and modigy forms.
+
  - Field
+
+    An area on a page that can display data and accept
+    operator input. The data that they display can
+    correspond to data from a column in a database table.
+
  - Form
+
+    
+
  - Form database
  - Form-level procedure
  - Global variable
