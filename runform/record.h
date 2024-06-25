@@ -2,6 +2,8 @@
 #include <sqlext.h>
 class Record {
 public:
+  SQLHDBC dbc;
+  char table[SMLSIZE];
   void locale(char *lc);
   int connect(char *dsn);
   void disconnect();
@@ -12,10 +14,8 @@ public:
   int n(int row, int col);
   Qdata q;
 protected:
-  SQLHDBC dbc;
   SQLHSTMT stmt;
   SQLSMALLINT columni;
-  char table[SMLSIZE];
   char prikey[SMLSIZE];
   char where[SMLSIZE];
   char order[SMLSIZE];

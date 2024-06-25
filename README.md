@@ -216,14 +216,21 @@ Form Terms
 
  - Form
 
-    
+    A logical collection of blocks, fields and triggers.
 
  - Form database
- - Form-level procedure
- - Global variable
- - Login account
+
+    A sqlite-database containing all the objects that make
+    up the form.
+
  - Multi-record block
+
+    A block that can display more than one record at a time.
+
  - Object
+
+    A group of data, such as a form, block, field or trigger.
+
  - Operator
  - Page
  - Pop-up window

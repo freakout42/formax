@@ -12,6 +12,7 @@ public:
   int lk; /* last key */
   Block *init();
   int fill(int id);
+  void clear();
   int run();
 private:
 };

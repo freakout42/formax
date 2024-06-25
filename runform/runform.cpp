@@ -72,7 +72,8 @@ if (strcspn(FORMDSN,";") == strlen(FORMDSN) && (filesq3 = fopen(FORMDSN, "r+")))
 if (blk->connect(dsn)) usage(8);
 
 if ((i = f.fill(1))) usage(i);
-if ((i = f.run())) usage(i);
+  if ((i = f.run())) usage(i);
+f.close();
 
 f.disconnect();
 blk->disconnect();

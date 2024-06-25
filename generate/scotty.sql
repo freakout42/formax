@@ -1,6 +1,6 @@
 /* build test database scotty.sq3 */
 create table dept
- (deptno     integer primary key not null,
+ (id         integer primary key not null,
   dname      text,
   loc        text
  );
@@ -9,14 +9,14 @@ insert into dept values (20, 'RESEARCH',   'DALLAS');
 insert into dept values (30, 'SALES',      'CHICAGO');
 insert into dept values (40, 'OPERATIONS', 'BOSTON');
 create table emp
- (empno      integer primary key not null,
+ (id         integer primary key not null,
   ename      text,
   job        text,
   mgr        integer,
   hiredate   text,
   sal        real,
   comm       real,
-  deptno     integer
+  dept_id    integer
  );
 insert into emp values (7369, 'SMITH',  'CLERK',     7902, '1980-12-17', 800,  NULL, 20);
 insert into emp values (7499, 'ALLEN',  'SALESMAN',  7698, '1981-02-20', 1600, 300,  30);

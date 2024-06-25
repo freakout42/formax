@@ -28,10 +28,13 @@ title = q.c(1, 3);
 close();
 
 if (rblock.init(dbc)) return 9;
-if ((s = rblock.query("name"))) return s;
+if ((s = rblock.query("name,prikey,whereand,orderby"))) return s;
 nb = rblock.q.rows;
 if (nb > NBLOCKS) return 7;
-for (i=0; i<nb; i++) if (b[i].init(rblock.q, i+1)) return 9;
+for (i=0; i<nb; i++) {
+  if (b[i].open(i==0 ? NULL : b[0].dbc)) return 9;
+  if (b[i].init(rblock.q, i+1)) return 9;
+}
 rblock.close();
 cb = 1;
 
@@ -46,6 +49,11 @@ if ((s = rmap.query("line,mtext"))) return s;
 if (p[1].maps(&rmap)) return 9;
 rmap.close();
 return 0;
+}
+
+void Form::clear() {
+int i;
+for (i=0; i<nb; i++) b[i].close();
 }
 
 int Form::run() {
