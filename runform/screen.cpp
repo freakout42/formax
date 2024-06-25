@@ -77,10 +77,10 @@ termio.c_cc[VSUSP] = 0; /* ctrl-z */
 #ifdef VLNEXT
 termio.c_cc[VLNEXT] = 0;/* ctrl-v */
 #endif
-tcsetattr (fileno(stdin), TCSANOW, &termio);
-noecho();
-cbreak();
+tcsetattr (0, TCSANOW, &termio);
 nonl();
+noecho();
+//cbreak();
 keypad(stdscr,TRUE);
 getmaxyx(stdscr, ysiz, xsiz);
 return 0;
@@ -121,6 +121,7 @@ switch (ch)
   case KEY_CTRL('P'):  return KEY_UP;
   case KEY_CTRL('R'):  return KEY_PPAGE;
   case KEY_CTRL('V'):  return KEY_NPAGE;
+  case KEY_CTRL('Z'):  return KEY_F(8);
  }
 return ch;
 }

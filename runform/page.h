@@ -4,6 +4,7 @@ public:
   void create();
   char *name;
   int maps(rMap *rmap);
+  int wait();
 protected:
   int vwpy0;
   int vwpx0;

@@ -76,6 +76,7 @@ CREATE TABLE pages
   );
 INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
 INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
+INSERT INTO blocks (id, form_id, name) VALUES (0, 1, 'dual');
 INSERT INTO pages  (form_id, name) VALUES (1, '$TABLE-0');
 INSERT INTO pages  (id, form_id, name, ysiz, vwpy0, border) VALUES (0, 1, 'formax', 1, 0, 0);
 EOF
