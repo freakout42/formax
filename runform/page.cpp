@@ -1,5 +1,5 @@
 #include <string.h>
-#include "version.h"
+#include "runform.h"
 
 int Page::init(Qdata pag, int rix) {
 memset(map, 0, sizeof(map));

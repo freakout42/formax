@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
-#include "version.h"
+#include "runform.h"
 
 static char buf[HUGSIZE];
 

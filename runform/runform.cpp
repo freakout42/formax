@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "version.h"
+#include "runform.h"
 
 static void usage(int ecd) {
 char *est[] = {

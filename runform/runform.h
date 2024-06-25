@@ -1,6 +1,4 @@
-const char VERSION[] = "0.9.0";
-#define XORKEY1 "qTYaqw8zhU3UYT73hiohenUSsio85uibEWd72672JdQwfnytomHomU0Ny6eu"
-#define CHARSET "en_US.iso885915"
+#include "../version.h"
 #define STATUSL 0
 #define SMLSIZE 256
 #define MEDSIZE 1024

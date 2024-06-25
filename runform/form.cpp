@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include "version.h"
+#include "runform.h"
 
 Block *Form::init() {
 stmt = NULL;
@@ -47,7 +47,6 @@ return 0;
 
 int Form::run() {
 Screen display;
-fprintf(stderr,"%d\n", p[0].ysiz);
 if (display.init()) return 6;
 p[0].create();
 p[1].create();

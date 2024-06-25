@@ -4,7 +4,7 @@
 #include <string.h>
 #include <termio.h>
 #include <term.h>
-#include "version.h"
+#include "runform.h"
 #include "curkeys.h"
 
 static attrel attrels[] = {

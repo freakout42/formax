@@ -1,6 +1,6 @@
 #!/bin/sh
 NAME=formax
-test -f runform/version.h || exit 1
+test -f version.h || exit 1
 rm -rf dist Makefile
 for MODUL in generate runform colquery; do cd $MODUL; make clean >/dev/null 2>&1; cd ..; done
 test "$1" = "clean" && exit

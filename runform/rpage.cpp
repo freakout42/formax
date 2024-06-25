@@ -1,5 +1,5 @@
 #include <string.h>
-#include "version.h"
+#include "runform.h"
 
 int rPage::init(SQLHDBC dbc0) {
 int s;
