@@ -1,10 +1,10 @@
 #include <string.h>
 #include "runform.h"
 
-int rPage::init(SQLHDBC dbc0) {
+int rPage::init() {
 int s;
 stmt = NULL;
-if ((s = open(dbc0))) return s;
+if ((s = open())) return s;
 let(table,  "pages");
 let(prikey, "id");
 let(where,  "form_id = 1");

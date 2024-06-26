@@ -3,6 +3,9 @@ public:
   char *id;
   char *name;
   char *title;
+  rBlock rblock;
+  rPage rpage;
+  rMap rmap;
   Block b[NBLOCKS];
   Page  p[NBLOCKS];
   int nb; /* number of blocks */
@@ -10,7 +13,7 @@ public:
   int cb; /* current block */
   int cf; /* current field */
   int lk; /* last key */
-  Block *init();
+  int *init();
   int fill(int id);
   void clear();
   int run();

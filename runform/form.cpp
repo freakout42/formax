@@ -3,20 +3,17 @@
 #include <string.h>
 #include "runform.h"
 
-Block *Form::init() {
+int *Form::init() {
 stmt = NULL;
-if (open(NULL)) return NULL;
+if (open()) return NULL;
 let(table,  "forms");
 let(prikey, "id");
 let(where,  "");
 let(order,  "id");
-return b+0;
+return 0;
 }
 
 int Form::fill(int fid) {
-rBlock rblock;
-rPage rpage;
-rMap rmap;
 int i, s;
 
 letf(t(where), "id = %d", fid);
@@ -27,24 +24,24 @@ name  = q.c(1, 2);
 title = q.c(1, 3);
 close();
 
-if (rblock.init(dbc)) return 9;
+if (rblock.init()) return 9;
 if ((s = rblock.query("name,prikey,whereand,orderby"))) return s;
 nb = rblock.q.rows;
 if (nb > NBLOCKS) return 7;
 for (i=0; i<nb; i++) {
-  if (b[i].open(i==0 ? NULL : b[0].dbc)) return 9;
+  if (b[i].open()) return 9;
   if (b[i].init(rblock.q, i+1)) return 9;
 }
 rblock.close();
 cb = 1;
 
-if (rpage.init(dbc)) return 9;
+if (rpage.init()) return 9;
 if ((s = rpage.query("name,ysiz,xsiz,vwpy0,vwpx0,border"))) return s;
 np = rpage.q.rows;
 if (np > NBLOCKS) return 7;
 for (i=0; i<np; i++) if (p[i].init(rpage.q, i+1)) return 9;
 rpage.close();
-if (rmap.init(dbc, 1)) return 9;
+if (rmap.init(1)) return 9;
 if ((s = rmap.query("line,mtext"))) return s;
 if (p[1].maps(&rmap)) return 9;
 rmap.close();

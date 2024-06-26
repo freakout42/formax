@@ -11,15 +11,16 @@ with unmatched efficiency. The fast, keyboard-optimized,
 no-mouse C++-application and the minimal bandwidth needs
 result in massive savings of working time.
 
-The basic concepts of Oracle SQL-Forms 3.0 are combined with
-curses as the terminal interface, ODBC for universal
-database access and Javascript as the trigger language. The
-best ideas for a powerful user interface came from Emacs,
-Clipper, SAP and Lotus/1-2-3. The result is the most
-effective solution possible. By eleminating all proprietary
-dependencies und being open-source with a permissive license
-the system is future-proof. The minimal costs to build a
-**formax** form makes adapting this technology a no-brainer.
+The basic concepts of Oracle SQL-Forms 3.0 (1988) are
+combined with curses as the terminal interface, ODBC for
+universal database access and Javascript as the trigger
+language. The best ideas for a powerful user interface came
+from Emacs, Clipper, SAP and Lotus/1-2-3. The result is the
+most effective solution possible. By eleminating all
+proprietary dependencies und being open-source including all
+dependencies with a permissive license the system is
+future-proof. The minimal costs to build a **formax** form
+makes adapting this technology a no-brainer.
 
 In every system of decent size is the need for something
 like **formax**. The system-adminstrator needs to change a

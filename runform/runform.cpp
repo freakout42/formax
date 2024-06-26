@@ -1,8 +1,8 @@
 #define USAGE "runform-(%02d) %s\nusage: runform [-k] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
 #define FORMFRM argv[optind+ /* command-line arguments */            0]       //       //         //
 #define FORMDSN argv[optind+                                                  1]       //         //
-#define FORMUSR argv[optind+                                                           2]         //
-#define FORMPAS argv[optind+                                                                      3]
+#define FORMUID argv[optind+                                                           2]         //
+#define FORMPWD argv[optind+                                                                      3]
 
 #include <string.h>
 #include <stdio.h>
@@ -40,7 +40,6 @@ int i;
 char dsn[SMLSIZE];
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
-Block *blk;
 
 // command-line arguments and options check and process
 while ((i = getopt(argc, argv, "l:kVy:")) != -1) {
@@ -53,29 +52,44 @@ while ((i = getopt(argc, argv, "l:kVy:")) != -1) {
     default: usage(1);
   }
 }
-if (argc - optind < 2) usage(2);
-if (argc - optind > 2) xencrypt(FORMPAS,1);
 
-// check, open and read the form - sqlite3 file named %.frm
+// check and open the database connection - if simple rw-filepath use sqlite
+switch(argc - optind) {
+ case 2:
+  if (strcspn(FORMDSN,";") == strlen(FORMDSN) && (filesq3 = fopen(FORMDSN, "r+"))) {
+    fclose(filesq3);
+    snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s", drv, FORMDSN);
+  } else snprintf(dsn, sizeof(dsn), "DSN=%s", FORMDSN);
+  break;
+ case 3:
+  snprintf(dsn, sizeof(dsn), "DSN=%s;UID=%s", FORMDSN, FORMUID);
+  break;
+ case 4:
+  xencrypt(FORMPWD,1);
+  snprintf(dsn, sizeof(dsn), "DSN=%s;UID=%s;PWD=%s", FORMDSN, FORMUID, FORMPWD);
+  break;
+ default: usage(2);
+}
+if (f.b[0].connect(dsn)) usage(8);
+for (i=1; i<NBLOCKS; i++) f.b[i].dbc = f.b[0].dbc;
+
+// check, open and read the form - sqlite3 file named .frm
 if ((filesq3 = fopen(FORMFRM, "r")) == NULL) usage(3);
 fclose(filesq3); // check for file existence because sqlite creates empty db
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, FORMFRM);
 f.locale(CHARSET);
 if (f.connect(dsn)) usage(4);
-if (!(blk = f.init())) usage(5);
+f.rblock.dbc = f.dbc;
+f.rpage.dbc = f.dbc;
+f.rmap.dbc = f.dbc;
+if (f.init()) usage(5);
 
-// check and open the database connection - if simple rw-filepath use sqlite
-if (strcspn(FORMDSN,";") == strlen(FORMDSN) && (filesq3 = fopen(FORMDSN, "r+"))) {
-  fclose(filesq3);
-  snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, FORMDSN);
-} else strncpy(dsn, FORMDSN, sizeof(dsn));
-if (blk->connect(dsn)) usage(8);
-
+// load and run the form
 if ((i = f.fill(1))) usage(i);
   if ((i = f.run())) usage(i);
 f.close();
 
 f.disconnect();
-blk->disconnect();
+f.b[0].disconnect();
 exit(i);
 }

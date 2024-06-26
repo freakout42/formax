@@ -1,6 +1,6 @@
 class rPage: public Record {
 public:
-  int init(SQLHDBC dbc0);
+  int init();
 private:
   char *name;
 };

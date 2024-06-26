@@ -7,7 +7,7 @@ public:
   void locale(char *lc);
   int connect(char *dsn);
   void disconnect();
-  int open(SQLHDBC dbc0);
+  int open();
   void close();
   int query(char *attrs);
   char *c(int row, int col);

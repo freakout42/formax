@@ -21,8 +21,7 @@ SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc);
 return SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_COMPLETE);
 }
 
-int Record::open(SQLHDBC dbc0) {
-if (dbc0) dbc = dbc0;
+int Record::open() {
 if (stmt == NULL) {
   q.init();
   ret = SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);
