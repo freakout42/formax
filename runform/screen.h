@@ -5,6 +5,7 @@ public:
   void refresh();
 	void close();
 	void wbox();
+	char *msg(int num);
   int attrs(int attrib);
   void writes(int y, int x, char *str);
   void writef(int y, int x, int colcode, int width, char *format, ...);
@@ -18,7 +19,9 @@ private:
   void setcolor(int pairi);
   void uncolor(int pairi);
 };
-extern Screen display;
+
+enum { SEV_INFO, SEV_WARN, SEV_ERROR, SEV_FATAL };
+
 #define TYPEM  0x1fu
 #define BIMASK 0xc0u
 #define BOLD   0x40u

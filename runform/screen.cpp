@@ -98,6 +98,12 @@ void Screen::close() {
 endwin();
 }
 
+char *Screen::msg(int num) {
+int i;
+for (i=1; f.e.v(i,1); i++) if (f.e.n(i,1) == num) break;
+return f.e.v(i,3);
+}
+
 int Screen::getkey() {
 int ch;
 //return wgetch(stdscr);
@@ -110,6 +116,7 @@ switch (ch)
   case KEY_RRETURN:    return KEY_ENTER;
   case KEY_LL:         return KEY_END;
   case KEY_F0:         return KEY_F(10);
+  case KEY_CTRL('@'):  return KEY_F(0);
   case KEY_CTRL('A'):  return KEY_HOME;
   case KEY_CTRL('B'):  return KEY_LEFT;
   case KEY_CTRL('D'):  return KEY_DC;

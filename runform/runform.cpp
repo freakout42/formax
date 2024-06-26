@@ -79,6 +79,7 @@ fclose(filesq3); // check for file existence because sqlite creates empty db
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, FORMFRM);
 f.locale(CHARSET);
 if (f.connect(dsn)) usage(4);
+f.rerror.dbc = f.dbc;
 f.rblock.dbc = f.dbc;
 f.rpage.dbc = f.dbc;
 f.rmap.dbc = f.dbc;

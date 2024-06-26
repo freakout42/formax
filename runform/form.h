@@ -3,16 +3,20 @@ public:
   char *id;
   char *name;
   char *title;
+  rError rerror;
   rBlock rblock;
   rPage rpage;
   rMap rmap;
+  Qdata e;
+  Screen d;
   Block b[NBLOCKS];
   Page  p[NBLOCKS];
-  int nb; /* number of blocks */
-  int np; /* number of pages */
-  int cb; /* current block */
-  int cf; /* current field */
-  int lk; /* last key */
+  int numblock;
+  int numpage;
+  int curblock;
+  int curfield;
+  int lastkey;
+  int dirty;
   int *init();
   int fill(int id);
   void clear();

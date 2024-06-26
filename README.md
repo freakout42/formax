@@ -332,6 +332,14 @@ Style
 
  - structure
  - variable names
+
+    i internal loop
+    s internal status
+    t runform.h macro target with size
+    f runform.h 
+    e qdata error
+    d screen
+
  - indenting
  - commenting
  - style

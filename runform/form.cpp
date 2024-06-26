@@ -24,22 +24,28 @@ name  = q.c(1, 2);
 title = q.c(1, 3);
 close();
 
+if (rerror.init()) return 9;
+if ((s = rerror.query("num,severity,etext"))) return s;
+e = rerror.q;
+rerror.q.init();
+rerror.close();
+
 if (rblock.init()) return 9;
 if ((s = rblock.query("name,prikey,whereand,orderby"))) return s;
-nb = rblock.q.rows;
-if (nb > NBLOCKS) return 7;
-for (i=0; i<nb; i++) {
+numblock = rblock.q.rows;
+if (numblock > NBLOCKS) return 7;
+for (i=0; i<numblock; i++) {
   if (b[i].open()) return 9;
   if (b[i].init(rblock.q, i+1)) return 9;
 }
 rblock.close();
-cb = 1;
+curblock = 1;
 
 if (rpage.init()) return 9;
 if ((s = rpage.query("name,ysiz,xsiz,vwpy0,vwpx0,border"))) return s;
-np = rpage.q.rows;
-if (np > NBLOCKS) return 7;
-for (i=0; i<np; i++) if (p[i].init(rpage.q, i+1)) return 9;
+numpage = rpage.q.rows;
+if (numpage > NBLOCKS) return 7;
+for (i=0; i<numpage; i++) if (p[i].init(rpage.q, i+1)) return 9;
 rpage.close();
 if (rmap.init(1)) return 9;
 if ((s = rmap.query("line,mtext"))) return s;
@@ -50,18 +56,17 @@ return 0;
 
 void Form::clear() {
 int i;
-for (i=0; i<nb; i++) b[i].close();
+for (i=0; i<numblock; i++) b[i].close();
 }
 
 int Form::run() {
 int i;
-Screen d;
 Function u;
 if (d.init()) return 6;
-for (i=0; i<np; i++) p[i].create();
+for (i=0; i<numpage; i++) p[i].create();
 d.refresh();
-lk = 0;
-while (u.dispatch()) lk = p[0].wait();
+dirty = lastkey = 0;
+while (u.dispatch()) lastkey = p[0].wait();
 d.close();
 return 0;
 }

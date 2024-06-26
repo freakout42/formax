@@ -6,6 +6,13 @@ TABLE=$3
 shift 3
 cat <<EOF
 #PRAGMA encoding="ISO-8859-15";
+CREATE TABLE errors
+  (id        INTEGER PRIMARY KEY NOT NULL,
+   num       INTEGER NOT NULL DEFAULT 40000,
+   severity  INTEGER NOT NULL DEFAULT 0,    /* 0:info 1:warn 2:error 3:fatal */
+   etext     TEXT    NOT NULL DEFAULT ''
+  );
+INSERT INTO errors (num, severity, etext) VALUES (40401, 1, 'No changes to save');
 CREATE TABLE forms
   (id        INTEGER PRIMARY KEY NOT NULL,
    name      TEXT    NOT NULL DEFAULT 'form0',

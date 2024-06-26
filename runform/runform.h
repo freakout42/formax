@@ -8,6 +8,7 @@
 #define NBLOCKS 20
 #include "qdata.h"
 #include "record.h"
+#include "rerror.h"
 #include "rblock.h"
 #include "rpage.h"
 #include "rmap.h"

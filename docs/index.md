@@ -8,7 +8,7 @@ be used without any SQL-knowledge and ensure only valid data
 operations. The user is typically an enterprise employee in
 the office or home-office. He is trained to use these forms
 with unmatched efficiency. The fast, keyboard-optimized,
-no-mouse C++-application and the minimal bandwidth needs
+no-mouse C++-application and the minimal bandwidth needs,
 result in massive savings of working time.
 
 The basic concepts of Oracle SQL-Forms 3.0 (1988) are
@@ -19,8 +19,9 @@ from Emacs, Clipper, SAP and Lotus/1-2-3. The result is the
 most effective solution possible. By eleminating all
 proprietary dependencies und being open-source including all
 dependencies with a permissive license the system is
-future-proof. The minimal costs to build a **formax** form
-makes adapting this technology a no-brainer.
+future-proof. The minimal costs to build a **formax**
+application makes adapting this technology a no-brainer for
+any enterprise.
 
 In every system of decent size is the need for something
 like **formax**. The system-adminstrator needs to change a
@@ -59,7 +60,8 @@ first look. After using it for a while they usally will love
 it due to the time savings they can achieve. The trained
 user can enter data with minimal effort and time, due to the
 fast application, optimized keyboard handling and ultra low
-bandwidth usage.
+bandwidth usage. The productivity these forms bring to the
+table cannot be achieved with other tools.
 
 The form application can be build without code by setting up
 some data in a couple of tables with minimal programming. A

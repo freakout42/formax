@@ -29,7 +29,7 @@ printf("#define KEY_RETURN '\\n'\n");
 printf("#define KEY_RRETURN '\\r'\n");
 printf("#define KEY_TAB '\\t'\n");
 printf("#define KEY_ESC '\\033'\n");
-printf("#define KEY_CTRL(c) (c+1-'A')\n");
+printf("#define KEY_CTRL(c) (c-'@')\n");
 printf("#ifndef KEY_END\n");
 printf("#define KEY_END KEY_LL\n");
 printf("#endif\n");
