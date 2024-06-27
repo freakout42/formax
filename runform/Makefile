@@ -17,5 +17,5 @@ curkeys.h: curkeys
 	./curkeys >$@
 
 clean:
-	rm -f *.o a.out core.* runform curkeys curkeys.h
+	rm -f *.o a.out core.* vgcore.* runform curkeys curkeys.h lll
 

@@ -256,26 +256,33 @@ Style
 -----
 
  - structure
+
  - variable names
 
-    f runform.h 
-    i internal loop
-    s internal status
-    t runform.h macro target with size
-    e qdata error
-    d screen
-class Qdata {
-public:
-  int rows;
-  int cols;
-  char **w(int row, int col);
-  char *v(int row, int col);
-  char *c(int row, int col);
-  int n(int row, int col);
+    One character variable names (pattern like jquery $) are
+    used for some fundamental values:
+
+  | V | Description            | Source         |
+  | - | ---------------------- | -------------- |
+  | t | char* target with size | runform.h      |
+  | f | current Form object    | runform.h      |
+  | d | query result data      | qdata.h        |
+  | w | query result pointer   | qdata.h        |
+  | v | query result string    | qdata.h        |
+  | c | query result transfer  | qdata.h        |
+  | n | query result to_int    | qdata.h        |
+  | i | loop integer           |                |
+  | s | status integer         |                |
+  | q | query result object    | qdata.h        |
+  | e | error messages array   | rerror.h       |
+  | d | curses stdscr windows  | screen.h       |
 
  - indenting
+
  - commenting
+
  - style
+
  - bool
 
 License
