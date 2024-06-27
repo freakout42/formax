@@ -41,35 +41,47 @@ necessary.
 Components
 ==========
 
-generator
----------
+**fromax** consists of the following programs, or
+components, that you can execute independently from the
+command line.
 
-TODO
-
-designer
+generate
 --------
 
-TODO
+    makeform is a shell script which can produce the sql
+    script (.inp) which in turn can create the form database
+    (.frm) by using the sqlite3 utility. The produced sql
+    script represents in practice the source code of the
+    form application and can be edited to change the default
+    behaviour or to add objects to the form.
+
+    editform can edit the form database with a form.
+    NOT YET IMPLEMENTED.
 
 runform
 -------
 
-TODO
+    Execute forms (.frm) interactively on a terminal by the
+    end-user.
 
 colquery
 --------
 
-TODO
+    Parser for a natural query language. Translats human
+    properties to SQL where clauses.
 
 regex
 -----
 
-TODO
+    Regular expression engine for validating user entered
+    data.
+    See: github.com/kokke/tiny-regex-c
 
 elk
 ---
 
-TODO
+    Javascript engine for 3GL triggers.
+    See: github.com/cesanta/elk
 
 Objects
 =======
@@ -173,91 +185,6 @@ Events invoke functions, which have trigger points. When
 the associated trigger. Every trigger pont has a specific
 type of trigger associated with it.
 
-Form Terms
-==========
-
- - Application
-
-    A form or a series of forms that satisfies a business function.
-
- - Base table
-
-    The database table on which a block is based.
-
- - Base table field
-
-    A field that corresponds to a column in the base table
-    of the block that owned the field.
-
- - Block
-
-    A logical collection of fields in a form. A block can
-    correspond to one table in the database or to no table.
-
- - Constant text
-
-    Text that appears in a form time it is run.
-
- - Context
-
-    A concept that you can use to determine what parts of a
-    form you can currently access from within the interface.
-
- - Designer
-
-    An application developer or programmer who uses
-    **formax** to create and modigy forms.
-
- - Field
-
-    An area on a page that can display data and accept
-    operator input. The data that they display can
-    correspond to data from a column in a database table.
-
- - Form
-
-    A logical collection of blocks, fields and triggers.
-
- - Form database
-
-    A sqlite-database containing all the objects that make
-    up the form.
-
- - Multi-record block
-
-    A block that can display more than one record at a time.
-
- - Object
-
-    A group of data, such as a form, block, field or trigger.
-
- - Operator
- - Page
- - Pop-up window
- - Record
- - Scope
- - Screen painter
- - Single-record block
- - System variable
- - Trigger
-
-Database Terms
-==============
-
- - Column
- - Constraint
- - Data dictionary
- - Database
- - DBA
- - Foreign key
- - Index
- - Lock
- - Primary key
- - Row
- - SQL
- - Table
- - Transaction
-
 Status
 ======
 
@@ -265,30 +192,28 @@ Current 0.9.0 is ALPHA and unusable - the generator can only
 create a single-block single-page form. runform can display
 the page - wait for a key - and exit.
 
-1.0.0 is able to query, update, create and delete records in
-a table by a single-block, single-page, single-row form.
-Expected 08/2024.
+1.0.0 will be able to create, retrieve, update and delete
+(CRUD) records in a table by a single-block, single-page,
+single-row form. Expected 08/2024.
 
 Feature roadmap
 ---------------
 
- - import block/field config
- - current block field
- - CRUD
- - man pages
- - import script for page layout
  - multiple blocks master-detail
  - form for forms
+ - dev guide en
+ - user guide in en, de, fr, ...
+ - man pages
+ - import script for page layout
  - menue multiple forms
  - cqy.y: resolv 5 shift/reduce conflicts
  - sap-like batchinput
  - triggers with embedded javascript (elk)
  - help
  - domains with central maintaining
- - dev guide en
- - user guide in en, de, fr, ...
  - direct field keys 1..9 ?
  - key macro
+ - multiple databases
 
 User guide
 ==========
@@ -333,10 +258,10 @@ Style
  - structure
  - variable names
 
+    f runform.h 
     i internal loop
     s internal status
     t runform.h macro target with size
-    f runform.h 
     e qdata error
     d screen
 
