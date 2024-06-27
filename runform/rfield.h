@@ -1,0 +1,39 @@
+// field configuration
+class rField: public Record {
+public:
+  int init();
+private:
+  char *name;
+};
+
+#ifdef BEGINSQL
+CREATE TABLE fields
+  (id        INTEGER PRIMARY KEY NOT NULL,
+   block_id  INTEGER NOT NULL DEFAULT 1,
+   page_id   INTEGER NOT NULL DEFAULT 1,
+   name      TEXT    NOT NULL DEFAULT 'field0',
+   seq       INTEGER NOT NULL DEFAULT 1,
+   ftype     INTEGER NOT NULL DEFAULT 1,    /* 1:CHAR 2:INT 3:FLOAT 4:DATE */
+   len       INTEGER NOT NULL DEFAULT 30,   /* field length */
+   dlen      INTEGER NOT NULL DEFAULT 11,   /* display length */
+   btab      INTEGER NOT NULL DEFAULT 1,    /* if the field is a base table field */
+   key       INTEGER NOT NULL DEFAULT 0,    /* if the field is a primary key field */
+   dflt      TEXT    NOT NULL DEFAULT '',   /* default value */
+   disp      INTEGER NOT NULL DEFAULT 1,    /* if the field is displayed */
+   line      INTEGER NOT NULL DEFAULT 0,    /* page location */
+   col       INTEGER NOT NULL DEFAULT 0,    /* column location */
+   enter     INTEGER NOT NULL DEFAULT 1,    /* if the field is enterable */
+   query     INTEGER NOT NULL DEFAULT 1,    /* if the field can be queried */
+   upd       INTEGER NOT NULL DEFAULT 1,    /* if the field can be updated */
+   updnul    INTEGER NOT NULL DEFAULT 1,    /* if the field can be updated when NULL */
+   mand      INTEGER NOT NULL DEFAULT 0,    /* if the field is requeried */
+   upper     INTEGER NOT NULL DEFAULT 0,    /* if the field converts to uppercase */
+   lovtit    TEXT    NOT NULL DEFAULT '',   /* title for list of values */
+   lov_id    INTEGER,                       /* block for list of values */
+   lovi_id   INTEGER,                       /* page for list of values */
+   low       INTEGER NOT NULL DEFAULT -99999999999, /* low range value */
+   high      INTEGER NOT NULL DEFAULT 99999999999,  /* high range value */
+   valpatn   TEXT    NOT NULL DEFAULT '',   /* validation regex pattern */
+   help      TEXT    NOT NULL DEFAULT ''    /* help text */
+  );
+#endif

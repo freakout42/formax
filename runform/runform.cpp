@@ -38,7 +38,7 @@ int monochrome = 0;
 Form f;
 
 int main(int argc, char *argv[]) { //, char **envp
-int i;
+int i, s;
 char dsn[SMLSIZE];
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
@@ -85,17 +85,18 @@ snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, FORMFRM);
 if (f.connect(dsn)) usage(4);
 f.rerror.dbc = f.dbc;
 f.rblock.dbc = f.dbc;
+f.rfield.dbc = f.dbc;
 f.rpage.dbc = f.dbc;
 f.rmap.dbc = f.dbc;
 if (f.init()) usage(5);
 
 // load and run the form
-if ((i = f.fill(1))) usage(i);
-  if ((i = f.run())) usage(i);
+if ((i = f.fill(1))) usage(s);
+  if ((s = f.run())) usage(s);
 f.clear();
 
 // cleanup end exit
 f.disconnect();
 f.b[0].disconnect();
-exit(i);
+exit(s);
 }

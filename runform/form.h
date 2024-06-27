@@ -1,18 +1,21 @@
 // form configuration
 class Form: public Record {
 public:
-  char *id;
-  char *name;
-  char *title;
+  char id[SMLSIZE];
+  char name[SMLSIZE];
+  char title[SMLSIZE];
   rError rerror;
   rBlock rblock;
+  rField rfield;
   rPage rpage;
   rMap rmap;
   Qdata *e;
   Screen d;
   Block b[NBLOCKS];
+  Field l[NFIELDS];
   Page  p[NBLOCKS];
   int numblock;
+  int numfield;
   int numpage;
   int curblock;
   int curfield;

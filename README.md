@@ -243,20 +243,23 @@ Style
     One character variable names (pattern like jquery $) are
     used for some fundamental values:
 
-  | V | Description            | Source         |
-  | - | ---------------------- | -------------- |
-  | t | char* target with size | runform.h      |
-  | f | current Form object    | runform.h      |
-  | d | query result data      | qdata.h        |
-  | w | query result pointer   | qdata.h        |
-  | v | query result string    | qdata.h        |
-  | c | query result transfer  | qdata.h        |
-  | n | query result to_int    | qdata.h        |
-  | i | loop integer           |                |
-  | s | status integer         |                |
-  | q | query result object    | qdata.h        |
-  | e | error messages array   | rerror.h       |
-  | d | curses stdscr windows  | screen.h       |
+  | V | Description            | Type     | Source         |
+  | - | ---------------------- | -------- | -------------- |
+  | t | char* target with size | Macro    | runform.h      |
+  | f | current Form object    | Variable | runform.h      |
+  | d | query result data      | Variable | qdata.h        |
+  | w | query result pointer   | Method   | qdata.h        |
+  | v | query result string    | Type     | qdata.h        |
+  | c | query result transfer  | Type     | qdata.h        |
+  | n | query result to_int    | Type     | qdata.h        |
+  | i | loop integer           | Type     |                |
+  | s | status integer         | Type     |                |
+  | q | query result object    | Type     | qdata.h        |
+  | e | error messages array   | Type     | rerror.h       |
+  | d | curses stdscr windows  | Type     | screen.h       |
+  | b | blocks array           | Variable | form.h         |
+  | l | fields array           | Variable | form.h         |
+  | p | pages array            | Variable | form.h         |
 
  - indenting
 

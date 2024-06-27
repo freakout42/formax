@@ -3,7 +3,7 @@
 
 int Function::dispatch() {
 int run;
-run = 1;
+run = 0;
 switch(f.lastkey) {
 
  // startup event
@@ -12,13 +12,13 @@ switch(f.lastkey) {
  // commit and exit
  case KEY_F(8):
   if (!f.dirty) f.p[0].message(40401);
-  run = 0;
+  run = 1;
   break;
 
  // rollback and exit
  case KEY_F(12):
   if (f.dirty) f.p[0].message(40401);
-  run = 0;
+  run = 1;
   break;
 
  default: ;
