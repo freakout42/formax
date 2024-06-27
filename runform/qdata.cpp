@@ -1,7 +1,7 @@
 /* query data handling */
 #include <stdlib.h>
 #include <string.h>
-#include "qdata.h"
+#include "runform.h"
 
 void Qdata::init() {
 rows = 0;
@@ -21,11 +21,12 @@ return 0;
 
 void Qdata::freed() {
 int i;
-for (i = rows * cols; i; free((*d)[--i])) ;
+for (i=0; i<rows*cols; i++) {
+//  debugf("qda: %d %d %d %s",rows,cols,i,(*d)[i]);
+  free((*d)[i]);
+}
 free(d);
-d = NULL;
-rows = 0;
-cols = 0;
+init();
 }
 
 /* return a valid pointer for new query-column data */

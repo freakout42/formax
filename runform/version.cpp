@@ -13,6 +13,16 @@ va_end (args);
 return n;
 }
 
+int debugf(char *format, ...) {
+va_list args;
+int n;
+va_start (args, format);
+n = fprintf(stderr, format, args);
+fputc('\n', stderr);
+va_end (args);
+return n+1;
+}
+
 static char xorder[] = "%^&-_=+@?.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 static char xorkey[] = XORKEY1;
 static int ordnum(int ch) {

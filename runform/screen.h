@@ -2,8 +2,8 @@
 class Screen {
 public:
 	int init();
-  void refresh();
-	void close();
+  void refr();
+	void dclose();
 	void wbox();
 	char *msg(int num);
   int attrs(int attrib);

@@ -1,9 +1,10 @@
 class Page: public Screen {
 public:
-  int init(Qdata pag, int rix);
+  int init(Qdata *pag, int rix);
   void create();
+  void destroy();
   char *name;
-  int maps(rMap *rmap);
+  int maps(Qdata *rmap);
   int wait();
   int message(int num);
 protected:

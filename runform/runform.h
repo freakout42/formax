@@ -20,6 +20,7 @@
 #define let(target,source) strncpy(target, source, sizeof(target))
 #define t(target) target, sizeof(target)
 extern int letf(char *target, size_t maxlen, char *format, ...);
+extern int debugf(char *format, ...);
 extern char *xencrypt(char *toe, int rev);
 extern int monochrome;
 extern Form f;

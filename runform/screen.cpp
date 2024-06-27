@@ -60,8 +60,20 @@ if (colors && (attrels[pairi].foreg || attrels[pairi].backg))
 int Screen::init() {
 struct termios termio;
 int i;
+tcgetattr (0, &termio); /* give me all emacs-controls */
+termio.c_cc[VINTR] = 0; /* ctrl-c */
+termio.c_cc[VSUSP] = 0; /* ctrl-z */
+#ifdef VLNEXT
+termio.c_cc[VLNEXT] = 0;/* ctrl-v */
+#endif
+tcsetattr (0, TCSANOW, &termio);
 if ((wndw = initscr()) == NULL) return 1;
 assert(wndw == stdscr);
+nonl();
+noecho();
+//cbreak();
+keypad(stdscr,TRUE);
+attrset(A_NORMAL);
 if (has_colors() && !monochrome) {
   colors = 1;
   start_color();
@@ -70,18 +82,9 @@ if (has_colors() && !monochrome) {
     assert(attrels[i].ccode == i);
     init_pair(i, attrels[i].foreg, attrels[i].backg);
   }
+  attron(COLOR_PAIR(0));
 }
-tcgetattr (0, &termio); /* give me all emacs-controls */
-termio.c_cc[VINTR] = 0; /* ctrl-c */
-termio.c_cc[VSUSP] = 0; /* ctrl-z */
-#ifdef VLNEXT
-termio.c_cc[VLNEXT] = 0;/* ctrl-v */
-#endif
-tcsetattr (0, TCSANOW, &termio);
-nonl();
-noecho();
-//cbreak();
-keypad(stdscr,TRUE);
+refr();
 getmaxyx(stdscr, ysiz, xsiz);
 return 0;
 }
@@ -90,24 +93,22 @@ void Screen::wbox() {
 box(wndw, 0, 0);
 }
 
-void Screen::refresh() {
+void Screen::refr() {
 wrefresh(wndw);
 }
 
-void Screen::close() {
+void Screen::dclose() {
 endwin();
 }
 
 char *Screen::msg(int num) {
 int i;
-for (i=1; f.e.v(i,1); i++) if (f.e.n(i,1) == num) break;
-return f.e.v(i,3);
+for (i=1; f.e->v(i,1); i++) if (f.e->n(i,1) == num) break;
+return f.e->v(i,3);
 }
 
 int Screen::getkey() {
 int ch;
-//return wgetch(stdscr);
-//wrefresh(stdscr);
 ch = wgetch(stdscr);
 switch (ch)
  {
@@ -119,6 +120,7 @@ switch (ch)
   case KEY_CTRL('@'):  return KEY_F(0);
   case KEY_CTRL('A'):  return KEY_HOME;
   case KEY_CTRL('B'):  return KEY_LEFT;
+  case KEY_CTRL('C'):  return KEY_F(12);
   case KEY_CTRL('D'):  return KEY_DC;
   case KEY_CTRL('E'):  return KEY_END;
   case KEY_CTRL('F'):  return KEY_RIGHT;

@@ -4,7 +4,7 @@
 int rError::init() {
 int s;
 stmt = NULL;
-if ((s = open())) return s;
+if ((s = ropen())) return s;
 let(table,  "errors");
 let(prikey, "id");
 let(where,  "");

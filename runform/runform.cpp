@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <locale.h>
 #include "runform.h"
 
 static void usage(int ecd) {
@@ -32,6 +33,7 @@ exit(ecd);
 }
 
 // global
+char *lclocale;
 int monochrome = 0;
 Form f;
 
@@ -40,6 +42,9 @@ int i;
 char dsn[SMLSIZE];
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
+
+setenv("LC_ALL", CHARSET, 1);
+lclocale = setlocale(LC_ALL, CHARSET);
 
 // command-line arguments and options check and process
 while ((i = getopt(argc, argv, "l:kVy:")) != -1) {
@@ -77,7 +82,6 @@ for (i=1; i<NBLOCKS; i++) f.b[i].dbc = f.b[0].dbc;
 if ((filesq3 = fopen(FORMFRM, "r")) == NULL) usage(3);
 fclose(filesq3); // check for file existence because sqlite creates empty db
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, FORMFRM);
-f.locale(CHARSET);
 if (f.connect(dsn)) usage(4);
 f.rerror.dbc = f.dbc;
 f.rblock.dbc = f.dbc;
@@ -88,7 +92,7 @@ if (f.init()) usage(5);
 // load and run the form
 if ((i = f.fill(1))) usage(i);
   if ((i = f.run())) usage(i);
-f.close();
+f.clear();
 
 f.disconnect();
 f.b[0].disconnect();

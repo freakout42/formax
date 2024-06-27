@@ -4,7 +4,7 @@
 int rMap::init(int page_id) {
 int s;
 stmt = NULL;
-if ((s = open())) return s;
+if ((s = ropen())) return s;
 let(table,  "maps");
 let(prikey, "id");
 letf(t(where), "page_id = %d", page_id);

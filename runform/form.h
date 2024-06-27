@@ -7,7 +7,7 @@ public:
   rBlock rblock;
   rPage rpage;
   rMap rmap;
-  Qdata e;
+  Qdata *e;
   Screen d;
   Block b[NBLOCKS];
   Page  p[NBLOCKS];

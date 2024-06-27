@@ -1,5 +1,5 @@
 class Block: public Record {
 public:
-  int init(Qdata blk, int rix);
+  int init(Qdata *blk, int rix);
 private:
 };

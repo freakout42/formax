@@ -4,7 +4,7 @@
 int rPage::init() {
 int s;
 stmt = NULL;
-if ((s = open())) return s;
+if ((s = ropen())) return s;
 let(table,  "pages");
 let(prikey, "id");
 let(where,  "form_id = 1");
