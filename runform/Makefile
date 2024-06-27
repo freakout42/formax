@@ -5,7 +5,7 @@ CXXFLAGS=-g	-O0 -Wall -Werror
 runform: $(OBJS)
 	$(CXX) $(OBJS) -lcurses -lodbc -o $@
 
-valg: runform
+valgrind: runform
 	/opt/valgrind/bin/valgrind --leak-check=yes ./runform ../generate/scotty.frm ../generate/scotty.sq3 2>lll
 
 test: runform

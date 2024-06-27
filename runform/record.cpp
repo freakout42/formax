@@ -24,7 +24,6 @@ return ret;
 }
 
 void Record::rclose() {
-//debugf("rec: %d %d :%s:",q,q->rows,q->v(1,1));
 q->freed();
 delete(q);
 SQLFreeHandle(SQL_HANDLE_STMT, stmt);

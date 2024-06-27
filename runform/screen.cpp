@@ -73,18 +73,32 @@ nonl();
 noecho();
 //cbreak();
 keypad(stdscr,TRUE);
-attrset(A_NORMAL);
+//attrset(A_NORMAL);
 if (has_colors() && !monochrome) {
   colors = 1;
   start_color();
   use_default_colors();
+
+//  init_pair(1, COLOR_RED, COLOR_BLACK);
   for (i=0; i<COL_UNDEF; i++) {
     assert(attrels[i].ccode == i);
     init_pair(i, attrels[i].foreg, attrels[i].backg);
   }
+
+//  attron(COLOR_PAIR(1));
   attron(COLOR_PAIR(0));
+
+//	mvwprintw(stdscr, i, 5, "%s", "Viola !!! In color ...");
+  mvwprintw(stdscr, 0, 0, "%s", "Y");
+
+//	refresh();
+//  attroff(COLOR_PAIR(1));
+//      getch();
+//  endwin();
+//  return 1;
 }
 refr();
+attroff(COLOR_PAIR(0));
 getmaxyx(stdscr, ysiz, xsiz);
 return 0;
 }

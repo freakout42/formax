@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <assert.h>
 #include <string.h>
 #include "runform.h"
@@ -22,7 +21,7 @@ if (q->rows != 1) return 7;
 id    = q->c(1, 1);
 name  = q->c(1, 2);
 title = q->c(1, 3);
-//rclose();
+rclose();
 
 if (rerror.init()) return 9;
 if ((s = rerror.query("num,severity,etext"))) return s;

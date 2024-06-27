@@ -21,10 +21,7 @@ return 0;
 
 void Qdata::freed() {
 int i;
-for (i=0; i<rows*cols; i++) {
-//  debugf("qda: %d %d %d %s",rows,cols,i,(*d)[i]);
-  free((*d)[i]);
-}
+for (i=0; i<rows*cols; i++) free((*d)[i]);
 free(d);
 init();
 }
@@ -55,6 +52,7 @@ return p;
 int Qdata::n(int row, int col) {
 int i;
 i = atoi(v(row, col));
+free(*w(row, col));
 *w(row, col) = NULL;
 return i;
 }

@@ -17,7 +17,7 @@ int debugf(char *format, ...) {
 va_list args;
 int n;
 va_start (args, format);
-n = fprintf(stderr, format, args);
+n = vfprintf(stderr, format, args);
 fputc('\n', stderr);
 va_end (args);
 return n+1;
