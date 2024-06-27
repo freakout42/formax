@@ -94,6 +94,7 @@ if ((i = f.fill(1))) usage(i);
   if ((i = f.run())) usage(i);
 f.clear();
 
+// cleanup end exit
 f.disconnect();
 f.b[0].disconnect();
 exit(i);

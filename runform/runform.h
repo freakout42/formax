@@ -1,3 +1,4 @@
+// constants macros and central procedures
 #include "../version.h"
 #define STATUSL 0
 #define SMLSIZE 256

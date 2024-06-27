@@ -1,0 +1,11 @@
+{
+   <setlocale>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:_nl_normalize_codeset
+   fun:_nl_load_locale_from_archive
+   fun:_nl_find_locale
+   fun:setlocale
+   fun:main
+}

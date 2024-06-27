@@ -1,0 +1,3 @@
+#!/bin/sh
+sed -n '/BEGINSQL/,/endif/p' $1 | sed '1d;$d'
+exit

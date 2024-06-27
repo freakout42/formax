@@ -233,25 +233,6 @@ libraries are not used directly but wrapped by the Screen
 and Record classes. Record is a simple ORM inspired by rails
 ActiceRecord. The form-database is a sqlite-database.
 
-Modules
--------
-
- - makeform
- - runform
- - colquery
- - regex
- - elk
-
-Skills
-------
-
-TODO
-
-Resources
----------
-
-TODO
-
 Style
 -----
 

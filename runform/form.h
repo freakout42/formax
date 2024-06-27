@@ -1,3 +1,4 @@
+// form configuration
 class Form: public Record {
 public:
   char *id;
@@ -23,3 +24,13 @@ public:
   int run();
 private:
 };
+
+#ifdef BEGINSQL
+CREATE TABLE forms
+  (id        INTEGER PRIMARY KEY NOT NULL,
+   name      TEXT    NOT NULL DEFAULT 'form0',
+   title     TEXT    NOT NULL DEFAULT '',
+   mnunam    TEXT    NOT NULL DEFAULT '',
+   mnugrp    TEXT    NOT NULL DEFAULT ''
+  );
+#endif

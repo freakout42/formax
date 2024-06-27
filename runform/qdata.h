@@ -1,3 +1,4 @@
+// storage class for query results
 class Qdata {
 public:
   int rows;

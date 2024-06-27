@@ -1,3 +1,4 @@
+// top object of any form
 #include <string.h>
 #include "runform.h"
 
