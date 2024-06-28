@@ -4,8 +4,8 @@
 #include <string.h>
 #include <termio.h>
 #include <term.h>
+#include <curses.h>
 #include "runform.h"
-#include "curkeys.h"
 
 static attrel attrels[] = {
 
@@ -87,6 +87,16 @@ getmaxyx(stdscr, ysiz, xsiz);
 return 0;
 }
 
+void Screen::cwin(int y, int x, int py, int px) {
+wndw = newwin(y, x, py, px);
+wattrset(wndw, A_NORMAL);
+wattron(wndw, COLOR_PAIR(0));
+}
+
+void Screen::dwin() {
+delwin(wndw);
+}
+
 void Screen::wbox() {
 box(wndw, 0, 0);
 }
@@ -148,6 +158,30 @@ switch (ch)
  }
 return ch;
 }
+
+#ifdef nonono
+TAB	Next Field
+F1	Help
+F6	Insert Record
+F7	Enter Query
+F8	Execute Query
+F9	List of Values
+F10	Save
+Shift + F4	Clear Record
+Shift + F6	Delete Record
+Ctrl + u	Clear Item
+Ctrl + q	Exit Application
+Ctrl + F1	Show Key Mapping
+Ctrl + F4	Close Current Window
+Ctrl + F6	Switch windows from front to back
+Alt + a	Action Menu
+Alt + e	Edit Menu
+Alt + g	Go Menu
+Alt + q	Query Menu
+Alt + f	Folder Menu
+Alt + t	Tools Menu
+Alt + h	Help Menu
+#endif
 
 int Screen::attrs(int attrib) {
 if (attrib & A_REVERSE) {

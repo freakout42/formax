@@ -25,9 +25,7 @@ return 0;
 
 void Page::create() {
 int i;
-wndw = newwin(ysiz, xsiz, vwpy0, vwpx0);
-wattrset(wndw, A_NORMAL);
-wattron(wndw, COLOR_PAIR(0));
+cwin(ysiz, xsiz, vwpy0, vwpx0);
 if (border) wbox();
 for (i=0; i<NLINES; i++) if (map[i]) writes(i+(border?1:0), border?1:0, map[i]);
 }
@@ -35,7 +33,7 @@ for (i=0; i<NLINES; i++) if (map[i]) writes(i+(border?1:0), border?1:0, map[i]);
 void Page::destroy() {
 int i;
 for (i=0; i<NLINES; i++) free(map[i]);
-delwin(wndw);
+dwin();
 }
 
 int Page::wait() {

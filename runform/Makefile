@@ -5,7 +5,7 @@ RUNFORM=./runform ../generate/scotty.frm ../generate/scotty.sq3
 
 all: runform
 
-runform: $(OBJS)
+runform: curkeys.h $(OBJS)
 	$(CXX) $(OBJS) -lcurses -lodbc -o $@
 
 test: runform
@@ -13,8 +13,6 @@ test: runform
 	test -f $@
 	test -s $@ || true
 #	--gen-suppressions=all
-
-screen.cpp: curkeys.h
 
 curkeys.h: curkeys
 	./curkeys >$@

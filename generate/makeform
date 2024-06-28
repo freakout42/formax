@@ -1,5 +1,5 @@
 #!/bin/sh
-USAGE="makeform name title table cols..."
+USAGE="makeform name title table cols... >name.inp"
 FORM=$1
 TITLE=$2
 TABLE=$3

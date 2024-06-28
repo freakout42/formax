@@ -1,7 +1,9 @@
-#include <curses.h>
+#include "curkeys.h"
 class Screen {
 public:
 	int init();
+  void cwin(int y, int x, int py, int px);
+  void dwin();
   void refr();
 	void dclose();
   void wmov(int y, int x);
@@ -25,7 +27,6 @@ private:
 #define BOLD   0x40u
 #define ITALIC 0x80u
 
-enum { SEV_INFO, SEV_WARN, SEV_ERROR, SEV_FATAL };
 enum {
   COL_DEFAULT,         /* = 0 (-1,-1) */
   COL_BLACK,           /* = 1 */
@@ -81,23 +82,3 @@ typedef struct attrel {
 #define A_DIM        NCURSES_BITS(1UL,12)
 #define A_BOLD       NCURSES_BITS(1UL,13)
 #define A_PROTECT    NCURSES_BITS(1UL,16)
-
-/* 16 colors - not used
-#define BLACK 0
-#define BLUE 1
-#define GREEN 2
-#define CYAN 3
-#define RED 4
-#define MAGENTA 5
-#define BROWN 6
-#define LIGHTGRAY 7
-#define DARKGRAY 8
-#define LIGHTBLUE 9
-#define LIGHTGREEN 10
-#define LIGHTCYAN 11
-#define LIGHTRED 12
-#define LIGHTMAGENTA 13
-#define YELLOW 14
-#define WHITE 15
-#define BLINK 128
- */

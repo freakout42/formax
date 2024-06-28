@@ -8,6 +8,7 @@
 
 int main() {
 printf("#ifndef CURSES_H\n");
+printf("typedef struct _win_st WINDOW;\n");
 defkey(BACKSPACE)
 defkey(NEXT)
 defkey(UP)
