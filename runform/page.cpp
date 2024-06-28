@@ -48,28 +48,22 @@ writef(0, 30, 0, 3,  "%3d",  f.lastkey);
 writes(0, 60,                f.p[1].name);
 writes(0, 67,                "runform-");
 writes(0, 75,                (char*)VERSION);
-move(0,0);
-
-for (i=0; i<f.numfield; i++) {
-  f.p[1].wfield(&(f.l[i]));
-}
-
 refr();
-
-for (i=1; i<f.numpage; i++) {
-  f.p[i].refr();
-}
-
+for (i=0; i<f.numfield; i++) f.p[1].wfield(i);
+for (i=1; i<f.numpage; i++) f.p[i].refr();
 return getkey();
 }
 
 int Page::message(int num) {
 writef(0, 0, 0, 80, "%s", f.d.msg(num));
-move(0,0);
+//move(0,0);
 refr();
 return getkey();
 }
 
-void Page::wfield(Field *fld) {
-writef(fld->line, fld->col, 0, fld->dlen, "%s", fld->name);
+void Page::wfield(int fno) {
+Field *fld;
+fld = f.l+fno;
+writef(fld->line, fld->col, fno==f.curfield ? COL_CURRENT : COL_FIELD, fld->dlen, "%s", fld->name);
+if (fno == f.curfield) wmov(fld->line, fld->col);
 }

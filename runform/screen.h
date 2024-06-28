@@ -4,6 +4,7 @@ public:
 	int init();
   void refr();
 	void dclose();
+  void wmov(int y, int x);
 	void wbox();
 	char *msg(int num);
   int attrs(int attrib);
@@ -15,17 +16,16 @@ public:
 protected:
   WINDOW *wndw;
 private:
-  int colors;
   void setcolor(int pairi);
   void uncolor(int pairi);
 };
-
-enum { SEV_INFO, SEV_WARN, SEV_ERROR, SEV_FATAL };
 
 #define TYPEM  0x1fu
 #define BIMASK 0xc0u
 #define BOLD   0x40u
 #define ITALIC 0x80u
+
+enum { SEV_INFO, SEV_WARN, SEV_ERROR, SEV_FATAL };
 enum {
   COL_DEFAULT,         /* = 0 (-1,-1) */
   COL_BLACK,           /* = 1 */
@@ -44,8 +44,8 @@ enum {
   STRINGCOLOR,         /* =14 */
   BLANKCOLOR,          /* =15 */
   COMMANDCOLOR,        /* =16 */
-  HIGHLIGHTCOLOR,      /* =17 */
-  HIGHLIGHTERRORCOLOR, /* =18 */
+  COL_CURRENT,         /* =17 */
+  COL_FIELD,           /* =18 */
   HEADERCOLOR,         /* =19 */
   CURHEADERCOLOR,      /* =20 */
   MARKCOLOR,           /* =21 */

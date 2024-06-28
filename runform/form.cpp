@@ -55,7 +55,7 @@ for (i=0; i<numfield; i++) {
   if (l[i].init(rfield.q, i+1)) return 9;
 }
 rfield.rclose();
-curfield = 1;
+curfield = 0;
 
 // pages - page 0 is status/edit/message window
 if (rpage.init()) return 9;

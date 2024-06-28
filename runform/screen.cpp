@@ -9,36 +9,36 @@
 
 static attrel attrels[] = {
 
-  { COL_DEFAULT,         A_NORMAL,          -1,            -1 },            /* default */
-  { COL_BLACK,           A_NORMAL,          COLOR_BLACK,   -1 },            /* black */
-  { COL_RED,             A_NORMAL,          COLOR_RED,     -1 },            /* red */
-  { COL_GREEN,           A_NORMAL,          COLOR_GREEN,   -1 },            /* green */
-  { COL_YELLOW,          A_NORMAL,          COLOR_YELLOW,  -1 },            /* yellow */
-  { COL_BLUE,            A_NORMAL,          COLOR_BLUE,    -1 },            /* blue */
-  { COL_MAGENTA,         A_NORMAL,          COLOR_MAGENTA, -1 },            /* magenta */
-  { COL_CYAN,            A_NORMAL,          COLOR_CYAN,    -1 },            /* cyan */
-  { COL_WHITE,           A_NORMAL,          COLOR_WHITE,   -1 },            /* white */
+  { COL_DEFAULT,         A_NORMAL,              -1,            -1 },            /* default */
+  { COL_BLACK,           A_NORMAL,              COLOR_BLACK,   -1 },            /* black */
+  { COL_RED,             A_NORMAL,              COLOR_RED,     -1 },            /* red */
+  { COL_GREEN,           A_NORMAL,              COLOR_GREEN,   -1 },            /* green */
+  { COL_YELLOW,          A_NORMAL,              COLOR_YELLOW,  -1 },            /* yellow */
+  { COL_BLUE,            A_NORMAL,              COLOR_BLUE,    -1 },            /* blue */
+  { COL_MAGENTA,         A_NORMAL,              COLOR_MAGENTA, -1 },            /* magenta */
+  { COL_CYAN,            A_NORMAL,              COLOR_CYAN,    -1 },            /* cyan */
+  { COL_WHITE,           A_NORMAL,              COLOR_WHITE,   -1 },            /* white */
 
-  { TEXTCOLOR,           A_NORMAL,          0,             0 },             /* text cell */
-  { EOFCOLOR,            A_NORMAL,          COLOR_GREEN,   -1 },            /* eof cell */
-  { ERRORCOLOR,          A_BLINK,           COLOR_RED,     -1 },            /* error cell */
-  { VALUECOLOR,          A_NORMAL,          0,             0 },             /* value cell */
-  { FORMULACOLOR,        A_NORMAL,          0,             0 },             /* formula cell */
-  { STRINGCOLOR,         A_NORMAL,          0,             0 },             /* string cell */
-  { BLANKCOLOR,          A_NORMAL,          0,             0 },             /* blank cell */
-  { COMMANDCOLOR,        A_UNDERLINE,       COLOR_BLUE,    -1 },            /* command cell */
+  { TEXTCOLOR,           A_NORMAL,              0,             0 },             /* text cell */
+  { EOFCOLOR,            A_NORMAL,              COLOR_GREEN,   -1 },            /* eof cell */
+  { ERRORCOLOR,          A_BLINK,               COLOR_RED,     -1 },            /* error cell */
+  { VALUECOLOR,          A_NORMAL,              0,             0 },             /* value cell */
+  { FORMULACOLOR,        A_NORMAL,              0,             0 },             /* formula cell */
+  { STRINGCOLOR,         A_NORMAL,              0,             0 },             /* string cell */
+  { BLANKCOLOR,          A_NORMAL,              0,             0 },             /* blank cell */
+  { COMMANDCOLOR,        A_UNDERLINE,           COLOR_BLUE,    -1 },            /* command cell */
 
-  { COL_CURRENT,         A_REVERSE,         COLOR_BLUE,    COLOR_WHITE },   /* highlighted current cell */
-  { HIGHLIGHTERRORCOLOR, A_REVERSE|A_BLINK, COLOR_RED,     COLOR_WHITE },   /* highlighted current cell with error */
-  { HEADERCOLOR,         A_REVERSE,         COLOR_CYAN,    COLOR_BLACK },   /* column and row headers */
-  { CURHEADERCOLOR,      A_BOLD,            COLOR_WHITE,   COLOR_BLUE },    /* current col/row header */
-  { MARKCOLOR,           A_REVERSE,         COLOR_MAGENTA, COLOR_YELLOW },  /* marked range info */
-  { AUTOCALCCOLOR,       A_REVERSE,         0,             0 },             /* autocalc info */
-  { FORMDISPLAYCOLOR,    A_REVERSE,         0,             0 },             /* formula display info */
-  { MESSAGECOLOR,        A_BOLD|A_BLINK,    0,             0 },             /* messages */
-  { PROMPTCOLOR,         A_BOLD,            0,             0 },             /* prompt */
-  { INPUTCOLOR,          A_REVERSE,         0,             0 },             /* editor */
-  { CELLCONTENTSCOLOR,   A_NORMAL,          0,             0 },             /* cell content info */
+  { COL_CURRENT,         A_REVERSE|A_UNDERLINE, COLOR_BLUE,    COLOR_WHITE },   /* current field */
+  { COL_FIELD,           A_REVERSE,             COLOR_MAGENTA, COLOR_WHITE },   /* field */
+  { HEADERCOLOR,         A_REVERSE,             COLOR_CYAN,    COLOR_BLACK },   /* column and row headers */
+  { CURHEADERCOLOR,      A_BOLD,                COLOR_WHITE,   COLOR_BLUE },    /* current col/row header */
+  { MARKCOLOR,           A_REVERSE,             COLOR_MAGENTA, COLOR_YELLOW },  /* marked range info */
+  { AUTOCALCCOLOR,       A_REVERSE,             0,             0 },             /* autocalc info */
+  { FORMDISPLAYCOLOR,    A_REVERSE,             0,             0 },             /* formula display info */
+  { MESSAGECOLOR,        A_BOLD|A_BLINK,        0,             0 },             /* messages */
+  { PROMPTCOLOR,         A_BOLD,                0,             0 },             /* prompt */
+  { INPUTCOLOR,          A_REVERSE,             0,             0 },             /* editor */
+  { CELLCONTENTSCOLOR,   A_NORMAL,              0,             0 },             /* cell content info */
 
   { COL_UNDEF, 0, 0, 0 }
 };
@@ -48,12 +48,12 @@ return attrels[colcode].cattr;
 }
 
 void Screen::setcolor(int pairi) {
-if (colors && (attrels[pairi].foreg || attrels[pairi].backg))
+if (!monochrome && (attrels[pairi].foreg || attrels[pairi].backg))
   wattron(wndw, COLOR_PAIR(pairi));
 }
 
 void Screen::uncolor(int pairi) {
-if (colors && (attrels[pairi].foreg || attrels[pairi].backg))
+if (!monochrome && (attrels[pairi].foreg || attrels[pairi].backg))
   wattroff(wndw, COLOR_PAIR(pairi));
 }
 
@@ -73,29 +73,26 @@ nonl();
 noecho();
 //cbreak();
 keypad(stdscr,TRUE);
-//attrset(A_NORMAL);
 if (has_colors() && !monochrome) {
-  colors = 1;
   start_color();
   for (i=0; i<COL_UNDEF; i++) {
     assert(attrels[i].ccode == i);
     init_pair(i, attrels[i].foreg, attrels[i].backg);
   }
-//attron(COLOR_PAIR(0));
-//use_default_colors();
+use_default_colors();
 //assume_default_colors(-1,-1);
-}
-  attron(COLOR_PAIR(COL_CURRENT));
-  printw("Viola !!! In color ...");
+} else monochrome = 1;
 refr();
-  getch();
-//attroff(COLOR_PAIR(0));
 getmaxyx(stdscr, ysiz, xsiz);
 return 0;
 }
 
 void Screen::wbox() {
 box(wndw, 0, 0);
+}
+
+void Screen::wmov(int y, int x) {
+wmove(wndw, y, x);
 }
 
 void Screen::refr() {
@@ -117,24 +114,36 @@ int ch;
 ch = wgetch(stdscr);
 switch (ch)
  {
+//case KEY_CTRL('H'):
   case KEY_BS:         return KEY_BACKSPACE;
-  case KEY_RETURN:
-  case KEY_RRETURN:    return KEY_ENTER;
+//case KEY_CTRL('J'):
+  case KEY_RETURN:     return KEY_ENTER;      /* Commit Accept */
   case KEY_LL:         return KEY_END;
   case KEY_F0:         return KEY_F(10);
   case KEY_CTRL('@'):  return KEY_F(0);
   case KEY_CTRL('A'):  return KEY_HOME;
   case KEY_CTRL('B'):  return KEY_LEFT;
-  case KEY_CTRL('C'):  return KEY_F(12);
+  case KEY_CTRL('C'):  return KEY_F(12);      /* Rollback Cancel */
   case KEY_CTRL('D'):  return KEY_DC;
   case KEY_CTRL('E'):  return KEY_END;
   case KEY_CTRL('F'):  return KEY_RIGHT;
   case KEY_CTRL('G'):  return KEY_BTAB;
+  case KEY_CTRL('I'):  return KEY_TAB;
+  case KEY_CTRL('K'):  return KEY_F(0);       /* Delete Record */
+  case KEY_CTRL('L'):  return KEY_F(0);       /* Refresh */
+//case KEY_CTRL('M'):
+  case KEY_RRETURN:    return KEY_F(0);
   case KEY_CTRL('N'):  return KEY_DOWN;
-  case KEY_CTRL('O'):  return KEY_IC;
+  case KEY_CTRL('O'):  return KEY_IC;         /* Insert Toggle */
   case KEY_CTRL('P'):  return KEY_UP;
+  case KEY_CTRL('Q'):  return KEY_F(0);       /* Query */
   case KEY_CTRL('R'):  return KEY_PPAGE;
+  case KEY_CTRL('S'):  return KEY_F(0);
+  case KEY_CTRL('T'):  return KEY_F(0);
+  case KEY_CTRL('U'):  return KEY_F(0);
   case KEY_CTRL('V'):  return KEY_NPAGE;
+  case KEY_CTRL('W'):  return KEY_F(0);
+  case KEY_CTRL('Y'):  return KEY_F(0);       /* Insert Record */
   case KEY_CTRL('Z'):  return KEY_F(8);
  }
 return ch;
@@ -160,8 +169,9 @@ writef(y, x, 0, strlen(str), str);
 void Screen::writef(int y, int x, int colcode, int width, char *format, ...) {
 va_list args;
 char s[MEDSIZE];
-int oldy, oldx;
 int color;
+int oldy, oldx;
+
 va_start (args, format);
 vsnprintf (s, sizeof(s), format, args);
 va_end (args);
@@ -170,13 +180,11 @@ switch (colcode & BIMASK) {
   case BOLD:   color |= A_BOLD;      break;
   case ITALIC: color |= A_UNDERLINE; break;
 }
-colcode &= TYPEM;
 attrs(color);
-setcolor(colcode);
-getyx (stdscr, oldy, oldx);
-wattron(wndw, COLOR_PAIR(COL_CURRENT));
-mvwprintw (wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
-move (oldy, oldx);
+setcolor(colcode & TYPEM);
+getyx(wndw, oldy, oldx);
+mvwprintw(wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
+wmov(oldy, oldx);
 uncolor(colcode);
 attrs(A_NORMAL);
 }

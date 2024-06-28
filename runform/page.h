@@ -13,5 +13,5 @@ protected:
   int border;
 private:
   char *map[NLINES];
-  void wfield(Field *fld);
+  void wfield(int fno);
 };

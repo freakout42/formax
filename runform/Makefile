@@ -3,6 +3,8 @@ OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 CXXFLAGS=-g	-O0 -Wall -Werror
 RUNFORM=./runform ../generate/scotty.frm ../generate/scotty.sq3
 
+all: runform
+
 runform: $(OBJS)
 	$(CXX) $(OBJS) -lcurses -lodbc -o $@
 
