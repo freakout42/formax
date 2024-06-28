@@ -77,13 +77,13 @@ keypad(stdscr,TRUE);
 if (has_colors() && !monochrome) {
   colors = 1;
   start_color();
-//use_default_colors(); // valgrind Conditional jump or move depends on uninitialised value(s) at: _nc_do_color in libncurses.so.5.2
-//assume_default_colors(-1,-1);
   for (i=0; i<COL_UNDEF; i++) {
     assert(attrels[i].ccode == i);
     init_pair(i, attrels[i].foreg, attrels[i].backg);
   }
 //attron(COLOR_PAIR(0));
+use_default_colors();
+//assume_default_colors(-1,-1);
 }
 refr();
 //attroff(COLOR_PAIR(0));

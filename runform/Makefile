@@ -7,10 +7,10 @@ runform: $(OBJS)
 	$(CXX) $(OBJS) -lcurses -lodbc -o $@
 
 test: runform
-	/opt/valgrind/bin/valgrind --quiet --leak-check=yes --suppressions=valgrind.sup $(RUNFORM) 2>$@
+	valgrind --quiet --leak-check=yes --suppressions=valgrind.sup $(RUNFORM) 2>$@
 	test -f $@
 	test -s $@ || true
-#	/opt/valgrind/bin/valgrind --leak-check=yes --gen-suppressions=all $(RUNFORM)
+#	--gen-suppressions=all
 
 screen.cpp: curkeys.h
 

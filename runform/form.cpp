@@ -47,7 +47,7 @@ curblock = 1;
 
 // fields
 if (rfield.init()) return 9;
-if ((s = rfield.query("name"))) return s;
+if ((s = rfield.query("name,dlen,line,col"))) return s;
 numfield = rfield.q->rows;
 if (numfield > NFIELDS) return 7;
 for (i=0; i<numfield; i++) {

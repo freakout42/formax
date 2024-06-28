@@ -231,7 +231,13 @@ OS. Interface to the user is solely done with curses-lib.
 Interface to the database is solely through ODBC. Both
 libraries are not used directly but wrapped by the Screen
 and Record classes. Record is a simple ORM inspired by rails
-ActiceRecord. The form-database is a sqlite-database.
+ActiceRecord. The form-database is a sqlite-database. The
+form generator builds a SQL script that creates the default
+database.
+
+Everything is compiled with -Wall -Werror and memchecked
+with valgrind. Only int and char types are used where
+possible static variables are used.
 
 Style
 -----

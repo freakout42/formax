@@ -4,7 +4,7 @@
 
 int Page::init(Qdata *pag, int rix) {
 memset(map, 0, sizeof(map));
-name   = pag->c(rix, 1);
+let(name,pag->v(rix, 1));
 ysiz   = pag->n(rix, 2);
 xsiz   = pag->n(rix, 3);
 vwpy0  = pag->n(rix, 4);
@@ -36,7 +36,6 @@ void Page::destroy() {
 int i;
 for (i=0; i<NLINES; i++) free(map[i]);
 delwin(wndw);
-free(name);
 }
 
 int Page::wait() {
