@@ -47,11 +47,13 @@ client-server frontends, which were also abandoned later in
 favour of web based as the only option. The result was a
 massive increase of complexity and bandwidth requirements in
 magnitudes of millions and leaving a big technology hole in
-the industry. **formax** wants to bring back this option to
-the market for all popular databases and all kinds of
-terminals and emulations.
+the industry. **formax** wants to bring back this lean
+option to the market for all popular databases and all kinds
+of terminals and emulations.
 
 ### Goals
+
+#### End-User Application
 
 **formax** wants to provide a user-friendly, fast method for
 entering valid data into the database. This does not mean a
@@ -63,21 +65,29 @@ fast application, optimized keyboard handling and ultra low
 bandwidth usage. The productivity these forms bring to the
 table cannot be achieved with other tools.
 
+#### Development
+
 The form application can be build without code by setting up
 some data in a couple of tables with minimal programming. A
 minimal form to maintain a single table with complete CRUD
 functionality can be build with a single line of code within
-two seconds. Secure access to the form is easily managed by
-setting up a PuTTY-session on any windows machine with
+two seconds. Anyways the primary goal is the efficiency of
+the end-user application. Developer comfort is on second
+place. Only the concept is inherited from SQL-Forms 3. There
+is no compatibility or migration utility for Oracle Forms
+sources.
+
+#### Operations
+
+Zero administration cost is ensured by the leightweight
+concent itself. Secure access to the form is easily managed
+by setting up a PuTTY-session on any windows machine with
 zero-administration on the client. This works from anywhere
 without any bandwidth-requirements.
 
-Only the concept is inherited from SQL-Forms 3. There is no
-compatibility or migration utility for Oracle Forms sources.
-
 ### Status
 
-Current version 0.9.0 can do nothing. We expect 1.0.0 be
+Current version 0.9.0 can do nothing. We expect 1.0.0 to be
 released 08/2024 with the ability to Insert, Query, Update
 and Delete (CRUD) in one table with single-row mode. Full
 Forms3 functionality is a big task and depends highly on the
