@@ -28,7 +28,7 @@ static attrel attrels[] = {
   { BLANKCOLOR,          A_NORMAL,          0,             0 },             /* blank cell */
   { COMMANDCOLOR,        A_UNDERLINE,       COLOR_BLUE,    -1 },            /* command cell */
 
-  { HIGHLIGHTCOLOR,      A_REVERSE,         COLOR_BLUE,    COLOR_WHITE },   /* highlighted current cell */
+  { COL_CURRENT,         A_REVERSE,         COLOR_BLUE,    COLOR_WHITE },   /* highlighted current cell */
   { HIGHLIGHTERRORCOLOR, A_REVERSE|A_BLINK, COLOR_RED,     COLOR_WHITE },   /* highlighted current cell with error */
   { HEADERCOLOR,         A_REVERSE,         COLOR_CYAN,    COLOR_BLACK },   /* column and row headers */
   { CURHEADERCOLOR,      A_BOLD,            COLOR_WHITE,   COLOR_BLUE },    /* current col/row header */
@@ -82,10 +82,13 @@ if (has_colors() && !monochrome) {
     init_pair(i, attrels[i].foreg, attrels[i].backg);
   }
 //attron(COLOR_PAIR(0));
-use_default_colors();
+//use_default_colors();
 //assume_default_colors(-1,-1);
 }
+  attron(COLOR_PAIR(COL_CURRENT));
+  printw("Viola !!! In color ...");
 refr();
+  getch();
 //attroff(COLOR_PAIR(0));
 getmaxyx(stdscr, ysiz, xsiz);
 return 0;
@@ -171,6 +174,7 @@ colcode &= TYPEM;
 attrs(color);
 setcolor(colcode);
 getyx (stdscr, oldy, oldx);
+wattron(wndw, COLOR_PAIR(COL_CURRENT));
 mvwprintw (wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
 move (oldy, oldx);
 uncolor(colcode);
