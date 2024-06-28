@@ -50,6 +50,7 @@ if (rfield.init()) return 9;
 if ((s = rfield.query("name,dlen,line,col"))) return s;
 numfield = rfield.q->rows;
 if (numfield > NFIELDS) return 7;
+if (numfield != 8) return 7;
 for (i=0; i<numfield; i++) {
   if (l[i].init(rfield.q, i+1)) return 9;
 }

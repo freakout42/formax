@@ -22,7 +22,7 @@ LINE=1
 for COLUMN; do
   cat <<EOF
 INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' [$LINE]$COLUMN');
-INSERT INTO fields (seq, name) VALUES ($LINE, '$COLUMN');
+INSERT INTO fields (seq, name, line) VALUES ($LINE, '$COLUMN', $LINE+1);
 EOF
   LINE=`expr $LINE + 1`
 done

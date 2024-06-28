@@ -236,8 +236,11 @@ form generator builds a SQL script that creates the default
 database.
 
 Everything is compiled with -Wall -Werror and memchecked
-with valgrind. Only int and char types are used where
-possible static variables are used.
+with valgrind. Only int and char types are used and where
+possible static variables are used. Sourcecode lines are
+grouped into blocks of maximum 40. These groups have a top
+comment which explains the purpose. Other commenting is only
+on special cases.
 
 Style
 -----

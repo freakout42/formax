@@ -39,6 +39,7 @@ delwin(wndw);
 }
 
 int Page::wait() {
+int i;
 writes(0, 2,                 f.title);
 writef(0, 12, 0, 4,  "%3s-", f.id);
 writes(0, 16,                f.name);
@@ -48,7 +49,17 @@ writes(0, 60,                f.p[1].name);
 writes(0, 67,                "runform-");
 writes(0, 75,                (char*)VERSION);
 move(0,0);
+
+for (i=0; i<f.numfield; i++) {
+  f.p[1].wfield(&(f.l[i]));
+}
+
 refr();
+
+for (i=1; i<f.numpage; i++) {
+  f.p[i].refr();
+}
+
 return getkey();
 }
 
@@ -57,4 +68,8 @@ writef(0, 0, 0, 80, "%s", f.d.msg(num));
 move(0,0);
 refr();
 return getkey();
+}
+
+void Page::wfield(Field *fld) {
+writef(fld->line, fld->col, 0, fld->dlen, "%s", fld->name);
 }
