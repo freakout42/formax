@@ -242,15 +242,19 @@ grouped into blocks of maximum 40. These groups have a top
 comment which explains the purpose. Other commenting is only
 on special cases.
 
-Style
------
+Structure
+---------
 
- - structure
+runform.cpp holds main() and has the only OS-interfaces for
+running and checking the command line. record.cpp calls ODBC
+and screen.cpp calls curses. All the other sources are pure
+C++ without any external library calls.
 
- - variable names
+Variable names
+--------------
 
-    One character variable names (pattern like jquery $) are
-    used for some fundamental values:
+One character variable names (pattern like jquery $) are
+used for some fundamental values:
 
   | V | Description            | Type     | Source         |
   | - | ---------------------- | -------- | -------------- |
@@ -261,8 +265,8 @@ Style
   | v | query result string    | Type     | qdata.h        |
   | c | query result transfer  | Type     | qdata.h        |
   | n | query result to_int    | Type     | qdata.h        |
-  | i | loop integer           | Type     |                |
-  | s | status integer         | Type     |                |
+  | i | loop integer           | Variable |                |
+  | s | status integer         | Variable |                |
   | q | query result object    | Type     | qdata.h        |
   | e | error messages array   | Type     | rerror.h       |
   | d | curses stdscr windows  | Type     | screen.h       |

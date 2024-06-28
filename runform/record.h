@@ -1,5 +1,11 @@
-#include <sql.h>
-#include <sqlext.h>
+#ifndef __SQL_H
+typedef void * SQLHDBC;
+typedef void * SQLHENV;
+typedef void * SQLHSTMT;
+typedef unsigned char SQLCHAR;
+typedef signed short int SQLSMALLINT;
+typedef SQLSMALLINT SQLRETURN;
+#endif
 class Record {
 public:
   SQLHDBC dbc;
