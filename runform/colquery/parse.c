@@ -1,6 +1,7 @@
 #ifdef DEBUG
 #include <stdio.h>
 #endif
+#include "colq.h"
 
 char *cqop;
 static char *ip;

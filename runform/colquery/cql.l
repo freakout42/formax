@@ -65,10 +65,11 @@ tl      ({ddml}|{dlml}|{ddll}|{dlll}){w}{hour}:{min}
 #endif
 #include <string.h>
 #include "colquery.h"
+#include "colq.h"
 extern int cqnonumbers;
 extern int cqtype;
 static char tmp[1024];
-static char *p;
+/*static char *p;*/
 
 static char *rom2d (roman)
         unsigned char *roman;

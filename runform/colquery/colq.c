@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <unistd.h>
+#include "colquery.h"
 
 int main (argc, argv)
 	int argc;

@@ -34,6 +34,7 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#include "colquery.h"
 extern char     *cqop;
 extern char     *cqcolumn;
 extern int      cqcoltype;
@@ -45,7 +46,7 @@ char            tmp[1024];
 int cqdebug = 0;
 #endif
 
-static cqtype(typ)
+static void cqtype(typ)
         int typ;
 {
 if (cqcoltype == 0 || cqcoltype == typ) cqcoltype = typ;
