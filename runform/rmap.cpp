@@ -1,4 +1,3 @@
-#include <string.h>
 #include "runform.h"
 
 int rMap::init(int page_id) {

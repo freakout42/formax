@@ -1,6 +1,5 @@
 /* query data handling */
 #include <stdlib.h>
-#include <string.h>
 #include "runform.h"
 
 void Qdata::init() {

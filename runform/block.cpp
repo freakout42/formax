@@ -1,5 +1,4 @@
 // top object of any form
-#include <string.h>
 #include "runform.h"
 
 int Block::init(Qdata *blk, int rix) {

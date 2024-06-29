@@ -4,7 +4,6 @@
 #define FORMUID argv[optind+                                                           2]         //
 #define FORMPWD argv[optind+                                                                      3]
 
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -35,6 +34,7 @@ exit(ecd);
 // global
 char *lclocale;
 int monochrome = 0;
+int insertmode = 1;
 Form f;
 
 int main(int argc, char *argv[]) { //, char **envp

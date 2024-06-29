@@ -4,4 +4,5 @@ public:
   int dispatch();
 protected:
 private:
+  void fmove(int bi, int fi);
 };

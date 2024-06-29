@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <cstdarg>
 #include <stdlib.h>
-#include <string.h>
 #include <termio.h>
 #include <term.h>
 #include <curses.h>
@@ -166,25 +165,30 @@ return ch;
  * Returns last key
  */
 int Screen::getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg) {
-return 0;
-}
-#ifdef nonono
-int insert = TRUE;        /* insert mode    */
-int done = FALSE;       /* end-of-loop flag */
-int changed = FALSE;        /* changed the string */
-int first = TRUE;       /* first input flag */
-int c = 0;          /* input key    */
-int sx = x+pos;         /* current position x */
-int len = strlen(s);        /* currrent string len  */
-char *tab;          /* position of tab  */
-char se[MAXINPUT];        /* my copy of string  */
-char *so = se;          /* position in string */
-char tmp[MAXSCREENWIDTH+1];     /* output string  */
-int endx = x + width - 1;     /* end position   */
-char *f4pos; /* pos after f4-processing */
-if (strlen(s) > MAXINPUT) return(KEY_ESC);
+int done;           /* end-of-loop flag */
+int changed;        /* changed the string */
+int first;          /* first input flag */
+int c;              /* input key */
+int sx;             /* current position x */
+int len;            /* currrent string len  */
+char *tp;           /* position of tab */
+char se[MEDSIZE];   /* my copy of string  */
+char *so;           /* position in string */
+char tmp[MEDSIZE];  /* output string  */
+int endx;           /* end position   */
+
+done = 0;
+changed = 0;
+first = 1;
+c = 0;
+sx = x+pos;
+len = strlen(s);
+so = se;
+endx = x + width - 1;
+
+if (strlen(s) > BIGSIZE) return(KEY_ESC);
 strcpy(se, s);          /* save input string  */
-cur_satt(w, att);       /* set attribute  */
+attrs(att);       /* set attribute  */
 while (!done)         /* input loop   */
   {
   if (sx-x >= width)      /* behind end position? */
@@ -192,17 +196,17 @@ while (!done)         /* input loop   */
     sx = endx;      /* go to end pos  */
     so = se + pos - width + 1;
     }
-  wmove(w, y, x);       /* move to print string */
+  wmove(wndw, y, x);       /* move to print string */
   sprintf(tmp, "%-*.*s", width, width, so);/* output string */
   tmp[width] = '\0';      /* cut to width   */
-  while ((tab = strchr(tmp,'\t')) != NULL) *tab = ' '; /* tab era */
-  waddstr(w, tmp);      /* paint out string */
+  while ((tp = strchr(tmp,'\t')) != NULL) *tp = ' '; /* tab era */
+  waddstr(wndw, tmp);      /* paint out string */
   if (pos==-1) break;     /* done if only paint */
-  if (so > se && sx > x) mvwaddch (w, y, x, '<');/* signal overfl */
-  if ((int)strlen(so) > width && sx < endx) mvwaddch(w, y, endx, '>');
-  wmove(w, y, sx);      /* move to cursor pos */
-  wrefresh(w);        /* show the screen  */
-  switch (c = cur_getk (w))   /* get pressed key  */
+  if (so > se && sx > x) mvwaddch (wndw, y, x, '<');/* signal overfl */
+  if ((int)strlen(so) > width && sx < endx) mvwaddch(wndw, y, endx, '>');
+  wmove(wndw, y, sx);      /* move to cursor pos */
+  refr();        /* show the screen  */
+  switch (c = getkey())   /* get pressed key  */
    {
    case KEY_HOME:       /* go to start of field */
     pos = 0;
@@ -213,11 +217,11 @@ while (!done)         /* input loop   */
 #if (KEY_LL != KEY_END)
    case KEY_END:        /* go to end of field */
 #endif
-    pos = min (len, maxlength-1);
+    pos = min (len, max-1);
     sx  = x + pos;
     break;
    case KEY_IC:       /* toggle insert mode */
-    insert = !insert;
+    insertmode = !insertmode;
     break;
    case KEY_LEFT:       /* move left    */
     if (pos > 0)
@@ -258,23 +262,14 @@ while (!done)         /* input loop   */
     break;
    case KEY_ESC:        /* cancel editing */
    case KEY_CTRL('C'):
-    wmove(w, y, x);
+    wmove(wndw, y, x);
     sprintf(tmp, "%-*.*s", width, width, s);
     tmp[width] = '\0';
-    while ((tab = strchr(tmp,'\t')) != NULL) *tab = ' ';
-    waddstr(w, tmp);
+    while ((tp = strchr(tmp,'\t')) != NULL) *tp = ' ';
+    waddstr(wndw, tmp);
     changed = FALSE;
     done = TRUE;
     break;
-   case '$':
-   case KEY_F(4):
-    if (f4edit && (f4pos = f4edit(se, se+pos))) {
-      len = strlen(se);
-      pos = f4pos - se;
-      sx  = x + pos;
-      changed = TRUE;
-      break;
-    }
    default:       /* char input?    */
     if     (    ((c >= ' ') && (c <= '~'))
        || (c == '\t')
@@ -285,9 +280,9 @@ while (!done)         /* input loop   */
       {
       changed = TRUE;
       if (pos==0 && first) len = 0;/* erase on pos0 */
-      if (len < maxlength)
+      if (len < max)
         {
-        if (insert)
+        if (insertmode)
           {
           memmove(se+pos+1, se+pos, len - pos +1);
           *(se+pos) = ' ';
@@ -297,7 +292,7 @@ while (!done)         /* input loop   */
           len++;
         }
       se[pos] = (char)c;
-      if (len < maxlength || pos < len-1)
+      if (len < max || pos < len-1)
         {
         pos++;
         sx++;
@@ -310,12 +305,11 @@ while (!done)         /* input loop   */
   first = FALSE;
   se[len] = '\0';
   }
-cur_satt(w, 0);
+attrs(0);
 if (changed) strcpy(s, se);
 if (chg) *chg = changed;
 return(c);
 }
-#endif
 
 int Screen::attrs(int attrib) {
 if (attrib & A_REVERSE) {

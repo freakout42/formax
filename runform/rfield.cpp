@@ -1,4 +1,3 @@
-#include <string.h>
 #include "runform.h"
 
 int rField::init() {
