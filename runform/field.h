@@ -6,6 +6,7 @@ public:
   int line;
   int col;
   char qhuman[SMLSIZE];
+  char qwhere[MEDSIZE];
   int init(Qdata *fld, int rix);
   void fshow(int cur);
 private:

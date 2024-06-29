@@ -5,8 +5,8 @@ RUNFORM=./runform ../generate/scotty.frm ../generate/scotty.sq3
 
 all: runform
 
-runform: curkeys.h $(OBJS)
-	$(CXX) $(OBJS) -lcurses -lodbc -o $@
+runform: curkeys.h $(OBJS) cqerror.o colquery/colquery.o
+	$(CXX) $(OBJS) cqerror.o colquery/colquery.o -lcurses -lodbc -o $@
 
 test: runform
 	valgrind --quiet --leak-check=yes --suppressions=valgrind.sup $(RUNFORM) 2>$@
@@ -16,6 +16,9 @@ test: runform
 
 curkeys.h: curkeys
 	./curkeys >$@
+
+colquery/colquery.o:
+	cd colquery; make colquery.o
 
 clean:
 	rm -f *.o a.out core.* vgcore.* runform curkeys curkeys.h test

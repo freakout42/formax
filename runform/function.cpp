@@ -1,6 +1,8 @@
 #include "runform.h"
+#include "colquery/colquery.h"
 
 int Function::dispatch() {
+int s;
 int run;
 run = 0;
 switch(f.lastkey) {
@@ -10,6 +12,8 @@ switch(f.lastkey) {
 
  case KEY_HOME:
   f.p[0].getst(0, 0, 80, 0, f.rmode==MOD_QUERY ? f.l[f.curfield].qhuman : f.l[f.curfield].name, 0, "", 80, NULL);
+  s = colquery(f.l[f.curfield].qhuman, f.l[f.curfield].qwhere, f.l[f.curfield].name, 0, 0);
+  f.p[0].getst(0, 0, 80, 0, f.l[f.curfield].qwhere, 0, "", 80, NULL);
   break;
 
  case KEY_LEFT:   fmove(0, -1); break;
