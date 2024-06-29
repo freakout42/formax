@@ -274,7 +274,14 @@ used for some fundamental values:
   | l | fields array           | Variable | form.h         |
   | p | pages array            | Variable | form.h         |
 
- - indenting
+Indenting
+---------
+
+2 spaces indenting is used and the top level of functions is
+not indented. Use 1 space between keyword and opening
+bracket. Do not use space between function name and opening
+bracket. Opening curly bracket is always at the same line as
+keyword (for, while, do, switch, if, ...). 
 
  - commenting
 

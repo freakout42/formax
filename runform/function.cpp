@@ -23,6 +23,7 @@ return run;
 }
 
 void Function::fmove(int bi, int fi) {
+// totally broken with multi-block
 f.curblock = (f.curblock + f.numblock + bi) % f.numblock;
 f.curfield = (f.curfield + f.numfield + fi) % f.numfield;
 }
