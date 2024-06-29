@@ -35,6 +35,8 @@ for (i=0; i<NLINES; i++) free(map[i]);
 dwin();
 }
 
+static char *rmodes[] = { "Insert", "Query ", "Update", "Delete" };
+
 int Page::wait() {
 int i;
 weras();
@@ -43,25 +45,19 @@ writes(0,  5,                f.name);
 writef(0, 20, 0, 9,  "%s",   f.b[f.curblock].table);
 writef(0, 30, 0, 9,  "%s",   f.l[f.curfield].name);
 writef(0, 52, 0, 3,  "%3d",  f.lastkey);
+writes(0, 49,                rmodes[f.rmode]);
 writes(0, 56,                (char*)(insertmode ? "Ins" : "Del"));
 writes(0, 67,                "runform-");
 writes(0, 75,                (char*)VERSION);
 refr();
-for (i=0; i<f.numfield; i++) f.p[1].wfield(i);
-for (i=1; i<f.numpage; i++) f.p[i].refr();
+for (i=0; i<f.numfield; i++) f.l[i].fshow(i == f.curfield);
+for (i=1; i<f.numpage;  i++) f.p[i].refr();
 return getkey();
 }
 
 int Page::message(int num) {
 writef(0, 0, 0, 80, "%s", f.d.msg(num));
-//move(0,0);
 refr();
 return getkey();
 }
 
-void Page::wfield(int fno) {
-Field *fld;
-fld = f.l+fno;
-writef(fld->line, fld->col, fno==f.curfield ? COL_CURRENT : COL_FIELD, fld->dlen, "%s", fld->name);
-if (fno == f.curfield) wmov(fld->line, fld->col);
-}

@@ -1,4 +1,3 @@
-enum { SEV_INFO, SEV_WARN, SEV_ERROR, SEV_FATAL };
 
 // error configuration
 class rError: public Record {

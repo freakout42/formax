@@ -78,8 +78,7 @@ if (has_colors() && !monochrome) {
     assert(attrels[i].ccode == i);
     init_pair(i, attrels[i].foreg, attrels[i].backg);
   }
-use_default_colors();
-//assume_default_colors(-1,-1);
+if (usedefault) use_default_colors();
 } else monochrome = 1;
 refr();
 getmaxyx(stdscr, ysiz, xsiz);

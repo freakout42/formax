@@ -1,3 +1,5 @@
+enum { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
+
 // form configuration
 class Form: public Record {
 public:
@@ -21,6 +23,7 @@ public:
   int curfield;
   int lastkey;
   int dirty;
+  int rmode;
   int *init();
   int fill(int id);
   void clear();

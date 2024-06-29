@@ -34,5 +34,6 @@ extern int letf(char *target, size_t maxlen, char *format, ...);
 extern int debugf(char *format, ...);
 extern char *xencrypt(char *toe, int rev);
 extern int monochrome;
+extern int usedefault;
 extern int insertmode;
 extern Form f;

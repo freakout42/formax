@@ -4,20 +4,28 @@ int Function::dispatch() {
 int run;
 run = 0;
 switch(f.lastkey) {
- case 0:                        break; // startup
- case KEY_HOME:
-  f.p[0].getst(0, 0, 80, 0, f.l[f.curfield].name, 0, "", 80, NULL);
+ case 0:                               // startup
+  f.rmode = MOD_QUERY;
   break;
+
+ case KEY_HOME:
+  f.p[0].getst(0, 0, 80, 0, f.rmode==MOD_QUERY ? f.l[f.curfield].qhuman : f.l[f.curfield].name, 0, "", 80, NULL);
+  break;
+
  case KEY_LEFT:   fmove(0, -1); break;
+
  case KEY_RIGHT:  fmove(0, 1);  break;
+
  case KEY_F(8):                        // commit and exit
   if (!f.dirty) f.p[0].message(40401);
   run = 1;
   break;
+
  case KEY_F(9):                        // rollback and exit
   if (f.dirty) f.p[0].message(40401);
   run = 1;
   break;
+
  default: ;
 }
 f.p[1].refr();
