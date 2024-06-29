@@ -248,7 +248,10 @@ Structure
 runform.cpp holds main() and has the only OS-interfaces for
 running and checking the command line. record.cpp calls ODBC
 and screen.cpp calls curses. All the other sources are pure
-C++ without any external library calls.
+C++ without any external library calls. For every main
+object is an r-source for reading the form database and a
+separate source for the class. The central Function class
+holds all the event functions.
 
 Variable names
 --------------
