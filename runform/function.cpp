@@ -5,7 +5,9 @@ int run;
 run = 0;
 switch(f.lastkey) {
  case 0:                        break; // startup
- case KEY_HOME:                 break;
+ case KEY_HOME:
+  f.p[0].getst(0, 0, 80, 0, f.l[f.curfield].name, 0, "", 80, NULL);
+  break;
  case KEY_LEFT:   fmove(0, -1); break;
  case KEY_RIGHT:  fmove(0, 1);  break;
  case KEY_F(8):                        // commit and exit

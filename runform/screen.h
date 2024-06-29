@@ -7,6 +7,7 @@ public:
   void refr();
 	void dclose();
   void wmov(int y, int x);
+	void weras();
 	void wbox();
 	char *msg(int num);
   int attrs(int attrib);
