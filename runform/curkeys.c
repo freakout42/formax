@@ -11,6 +11,7 @@ printf("#ifndef CURSES_H\n");
 printf("typedef struct _win_st WINDOW;\n");
 defkey(BACKSPACE)
 defkey(NEXT)
+defkey(BTAB)
 defkey(UP)
 defkey(DOWN)
 defkey(RIGHT)
@@ -31,11 +32,5 @@ printf("#define KEY_RRETURN '\\r'\n");
 printf("#define KEY_TAB '\\t'\n");
 printf("#define KEY_ESC '\\033'\n");
 printf("#define KEY_CTRL(c) (c-'@')\n");
-printf("#ifndef KEY_END\n");
-printf("#define KEY_END KEY_LL\n");
-printf("#endif\n");
-printf("#ifndef KEY_BTAB\n");
-printf("#define KEY_BTAB 0534\n");
-printf("#endif\n");
 return 0;
 }

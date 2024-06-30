@@ -1,24 +1,27 @@
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 CXXFLAGS=-g	-O0 -Wall -Werror
-RUNFORM=./runform ../generate/scotty.frm ../generate/scotty.sq3
+EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
+VALGRINDSUP=--gen-suppressions=all
 
 all: runform
 
 runform: curkeys.h $(OBJS) cqerror.o colquery/colquery.o
 	$(CXX) $(OBJS) cqerror.o colquery/colquery.o -lcurses -lodbc -o $@
 
-test: runform
-	valgrind --quiet --leak-check=yes --suppressions=valgrind.sup $(RUNFORM) 2>$@
+test: runform $(EXAMPLE)
+	valgrind --quiet --leak-check=yes --suppressions=valgrind.sup ./runform $(EXAMPLE) 2>$@
 	test -f $@
 	test -s $@ || true
-#	--gen-suppressions=all
 
 curkeys.h: curkeys
 	./curkeys >$@
 
 colquery/colquery.o:
 	cd colquery; make colquery.o
+
+$(EXAMPLE):
+	cd ../generate; make
 
 clean:
 	rm -f *.o a.out core.* vgcore.* runform curkeys curkeys.h test

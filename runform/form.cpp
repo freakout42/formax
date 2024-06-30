@@ -86,7 +86,7 @@ if (d.init()) return 6;
   for (i=0; i<numpage; i++) p[i].create();
   dirty = lastkey = 0;
   while (!(s = u.dispatch()))
-    lastkey = p[0].wait();
+    lastkey = f.p[0].wait();
 d.dclose();
 return s==1 ? 0 : s;
 }

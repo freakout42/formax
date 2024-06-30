@@ -14,6 +14,7 @@ public:
   void writes(int y, int x, char *str);
   void writef(int y, int x, int colcode, int width, char *format, ...);
 	int getkey();
+  int sedit(char *toe);
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
   int ysiz;
   int xsiz;
@@ -23,6 +24,9 @@ private:
   void setcolor(int pairi);
   void uncolor(int pairi);
 };
+
+#define CB f.b[f.curblock]
+#define CF f.l[f.curfield]
 
 #define TYPEM  0x1fu
 #define BIMASK 0xc0u

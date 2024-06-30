@@ -5,4 +5,8 @@ public:
 protected:
 private:
   void fmove(int bi, int fi);
+  void fstartup();
+  void fedit();
+  int fexit();
+  int fquit();
 };

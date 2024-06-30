@@ -284,7 +284,9 @@ Indenting
 not indented. Use 1 space between keyword and opening
 bracket. Do not use space between function name and opening
 bracket. Opening curly bracket is always at the same line as
-keyword (for, while, do, switch, if, ...). 
+keyword (for, while, do, switch, if, ...). Bool is not
+compared - no if (ispresent == NULL) or (isempty[0] == '\0')
+just use !ispresent or *isempty.
 
  - commenting
 

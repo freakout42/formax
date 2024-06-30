@@ -126,22 +126,31 @@ int ch;
 ch = wgetch(stdscr);
 switch (ch)
  {
-//case KEY_CTRL('H'):                         /* Backspace */
-  case KEY_BS:         return KEY_BACKSPACE;  /* Backspace */
-//case KEY_CTRL('J'):                         /* Commit Accept */
-  case KEY_RETURN:     return KEY_ENTER;      /* Commit Accept */
   case KEY_F0:                                /* Help */
   case KEY_CTRL('@'):  return KEY_F(1);       /* Help */
-  case KEY_CTRL('A'):  return KEY_HOME;       /* Home */
-  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous field */
+//case KEY_CTRL('U'):  return KEY_F(2);       /* List of values */
+//case KEY_CTRL('W'):  return KEY_F(3);       /* Copy */
+//case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field */
+//case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record */
+//case KEY_RRETURN:    return KEY_F(6);       /* Insert record */
+//case KEY_CTRL('Q'):  return KEY_F(7);       /* Query */
+//case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit */
+//case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel */
+//case KEY_CTRL('?'):  return KEY_F(10);      /* ? */
+  case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block */
+  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char */
   case KEY_ESC:                               /* Rollback Cancel */
   case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel */
   case KEY_CTRL('D'):  return KEY_DC;         /* Delete record? */
   case KEY_LL:                                /* End */
-  case KEY_CTRL('E'):  return KEY_END;        /* End */
-  case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next field */
-  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous block */
-  case KEY_CTRL('I'):  return KEY_TAB;        /* Next block */
+  case KEY_CTRL('E'):  return KEY_END;        /* End / Next block */
+  case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char */
+  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field */
+//case KEY_CTRL('H'):                         /* Backspace */
+  case KEY_BS:         return KEY_BACKSPACE;  /* Backspace */
+  case KEY_CTRL('I'):  return KEY_TAB;        /* Next field */
+//case KEY_CTRL('J'):                         /* Commit Accept */
+  case KEY_RETURN:     return KEY_ENTER;      /* Commit Accept */
   case KEY_CTRL('K'):  return KEY_F(7);       /* Delete record */
   case KEY_CTRL('L'):  return KEY_F(0);       /* Refresh */
 //case KEY_CTRL('M'):                         /* Insert record */
@@ -151,15 +160,20 @@ switch (ch)
   case KEY_CTRL('P'):  return KEY_UP;         /* Previoud record */
   case KEY_CTRL('Q'):  return KEY_F(7);       /* Query */
   case KEY_CTRL('R'):  return KEY_PPAGE;      /* Previous set of records */
-  case KEY_CTRL('S'):  return KEY_F(3);       /* Copy field? */
-  case KEY_CTRL('T'):  return KEY_F(4);       /* Copy record? */
+//case KEY_CTRL('S'):  return KEY_F(?);       /* ? */
+  case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record */
   case KEY_CTRL('U'):  return KEY_F(2);       /* List of values */
   case KEY_CTRL('V'):  return KEY_NPAGE;      /* Next set of records */
-  case KEY_CTRL('W'):  return KEY_F(3);       /* Cut */
-  case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste */
+  case KEY_CTRL('W'):  return KEY_F(3);       /* Copy */
+//case KEY_CTRL('X'):  return KEY_F(?);       /* ? */
+  case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field */
   case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit */
  }
 return ch;
+}
+
+int Screen::sedit(char *toe) {
+return f.p[0].getst(0, 0, 80, 0, toe, 0, "", 80, NULL);
 }
 
 /* Allows the user to edit a string with only certain characters allowed
