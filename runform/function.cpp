@@ -1,5 +1,4 @@
 #include "runform.h"
-#include "colquery/colquery.h"
 
 int Function::dispatch() {
 int run;
@@ -12,7 +11,7 @@ switch(f.lastkey) {
  case KEY_BTAB:    fmove(0, -1);                                      break;
  case KEY_F(8):    run = fexit();                                     break;
  case KEY_F(9):    run = fquit();                                     break;
- case KEY_ENTER:   f.b[1].query(); f.rmode = MOD_UPDATE;              break;
+ case KEY_ENTER:   fquery();                                          break;
  default: ;
 }
 f.p[1].refr();
@@ -29,12 +28,8 @@ void Function::fstartup() {
   f.rmode = MOD_QUERY;
 }
 
-void Function::fedit() {
-int s;
-char *toedit;
-toedit = f.rmode==MOD_QUERY ? CF.qhuman : CF.name;
-f.p[0].sedit(toedit);
-s = colquery(CF.qhuman, CF.qwhere, CF.name, 1, 0);
+int Function::fedit() {
+return CF.ledit();
 }
 
 int Function::fexit() {
@@ -45,5 +40,11 @@ return 1;
 int Function::fquit() {
 if (f.dirty) f.p[0].message(40401,"");
 return 1;
+}
+
+void Function::fquery() {
+f.b[1].select();
+f.rmode = MOD_UPDATE;
+//return 1;
 }
 

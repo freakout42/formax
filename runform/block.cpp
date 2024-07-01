@@ -17,3 +17,19 @@ cats(t(attrs), att->name);
 bflds[bnumfs++] = att;
 }
 
+int Block::select() {
+int i;
+char wall[MEDSIZE];
+*wall = '\0';
+for (i=0; i<bnumfs; i++) {
+  if (*bflds[i]->qwhere) {
+    if (*wall) cats(t(wall), " AND ");
+               cats(t(wall), "(");
+               cats(t(wall), bflds[i]->qwhere);
+               cats(t(wall), ")");
+  }
+}
+if (*wall) let(where, wall);
+return query();
+}
+

@@ -11,5 +11,6 @@ public:
   char qwhere[MEDSIZE];
   int init(Qdata *fld, int rix);
   void fshow(int cur);
+  int ledit();
 private:
 };

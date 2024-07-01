@@ -6,7 +6,8 @@ protected:
 private:
   void fmove(int bi, int fi);
   void fstartup();
-  void fedit();
+  int fedit();
   int fexit();
   int fquit();
+  void fquery();
 };

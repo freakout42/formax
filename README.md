@@ -218,6 +218,12 @@ Feature roadmap
 User guide
 ==========
 
+Basic
+-----
+
+Keys
+----
+
 PuTTY
 -----
 
@@ -227,13 +233,13 @@ Development
 ===========
 
 **formax** is implemented in pure C++ without calls to the
-OS. Interface to the user is solely done with curses-lib.
-Interface to the database is solely through ODBC. Both
-libraries are not used directly but wrapped by the Screen
-and Record classes. Record is a simple ORM inspired by rails
-ActiceRecord. The form-database is a sqlite-database. The
-form generator builds a SQL script that creates the default
-form database.
+OS (except malloc/free). Interface to the user is solely
+done with curses-lib. Interface to the database is solely
+through ODBC. Both libraries are not used directly but
+wrapped by the Screen and Record classes. Record is a simple
+ORM inspired by rails ActiceRecord. The form-database is a
+sqlite-database. The form generator builds a SQL script that
+creates the default form database.
 
 Everything is compiled with -Wall -Werror and memchecked
 with valgrind. Only int and char types are used and where
