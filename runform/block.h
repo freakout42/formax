@@ -2,9 +2,9 @@
 class Block: public Record {
 public:
   int init(Qdata *blk, int rix);
-  void addattr(Field *att);
+  void addattr(int att);
   int select();
   int bnumfs;
 private:
-  Field *bflds[NFIELD1];
+  int bflds[NFIELD1];
 };

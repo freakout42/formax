@@ -38,4 +38,5 @@ extern char *xencrypt(char *toe, int rev);
 extern int monochrome;
 extern int usedefault;
 extern int insertmode;
+extern int squerymode;
 extern Form f;

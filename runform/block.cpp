@@ -11,9 +11,9 @@ bnumfs = 0;
 return 0;
 }
 
-void Block::addattr(Field *att) {
+void Block::addattr(int att) {
 if (*attrs) cats(t(attrs), ",");
-cats(t(attrs), att->name);
+cats(t(attrs), f.l[att].name);
 bflds[bnumfs++] = att;
 }
 
@@ -22,10 +22,10 @@ int i;
 char wall[MEDSIZE];
 *wall = '\0';
 for (i=0; i<bnumfs; i++) {
-  if (*bflds[i]->qwhere) {
+  if (f.l[bflds[i]].qwhere[0]) {
     if (*wall) cats(t(wall), " AND ");
                cats(t(wall), "(");
-               cats(t(wall), bflds[i]->qwhere);
+               cats(t(wall), f.l[bflds[i]].qwhere);
                cats(t(wall), ")");
   }
 }

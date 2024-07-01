@@ -10,6 +10,7 @@ class Record {
 public:
   SQLHDBC dbc;
   char table[SMLSIZE];
+  char sqlcmd[MEDSIZE];
   int connect(char *dsn);
   void disconnect();
   int ropen();

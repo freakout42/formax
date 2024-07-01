@@ -12,7 +12,7 @@ col  =     fld->n(rix, 4);
 let(qhuman, "");
 let(qwhere, "");
 blk = 1;
-f.b[blk].addattr(this);
+f.b[blk].addattr(rix-1);
 num = f.b[blk].bnumfs;
 return 0;
 }

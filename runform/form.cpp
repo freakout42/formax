@@ -55,7 +55,6 @@ for (i=0; i<numblock; i++) {
   if (b[i].init(rblock.q, i+1)) return 9;
 }
 rblock.rclose();
-curblock = 1;
 
 // fields
 if (rfield.init()) return 9;
@@ -66,7 +65,6 @@ for (i=0; i<numfield; i++) {
   if (l[i].init(rfield.q, i+1)) return 9;
 }
 rfield.rclose();
-curfield = 0;
 
 return 0;
 }

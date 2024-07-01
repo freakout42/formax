@@ -1,10 +1,8 @@
 #include "runform.h"
 
 int Function::dispatch() {
-int run;
-run = 0;
 switch(f.lastkey) {
- case 0:           fstartup();                                        break;
+ case 0:           run = enter_the_form();                            break;
  case KEY_RIGHT:
  case KEY_LEFT:    fedit();                                           break;
  case KEY_TAB:     fmove(0, 1);                                       break;
@@ -18,14 +16,17 @@ f.p[1].refr();
 return run;
 }
 
+int Function::enter_the_form() {
+f.curblock = 1;
+f.curfield = 0;
+f.rmode = squerymode ? MOD_QUERY : MOD_INSERT;
+return trigger(PRE_FORM);
+}
+
 void Function::fmove(int bi, int fi) {
 // totally broken with multi-block
 f.curblock = (f.curblock + f.numblock + bi) % f.numblock;
 f.curfield = (f.curfield + f.numfield + fi) % f.numfield;
-}
-
-void Function::fstartup() {
-  f.rmode = MOD_QUERY;
 }
 
 int Function::fedit() {
@@ -43,8 +44,15 @@ return 1;
 }
 
 void Function::fquery() {
-f.b[1].select();
-f.rmode = MOD_UPDATE;
+if (f.b[1].select()) {
+  f.p[0].message(40100,f.b[1].sqlcmd);
+} else {
+  f.rmode = MOD_UPDATE;
+}
 //return 1;
+}
+
+int Function::trigger(int trg) {
+return 0;
 }
 
