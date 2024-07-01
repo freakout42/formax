@@ -14,4 +14,5 @@ CREATE TABLE errors
    etext     TEXT    NOT NULL DEFAULT ''
   );
 INSERT INTO errors (num, severity, etext) VALUES (40401, 1, 'No changes to save');
+INSERT INTO errors (num, severity, etext) VALUES (40100, 3, 'SQL');
 #endif

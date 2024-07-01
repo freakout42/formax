@@ -24,6 +24,18 @@ let(name,  q->v(1, 2));
 let(title, q->v(1, 3));
 rclose();
 
+// pages - page 0 is status/edit/message window
+if (rpage.init()) return 9;
+if ((s = rpage.query("name,ysiz,xsiz,vwpy0,vwpx0,border"))) return s;
+numpage = rpage.q->rows;
+if (numpage > NBLOCKS) return 7;
+for (i=0; i<numpage; i++) if (p[i].init(rpage.q, i+1)) return 9;
+rpage.rclose();
+if (rmap.init(1)) return 9;
+if ((s = rmap.query("line,mtext"))) return s;
+if (p[1].maps(rmap.q)) return 9;
+rmap.rclose();
+
 // error messages
 if (rerror.init()) return 9;
 if ((s = rerror.query("num,severity,etext"))) return s;
@@ -46,27 +58,14 @@ curblock = 1;
 
 // fields
 if (rfield.init()) return 9;
-if ((s = rfield.query("name,dlen,line,col"))) return s;
+if ((s = rfield.query("name,dlen,line,col,block_id"))) return s;
 numfield = rfield.q->rows;
 if (numfield > NFIELDS) return 7;
-if (numfield != 8) return 7;
 for (i=0; i<numfield; i++) {
   if (l[i].init(rfield.q, i+1)) return 9;
 }
 rfield.rclose();
 curfield = 0;
-
-// pages - page 0 is status/edit/message window
-if (rpage.init()) return 9;
-if ((s = rpage.query("name,ysiz,xsiz,vwpy0,vwpx0,border"))) return s;
-numpage = rpage.q->rows;
-if (numpage > NBLOCKS) return 7;
-for (i=0; i<numpage; i++) if (p[i].init(rpage.q, i+1)) return 9;
-rpage.rclose();
-if (rmap.init(1)) return 9;
-if ((s = rmap.query("line,mtext"))) return s;
-if (p[1].maps(rmap.q)) return 9;
-rmap.rclose();
 
 return 0;
 }

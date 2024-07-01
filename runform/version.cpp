@@ -12,6 +12,11 @@ va_end (args);
 return n;
 }
 
+int cats(char *target, size_t maxlen, char *source) {
+strncat(target, source, maxlen);
+return strlen(target);
+}
+
 int debugf(char *format, ...) {
 va_list args;
 int n;

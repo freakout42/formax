@@ -5,6 +5,7 @@ public:
   int dlen;
   int line;
   int col;
+  Block *blk;
   char qhuman[SMLSIZE];
   char qwhere[MEDSIZE];
   int init(Qdata *fld, int rix);

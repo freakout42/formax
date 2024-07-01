@@ -31,6 +31,7 @@
 #define t(target) target, sizeof(target)
 
 extern int letf(char *target, size_t maxlen, char *format, ...);
+extern int cats(char *target, size_t maxlen, char *source);
 extern int debugf(char *format, ...);
 extern char *xencrypt(char *toe, int rev);
 extern int monochrome;

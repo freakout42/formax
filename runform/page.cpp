@@ -55,8 +55,8 @@ for (i=1; i<f.numpage;  i++) f.p[i].refr();
 return getkey();
 }
 
-int Page::message(int num) {
-writef(0, 0, 0, 80, "%s", f.d.msg(num));
+int Page::message(int num, char *pnt) {
+writef(0, 0, 0, 80, "MAX-%5d %s %s", num, f.d.msg(num), pnt);
 refr();
 return getkey();
 }

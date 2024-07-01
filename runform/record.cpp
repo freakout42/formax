@@ -56,7 +56,10 @@ j = *where ? letf(whereorder, sizeof(whereorder), " where %s", where) : 0;
 if (*order) letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
 letf((char*)select, sizeof(select), "select %s from %s%s", attrs, table, whereorder);
 if ((ret = execute(select))) return ret;
-if ((ret = SQLNumResultCols(stmt, &columni))) return 12;
+if ((ret = SQLNumResultCols(stmt, &columni))) {
+  f.p[0].message(40100, (char*)select);
+  return 12;
+}
 if (q->alloc(columni)) return 13;
 while (SQL_SUCCEEDED(ret = SQLFetch(stmt))) {
   q->rows++;

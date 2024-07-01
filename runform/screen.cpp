@@ -132,7 +132,7 @@ switch (ch)
 //case KEY_CTRL('W'):  return KEY_F(3);       /* Copy */
 //case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field */
 //case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record */
-//case KEY_RRETURN:    return KEY_F(6);       /* Insert record */
+//case KEY_CTRL('J'):  return KEY_F(6);       /* Insert record */
 //case KEY_CTRL('Q'):  return KEY_F(7);       /* Query */
 //case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit */
 //case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel */
@@ -146,15 +146,12 @@ switch (ch)
   case KEY_CTRL('E'):  return KEY_END;        /* End / Next block */
   case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char */
   case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field */
-//case KEY_CTRL('H'):                         /* Backspace */
-  case KEY_BS:         return KEY_BACKSPACE;  /* Backspace */
+  case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace */
   case KEY_CTRL('I'):  return KEY_TAB;        /* Next field */
-//case KEY_CTRL('J'):                         /* Commit Accept */
-  case KEY_RETURN:     return KEY_ENTER;      /* Commit Accept */
+  case KEY_CTRL('J'):  return KEY_F(6);       /* Insert record */
   case KEY_CTRL('K'):  return KEY_F(7);       /* Delete record */
   case KEY_CTRL('L'):  return KEY_F(0);       /* Refresh */
-//case KEY_CTRL('M'):                         /* Insert record */
-  case KEY_RRETURN:    return KEY_F(6);       /* Insert record */
+  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept */
   case KEY_CTRL('N'):  return KEY_DOWN;       /* Next record */
   case KEY_CTRL('O'):  return KEY_IC;         /* Insert toggle */
   case KEY_CTRL('P'):  return KEY_UP;         /* Previoud record */

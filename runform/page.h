@@ -6,7 +6,7 @@ public:
   char name[SMLSIZE];
   int maps(Qdata *rmap);
   int wait();
-  int message(int num);
+  int message(int num, char *pnt);
 protected:
   int vwpy0;
   int vwpx0;
