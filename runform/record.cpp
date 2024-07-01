@@ -44,7 +44,7 @@ if ((ret = SQLExecute(stmt))) return 11;
 return ret;
 }
 
-int Record::query(char *attrs) {
+int Record::query() {
 SQLCHAR select[MEDSIZE];
 char whereorder[MEDSIZE] = "";
 SQLUSMALLINT i;

@@ -7,6 +7,8 @@ public:
   int maps(Qdata *rmap);
   int wait();
   int message(int num, char *pnt);
+  Field *flds[NFIELD1];
+  int numfield;
 protected:
   int vwpy0;
   int vwpx0;

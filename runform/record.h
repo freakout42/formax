@@ -14,7 +14,7 @@ public:
   void disconnect();
   int ropen();
   void rclose();
-  int query(char *attrs);
+  int query();
   char *c(int row, int col);
   int n(int row, int col);
   Qdata *q;
@@ -22,6 +22,7 @@ protected:
   SQLHSTMT stmt;
   SQLSMALLINT columni;
   char prikey[SMLSIZE];
+  char attrs[SMLSIZE];
   char where[SMLSIZE];
   char order[SMLSIZE];
   int execute(SQLCHAR *sql);

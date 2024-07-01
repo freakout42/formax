@@ -6,6 +6,7 @@ stmt = NULL;
 if (ropen()) return NULL;
 let(table,  "forms");
 let(prikey, "id");
+let(attrs,  "id,name,title");
 let(where,  "");
 let(order,  "id");
 return 0;
@@ -17,7 +18,7 @@ int i, s;
 
 // the form itself
 letf(t(where), "id = %d", fid);
-if ((s = query("id,name,title"))) return s;
+if ((s = query())) return s;
 if (q->rows != 1) return 7;
 let(id,    q->v(1, 1));
 let(name,  q->v(1, 2));
@@ -26,19 +27,19 @@ rclose();
 
 // pages - page 0 is status/edit/message window
 if (rpage.init()) return 9;
-if ((s = rpage.query("name,ysiz,xsiz,vwpy0,vwpx0,border"))) return s;
+if ((s = rpage.query())) return s;
 numpage = rpage.q->rows;
 if (numpage > NBLOCKS) return 7;
 for (i=0; i<numpage; i++) if (p[i].init(rpage.q, i+1)) return 9;
 rpage.rclose();
 if (rmap.init(1)) return 9;
-if ((s = rmap.query("line,mtext"))) return s;
+if ((s = rmap.query())) return s;
 if (p[1].maps(rmap.q)) return 9;
 rmap.rclose();
 
 // error messages
 if (rerror.init()) return 9;
-if ((s = rerror.query("num,severity,etext"))) return s;
+if ((s = rerror.query())) return s;
 e = rerror.q;
 rerror.q = new(Qdata);
 rerror.q->init();
@@ -46,7 +47,7 @@ rerror.rclose();
 
 // blocks - block 0 is for free queries/sql statements
 if (rblock.init()) return 9;
-if ((s = rblock.query("name,prikey,whereand,orderby"))) return s;
+if ((s = rblock.query())) return s;
 numblock = rblock.q->rows;
 if (numblock > NBLOCKS) return 7;
 for (i=0; i<numblock; i++) {
@@ -58,7 +59,7 @@ curblock = 1;
 
 // fields
 if (rfield.init()) return 9;
-if ((s = rfield.query("name,dlen,line,col,block_id"))) return s;
+if ((s = rfield.query())) return s;
 numfield = rfield.q->rows;
 if (numfield > NFIELDS) return 7;
 for (i=0; i<numfield; i++) {

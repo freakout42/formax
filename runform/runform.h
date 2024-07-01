@@ -8,18 +8,19 @@
 #define HUGSIZE 1024*1024
 #define NLINES  100
 #define NBLOCKS 20
-#define NFIELDS NBLOCKS*40
+#define NFIELD1 40
+#define NFIELDS NBLOCKS*NFIELD1
 
 #include <string.h>
 #include "qdata.h"
 #include "record.h"
 #include "rerror.h"
-#include "rblock.h"
 #include "rfield.h"
+#include "rblock.h"
 #include "rpage.h"
 #include "rmap.h"
-#include "block.h"
 #include "field.h"
+#include "block.h"
 #include "screen.h"
 #include "page.h"
 #include "form.h"

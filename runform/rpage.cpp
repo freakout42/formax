@@ -6,6 +6,7 @@ stmt = NULL;
 if ((s = ropen())) return s;
 let(table,  "pages");
 let(prikey, "id");
+let(attrs,  "name,ysiz,xsiz,vwpy0,vwpx0,border");
 let(where,  "form_id = 1");
 let(order,  "num");
 return 0;

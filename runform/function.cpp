@@ -12,7 +12,7 @@ switch(f.lastkey) {
  case KEY_BTAB:    fmove(0, -1);                                      break;
  case KEY_F(8):    run = fexit();                                     break;
  case KEY_F(9):    run = fquit();                                     break;
- case KEY_ENTER:   f.b[1].query(f.b[1].battrs); f.rmode = MOD_UPDATE; break;
+// case KEY_ENTER:   f.b[1].query(f.b[1].battrs); f.rmode = MOD_UPDATE; break;
  default: ;
 }
 f.p[1].refr();
