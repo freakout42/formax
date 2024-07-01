@@ -18,15 +18,16 @@ return run;
 
 int Function::enter_the_form() {
 f.curblock = 1;
-f.curfield = 0;
+CB.bcurf = 0;
+f.curfield = CB.bflds[CB.bcurf];
 f.rmode = squerymode ? MOD_QUERY : MOD_INSERT;
 return trigger(PRE_FORM);
 }
 
 void Function::fmove(int bi, int fi) {
-// totally broken with multi-block
-f.curblock = (f.curblock + f.numblock + bi) % f.numblock;
-f.curfield = (f.curfield + f.numfield + fi) % f.numfield;
+//f.curblock = (f.curblock + f.numblock + bi) % f.numblock;
+CB.bcurf = (CB.bcurf + CB.bnumfs + fi) % CB.bnumfs;
+f.curfield = CB.bflds[CB.bcurf];
 }
 
 int Function::fedit() {

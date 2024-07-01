@@ -29,7 +29,7 @@ static attrel attrels[] = {
 
   { COL_CURRENT,         A_REVERSE|A_UNDERLINE, COLOR_BLUE,    COLOR_WHITE },   /* current field */
   { COL_FIELD,           A_REVERSE,             COLOR_MAGENTA, COLOR_WHITE },   /* field */
-  { HEADERCOLOR,         A_REVERSE,             COLOR_CYAN,    COLOR_BLACK },   /* column and row headers */
+  { COL_QUERY,           A_REVERSE,             COLOR_CYAN,    COLOR_BLACK },   /* query */
   { CURHEADERCOLOR,      A_BOLD,                COLOR_WHITE,   COLOR_BLUE },    /* current col/row header */
   { MARKCOLOR,           A_REVERSE,             COLOR_MAGENTA, COLOR_YELLOW },  /* marked range info */
   { AUTOCALCCOLOR,       A_REVERSE,             0,             0 },             /* autocalc info */

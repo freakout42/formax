@@ -18,7 +18,13 @@ return 0;
 }
 
 void Field::fshow(int cur) {
-f.p[1].writef(line, col, cur ? COL_CURRENT : COL_FIELD, dlen, "%s", f.rmode==MOD_QUERY ? qhuman : f.b[blk].q->v(1, num));
+int color;
+if (cur) color = COL_CURRENT;
+else switch(f.rmode) {
+ case MOD_QUERY: color = COL_QUERY; break;
+ default:        color = COL_FIELD;
+}
+f.p[1].writef(line, col, color, dlen, "%s", f.rmode==MOD_QUERY ? qhuman : f.b[blk].q->v(1, num));
 if (cur) f.p[1].wmov(line, col);
 }
 

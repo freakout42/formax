@@ -5,6 +5,8 @@ public:
   void addattr(int att);
   int select();
   int bnumfs;
-private:
+  int bcurf;
   int bflds[NFIELD1];
+  int bdirty;
+private:
 };

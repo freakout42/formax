@@ -53,7 +53,7 @@ enum {
   COMMANDCOLOR,        /* =16 */
   COL_CURRENT,         /* =17 */
   COL_FIELD,           /* =18 */
-  HEADERCOLOR,         /* =19 */
+  COL_QUERY,           /* =19 */
   CURHEADERCOLOR,      /* =20 */
   MARKCOLOR,           /* =21 */
   AUTOCALCCOLOR,       /* =22 */
