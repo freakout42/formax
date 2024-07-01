@@ -6,12 +6,14 @@ let(table,  blk->v(rix, 1));
 let(prikey, blk->v(rix, 2));
 let(where,  blk->v(rix, 3));
 let(order,  blk->v(rix, 4));
-let(battrs, "");
+let(attrs, "");
+bnumfs = 0;
 return 0;
 }
 
-void Block::addattr(char *att) {
-if (!*battrs) cats(t(battrs), ",");
-cats(t(battrs), att);
+void Block::addattr(Field *att) {
+if (*attrs) cats(t(attrs), ",");
+cats(t(attrs), att->name);
+bflds[bnumfs++] = att;
 }
 

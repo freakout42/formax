@@ -9,8 +9,9 @@ private:
 #ifdef BEGINSQL
 CREATE TABLE fields
   (id        INTEGER PRIMARY KEY NOT NULL,
-   block_id  INTEGER NOT NULL DEFAULT 1,
-   page_id   INTEGER NOT NULL DEFAULT 1,
+   form_id   INTEGER NOT NULL DEFAULT 1,
+   blcn      INTEGER NOT NULL DEFAULT 1,
+   pgen      INTEGER NOT NULL DEFAULT 1,
    name      TEXT    NOT NULL DEFAULT 'field0',
    seq       INTEGER NOT NULL DEFAULT 1,
    ftype     INTEGER NOT NULL DEFAULT 1,    /* 1:CHAR 2:INT 3:FLOAT 4:DATE */

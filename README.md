@@ -233,7 +233,7 @@ libraries are not used directly but wrapped by the Screen
 and Record classes. Record is a simple ORM inspired by rails
 ActiceRecord. The form-database is a sqlite-database. The
 form generator builds a SQL script that creates the default
-database.
+form database.
 
 Everything is compiled with -Wall -Werror and memchecked
 with valgrind. Only int and char types are used and where
@@ -287,12 +287,6 @@ bracket. Opening curly bracket is always at the same line as
 keyword (for, while, do, switch, if, ...). Bool is not
 compared - no if (ispresent == NULL) or (isempty[0] == '\0')
 just use !ispresent or *isempty.
-
- - commenting
-
- - style
-
- - bool
 
 License
 =======

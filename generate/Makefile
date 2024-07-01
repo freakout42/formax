@@ -9,7 +9,7 @@ scotty.frm: scotty.inp
 	sqlite3 $@ <scotty.inp
 
 scotty.inp: makeform
-	./makeform scotty formax1 emp empno ename job mgr hiredate sal comm deptno >$@
+	./makeform scotty formax1 emp id ename job mgr hiredate sal comm dept_id >$@
 
 ../runform/runform:
 	( cd ../runform; make runform )

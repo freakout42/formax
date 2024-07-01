@@ -11,7 +11,7 @@ CREATE TABLE pages
   (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id   INTEGER NOT NULL DEFAULT 1,
    name      TEXT    NOT NULL DEFAULT 'page0',
-   num       INTEGER NOT NULL DEFAULT 1,
+   seq       INTEGER NOT NULL DEFAULT 1,
    title     TEXT    NOT NULL DEFAULT '',
    ysiz      INTEGER NOT NULL DEFAULT 23,   /* heigth of page */
    xsiz      INTEGER NOT NULL DEFAULT 80,   /* width of page */

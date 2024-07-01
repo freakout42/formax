@@ -2,9 +2,8 @@
 class Block: public Record {
 public:
   int init(Qdata *blk, int rix);
-  void addattr(char *att);
-  char battrs[SMLSIZE];
-  Field *flds[NFIELD1];
-  int numfield;
+  void addattr(Field *att);
+  Field *bflds[NFIELD1];
+  int bnumfs;
 private:
 };

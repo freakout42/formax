@@ -8,6 +8,6 @@ let(table,  "pages");
 let(prikey, "id");
 let(attrs,  "name,ysiz,xsiz,vwpy0,vwpx0,border");
 let(where,  "form_id = 1");
-let(order,  "num");
+let(order,  "seq");
 return 0;
 }

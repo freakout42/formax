@@ -1,3 +1,4 @@
+//#include <stdio.h>
 #include <stdlib.h>
 #include <sql.h>
 #include <sqlext.h>
@@ -55,6 +56,7 @@ q->freed();
 j = *where ? letf(whereorder, sizeof(whereorder), " where %s", where) : 0;
 if (*order) letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
 letf((char*)select, sizeof(select), "select %s from %s%s", attrs, table, whereorder);
+//fprintf(stderr, "%s\n", (char*)select);
 if ((ret = execute(select))) return ret;
 if ((ret = SQLNumResultCols(stmt, &columni))) {
   f.p[0].message(40100, (char*)select);

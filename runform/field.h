@@ -5,6 +5,8 @@ public:
   int dlen;
   int line;
   int col;
+  int blk;
+  int num;
   char qhuman[SMLSIZE];
   char qwhere[MEDSIZE];
   int init(Qdata *fld, int rix);
