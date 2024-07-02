@@ -39,4 +39,5 @@ extern int monochrome;
 extern int usedefault;
 extern int insertmode;
 extern int squerymode;
+extern int autocommit;
 extern Form f;

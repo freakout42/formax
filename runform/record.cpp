@@ -1,4 +1,4 @@
-//#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <sql.h>
 #include <sqlext.h>
@@ -12,12 +12,18 @@ SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env);
 SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, (void *) SQL_OV_ODBC3, 0);
 SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc);
 if (ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_COMPLETE)) return ret;
-//ret = SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT, SQL_AUTOCOMMIT_OFF, SQL_IS_UINTEGER);
+if (!autocommit) ret = SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT, SQL_AUTOCOMMIT_OFF, SQL_IS_UINTEGER);
 return ret;
-//...
-//   SQLEndTran(SQL_HANDLE_ENV, env, SQL_COMMIT);
-//or SQLEndTran(SQL_HANDLE_ENV, env, SQL_ROLLBACK);
 //SQLSetConnectAttr(conn, SQL_ATTR_AUTOCOMMIT, SQL_AUTOCOMMIT_ON, SQL_IS_UINTEGER);
+}
+
+int Record::commit() {
+ret = SQLEndTran(SQL_HANDLE_ENV, env, SQL_COMMIT);
+return ret;
+}
+int Record::rollback() {
+ret = SQLEndTran(SQL_HANDLE_ENV, env, SQL_ROLLBACK);
+return ret;
 }
 
 int Record::ropen() {
@@ -47,7 +53,7 @@ dbc = NULL;
 
 int Record::execute(SQLCHAR *sql) {
 let(sqlcmd, (char*)sql);
-//fprintf(stderr,"%s\n",sqlcmd);
+fprintf(stderr,"%s\n",sqlcmd);
 if ((ret = SQLPrepare(stmt, sql, SQL_NTS))) return 10;
 if ((ret = SQLExecute(stmt))) return 11;
 return ret;

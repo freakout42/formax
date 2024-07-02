@@ -14,6 +14,8 @@ public:
   SQLCHAR querystr[MEDSIZE];
   char whereorder[MEDSIZE];
   int connect(char *dsn);
+  int commit();
+  int rollback();
   void disconnect();
   int ropen();
   void rclose();

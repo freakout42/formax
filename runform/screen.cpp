@@ -137,42 +137,43 @@ switch (ch)
 // us 123456789 uk 123456789 de 123456789 fr 123456789
 //    !"#$%^&*(    !"£$%^&*(    !"§$%&/()    &e"'(-e_c
   case KEY_F0:                                /* Help */
-  case KEY_CTRL('@'):  return KEY_F(1);       /* Help */
-//case KEY_CTRL('U'):  return KEY_F(2);       /* List of values */
-//case KEY_CTRL('W'):  return KEY_F(3);       /* Copy */
-//case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field */
-//case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record */
-//case KEY_CTRL('J'):  return KEY_F(6);       /* Insert record */
-//case KEY_CTRL('X'):  return KEY_F(7);       /* Query */
-//case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit */
-//case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel */
-//case KEY_CTRL('?'):  return KEY_F(10);      /* ? */
-  case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block */
-  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char */
-  case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel */
-  case KEY_CTRL('D'):  return KEY_DC;         /* Delete record? */
-  case KEY_CTRL('E'):  return KEY_END;        /* End / Next block */
-  case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char */
-  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field kcbt=\E[Z */
-  case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace */
-  case KEY_CTRL('I'):  return KEY_TAB;        /* Next field */
-  case KEY_CTRL('J'):  return KEY_F(6);       /* Insert record */
-  case KEY_CTRL('K'):  return KEY_F(7);       /* Delete record */
-  case KEY_CTRL('L'):  return KEY_F(0);       /* Refresh */
-  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept */
-  case KEY_CTRL('N'):  return KEY_DOWN;       /* Next record */
-  case KEY_CTRL('O'):  return KEY_IC;         /* Insert toggle */
-  case KEY_CTRL('P'):  return KEY_UP;         /* Previoud record */
-//case KEY_CTRL('Q'):  return KEY_F(?);       /* ? */
-  case KEY_CTRL('R'):  return KEY_PPAGE;      /* Previous set of records */
-//case KEY_CTRL('S'):  return KEY_F(?);       /* ? */
-  case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record */
-  case KEY_CTRL('U'):  return KEY_F(2);       /* List of values */
-  case KEY_CTRL('V'):  return KEY_NPAGE;      /* Next set of records */
-  case KEY_CTRL('W'):  return KEY_F(3);       /* Copy */
-  case KEY_CTRL('X'):  return KEY_F(7);       /* Query */
-  case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field */
-  case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit */
+  case KEY_CTRL('@'):  return KEY_F(1);       /* Help                           Help */
+//case KEY_CTRL('U'):  return KEY_F(2);       /* List of values                 List */
+//case KEY_CTRL('W'):  return KEY_F(3);       /* Copy                           Copy */
+//case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field             DuplicateField Paste */
+//case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record                    DuplicateRecord */
+//case KEY_CTRL('J'):  return KEY_F(6);       /* Insert record                  InsertRecord */
+//case KEY_CTRL('X'):  return KEY_F(7);       /* Query                          EnterQuery */
+//case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit                  Exit */
+//case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel                Rollback */
+//case KEY_CTRL('?'):  return KEY_F(10);      /* ?                              ? */
+  case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
+  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char                  Left */
+  case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel                ExitCancel */
+  case KEY_CTRL('D'):  return KEY_DC;         /* Delete (record)                DeleteCharacter DeleteRecord? */
+  case KEY_CTRL('E'):  return KEY_END;        /* End / Next block               EndOfLine NextBlock */
+  case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char                      Right */
+  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field                 PreviousField */
+  case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace                      DeleteBackward */
+  case KEY_CTRL('I'):  return KEY_TAB;        /* Next field                     NextField */
+  case KEY_CTRL('J'):  return KEY_F(6);       /* Insert record                  InsertRecord */
+  case KEY_CTRL('K'):  return KEY_F(7);       /* Delete record                  DeleteRecord */
+  case KEY_CTRL('L'):  return KEY_F(0);       /* Refresh                        Refresh */
+  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept                  Commit Select Execute */
+  case KEY_CTRL('N'):  return KEY_DOWN;       /* Next record                    Down NextRecord */
+  case KEY_CTRL('O'):  return KEY_IC;         /* Insert toggle                  InsertReplace InsertRecord? */
+  case KEY_CTRL('P'):  return KEY_UP;         /* Previoud record                PreviousRecord */
+//case KEY_CTRL('Q'):  return KEY_F(?);       /* ?                              ? */
+  case KEY_CTRL('R'):  return KEY_PPAGE;      /* Previous set of records        PreviousSetOfRecords */
+//case KEY_CTRL('S'):  return KEY_F(?);       /* ?                              ? */
+  case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record                    DuplicateRecord */
+  case KEY_CTRL('U'):  return KEY_F(2);       /* List of values                 List */
+  case KEY_CTRL('V'):  return KEY_NPAGE;      /* Next set of records            NextSetOfRecords */
+  case KEY_CTRL('W'):  return KEY_F(3);       /* Copy                           Copy */
+  case KEY_CTRL('X'):  return KEY_F(7);       /* Query                          EnterQuery */
+  case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field             DuplicateField Paste */
+  case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit                  Exit */
+//case '/', '>'                                                                 Menu */
  }
 return ch;
 }
