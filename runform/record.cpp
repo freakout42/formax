@@ -1,3 +1,4 @@
+//#include <stdio.h>
 #include <stdlib.h>
 #include <sql.h>
 #include <sqlext.h>
@@ -40,6 +41,7 @@ dbc = NULL;
 
 int Record::execute(SQLCHAR *sql) {
 let(sqlcmd, (char*)sql);
+//fprintf(stderr,"%s\n",sqlcmd);
 if ((ret = SQLPrepare(stmt, sql, SQL_NTS))) return 10;
 if ((ret = SQLExecute(stmt))) return 11;
 return ret;

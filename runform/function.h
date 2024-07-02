@@ -5,12 +5,12 @@ public:
   int dispatch();
 protected:
 private:
-  int run;
+  int notrunning;
   int trigger(int trg);
-  void fmove(int bi, int fi);
   int enter_the_form();
+  int fmove(int bi, int fi);
   int fedit();
   int fexit();
   int fquit();
-  void fquery();
+  int fquery();
 };

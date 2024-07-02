@@ -17,7 +17,7 @@ char *est[] = {
   "frm-file not found",           //  3
   "open frm-file failed",         //  4
   "read form failed",             //  5
-  "run form failed (display)",    //  6
+  "run form failed",              //  6
   "form not found",               //  7
   "open database failed",         //  8
   "read database failed",         //  9
@@ -95,12 +95,15 @@ f.rmap.dbc = f.dbc;
 if (f.init()) usage(5);
 
 // load and run the form
-if ((i = f.fill(1))) usage(s);
-  if ((s = f.run())) usage(s);
-f.clear();
+s = 1;
+while(s) {
+  if ((i = f.fill(s))) usage(i);
+    if ((s = f.run()) < 0) usage(6);
+  f.clear();
+}
 
 // cleanup end exit
 f.disconnect();
 f.b[0].disconnect();
-exit(s);
+exit(-s);
 }

@@ -12,5 +12,5 @@ public:
   void freed();
 private:
   char *(*d)[];
-  int allocaterows;
+  int allocatedrows;
 };

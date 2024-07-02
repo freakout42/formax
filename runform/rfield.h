@@ -1,7 +1,7 @@
 // field configuration
 class rField: public Record {
 public:
-  int init();
+  int init(int form_id);
 private:
   char *name;
 };

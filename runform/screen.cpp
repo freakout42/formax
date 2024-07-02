@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <cstdarg>
 #include <stdlib.h>
+//#include <stdio.h>
 #include <termio.h>
 #include <term.h>
 #include <curses.h>
@@ -115,6 +116,13 @@ void Screen::dclose() {
 endwin();
 }
 
+void Screen::toggle() {
+insertmode = !insertmode;
+//if (insertmode) fputs(A_LINECURSOR,  stdout);
+//else            fputs(A_BLOCKCURSOR, stdout);
+//fflush(stdout);
+}
+
 char *Screen::msg(int num) {
 int i;
 for (i=1; f.e->v(i,1); i++) if (f.e->n(i,1) == num) break;
@@ -126,6 +134,8 @@ int ch;
 ch = wgetch(stdscr);
 switch (ch)
  {
+// us 123456789 uk 123456789 de 123456789 fr 123456789
+//    !"#$%^&*(    !"£$%^&*(    !"§$%&/()    &e"'(-e_c
   case KEY_F0:                                /* Help */
   case KEY_CTRL('@'):  return KEY_F(1);       /* Help */
 //case KEY_CTRL('U'):  return KEY_F(2);       /* List of values */
@@ -133,19 +143,17 @@ switch (ch)
 //case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field */
 //case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record */
 //case KEY_CTRL('J'):  return KEY_F(6);       /* Insert record */
-//case KEY_CTRL('Q'):  return KEY_F(7);       /* Query */
+//case KEY_CTRL('X'):  return KEY_F(7);       /* Query */
 //case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit */
 //case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel */
 //case KEY_CTRL('?'):  return KEY_F(10);      /* ? */
   case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block */
   case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char */
-  case KEY_ESC:                               /* Rollback Cancel */
   case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel */
   case KEY_CTRL('D'):  return KEY_DC;         /* Delete record? */
-  case KEY_LL:                                /* End */
   case KEY_CTRL('E'):  return KEY_END;        /* End / Next block */
   case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char */
-  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field */
+  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field kcbt=\E[Z */
   case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace */
   case KEY_CTRL('I'):  return KEY_TAB;        /* Next field */
   case KEY_CTRL('J'):  return KEY_F(6);       /* Insert record */
@@ -155,14 +163,14 @@ switch (ch)
   case KEY_CTRL('N'):  return KEY_DOWN;       /* Next record */
   case KEY_CTRL('O'):  return KEY_IC;         /* Insert toggle */
   case KEY_CTRL('P'):  return KEY_UP;         /* Previoud record */
-  case KEY_CTRL('Q'):  return KEY_F(7);       /* Query */
+//case KEY_CTRL('Q'):  return KEY_F(?);       /* ? */
   case KEY_CTRL('R'):  return KEY_PPAGE;      /* Previous set of records */
 //case KEY_CTRL('S'):  return KEY_F(?);       /* ? */
   case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record */
   case KEY_CTRL('U'):  return KEY_F(2);       /* List of values */
   case KEY_CTRL('V'):  return KEY_NPAGE;      /* Next set of records */
   case KEY_CTRL('W'):  return KEY_F(3);       /* Copy */
-//case KEY_CTRL('X'):  return KEY_F(?);       /* ? */
+  case KEY_CTRL('X'):  return KEY_F(7);       /* Query */
   case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field */
   case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit */
  }
@@ -231,8 +239,8 @@ while (!done) {              /* input loop */
     pos = min (len, max-1);
     sx  = x + pos;
     break;
-   case KEY_IC:       /* toggle insert mode */
-    insertmode = !insertmode;
+   case KEY_IC:              /* toggle insert mode */
+    toggle();
     break;
    case KEY_LEFT:            /* move left    */
     if (pos > 0) {

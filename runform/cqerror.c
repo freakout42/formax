@@ -1,4 +1,3 @@
-void cqerror(char *s) /* Called by yyparse on error */
-{
-}
+void cqerror(char *s) /* Called by cqparse on error */
+{ ; }
 

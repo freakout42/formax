@@ -6,7 +6,7 @@ let(table,  blk->v(rix, 1));
 let(prikey, blk->v(rix, 2));
 let(where,  blk->v(rix, 3));
 let(order,  blk->v(rix, 4));
-let(attrs, "");
+let(attrs,  "");
 bnumfs = 0;
 return 0;
 }

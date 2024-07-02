@@ -13,6 +13,7 @@ public:
   int attrs(int attrib);
   void writes(int y, int x, char *str);
   void writef(int y, int x, int colcode, int width, char *format, ...);
+  void toggle();
 	int getkey();
   int sedit(char *toe);
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
@@ -88,3 +89,16 @@ typedef struct attrel {
 #define A_DIM        NCURSES_BITS(1UL,12)
 #define A_BOLD       NCURSES_BITS(1UL,13)
 #define A_PROTECT    NCURSES_BITS(1UL,16)
+
+//CSI  Ps SP q
+//ESC[2 q
+//          Set cursor style (DECSCUSR, VT520).
+//            Ps = 0  -> blinking block.
+//            Ps = 1  -> blinking block (default).
+//            Ps = 2  -> steady block.
+//            Ps = 3  -> blinking underline.
+//            Ps = 4  -> steady underline.
+//            Ps = 5  -> blinking bar (xterm).
+//            Ps = 6  -> steady bar (xterm).
+#define A_BLOCKCURSOR "\033[2 q"
+#define A_LINECURSOR  "\033[6 q"

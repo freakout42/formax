@@ -1,19 +1,20 @@
 #include "runform.h"
 
 int Function::dispatch() {
+int s;
 switch(f.lastkey) {
- case 0:           run = enter_the_form();                            break;
+ case 0:           s = enter_the_form();                     break;
  case KEY_RIGHT:
- case KEY_LEFT:    fedit();                                           break;
- case KEY_TAB:     fmove(0, 1);                                       break;
- case KEY_BTAB:    fmove(0, -1);                                      break;
- case KEY_F(8):    run = fexit();                                     break;
- case KEY_F(9):    run = fquit();                                     break;
- case KEY_ENTER:   fquery();                                          break;
+ case KEY_LEFT:    s = fedit();                              break;
+ case KEY_TAB:     s = fmove(0, 1);                          break;
+ case KEY_BTAB:    s = fmove(0, -1);                         break;
+ case KEY_F(8):    s = fexit();                              break;
+ case KEY_F(9):    s = fquit();                              break;
+ case KEY_ENTER:   s = fquery();                             break;
  default: ;
 }
 f.p[1].refr();
-return run;
+return notrunning;
 }
 
 int Function::enter_the_form() {
@@ -21,13 +22,15 @@ f.curblock = 1;
 CB.bcurf = 0;
 f.curfield = CB.bflds[CB.bcurf];
 f.rmode = squerymode ? MOD_QUERY : MOD_INSERT;
-return trigger(PRE_FORM);
+notrunning = trigger(PRE_FORM);
+return notrunning;
 }
 
-void Function::fmove(int bi, int fi) {
+int Function::fmove(int bi, int fi) {
 //f.curblock = (f.curblock + f.numblock + bi) % f.numblock;
 CB.bcurf = (CB.bcurf + CB.bnumfs + fi) % CB.bnumfs;
 f.curfield = CB.bflds[CB.bcurf];
+return f.curfield;
 }
 
 int Function::fedit() {
@@ -36,21 +39,24 @@ return CF.ledit();
 
 int Function::fexit() {
 if (!f.dirty) f.p[0].message(40401,"");
-return 1;
+notrunning = -1;
+return 0;
 }
 
 int Function::fquit() {
 if (f.dirty) f.p[0].message(40401,"");
-return 1;
+notrunning = -1;
+return 0;
 }
 
-void Function::fquery() {
+int Function::fquery() {
 if (f.b[1].select()) {
   f.p[0].message(40100,f.b[1].sqlcmd);
+  notrunning = -2;
 } else {
   f.rmode = MOD_UPDATE;
 }
-//return 1;
+return f.rmode != MOD_UPDATE;
 }
 
 int Function::trigger(int trg) {

@@ -24,6 +24,7 @@ public:
   int lastkey;
   int dirty;
   int rmode;
+  int notrunning;
   int *init();
   int fill(int id);
   void clear();

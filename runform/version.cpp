@@ -27,7 +27,8 @@ va_end (args);
 return n+1;
 }
 
-static char xorder[] = "%^&-_=+@?.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+#define XORKEY0 "%^&-_=+@?.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+static char xorder[] = XORKEY0;
 static char xorkey[] = XORKEY1;
 static int ordnum(int ch) {
 char *po;
@@ -45,7 +46,7 @@ for (i=0; toe[i] && i < 60; i++) {
   j = ordnum((unsigned char)toe[i]);
   if (j != -1) {
     k = ordnum((unsigned char)xorkey[i]);
-    toe[i] = numord((j + (rev ? 72 - k : k) ) % 72);
+    toe[i] = numord((j + (rev ? (sizeof(XORKEY0)-1) - k : k) ) % (sizeof(XORKEY0)-1));
   }
 }
 return toe;

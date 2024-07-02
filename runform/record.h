@@ -31,3 +31,4 @@ private:
   SQLHENV env;
   SQLRETURN ret;
 };
+

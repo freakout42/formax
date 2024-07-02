@@ -2,12 +2,9 @@
 #include "runform.h"
 
 int *Form::init() {
-stmt = NULL;
-if (ropen()) return NULL;
 let(table,  "forms");
 let(prikey, "id");
 let(attrs,  "id,name,title");
-let(where,  "");
 let(order,  "id");
 return 0;
 }
@@ -17,6 +14,8 @@ int Form::fill(int fid) {
 int i, s;
 
 // the form itself
+stmt = NULL;
+if ((s = ropen())) return s;
 letf(t(where), "id = %d", fid);
 if ((s = query())) return s;
 if (q->rows != 1) return 7;
@@ -26,7 +25,7 @@ let(title, q->v(1, 3));
 rclose();
 
 // pages - page 0 is status/edit/message window
-if (rpage.init()) return 9;
+if (rpage.init(fid)) return 9;
 if ((s = rpage.query())) return s;
 numpage = rpage.q->rows;
 if (numpage > NBLOCKS) return 7;
@@ -57,7 +56,7 @@ for (i=0; i<numblock; i++) {
 rblock.rclose();
 
 // fields
-if (rfield.init()) return 9;
+if (rfield.init(fid)) return 9;
 if ((s = rfield.query())) return s;
 numfield = rfield.q->rows;
 if (numfield > NFIELDS) return 7;
@@ -86,5 +85,6 @@ if (d.init()) return 6;
   while (!(s = u.dispatch()))
     lastkey = f.p[0].wait();
 d.dclose();
-return s==1 ? 0 : s;
+return s==-1 ? 0 : s;
 }
+

@@ -56,7 +56,7 @@ return getkey();
 }
 
 int Page::message(int num, char *pnt) {
-writef(0, 0, 0, 80, "MAX-%5d %s %s", num, f.d.msg(num), pnt);
+writef(0, 0, 0, 80, "MAX-%3d %s %s", num, f.d.msg(num), pnt);
 refr();
 return getkey();
 }
