@@ -9,7 +9,7 @@ private:
   int trigger(int trg);
   int enter_the_form();
   int fmove(int bi, int fi);
-  int fedit();
+  int fedit(int pos);
   int fexit();
   int fquit();
   int fquery();

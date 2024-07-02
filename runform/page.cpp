@@ -45,7 +45,7 @@ writes(0,  5,                f.name);
 writef(0, 20, 0, 9,  "%s",   f.b[f.curblock].table);
 writef(0, 30, 0, 9,  "%s",   f.l[f.curfield].name);
 writes(0, 49,                rmodes[f.rmode]);
-writes(0, 56,                (char*)(insertmode ? "Ins" : "Del"));
+writes(0, 56,                (char*)(insertmode ? "Ins" : "Rep"));
 writef(0, 63, 0, 3,  "%3d",  f.lastkey);
 writes(0, 67,                "runform-");
 writes(0, 75,                (char*)VERSION);
@@ -57,6 +57,7 @@ return getkey();
 
 int Page::message(int num, char *pnt) {
 writef(0, 0, 0, 80, "MAX-%3d %s %s", num, f.d.msg(num), pnt);
+wmov(0,0);
 refr();
 return getkey();
 }

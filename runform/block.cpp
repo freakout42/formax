@@ -14,6 +14,7 @@ return 0;
 void Block::addattr(int att) {
 if (*attrs) cats(t(attrs), ",");
 cats(t(attrs), f.l[att].name);
+if (!(strcmp(f.l[att].name, prikey))) bprikf = bnumfs;
 bflds[bnumfs++] = att;
 }
 
@@ -31,5 +32,16 @@ for (i=0; i<bnumfs; i++) {
 }
 if (*wall) let(where, wall);
 return query();
+}
+
+char *Block::cn(int c) {
+return f.l[bflds[c]].name;
+}
+
+int Block::update(int r, int c) {
+letf((char*)querystr, sizeof(querystr), "update %s set %s = '%s' where %s = '%s'", table, cn(c-1), q->v(r,c), prikey, q->v(r,bprikf+1));
+return execute(querystr);
+//f.p[0].message(100, (char*)querystr);
+//return ret;
 }
 

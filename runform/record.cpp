@@ -11,7 +11,13 @@ int Record::connect(char *dsn) {
 SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env);
 SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, (void *) SQL_OV_ODBC3, 0);
 SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc);
-return SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_COMPLETE);
+if (ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_COMPLETE)) return ret;
+//ret = SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT, SQL_AUTOCOMMIT_OFF, SQL_IS_UINTEGER);
+return ret;
+//...
+//   SQLEndTran(SQL_HANDLE_ENV, env, SQL_COMMIT);
+//or SQLEndTran(SQL_HANDLE_ENV, env, SQL_ROLLBACK);
+//SQLSetConnectAttr(conn, SQL_ATTR_AUTOCOMMIT, SQL_AUTOCOMMIT_ON, SQL_IS_UINTEGER);
 }
 
 int Record::ropen() {
@@ -48,19 +54,18 @@ return ret;
 }
 
 int Record::query() {
-SQLCHAR select[MEDSIZE];
-char whereorder[MEDSIZE] = "";
 SQLUSMALLINT i;
 SQLINTEGER indicator;
 int j;
 char **qp;
 q->freed();
+*whereorder = '\0';
 j = *where ? letf(whereorder, sizeof(whereorder), " where %s", where) : 0;
 if (*order) letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
-letf((char*)select, sizeof(select), "select %s from %s%s", attrs, table, whereorder);
-if ((ret = execute(select))) return ret;
+letf((char*)querystr, sizeof(querystr), "select %s from %s%s", attrs, table, whereorder);
+if ((ret = execute(querystr))) return ret;
 if ((ret = SQLNumResultCols(stmt, &columni))) {
-  f.p[0].message(40100, (char*)select);
+  f.p[0].message(100, (char*)querystr);
   return 12;
 }
 if (q->alloc(columni)) return 13;
@@ -78,3 +83,4 @@ while (SQL_SUCCEEDED(ret = SQLFetch(stmt))) {
 }
 return SQLFreeStmt(stmt, SQL_CLOSE);
 }
+

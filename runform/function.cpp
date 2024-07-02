@@ -4,8 +4,8 @@ int Function::dispatch() {
 int s;
 switch(f.lastkey) {
  case 0:           s = enter_the_form();                     break;
- case KEY_RIGHT:
- case KEY_LEFT:    s = fedit();                              break;
+ case KEY_RIGHT:   s = fedit(0);                             break;
+ case KEY_LEFT:    s = fedit(1);                             break;
  case KEY_TAB:     s = fmove(0, 1);                          break;
  case KEY_BTAB:    s = fmove(0, -1);                         break;
  case KEY_F(8):    s = fexit();                              break;
@@ -33,25 +33,25 @@ f.curfield = CB.bflds[CB.bcurf];
 return f.curfield;
 }
 
-int Function::fedit() {
-return CF.ledit();
+int Function::fedit(int pos) {
+return CF.ledit(pos);
 }
 
 int Function::fexit() {
-if (!f.dirty) f.p[0].message(40401,"");
+if (!f.dirty) f.p[0].message(401,"");
 notrunning = -1;
 return 0;
 }
 
 int Function::fquit() {
-if (f.dirty) f.p[0].message(40401,"");
+if (f.dirty) f.p[0].message(401,"");
 notrunning = -1;
 return 0;
 }
 
 int Function::fquery() {
 if (f.b[1].select()) {
-  f.p[0].message(40100,f.b[1].sqlcmd);
+  f.p[0].message(100,f.b[1].sqlcmd);
   notrunning = -2;
 } else {
   f.rmode = MOD_UPDATE;

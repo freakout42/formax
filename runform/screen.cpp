@@ -177,8 +177,8 @@ switch (ch)
 return ch;
 }
 
-int Screen::sedit(char *toe) {
-return f.p[0].getst(0, 0, 80, 0, toe, 0, "", SMLSIZE, NULL);
+int Screen::sedit(char *toe, int pos) {
+return f.p[0].getst(0, 0, 80, 0, toe, pos, "", SMLSIZE, NULL);
 }
 
 /* Allows the user to edit a string with only certain characters allowed

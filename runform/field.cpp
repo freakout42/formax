@@ -28,22 +28,23 @@ f.p[1].writef(line, col, color, dlen, "%s", f.rmode==MOD_QUERY ? qhuman : f.b[bl
 if (cur) f.p[1].wmov(line, col);
 }
 
-int Field::ledit() {
+int Field::ledit(int pos) {
 int s;
 int key;
 char buf[SMLSIZE];
 char **c;
 if (f.rmode == MOD_QUERY) {
-  key = f.p[0].sedit(qhuman);
+  key = f.p[0].sedit(qhuman, pos ? strlen(qhuman) : 0);
   s = colquery(qhuman, qwhere, name, 1, 0);
 } else if (f.b[blk].q->rows) {
-  c = f.b[blk].q->w(1, CF.num);
+  c = f.b[blk].q->w(1, num);
   let(buf, *c);
-  key = f.p[0].sedit(buf);
+  key = f.p[0].sedit(buf, pos ? strlen(buf) : 0);
   if (strlen(buf) > strlen(*c)) {
     *c = (char*)realloc(*c, strlen(buf)+1);
   }
   strcpy(*c, buf);
+  CB.update(1, num);
 } else { // insert
 }
 return key;

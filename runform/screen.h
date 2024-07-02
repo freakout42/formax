@@ -15,7 +15,7 @@ public:
   void writef(int y, int x, int colcode, int width, char *format, ...);
   void toggle();
 	int getkey();
-  int sedit(char *toe);
+  int sedit(char *toe, int pos);
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
   int ysiz;
   int xsiz;
