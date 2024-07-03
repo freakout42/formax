@@ -195,7 +195,7 @@ svalue  : constm
         }
         | match
         {
-        sprintf (tmp, "UPPER(%s) LIKE UPPER(%s)", cqcolumn, $1);
+        sprintf (tmp, "{fn UCASE(%s)} LIKE {fn UCASE(%s)}", cqcolumn, $1);
         $$ = cqstr (tmp);
         cqtype(STRING);
         }
@@ -207,7 +207,7 @@ svalue  : constm
         }
         | SOUND
         {
-        sprintf (tmp, "SOUNDEX(%s) = SOUNDEX(%s)", cqcolumn, $1);
+        sprintf (tmp, "{fn SOUNDEX(%s)} = {fn SOUNDEX(%s)}", cqcolumn, $1);
         $$ = cqstr (tmp);
         cqtype(STRING);
         }

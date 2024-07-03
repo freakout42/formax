@@ -14,7 +14,6 @@ SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc);
 if (ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_COMPLETE)) return ret;
 if (!autocommit) ret = SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT, SQL_AUTOCOMMIT_OFF, SQL_IS_UINTEGER);
 return ret;
-//SQLSetConnectAttr(conn, SQL_ATTR_AUTOCOMMIT, SQL_AUTOCOMMIT_ON, SQL_IS_UINTEGER);
 }
 
 int Record::commit() {
@@ -51,11 +50,16 @@ SQLFreeHandle(SQL_HANDLE_ENV, env);
 dbc = NULL;
 }
 
-int Record::execute(SQLCHAR *sql) {
+int Record::execute(SQLCHAR *sql, char *b[]) {
+int i;
+SQLINTEGER indicator;
+indicator = SQL_NTS;
+for (i=0; b[i]; i++) ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], 0, &indicator);
 let(sqlcmd, (char*)sql);
 fprintf(stderr,"%s\n",sqlcmd);
 if ((ret = SQLPrepare(stmt, sql, SQL_NTS))) return 10;
 if ((ret = SQLExecute(stmt))) return 11;
+if (ret) f.p[0].message(100, sqlcmd);
 return ret;
 }
 
@@ -69,9 +73,9 @@ q->freed();
 j = *where ? letf(whereorder, sizeof(whereorder), " where %s", where) : 0;
 if (*order) letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
 letf((char*)querystr, sizeof(querystr), "select %s from %s%s", attrs, table, whereorder);
-if ((ret = execute(querystr))) return ret;
+bindv[0] = NULL;
+if ((ret = execute(querystr, bindv))) return ret;
 if ((ret = SQLNumResultCols(stmt, &columni))) {
-  f.p[0].message(100, (char*)querystr);
   return 12;
 }
 if (q->alloc(columni)) return 13;

@@ -14,6 +14,7 @@ public:
   void writes(int y, int x, char *str);
   void writef(int y, int x, int colcode, int width, char *format, ...);
   void toggle();
+	int getkb();
 	int getkey();
   int sedit(char *toe, int pos);
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
@@ -102,3 +103,11 @@ typedef struct attrel {
 //            Ps = 6  -> steady bar (xterm).
 #define A_BLOCKCURSOR "\033[2 q"
 #define A_LINECURSOR  "\033[6 q"
+
+enum { KEF_HELP, KEF_LIST, KEF_COPY, KEF_PASTE, KEF_COPYREC, KEF_INSREC, KEF_QUERY, KEF_EXIT, KEF_CANCEL,
+//     F1        F2        F3        F4         F5           F6          F7         F8        F9
+       KEF_HOME, KEF_LEFT, KEF_DELETE, KEF_END, KEF_RIGHT,   KEF_PREFLD, KEF_BACKDEL, KEF_NXTFLD, KEF_REFRESH,
+//     Home      Left      Del         End      Right        Btab        Backspace    Tab         Ctrl-L
+       KEF_COMMIT, KEF_NXTREC, KEF_INSERT, KEF_PREREC, KEF_PRESETR, KEF_NXTSETR, KEF_MENU
+};
+

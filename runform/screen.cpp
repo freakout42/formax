@@ -130,6 +130,41 @@ return f.e->v(i,3);
 }
 
 int Screen::getkey() {
+int ck;
+ck = getkb();
+switch (ck)
+ {
+  case KEY_F(1):       return KEF_HELP;
+  case KEY_F(2):       return KEF_LIST;
+  case KEY_F(3):       return KEF_COPY;
+  case KEY_F(4):       return KEF_PASTE;
+  case KEY_F(5):       return KEF_COPYREC;
+  case KEY_F(6):       return KEF_INSREC;
+  case KEY_F(7):       return KEF_QUERY;
+  case KEY_F(8):       return KEF_EXIT;
+  case KEY_F(9):       return KEF_CANCEL;
+  case KEY_HOME:       return KEF_HOME;
+  case KEY_LEFT:       return KEF_LEFT;
+  case KEY_DC:         return KEF_DELETE;
+  case KEY_END:        return KEF_END;
+  case KEY_RIGHT:      return KEF_RIGHT;
+  case KEY_BTAB:       return KEF_PREFLD;
+  case KEY_BACKSPACE:  return KEF_BACKDEL;
+  case KEY_TAB:        return KEF_NXTFLD;
+  case KEY_F(0):       return KEF_REFRESH;
+  case KEY_ENTER:      return KEF_COMMIT;
+  case KEY_DOWN:       return KEF_NXTREC;
+  case KEY_IC:         return KEF_INSERT;
+  case KEY_UP:         return KEF_PREREC;
+  case KEY_PPAGE:      return KEF_PRESETR;
+  case KEY_NPAGE:      return KEF_NXTSETR;
+  case '/':
+  case '<':            return KEF_MENU;
+ }
+return ck;
+}
+
+int Screen::getkb() {
 int ch;
 ch = wgetch(stdscr);
 switch (ch)
@@ -227,7 +262,7 @@ while (!done) {              /* input loop */
   if ((int)strlen(so) > width && sx < endx) mvwaddch(wndw, y, endx, '>');
   wmov(y, sx);      /* move to cursor pos */
   refr();        /* show the screen */
-  switch (c = getkey()) {    /* get pressed key  */
+  switch (c = getkb()) {     /* get pressed key  */
    case KEY_HOME:            /* go to start of field */
     pos = 0;
     sx  = x;

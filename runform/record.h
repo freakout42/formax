@@ -12,6 +12,7 @@ public:
   char table[SMLSIZE];
   char sqlcmd[MEDSIZE];
   SQLCHAR querystr[MEDSIZE];
+  char *bindv[4];
   char whereorder[MEDSIZE];
   int connect(char *dsn);
   int commit();
@@ -30,7 +31,7 @@ protected:
   char attrs[SMLSIZE];
   char where[SMLSIZE];
   char order[SMLSIZE];
-  int execute(SQLCHAR *sql);
+  int execute(SQLCHAR *sql, char *bndv[]);
 private:
   SQLHENV env;
   SQLRETURN ret;

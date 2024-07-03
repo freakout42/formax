@@ -42,8 +42,9 @@ int i;
 weras();
 writef(0,  2, 0, 2,  "%2s-", f.id);
 writes(0,  5,                f.name);
-writef(0, 20, 0, 9,  "%s",   f.b[f.curblock].table);
-writef(0, 30, 0, 9,  "%s",   f.l[f.curfield].name);
+writef(0, 20, 0, 8,  "%s",   f.b[f.curblock].table);
+writef(0, 29, 0, 9,  "%s",   f.l[f.curfield].name);
+writef(0, 39, 0, 9,  "%4d/%4d", CB.bcur, CB.q->rows);
 writes(0, 49,                rmodes[f.rmode]);
 writes(0, 56,                (char*)(insertmode ? "Ins" : "Rep"));
 writef(0, 63, 0, 3,  "%3d",  f.lastkey);
@@ -56,7 +57,9 @@ return getkey();
 }
 
 int Page::message(int num, char *pnt) {
-writef(0, 0, 0, 80, "MAX-%3d %s %s", num, f.d.msg(num), pnt);
+int i;
+if (strlen(pnt) > LINE0SIZE-12) i = strlen(pnt) - LINE0SIZE - 12; else i = 0;
+writef(0, 0, 0, LINE0SIZE, "MAX-%3d %s %s", num, f.d.msg(num), pnt+i);
 wmov(0,0);
 refr();
 return getkey();

@@ -4,13 +4,15 @@ int Function::dispatch() {
 int s;
 switch(f.lastkey) {
  case 0:           s = enter_the_form();                     break;
- case KEY_RIGHT:   s = fedit(0);                             break;
- case KEY_LEFT:    s = fedit(1);                             break;
- case KEY_TAB:     s = fmove(0, 1);                          break;
- case KEY_BTAB:    s = fmove(0, -1);                         break;
- case KEY_F(8):    s = fexit();                              break;
- case KEY_F(9):    s = fquit();                              break;
- case KEY_ENTER:   s = fquery();                             break;
+ case KEF_RIGHT:   s = fedit(0);                             break;
+ case KEF_LEFT:    s = fedit(1);                             break;
+ case KEF_NXTFLD:  s = fmove(0, 1);                          break;
+ case KEF_PREFLD:  s = fmove(0, -1);                         break;
+ case KEF_NXTREC:  s = fmover(1);                            break;
+ case KEF_PREREC:  s = fmover(-1);                           break;
+ case KEF_EXIT:    s = fexit();                              break;
+ case KEF_CANCEL:  s = fquit();                              break;
+ case KEF_COMMIT:  s = fquery();                             break;
  default: ;
 }
 f.p[1].refr();
@@ -31,6 +33,10 @@ int Function::fmove(int bi, int fi) {
 CB.bcurf = (CB.bcurf + CB.bnumfs + fi) % CB.bnumfs;
 f.curfield = CB.bflds[CB.bcurf];
 return f.curfield;
+}
+
+int Function::fmover(int ri) {
+return CB.bcur++;
 }
 
 int Function::fedit(int pos) {
@@ -54,6 +60,7 @@ if (f.b[1].select()) {
   f.p[0].message(100,f.b[1].sqlcmd);
   notrunning = -2;
 } else {
+  CB.bcur = 1;
   f.rmode = MOD_UPDATE;
 }
 return f.rmode != MOD_UPDATE;

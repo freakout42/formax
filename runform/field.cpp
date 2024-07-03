@@ -24,7 +24,7 @@ else switch(f.rmode) {
  case MOD_QUERY: color = COL_QUERY; break;
  default:        color = COL_FIELD;
 }
-f.p[1].writef(line, col, color, dlen, "%s", f.rmode==MOD_QUERY ? qhuman : f.b[blk].q->v(1, num));
+f.p[1].writef(line, col, color, dlen, "%s", f.rmode==MOD_QUERY ? qhuman : f.b[blk].q->v(CB.bcur, num));
 if (cur) f.p[1].wmov(line, col);
 }
 

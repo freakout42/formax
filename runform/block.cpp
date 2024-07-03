@@ -39,9 +39,10 @@ return f.l[bflds[c]].name;
 }
 
 int Block::update(int r, int c) {
-letf((char*)querystr, sizeof(querystr), "update %s set %s = '%s' where %s = '%s'", table, cn(c-1), q->v(r,c), prikey, q->v(r,bprikf+1));
-return execute(querystr);
-//f.p[0].message(100, (char*)querystr);
-//return ret;
+letf((char*)querystr, sizeof(querystr), "update %s set %s = ? where %s = ?", table, cn(c-1), prikey);
+bindv[0] = q->v(r,c);
+bindv[1] = q->v(r,bprikf+1);
+bindv[2] = NULL;
+return execute(querystr, bindv);
 }
 

@@ -1,3 +1,4 @@
+#define LINE0SIZE 80
 class Page: public Screen {
 public:
   int init(Qdata *pag, int rix);
