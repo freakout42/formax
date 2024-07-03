@@ -160,8 +160,10 @@ switch (ck)
   case KEY_NPAGE:      return KEF_NXTSETR;
   case '/':
   case '<':            return KEF_MENU;
+  default:
+    if ((ck >= 32 && ck <= 126) || (ck >= 160 && ck <= 255)) return ck;
  }
-return ck;
+return 256;
 }
 
 int Screen::getkb() {

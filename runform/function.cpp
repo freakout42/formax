@@ -40,7 +40,7 @@ return CB.bcur++;
 }
 
 int Function::fedit(int pos) {
-return CF.ledit(pos);
+return (CF.num - 1) == CB.bprikf ? 0 : CF.ledit(pos);
 }
 
 int Function::fexit() {

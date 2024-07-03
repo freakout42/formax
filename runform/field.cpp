@@ -30,22 +30,24 @@ if (cur) f.p[1].wmov(line, col);
 
 int Field::ledit(int pos) {
 int s;
-int key;
+int pressed;
 char buf[SMLSIZE];
 char **c;
 if (f.rmode == MOD_QUERY) {
-  key = f.p[0].sedit(qhuman, pos ? strlen(qhuman) : 0);
+  pressed = f.p[0].sedit(qhuman, pos ? strlen(qhuman) : 0);
   s = colquery(qhuman, qwhere, name, 1, 0);
 } else if (f.b[blk].q->rows) {
-  c = f.b[blk].q->w(1, num);
+  c = f.b[blk].q->w(CB.bcur, num);
   let(buf, *c);
-  key = f.p[0].sedit(buf, pos ? strlen(buf) : 0);
+  pressed = f.p[0].sedit(buf, pos ? strlen(buf) : 0);
   if (strlen(buf) > strlen(*c)) {
     *c = (char*)realloc(*c, strlen(buf)+1);
   }
-  strcpy(*c, buf);
-  CB.update(1, num);
+  if (strcmp(*c, buf)) {
+    strcpy(*c, buf);
+    CB.update(CB.bcur, num);
+  }
 } else { // insert
 }
-return key;
+return pressed;
 }

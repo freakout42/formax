@@ -9,7 +9,8 @@ operations. The user is typically an enterprise employee in
 the office or home-office. He is trained to use these forms
 with unmatched efficiency. The fast, keyboard-optimized,
 no-mouse C++-application and the minimal bandwidth needs,
-result in massive savings of working time.
+result in massive savings of working time for data
+maintenance.
 
 The basic concepts of Oracle SQL-Forms 3.0 (1988) are
 combined with curses as the terminal interface, ODBC for
@@ -58,12 +59,12 @@ of terminals and emulations.
 **formax** wants to provide a user-friendly, fast method for
 entering valid data into the database. This does not mean a
 good looking gui. Users will hate the application with the
-first look. After using it for a while they usally will love
-it due to the time savings they can achieve. The trained
-user can enter data with minimal effort and time, due to the
-fast application, optimized keyboard handling and ultra low
-bandwidth usage. The productivity these forms bring to the
-table cannot be achieved with other tools.
+first look. After using it for a while they will start
+loving it due to the time savings they can achieve. The
+trained user can enter data with minimal effort and time,
+due to the fast application, optimized keyboard handling and
+ultra low bandwidth usage. The productivity these forms
+bring to the table cannot be achieved with any other tool.
 
 #### Development
 
@@ -73,9 +74,15 @@ minimal form to maintain a single table with complete CRUD
 functionality can be build with a single line of code within
 two seconds. Anyways the primary goal is the efficiency of
 the end-user application. Developer comfort is on second
-place. Only the concept is inherited from SQL-Forms 3. There
-is no compatibility or migration utility for Oracle Forms
-sources.
+place.
+
+Only the concept is inherited from SQL-Forms 3. There is no
+compatibility or migration utility for Oracle Forms sources.
+The database access layer OCI is replaced by ODBC, which
+opens the system to all kinds of databases. The terminal
+access layer Oracle-Terminal is replaced with ncurses which
+runs on any kind of system and terminal. PL-SQL as the
+trigger language is replaced by JavaScript.
 
 #### Operations
 

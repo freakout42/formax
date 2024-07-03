@@ -1,4 +1,4 @@
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <sql.h>
 #include <sqlext.h>
@@ -56,7 +56,7 @@ SQLINTEGER indicator;
 indicator = SQL_NTS;
 for (i=0; b[i]; i++) ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], 0, &indicator);
 let(sqlcmd, (char*)sql);
-fprintf(stderr,"%s\n",sqlcmd);
+//fprintf(stderr,"%s\n",sqlcmd);
 if ((ret = SQLPrepare(stmt, sql, SQL_NTS))) return 10;
 if ((ret = SQLExecute(stmt))) return 11;
 if (ret) f.p[0].message(100, sqlcmd);

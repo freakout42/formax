@@ -104,8 +104,8 @@ typedef struct attrel {
 #define A_BLOCKCURSOR "\033[2 q"
 #define A_LINECURSOR  "\033[6 q"
 
-enum { KEF_HELP, KEF_LIST, KEF_COPY, KEF_PASTE, KEF_COPYREC, KEF_INSREC, KEF_QUERY, KEF_EXIT, KEF_CANCEL,
-//     F1        F2        F3        F4         F5           F6          F7         F8        F9
+enum { KEF_HELP = 0777+1, KEF_LIST, KEF_COPY, KEF_PASTE, KEF_COPYREC, KEF_INSREC, KEF_QUERY, KEF_EXIT, KEF_CANCEL,
+//     F1                    F2        F3        F4         F5           F6          F7         F8        F9
        KEF_HOME, KEF_LEFT, KEF_DELETE, KEF_END, KEF_RIGHT,   KEF_PREFLD, KEF_BACKDEL, KEF_NXTFLD, KEF_REFRESH,
 //     Home      Left      Del         End      Right        Btab        Backspace    Tab         Ctrl-L
        KEF_COMMIT, KEF_NXTREC, KEF_INSERT, KEF_PREREC, KEF_PRESETR, KEF_NXTSETR, KEF_MENU
