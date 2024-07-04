@@ -20,9 +20,10 @@ INSERT INTO pages  (id, form_id, name, ysiz, vwpy0, border) VALUES (0, 1, 'forma
 EOF
 LINE=1
 for COLUMN; do
+if [ $LINE = 1 ]; then KEY=1; else KEY=0; fi
   cat <<EOF
 INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' [$LINE]$COLUMN');
-INSERT INTO fields (seq, name, line) VALUES ($LINE, '$COLUMN', $LINE+1);
+INSERT INTO fields (seq, name, line, key) VALUES ($LINE, '$COLUMN', $LINE+1, $KEY);
 EOF
   LINE=`expr $LINE + 1`
 done
