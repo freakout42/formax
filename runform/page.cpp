@@ -24,7 +24,7 @@ return 0;
 
 void Page::create() {
 int i;
-cwin(ysiz, xsiz, vwpy0, vwpx0);
+createwindow(ysiz, xsiz, vwpy0, vwpx0);
 if (border) wbox();
 for (i=0; i<NLINES; i++) if (map[i]) writes(i+(border?1:0), border?1:0, map[i]);
 }
@@ -32,14 +32,14 @@ for (i=0; i<NLINES; i++) if (map[i]) writes(i+(border?1:0), border?1:0, map[i]);
 void Page::destroy() {
 int i;
 for (i=0; i<NLINES; i++) free(map[i]);
-dwin();
+deletewindow();
 }
 
 static char *rmodes[] = { "Insert", "Query ", "Update", "Delete" };
 
 int Page::wait() {
 int i;
-weras();
+wera();
 writef(0,  2, 0, 2,  "%2s-",    f.id);
 writes(0,  5,                   f.name);
 writef(0, 20, 0, 8,  "%s",      f.b[f.curblock].table);

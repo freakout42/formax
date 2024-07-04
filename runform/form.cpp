@@ -84,7 +84,7 @@ if (d.init()) return 6;
   dirty = lastkey = 0;
   while (!(s = u.dispatch()))
     lastkey = f.p[0].wait();
-d.dclose();
+d.closedisplay();
 return s==-1 ? 0 : s;
 }
 

@@ -2,15 +2,15 @@
 class Screen {
 public:
 	int init();
-  void cwin(int y, int x, int py, int px);
-  void dwin();
+  void createwindow(int y, int x, int py, int px);
+  void deletewindow();
   void refr();
-	void dclose();
+	void closedisplay();
   void wmov(int y, int x);
-	void weras();
+	void wera();
 	void wbox();
 	char *msg(int num);
-  int attrs(int attrib);
+  int setattributs(int attrib);
   void writes(int y, int x, char *str);
   void writef(int y, int x, int colcode, int width, char *format, ...);
   void toggle();

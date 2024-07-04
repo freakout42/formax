@@ -61,7 +61,7 @@ static int runningcolcode;
 int color;
 if (colcode == -1) {
   uncolor(runningcolcode);
-  attrs(A_NORMAL);
+  setattributs(A_NORMAL);
 } else {
   runningcolcode = colcode;
   color = mcode2att(colcode & TYPEM);
@@ -69,7 +69,7 @@ if (colcode == -1) {
     case BOLD:   color |= A_BOLD;      break;
     case ITALIC: color |= A_UNDERLINE; break;
   }
-  attrs(color);
+  setattributs(color);
   setcolor(colcode & TYPEM);
 } }
 
@@ -102,35 +102,18 @@ getmaxyx(stdscr, ysiz, xsiz);
 return 0;
 }
 
-void Screen::cwin(int y, int x, int py, int px) {
+void Screen::createwindow(int y, int x, int py, int px) {
 wndw = newwin(y, x, py, px);
 wattrset(wndw, A_NORMAL);
 wattron(wndw, COLOR_PAIR(0));
 }
 
-void Screen::dwin() {
-delwin(wndw);
-}
-
-void Screen::weras() {
-werase(wndw);
-}
-
-void Screen::wbox() {
-box(wndw, 0, 0);
-}
-
-void Screen::wmov(int y, int x) {
-wmove(wndw, y, x);
-}
-
-void Screen::refr() {
-wrefresh(wndw);
-}
-
-void Screen::dclose() {
-endwin();
-}
+void Screen::deletewindow() { delwin(wndw); }
+void Screen::wera() { werase(wndw); }
+void Screen::wbox() { box(wndw, 0, 0); }
+void Screen::wmov(int y, int x) { wmove(wndw, y, x); }
+void Screen::refr() { wrefresh(wndw); }
+void Screen::closedisplay() { endwin(); }
 
 void Screen::toggle() {
 insertmode = !insertmode;
@@ -373,7 +356,7 @@ if (chg) *chg = changed;
 return(c);
 }
 
-int Screen::attrs(int attrib) {
+int Screen::setattributs(int attrib) {
 if (attrib & A_REVERSE) {
   if (enter_reverse_mode == NULL) /* terminal has no reverse mode */
     attrib |= A_STANDOUT;         /* use standout instead */
