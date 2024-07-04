@@ -38,23 +38,26 @@ int Function::fmover(int ri) {
 if (CB.currentrecord > 0) {
   CB.currentrecord += ri;
   if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
-  if (CB.currentrecord < 1)          CB.currentrecord = 1;
+  if (CB.currentrecord < 1) {
+    MSG(27);
+    CB.currentrecord = 1;
+  }
 }
 return CB.currentrecord;
 }
 
 int Function::fedit(int pos) {
-return (f.rmode == MOD_QUERY || !CF.isprimarykey) ? CF.edit(pos) : 0;
+return (f.rmode == MOD_QUERY || !CF.isprimarykey) ? CF.edit(pos) : MSG(101);
 }
 
 int Function::fexit() {
-if (!f.dirty) f.p[0].message(401,"");
+if (!f.dirty) MSG(401);
 notrunning = -1;
 return 0;
 }
 
 int Function::fquit() {
-if (f.dirty) f.p[0].message(401,"");
+if (f.dirty) MSG(401);
 notrunning = -1;
 return 0;
 }

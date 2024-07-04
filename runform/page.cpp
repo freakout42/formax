@@ -56,11 +56,14 @@ for (i=1; i<f.numpage;  i++) f.p[i].refr();
 return getkey();
 }
 
-int Page::message(int num, char *pnt) {
+int Page::message(int ern, char *pnt) {
 int i;
+static char empty[] = "";
+char *pntst;
 if (f.d.ysiz > 0) {
-if (strlen(pnt) > LINE0SIZE-12) i = strlen(pnt) - LINE0SIZE + 12; else i = 0;
-writef(0, 0, 0, LINE0SIZE, "MAX-%3d %s %s", num, f.d.msg(num), pnt+i);
+if (pnt) pntst = pnt; else pntst = empty;
+if (strlen(pntst) > LINE0SIZE-12) i = strlen(pntst) - LINE0SIZE + 12; else i = 0;
+writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, f.d.msg(ern), pntst+i);
 wmov(0,0);
 refr();
 return getkey();

@@ -35,6 +35,7 @@
 
 #define CB f.b[f.curblock]
 #define CF f.l[f.curfield]
+#define MSG(n) f.p[0].message(n, NULL)
 
 extern int isprintable(int c);
 extern int letf(char *target, size_t maxlen, char *format, ...);

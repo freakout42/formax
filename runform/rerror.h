@@ -12,6 +12,11 @@ CREATE TABLE errors
    severity  INTEGER NOT NULL DEFAULT 0,    /* 0:info 1:warn 2:error 3:fatal */
    etext     TEXT    NOT NULL DEFAULT ''
   );
-INSERT INTO errors (num, severity, etext) VALUES (401, 1, 'No changes to save');
-INSERT INTO errors (num, severity, etext) VALUES (100, 3, 'SQL');
+INSERT INTO errors (num, severity, etext) VALUES ( 24, 3, 'Out of memory');
+INSERT INTO errors (num, severity, etext) VALUES ( 26, 3, 'Error opening key script file');
+INSERT INTO errors (num, severity, etext) VALUES ( 50, 3, 'SQL');
+INSERT INTO errors (num, severity, etext) VALUES (100, 1, 'At first record');
+INSERT INTO errors (num, severity, etext) VALUES (101, 2, 'Can''t edit a key field');
+INSERT INTO errors (num, severity, etext) VALUES (102, 2, 'Record must be entered or deleted first');
+INSERT INTO errors (num, severity, etext) VALUES (401, 1, 'No changes to commit');
 #endif

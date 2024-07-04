@@ -59,7 +59,7 @@ let(sqlcmd, (char*)sql);
 s = 0;
 if ((ret = SQLPrepare(stmt, sql, SQL_NTS))) s = 10; else
 if ((ret = SQLExecute(stmt))) s = 11;
-if (ret) f.p[0].message(100, sqlcmd);
+if (ret) f.p[0].message(50, sqlcmd);
 return s;
 }
 

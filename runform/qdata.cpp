@@ -48,6 +48,13 @@ return p;
 }
 
 /* int value */
+int Qdata::m(int row, int col) {
+int i;
+i = atoi(v(row, col));
+return i;
+}
+
+/* int value and dereferencing */
 int Qdata::n(int row, int col) {
 int i;
 i = atoi(v(row, col));
@@ -55,3 +62,4 @@ free(*w(row, col));
 *w(row, col) = NULL;
 return i;
 }
+

@@ -6,6 +6,7 @@ public:
   char **w(int row, int col);
   char *v(int row, int col);
   char *c(int row, int col);
+  int m(int row, int col);
   int n(int row, int col);
   int alloc(int coln);
   void init();

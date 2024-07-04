@@ -124,7 +124,7 @@ insertmode = !insertmode;
 
 char *Screen::msg(int num) {
 int i;
-for (i=1; f.e->v(i,1); i++) if (f.e->n(i,1) == num) break;
+for (i=1; i<f.e->rows; i++) if (f.e->m(i,1) == num) break;
 return f.e->v(i,3);
 }
 
@@ -142,6 +142,7 @@ switch (ck)
   case KEY_F(7):       return KEF_QUERY;
   case KEY_F(8):       return KEF_EXIT;
   case KEY_F(9):       return KEF_CANCEL;
+  case KEY_CANCEL:     return KEF_CANCEL;
   case KEY_HOME:       return KEF_HOME;
   case KEY_LEFT:       return KEF_LEFT;
   case KEY_DC:         return KEF_DELETE;
@@ -162,7 +163,7 @@ switch (ck)
   default:
     if (isprintable(ck)) return ck;
  }
-return 256;
+return ck; //256;
 }
 
 int Screen::getkb() {
@@ -185,6 +186,7 @@ switch (ch)
 //case KEY_CTRL('?'):  return KEY_F(10);      /* ?                              ? */
   case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
   case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char                  Left */
+  case KEY_CANCEL:
   case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel                ExitCancel */
   case KEY_CTRL('D'):  return KEY_DC;         /* Delete (record)                DeleteCharacter DeleteRecord? */
   case KEY_CTRL('E'):  return KEY_END;        /* End / Next block               EndOfLine NextBlock */
@@ -316,6 +318,7 @@ while (!done) {              /* input loop */
    case KEY_ESC:        /* cancel editing */
    case KEY_CTRL('C'):
    case KEY_F(9):
+   case KEY_CANCEL:
     wmove(wndw, y, x);
     sprintf(tmp, "%-*.*s", width, width, s);
     tmp[width] = '\0';
