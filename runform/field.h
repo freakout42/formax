@@ -5,13 +5,13 @@ public:
   int dlen;
   int line;
   int col;
-  int blk;
-  int num;
+  int blockindex;
+  int sequencenum;
   int isprimarykey;
-  char qhuman[SMLSIZE];
-  char qwhere[MEDSIZE];
+  char queryhuman[SMLSIZE];
+  char querywhere[MEDSIZE];
   int init(Qdata *fld, int rix);
-  void fshow(int cur);
-  int ledit(int pos);
+  void show(int cur);
+  int edit(int pos);
 private:
 };

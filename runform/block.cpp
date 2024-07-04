@@ -25,10 +25,10 @@ int i;
 char wall[MEDSIZE];
 *wall = '\0';
 for (i=0; i<fieldcount; i++) {
-  if (f.l[blockfields[i]].qwhere[0]) {
+  if (f.l[blockfields[i]].querywhere[0]) {
     if (*wall) cats(t(wall), " AND ");
                cats(t(wall), "(");
-               cats(t(wall), f.l[blockfields[i]].qwhere);
+               cats(t(wall), f.l[blockfields[i]].querywhere);
                cats(t(wall), ")");
   }
 }

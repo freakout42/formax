@@ -40,7 +40,7 @@ return CB.currentrecord++;
 }
 
 int Function::fedit(int pos) {
-return (f.rmode == MOD_QUERY || !CF.isprimarykey) ? CF.ledit(pos) : 0;
+return (f.rmode == MOD_QUERY || !CF.isprimarykey) ? CF.edit(pos) : 0;
 }
 
 int Function::fexit() {
