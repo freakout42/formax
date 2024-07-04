@@ -18,7 +18,7 @@ CREATE TABLE fields
    len       INTEGER NOT NULL DEFAULT 30,   /* field length */
    dlen      INTEGER NOT NULL DEFAULT 11,   /* display length =0 no display */
    btab      INTEGER NOT NULL DEFAULT 1,    /* if the field is a base table field */
-/* key       INTEGER NOT NULL DEFAULT 0,       if the field is a primary key field */
+   key       INTEGER NOT NULL DEFAULT 0,    /* if the field is a primary key field */
    dflt      TEXT    NOT NULL DEFAULT '',   /* default value */
    line      INTEGER NOT NULL DEFAULT 0,    /* page location */
    col       INTEGER NOT NULL DEFAULT 20,   /* column location */
