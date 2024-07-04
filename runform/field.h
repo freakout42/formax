@@ -7,7 +7,7 @@ public:
   int col;
   int blk;
   int num;
-  int key;
+  int isprimarykey;
   char qhuman[SMLSIZE];
   char qwhere[MEDSIZE];
   int init(Qdata *fld, int rix);

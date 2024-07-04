@@ -7,22 +7,23 @@ let(prikey, blk->v(rix, 2));
 let(where,  blk->v(rix, 3));
 let(order,  blk->v(rix, 4));
 let(attrs,  "");
-bnumfs = 0;
+fieldcount = 0;
 return 0;
 }
 
-void Block::addattr(int att) {
+int Block::addattribute(int att) {
 if (*attrs) cats(t(attrs), ",");
 cats(t(attrs), f.l[att].name);
-if (!(strcmp(f.l[att].name, prikey))) bprikf = bnumfs;
-bflds[bnumfs++] = att;
+if (!(strcmp(f.l[att].name, prikey))) bprikf = fieldcount;
+bflds[fieldcount++] = att;
+return fieldcount;
 }
 
 int Block::select() {
 int i;
 char wall[MEDSIZE];
 *wall = '\0';
-for (i=0; i<bnumfs; i++) {
+for (i=0; i<fieldcount; i++) {
   if (f.l[bflds[i]].qwhere[0]) {
     if (*wall) cats(t(wall), " AND ");
                cats(t(wall), "(");

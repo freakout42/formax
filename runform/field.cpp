@@ -9,11 +9,11 @@ let(name,  fld->v(rix, 1));
 dlen =     fld->n(rix, 2);
 line =     fld->n(rix, 3);
 col  =     fld->n(rix, 4);
+isprimarykey = fld->n(rix, 5);
 let(qhuman, "");
 let(qwhere, "");
 blk = 1;
-f.b[blk].addattr(rix-1);
-num = f.b[blk].bnumfs;
+num = f.b[blk].addattribute(rix-1);
 return 0;
 }
 

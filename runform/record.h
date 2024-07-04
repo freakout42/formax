@@ -12,7 +12,7 @@ public:
   char table[SMLSIZE];
   char sqlcmd[MEDSIZE];
   SQLCHAR querystr[MEDSIZE];
-  char *bindv[4];
+  char *bindv[NBINDPA];
   char whereorder[MEDSIZE];
   int connect(char *dsn);
   int commit();

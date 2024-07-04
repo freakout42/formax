@@ -30,7 +30,7 @@ return notrunning;
 
 int Function::fmove(int bi, int fi) {
 //f.curblock = (f.curblock + f.numblock + bi) % f.numblock;
-CB.bcurf = (CB.bcurf + CB.bnumfs + fi) % CB.bnumfs;
+CB.bcurf = (CB.bcurf + CB.fieldcount + fi) % CB.fieldcount;
 f.curfield = CB.bflds[CB.bcurf];
 return f.curfield;
 }
