@@ -25,6 +25,7 @@ protected:
 private:
   void setcolor(int pairi);
   void uncolor(int pairi);
+  void setcode(int colcode);
 };
 
 #define CB f.b[f.curblock]
@@ -46,7 +47,7 @@ enum {
   COL_CYAN,            /* = 7 */
   COL_WHITE,           /* = 8 */
   TEXTCOLOR,           /* = 9 */
-  EOFCOLOR,            /* =10 */
+  EDITCOLOR,           /* =10 */
   ERRORCOLOR,          /* =11 */
   VALUECOLOR,          /* =12 */
   FORMULACOLOR,        /* =13 */

@@ -34,12 +34,12 @@ int pressed;
 char buf[SMLSIZE];
 char **c;
 if (f.rmode == MOD_QUERY) {
-  pressed = f.p[0].sedit(qhuman, pos ? strlen(qhuman) : 0);
+  pressed = f.p[0].sedit(qhuman, pos);
   s = colquery(qhuman, qwhere, name, 1, 0);
 } else if (f.b[blk].q->rows) {
   c = f.b[blk].q->w(CB.bcur, num);
   let(buf, *c);
-  pressed = f.p[0].sedit(buf, pos ? strlen(buf) : 0);
+  pressed = f.p[0].sedit(buf, pos);
   if (strlen(buf) > strlen(*c)) {
     *c = (char*)realloc(*c, strlen(buf)+1);
   }

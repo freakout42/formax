@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <cstdarg>
 #include <stdlib.h>
-//#include <stdio.h>
 #include <termio.h>
 #include <term.h>
 #include <curses.h>
@@ -20,7 +19,7 @@ static attrel attrels[] = {
   { COL_WHITE,           A_NORMAL,              COLOR_WHITE,   -1 },            /* white */
 
   { TEXTCOLOR,           A_NORMAL,              0,             0 },             /* text cell */
-  { EOFCOLOR,            A_NORMAL,              COLOR_GREEN,   -1 },            /* eof cell */
+  { EDITCOLOR,           A_BOLD,                COLOR_BLUE,    COLOR_WHITE },   /* editor */
   { ERRORCOLOR,          A_BLINK,               COLOR_RED,     -1 },            /* error cell */
   { VALUECOLOR,          A_NORMAL,              0,             0 },             /* value cell */
   { FORMULACOLOR,        A_NORMAL,              0,             0 },             /* formula cell */
@@ -56,6 +55,23 @@ void Screen::uncolor(int pairi) {
 if (!monochrome && (attrels[pairi].foreg || attrels[pairi].backg))
   wattroff(wndw, COLOR_PAIR(pairi));
 }
+
+void Screen::setcode(int colcode) {
+static int runningcolcode;
+int color;
+if (colcode == -1) {
+  uncolor(runningcolcode);
+  attrs(A_NORMAL);
+} else {
+  runningcolcode = colcode;
+  color = mcode2att(colcode & TYPEM);
+  switch (colcode & BIMASK) {
+    case BOLD:   color |= A_BOLD;      break;
+    case ITALIC: color |= A_UNDERLINE; break;
+  }
+  attrs(color);
+  setcolor(colcode & TYPEM);
+} }
 
 int Screen::init() {
 struct termios termio;
@@ -161,7 +177,7 @@ switch (ck)
   case '/':
   case '<':            return KEF_MENU;
   default:
-    if ((ck >= 32 && ck <= 126) || (ck >= 160 && ck <= 255)) return ck;
+    if (isprintable(ck)) return ck;
  }
 return 256;
 }
@@ -216,15 +232,15 @@ return ch;
 }
 
 int Screen::sedit(char *toe, int pos) {
-return f.p[0].getst(0, 0, 80, 0, toe, pos, "", SMLSIZE, NULL);
+return f.p[0].getst(0, 0, 80, EDITCOLOR, toe, pos, "", SMLSIZE, NULL);
 }
 
 /* Allows the user to edit a string with only certain characters allowed
- * pos == -1 signals only output no interaction
+ * pos == -999 signals only output no interaction
  * ESC cancels any changes
  * Returns last key
  */
-int Screen::getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg) {
+int Screen::getst(int y, int x, int width, int colcode, char *s, int pos, char *legal, int max, int *chg) {
 int done;                    /* end-of-loop flag */
 int changed;                 /* changed the string */
 int first;                   /* first input flag */
@@ -241,14 +257,15 @@ done = 0;
 changed = 0;
 first = 1;
 c = 0;
-sx = x+pos;
+if (pos == -999) pos = -1; else if (pos < 0) pos += strlen(s) + 1;
+sx = x + pos;
 len = strlen(s);
 so = se;
 endx = x + width - 1;
 
 if (strlen(s) > BIGSIZE) return(KEY_ESC);
 strcpy(se, s);               /* save input string */
-attrs(att);                  /* set attribute  */
+setcode(colcode);            /* set color  */
 while (!done) {              /* input loop */
   if (sx-x >= width) {       /* behind end position? */
     sx = endx;               /* go to end pos  */
@@ -331,7 +348,7 @@ while (!done) {              /* input loop */
       if (   ((legal[0] == 0)  /* legal input? */
           || (strchr(legal, c) != NULL)) ) {
         changed = TRUE;
-        if (pos==0 && first) len = 0; /* erase on pos0 */
+/*      if (pos==0 && first) len = 0;    erase on pos0 */
         if (len < max) {
           if (insertmode) {
             memmove(se+pos+1, se+pos, len - pos +1);
@@ -350,7 +367,7 @@ while (!done) {              /* input loop */
   first = FALSE;
   se[len] = '\0';
   }
-attrs(0);
+setcode(-1);
 if (changed) strcpy(s, se);
 if (chg) *chg = changed;
 return(c);
@@ -376,22 +393,13 @@ writef(y, x, 0, strlen(str), str);
 void Screen::writef(int y, int x, int colcode, int width, char *format, ...) {
 va_list args;
 char s[MEDSIZE];
-int color;
 int oldy, oldx;
-
 va_start (args, format);
 vsnprintf (s, sizeof(s), format, args);
 va_end (args);
-color = mcode2att(colcode & TYPEM);
-switch (colcode & BIMASK) {
-  case BOLD:   color |= A_BOLD;      break;
-  case ITALIC: color |= A_UNDERLINE; break;
-}
-attrs(color);
-setcolor(colcode & TYPEM);
+setcode(colcode);
 getyx(wndw, oldy, oldx);
 mvwprintw(wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
 wmov(oldy, oldx);
-uncolor(colcode);
-attrs(A_NORMAL);
+setcode(-1);
 }

@@ -5,7 +5,7 @@ int s;
 switch(f.lastkey) {
  case 0:           s = enter_the_form();                     break;
  case KEF_RIGHT:   s = fedit(0);                             break;
- case KEF_LEFT:    s = fedit(1);                             break;
+ case KEF_LEFT:    s = fedit(-1);                            break;
  case KEF_NXTFLD:  s = fmove(0, 1);                          break;
  case KEF_PREFLD:  s = fmove(0, -1);                         break;
  case KEF_NXTREC:  s = fmover(1);                            break;

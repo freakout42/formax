@@ -31,6 +31,7 @@
 #define let(target,source) strncpy(target, source, sizeof(target))
 #define t(target) target, sizeof(target)
 
+extern int isprintable(int c);
 extern int letf(char *target, size_t maxlen, char *format, ...);
 extern int cats(char *target, size_t maxlen, char *source);
 extern int debugf(char *format, ...);

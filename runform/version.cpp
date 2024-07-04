@@ -12,6 +12,10 @@ va_end (args);
 return n;
 }
 
+int isprintable(int c) {
+return (c >= 32 && c <= 126) || (c >= 160 && c <= 255);
+}
+
 int cats(char *target, size_t maxlen, char *source) {
 strncat(target, source, maxlen);
 return strlen(target);
