@@ -6,12 +6,12 @@ public:
   int select();
   int update(int row, int col);
   int fieldcount;
-  int bprikf;             /* primary key field */
-  int bcur;               /* current record */
+  int prikeycnt;
   int bcurf;              /* current field */
-  int bflds[NFIELD1];     /* fields */
+  int blockfields[NFIELD1]; /* array indexs l[] */
   int primarykeys[NPRIKEY];
   char *cn(int c);
+  int currentrecord;
   int bdirty;
 private:
 };

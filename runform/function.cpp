@@ -22,7 +22,7 @@ return notrunning;
 int Function::enter_the_form() {
 f.curblock = 1;
 CB.bcurf = 0;
-f.curfield = CB.bflds[CB.bcurf];
+f.curfield = CB.blockfields[CB.bcurf];
 f.rmode = squerymode ? MOD_QUERY : MOD_INSERT;
 notrunning = trigger(PRE_FORM);
 return notrunning;
@@ -31,16 +31,16 @@ return notrunning;
 int Function::fmove(int bi, int fi) {
 //f.curblock = (f.curblock + f.numblock + bi) % f.numblock;
 CB.bcurf = (CB.bcurf + CB.fieldcount + fi) % CB.fieldcount;
-f.curfield = CB.bflds[CB.bcurf];
+f.curfield = CB.blockfields[CB.bcurf];
 return f.curfield;
 }
 
 int Function::fmover(int ri) {
-return CB.bcur++;
+return CB.currentrecord++;
 }
 
 int Function::fedit(int pos) {
-return (CF.num - 1) == CB.bprikf ? 0 : CF.ledit(pos);
+return (f.rmode == MOD_QUERY || !CF.isprimarykey) ? CF.ledit(pos) : 0;
 }
 
 int Function::fexit() {
@@ -60,7 +60,7 @@ if (f.b[1].select()) {
   f.p[0].message(100,f.b[1].sqlcmd);
   notrunning = -2;
 } else {
-  CB.bcur = 1;
+  CB.currentrecord = 1;
   f.rmode = MOD_UPDATE;
 }
 return f.rmode != MOD_UPDATE;

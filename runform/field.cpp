@@ -24,7 +24,7 @@ else switch(f.rmode) {
  case MOD_QUERY: color = COL_QUERY; break;
  default:        color = COL_FIELD;
 }
-f.p[1].writef(line, col, color, dlen, "%s", f.rmode==MOD_QUERY ? qhuman : f.b[blk].q->v(CB.bcur, num));
+f.p[1].writef(line, col, color, dlen, "%s", f.rmode==MOD_QUERY ? qhuman : f.b[blk].q->v(CB.currentrecord, num));
 if (cur) f.p[1].wmov(line, col);
 }
 
@@ -37,7 +37,7 @@ if (f.rmode == MOD_QUERY) {
   pressed = f.p[0].sedit(qhuman, pos);
   s = colquery(qhuman, qwhere, name, 1, 0);
 } else if (f.b[blk].q->rows) {
-  c = f.b[blk].q->w(CB.bcur, num);
+  c = f.b[blk].q->w(CB.currentrecord, num);
   let(buf, *c);
   pressed = f.p[0].sedit(buf, pos);
   if (strlen(buf) > strlen(*c)) {
@@ -45,7 +45,7 @@ if (f.rmode == MOD_QUERY) {
   }
   if (strcmp(*c, buf)) {
     strcpy(*c, buf);
-    CB.update(CB.bcur, num);
+    CB.update(CB.currentrecord, num);
   }
 } else { // insert
 }
