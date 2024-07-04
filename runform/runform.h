@@ -10,6 +10,8 @@
 #define NBLOCKS 20
 #define NFIELD1 40
 #define NFIELDS NBLOCKS*NFIELD1
+#define NPRIKEY 4
+#define NBINDPA 8
 
 #include <string.h>
 #include "qdata.h"
@@ -41,4 +43,5 @@ extern int usedefault;
 extern int insertmode;
 extern int squerymode;
 extern int autocommit;
+extern int deleprompt;
 extern Form f;
