@@ -5,10 +5,10 @@ public:
   int addattribute(int att);
   int select();
   int update(int row, int col);
+  int destroy(int r);
   int fieldcount;
   int prikeycnt;
-  int bcurf;              /* current field */
-  int blockfields[NFIELD1]; /* array indexs l[] */
+  int blockfields[NFIELD1]; /* array index l[] */
   int primarykeys[NPRIKEY];
   char *cn(int c);
   int currentrecord;

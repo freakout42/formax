@@ -58,10 +58,13 @@ return getkey();
 
 int Page::message(int num, char *pnt) {
 int i;
+if (f.d.ysiz > 0) {
 if (strlen(pnt) > LINE0SIZE-12) i = strlen(pnt) - LINE0SIZE + 12; else i = 0;
 writef(0, 0, 0, LINE0SIZE, "MAX-%3d %s %s", num, f.d.msg(num), pnt+i);
 wmov(0,0);
 refr();
 return getkey();
+}
+return 0;
 }
 

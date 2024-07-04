@@ -28,9 +28,6 @@ private:
   void setcode(int colcode);
 };
 
-#define CB f.b[f.curblock]
-#define CF f.l[f.curfield]
-
 #define TYPEM  0x1fu
 #define BIMASK 0xc0u
 #define BOLD   0x40u

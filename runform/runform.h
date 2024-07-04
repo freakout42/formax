@@ -33,6 +33,9 @@
 #define let(target,source) strncpy(target, source, sizeof(target))
 #define t(target) target, sizeof(target)
 
+#define CB f.b[f.curblock]
+#define CF f.l[f.curfield]
+
 extern int isprintable(int c);
 extern int letf(char *target, size_t maxlen, char *format, ...);
 extern int cats(char *target, size_t maxlen, char *source);

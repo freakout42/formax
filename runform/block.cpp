@@ -42,9 +42,16 @@ return f.l[blockfields[c]].name;
 
 int Block::update(int r, int c) {
 letf((char*)querystr, sizeof(querystr), "update %s set %s = ? where %s = ?", table, cn(c-1), f.l[primarykeys[0]].name);
-bindv[0] = q->v(r,c);
-bindv[1] = q->v(r,1); //f.l[primarykeys[0]].num);
+bindv[0] = q->v(r, c);
+bindv[1] = q->v(r, f.l[primarykeys[0]].sequencenum);
 bindv[2] = NULL;
+return execute(querystr, bindv);
+}
+
+int Block::destroy(int r) {
+letf((char*)querystr, sizeof(querystr), "delete from %s where %s = ?", table, f.l[primarykeys[0]].name);
+bindv[0] = q->v(r, f.l[primarykeys[0]].sequencenum);
+bindv[1] = NULL;
 return execute(querystr, bindv);
 }
 

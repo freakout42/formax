@@ -14,4 +14,5 @@ private:
   int fexit();
   int fquit();
   int fquery();
+  int fdelete();
 };

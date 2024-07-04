@@ -13,6 +13,7 @@ switch(f.lastkey) {
  case KEF_EXIT:    s = fexit();                              break;
  case KEF_CANCEL:  s = fquit();                              break;
  case KEF_COMMIT:  s = fquery();                             break;
+ case KEF_DELETE:  s = fdelete();                            break;
  default: ;
 }
 f.p[1].refr();
@@ -21,8 +22,7 @@ return notrunning;
 
 int Function::enter_the_form() {
 f.curblock = 1;
-CB.bcurf = 0;
-f.curfield = CB.blockfields[CB.bcurf];
+f.curfield = CB.blockfields[0];
 f.rmode = squerymode ? MOD_QUERY : MOD_INSERT;
 notrunning = trigger(PRE_FORM);
 return notrunning;
@@ -30,13 +30,17 @@ return notrunning;
 
 int Function::fmove(int bi, int fi) {
 //f.curblock = (f.curblock + f.numblock + bi) % f.numblock;
-CB.bcurf = (CB.bcurf + CB.fieldcount + fi) % CB.fieldcount;
-f.curfield = CB.blockfields[CB.bcurf];
+f.curfield = CB.blockfields[ (CF.sequencenum-1 + CB.fieldcount + fi) % CB.fieldcount ];
 return f.curfield;
 }
 
 int Function::fmover(int ri) {
-return CB.currentrecord++;
+if (CB.currentrecord > 0) {
+  CB.currentrecord += ri;
+  if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
+  if (CB.currentrecord < 1)          CB.currentrecord = 1;
+}
+return CB.currentrecord;
 }
 
 int Function::fedit(int pos) {
@@ -56,14 +60,21 @@ return 0;
 }
 
 int Function::fquery() {
-if (f.b[1].select()) {
-  f.p[0].message(100,f.b[1].sqlcmd);
-  notrunning = -2;
-} else {
-  CB.currentrecord = 1;
-  f.rmode = MOD_UPDATE;
+if (f.b[1].select()) notrunning = -2; else {
+  if (CB.q->rows > 0) {
+    CB.currentrecord = 1;
+    f.rmode = MOD_UPDATE;
+  } else {
+    CB.currentrecord = 0;
+    f.rmode = MOD_QUERY;
+  }
 }
 return f.rmode != MOD_UPDATE;
+}
+
+int Function::fdelete() {
+f.b[1].destroy(CB.currentrecord);
+return fquery();
 }
 
 int Function::trigger(int trg) {
