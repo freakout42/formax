@@ -101,7 +101,7 @@ value   : QUERY
         }
 svalue  : constm
         {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYMM') = %s", cqcolumn, $1);
+        sprintf (tmp, "{fn YEAR(%s)} * 100 + {fn MONTH(%s)} = %s", cqcolumn, cqcolumn, $1);
         $$ = cqstr (tmp);
         }
         | comp constm
