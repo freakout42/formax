@@ -11,7 +11,7 @@
 #define NFIELD1 40
 #define NFIELDS NBLOCKS*NFIELD1
 #define NPRIKEY 4
-#define NBINDPA 8
+#define NBINDPA NFIELD1
 
 #include <string.h>
 #include "qdata.h"

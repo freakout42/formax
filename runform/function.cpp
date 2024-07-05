@@ -14,6 +14,7 @@ switch(f.lastkey) {
  case KEF_CANCEL:  s = fquit();                              break;
  case KEF_COMMIT:  s = fquery();                             break;
  case KEF_DELETE:  s = fdelete();                            break;
+ case 'i':         CB.q->splice(CB.currentrecord++); break; //CB.insert(CB.currentrecord); break;
  default: ;
 }
 f.p[1].refr();
@@ -39,7 +40,7 @@ if (CB.currentrecord > 0) {
   CB.currentrecord += ri;
   if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
   if (CB.currentrecord < 1) {
-    MSG(27);
+    MSG(100);
     CB.currentrecord = 1;
   }
 }

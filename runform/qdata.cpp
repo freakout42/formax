@@ -1,4 +1,5 @@
 /* query data handling */
+#include <assert.h>
 #include <stdlib.h>
 #include "runform.h"
 
@@ -13,9 +14,17 @@ int Qdata::alloc(int coln) {
 freed();
 rows = 0;
 cols = coln;
-allocatedrows = 0;
-//if (!(d = (char*(*)[])malloc(allocatedrows * cols * (sizeof(void*))))) return 13;
+allocatedrows = 2;
+if (!(d = (char*(*)[])malloc(allocatedrows * cols * (sizeof(void*))))) return 13;
 return 0;
+}
+
+int Qdata::splice(int rown) {
+void *s;
+assert(allocatedrows > rows);
+s = memmove(w(rown+2,1), w(rown+1,1), (allocatedrows-rows++)*cols);
+memset(w(rown+1,1), 0, cols * (sizeof(void*)));
+return s != NULL;
 }
 
 void Qdata::freed() {

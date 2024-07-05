@@ -9,6 +9,7 @@ public:
   int m(int row, int col);
   int n(int row, int col);
   int alloc(int coln);
+  int splice(int rown);
   void init();
   void freed();
 private:

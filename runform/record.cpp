@@ -84,9 +84,13 @@ while (SQL_SUCCEEDED(ret = SQLFetch(stmt))) {
   for (i = 1; i <= columni; i++) {
     ret = SQLGetData(stmt, i, SQL_C_CHAR, buf, sizeof(buf), &indicator);
     if (SQL_SUCCEEDED(ret)) {
-      if (indicator == SQL_NULL_DATA) *buf = '\0'; // strcpy(buf, "");
+/*
+ *    if (indicator == SQL_NULL_DATA) *buf = '\0';
+ *    if (!(qp = q->w(q->rows, i))) return 13;
+ *    if (!(*qp = strdup(buf))) return 13;
+ */
       if (!(qp = q->w(q->rows, i))) return 13;
-      if (!(*qp = strdup(buf))) return 13;
+      if (indicator == SQL_NULL_DATA) *qp = NULL; else if (!(*qp = strdup(buf))) return 13;
     }
     else return 14;
   }

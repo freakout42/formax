@@ -5,6 +5,7 @@ public:
   int addattribute(int att);
   int select();
   int update(int row, int col);
+  int insert(int row);
   int destroy(int r);
   int fieldcount;
   int prikeycnt;
