@@ -3,18 +3,18 @@
 int Function::dispatch() {
 int s;
 switch(f.lastkey) {
- case 0:           s = enter_the_form();                     break;
- case KEF_RIGHT:   s = fedit(0);                             break;
- case KEF_LEFT:    s = fedit(-1);                            break;
- case KEF_NXTFLD:  s = fmove(0, 1);                          break;
- case KEF_PREFLD:  s = fmove(0, -1);                         break;
- case KEF_NXTREC:  s = fmover(1);                            break;
- case KEF_PREREC:  s = fmover(-1);                           break;
- case KEF_EXIT:    s = fexit();                              break;
- case KEF_CANCEL:  s = fquit();                              break;
- case KEF_COMMIT:  s = fquery();                             break;
- case KEF_DELETE:  s = fdelete();                            break;
- case 'i':         CB.q->splice(CB.currentrecord++); break; //CB.insert(CB.currentrecord); break;
+ case 0:           s = enter_the_form();                            break;
+ case KEF_RIGHT:   s = fedit(0);                                    break;
+ case KEF_LEFT:    s = fedit(-1);                                   break;
+ case KEF_NXTFLD:  s = fmove(0, 1);                                 break;
+ case KEF_PREFLD:  s = fmove(0, -1);                                break;
+ case KEF_NXTREC:  s = fmover(1);                                   break;
+ case KEF_PREREC:  s = fmover(-1);                                  break;
+ case KEF_EXIT:    s = fexit();                                     break;
+ case KEF_CANCEL:  s = fquit();                                     break;
+ case KEF_COMMIT:  s = f.rmode==MOD_QUERY ? fquery() : fcreate();   break;
+ case KEF_DELETE:  s = fdelete();                                   break;
+ case KEF_INSERT:  s = finsert();                                   break;
  default: ;
 }
 f.p[1].refr();
@@ -47,8 +47,33 @@ if (CB.currentrecord > 0) {
 return CB.currentrecord;
 }
 
+int Function::finsert() {
+int s;
+s = CB.q->splice(CB.currentrecord++);
+f.rmode = MOD_INSERT;
+return s;
+}
+
+int Function::fcreate() {
+int s;
+CB.insert(CB.currentrecord);
+return s;
+}
+
 int Function::fedit(int pos) {
-return (f.rmode == MOD_QUERY || !CF.isprimarykey) ? CF.edit(pos) : MSG(101);
+int changed;
+changed = 0;
+switch(f.rmode) {
+ case MOD_INSERT:
+ case MOD_QUERY:
+  CF.edit(pos);
+  break;
+ case MOD_UPDATE:
+  if (CF.isprimarykey) MSG(101); else changed = CF.edit(pos);
+  if (changed) CB.update(CB.currentrecord, CF.sequencenum);
+  break;
+}
+return 0;
 }
 
 int Function::fexit() {

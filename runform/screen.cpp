@@ -131,8 +131,7 @@ return f.e->v(i,3);
 int Screen::getkey() {
 int ck;
 ck = getkb();
-switch (ck)
- {
+switch(ck) {
   case KEY_F(1):       return KEF_HELP;
   case KEY_F(2):       return KEF_LIST;
   case KEY_F(3):       return KEF_COPY;
@@ -141,7 +140,7 @@ switch (ck)
   case KEY_F(6):       return KEF_INSREC;
   case KEY_F(7):       return KEF_QUERY;
   case KEY_F(8):       return KEF_EXIT;
-  case KEY_F(9):       return KEF_CANCEL;
+  case KEY_F(9):
   case KEY_CANCEL:     return KEF_CANCEL;
   case KEY_HOME:       return KEF_HOME;
   case KEY_LEFT:       return KEF_LEFT;
@@ -169,8 +168,7 @@ return ck; //256;
 int Screen::getkb() {
 int ch;
 ch = wgetch(stdscr);
-switch (ch)
- {
+switch(ch) {
 // us 123456789 uk 123456789 de 123456789 fr 123456789
 //    !"#$%^&*(    !"£$%^&*(    !"§$%&/()    &e"'(-e_c
   case KEY_F0:                                /* Help */

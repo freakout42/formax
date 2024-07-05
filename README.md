@@ -11,7 +11,10 @@ interface, ODBC for universal database access and Javascript
 as the trigger language. The best ideas for a powerful user
 interface from Emacs, Clipper, SAP and Lotus/1-2-3. The
 result is the most effective solution possible for the
-end-user.
+end-user. Don't see **formax** as a romantic nostalgica! The
+concepts of Oracle's SQL-Forms are still used today and
+could be very interesting for certain use cases on a
+terminal.
 
 Introduction
 ============

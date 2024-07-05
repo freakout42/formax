@@ -56,26 +56,22 @@ return execute(querystr, bindv);
 }
 
 int Block::insert(int r) {
-int i;
+int i, j;
 char columnslist[MEDSIZE];
 char valueslist[SMLSIZE];
 *columnslist = '\0';
 *valueslist = '\0';
-for (i=0; i<fieldcount; i++) {
+for (i=j=0; i<fieldcount; i++) {
+ if (q->v(r, i+1)) {
   if (*columnslist) cats(t(columnslist), ",");
                     cats(t(columnslist), f.l[blockfields[i]].name);
   if (*valueslist)  cats(t(valueslist),  ",");
                     cats(t(valueslist),  "?");
-  if (i==0) bindv[i] = "1000"; else bindv[i] = q->v(r, i+1);
+  bindv[j++] = q->v(r, i+1);
+ }
 }
-bindv[i] = NULL;
+bindv[j] = NULL;
 letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s)", table, columnslist, valueslist);
-bindv[2] = NULL;
-//f.p[0].message(50, (char*)querystr);
-bindv[0] = "8003";
-bindv[1] = "kk";
-bindv[2] = NULL;
-strcpy((char*)querystr,"insert into emp (id,ename) values (?,?)");
 return execute(querystr, bindv);
 }
 

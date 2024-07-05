@@ -31,23 +31,29 @@ if (cur) f.p[1].wmov(line, col);
 int Field::edit(int pos) {
 int s;
 int pressed;
+int changed;
 char buf[SMLSIZE];
 char **c;
-if (f.rmode == MOD_QUERY) {
+pressed = -1;
+changed = 0;
+switch(f.rmode) {
+ case MOD_INSERT:
+ case MOD_UPDATE:
+  if (f.b[blockindex].q->rows) {
+    c = f.b[blockindex].q->w(CB.currentrecord, sequencenum);
+    if (*c) let(buf, *c); else *buf = '\0';
+    pressed = f.p[0].sedit(buf, pos);
+    if (*c==NULL || strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);
+    if ((*c==NULL && *buf) || strcmp(*c, buf)) {
+      strcpy(*c, buf);
+      changed = 1;
+    }
+  }
+  break;
+ case MOD_QUERY:
   pressed = f.p[0].sedit(queryhuman, pos);
   s = colquery(queryhuman, querywhere, name, 1, 0);
-} else if (f.b[blockindex].q->rows) {
-  c = f.b[blockindex].q->w(CB.currentrecord, sequencenum);
-  let(buf, *c);
-  pressed = f.p[0].sedit(buf, pos);
-  if (strlen(buf) > strlen(*c)) {
-    *c = (char*)realloc(*c, strlen(buf)+1);
-  }
-  if (strcmp(*c, buf)) {
-    strcpy(*c, buf);
-    CB.update(CB.currentrecord, sequencenum);
-  }
-} else { // insert
+  break;
 }
-return pressed;
+return changed;
 }

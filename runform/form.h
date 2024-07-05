@@ -1,5 +1,3 @@
-enum { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
-
 // form configuration
 class Form: public Record {
 public:

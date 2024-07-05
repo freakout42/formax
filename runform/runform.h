@@ -37,6 +37,8 @@
 #define CF f.l[f.curfield]
 #define MSG(n) f.p[0].message(n, NULL)
 
+enum { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
+
 extern int isprintable(int c);
 extern int letf(char *target, size_t maxlen, char *format, ...);
 extern int cats(char *target, size_t maxlen, char *source);

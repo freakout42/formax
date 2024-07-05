@@ -13,6 +13,8 @@ private:
   int fedit(int pos);
   int fexit();
   int fquit();
+  int finsert();
+  int fcreate();
   int fquery();
   int fdelete();
 };
