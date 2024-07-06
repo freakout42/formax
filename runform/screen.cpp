@@ -30,7 +30,7 @@ static attrel attrels[] = {
   { COL_CURRENT,         A_REVERSE|A_UNDERLINE, COLOR_BLUE,    COLOR_WHITE },   /* current field */
   { COL_FIELD,           A_REVERSE,             COLOR_MAGENTA, COLOR_WHITE },   /* field */
   { COL_QUERY,           A_REVERSE,             COLOR_CYAN,    COLOR_BLACK },   /* query */
-  { CURHEADERCOLOR,      A_BOLD,                COLOR_WHITE,   COLOR_BLUE },    /* current col/row header */
+  { COL_HEADER,          A_BOLD,                COLOR_WHITE,   COLOR_BLUE },    /* status header */
   { MARKCOLOR,           A_REVERSE,             COLOR_MAGENTA, COLOR_YELLOW },  /* marked range info */
   { AUTOCALCCOLOR,       A_REVERSE,             0,             0 },             /* autocalc info */
   { FORMDISPLAYCOLOR,    A_REVERSE,             0,             0 },             /* formula display info */
@@ -130,7 +130,7 @@ return f.e->v(i,3);
 
 int Screen::getkey() {
 int ck;
-ck = getkb();
+ck = ispunctation(getkb());
 switch(ck) {
   case KEY_F(1):       return KEF_HELP;
   case KEY_F(2):       return KEF_LIST;
@@ -157,20 +157,15 @@ switch(ck) {
   case KEY_UP:         return KEF_PREREC;
   case KEY_PPAGE:      return KEF_PRESETR;
   case KEY_NPAGE:      return KEF_NXTSETR;
-  case '/':
-  case '<':            return KEF_MENU;
-  default:
-    if (isprintable(ck)) return ck;
+  case KEF_NAVI0:      return KEF_MENU;
+  default:             return ck;
  }
-return ck; //256;
 }
 
 int Screen::getkb() {
 int ch;
 ch = wgetch(stdscr);
 switch(ch) {
-// us 123456789 uk 123456789 de 123456789 fr 123456789
-//    !"#$%^&*(    !"£$%^&*(    !"§$%&/()    &e"'(-e_c
   case KEY_F0:                                /* Help */
   case KEY_CTRL('@'):  return KEY_F(1);       /* Help                           Help */
 //case KEY_CTRL('U'):  return KEY_F(2);       /* List of values                 List */

@@ -13,7 +13,14 @@ return n;
 }
 
 int isprintable(int c) {
-return (c >= 32 && c <= 126) || (c >= 160 && c <= 255);
+if ((c >= 32 && c <= 126) || (c >= 160 && c <= 255)) return c;
+return 0;
+}
+
+int ispunctation(int c) {
+char *pc;
+if ((pc = strchr(shiftednum, c))) return KEF_NAVI(pc - shiftednum);
+return c;
 }
 
 int cats(char *target, size_t maxlen, char *source) {

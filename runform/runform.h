@@ -40,14 +40,18 @@
 enum { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
 
 extern int isprintable(int c);
+extern int ispunctation(int c);
 extern int letf(char *target, size_t maxlen, char *format, ...);
 extern int cats(char *target, size_t maxlen, char *source);
 extern int debugf(char *format, ...);
 extern char *xencrypt(char *toe, int rev);
-extern int monochrome;
-extern int usedefault;
-extern int insertmode;
-extern int squerymode;
-extern int autocommit;
-extern int deleprompt;
+
+extern int   monochrome;
+extern int   usedefault;
+extern int   insertmode;
+extern int   squerymode;
+extern int   autocommit;
+extern int   deleprompt;
+extern int   queryonlym;
+extern char  *shiftednum;
 extern Form f;

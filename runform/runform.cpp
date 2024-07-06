@@ -1,8 +1,8 @@
-#define USAGE "runform-(%02d) %s\nusage: runform [-acdik] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
-#define FORMFRM argv[optind+ /* command-line arguments */                0]       //       //         //
-#define FORMDSN argv[optind+                                                      1]       //         //
-#define FORMUID argv[optind+                                                               2]         //
-#define FORMPWD argv[optind+                                                                          3]
+#define USAGE "runform-(%02d) %s\nusage: runform [-acdikq] [-n lg] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
+#define FORMFRM argv[optind+ /* command-line arguments */                         0]       //       //         //
+#define FORMDSN argv[optind+                                                               1]       //         //
+#define FORMUID argv[optind+                                                                        2]         //
+#define FORMPWD argv[optind+                                                                                   3]
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,12 +33,14 @@ exit(ecd);
 
 // global
 char *lclocale;
-int monochrome = 0; // -k
-int usedefault = 0; // -c
-int insertmode = 1;
-int squerymode = 1; // -i
-int autocommit = 1; // -a
-int deleprompt = 0; // -d
+int  insertmode  = 1;
+int  monochrome  = 0;           // -k
+int  usedefault  = 0;           // -c
+int  squerymode  = 1;           // -i
+int  autocommit  = 1;           // -a
+int  deleprompt  = 0;           // -d
+int  queryonlym  = 0;           // -q
+char *shiftednum = "`!@#$%^&*("; // -n us
 Form f;
 
 int main(int argc, char *argv[]) { //, char **envp
@@ -51,17 +53,24 @@ setenv("LC_ALL", CHARSET, 1);
 lclocale = setlocale(LC_ALL, CHARSET);
 
 // command-line arguments and options check and process
-while ((i = getopt(argc, argv, "acdil:kVy:")) != -1) {
+while ((i = getopt(argc, argv, "acdikl:n:qVy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
     case 'y': printf("%s\n", xencrypt(optarg,0));
               printf("%s\n", xencrypt(optarg,1)); exit(99);
     case 'l': let(drv, optarg); break;
+    case 'n':
+      if (!strcmp(optarg, "us")) ; // shiftednum = "`!@#$%^&*(";
+      if (!strcmp(optarg, "uk"))      shiftednum = "\\!\"£$%^&*(";
+      if (!strcmp(optarg, "de"))      shiftednum = "<!\"§$%&/()";
+      if (!strcmp(optarg, "fr"))      shiftednum = "<&é\"'(-è_ç";
+      break;
     case 'k': monochrome = 1; break;
     case 'c': usedefault = 1; break;
     case 'i': squerymode = 0; break;
     case 'a': autocommit = 0; break;
     case 'd': deleprompt = 1; break;
+    case 'q': queryonlym = 1; break;
     default: usage(1);
   }
 }

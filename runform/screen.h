@@ -54,7 +54,7 @@ enum {
   COL_CURRENT,         /* =17 */
   COL_FIELD,           /* =18 */
   COL_QUERY,           /* =19 */
-  CURHEADERCOLOR,      /* =20 */
+  COL_HEADER,          /* =20 */
   MARKCOLOR,           /* =21 */
   AUTOCALCCOLOR,       /* =22 */
   FORMDISPLAYCOLOR,    /* =23 */
@@ -106,6 +106,7 @@ enum { KEF_HELP = 0777+1, KEF_LIST, KEF_COPY, KEF_PASTE, KEF_COPYREC, KEF_INSREC
 //     F1                    F2        F3        F4         F5           F6          F7         F8        F9
        KEF_HOME, KEF_LEFT, KEF_DELETE, KEF_END, KEF_RIGHT,   KEF_PREFLD, KEF_BACKDEL, KEF_NXTFLD, KEF_REFRESH,
 //     Home      Left      Del         End      Right        Btab        Backspace    Tab         Ctrl-L
-       KEF_COMMIT, KEF_NXTREC, KEF_INSERT, KEF_PREREC, KEF_PRESETR, KEF_NXTSETR, KEF_MENU
+       KEF_COMMIT, KEF_NXTREC, KEF_INSERT, KEF_PREREC, KEF_PRESETR, KEF_NXTSETR, KEF_MENU,
+       KEF_NAVI0, KEF_NAVI1, KEF_NAVI2, KEF_NAVI3, KEF_NAVI4, KEF_NAVI5, KEF_NAVI6, KEF_NAVI7, KEF_NAVI8, KEF_NAVI9
 };
-
+#define KEF_NAVI(n) (KEF_NAVI0+n)
