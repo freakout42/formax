@@ -14,6 +14,7 @@ public:
   void writes(int y, int x, char *str);
   void writef(int y, int x, int colcode, int width, char *format, ...);
   void toggle();
+  int wgetc();
 	int getkb();
 	int getkey();
   int sedit(char *toe, int pos);
@@ -55,7 +56,7 @@ enum {
   COL_FIELD,           /* =18 */
   COL_QUERY,           /* =19 */
   COL_HEADER,          /* =20 */
-  MARKCOLOR,           /* =21 */
+  COL_NEWREC,          /* =21 */
   AUTOCALCCOLOR,       /* =22 */
   FORMDISPLAYCOLOR,    /* =23 */
   MESSAGECOLOR,        /* =24 */

@@ -28,6 +28,16 @@ strncat(target, source, maxlen);
 return strlen(target);
 }
 
+int catc(char *target, size_t maxlen, char source) {
+int i;
+i = strlen(target);
+if (!source) return i;
+if (i + 1 >= (int)maxlen) return 1;
+target[i] = source;
+target[i+1] = '\0';
+return 0;
+}
+
 int debugf(char *format, ...) {
 va_list args;
 int n;

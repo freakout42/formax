@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdio.h>
 #include "runform.h"
 
 int *Form::init() {
@@ -83,8 +84,10 @@ Function u;
 if (d.init()) return 6;
   for (i=0; i<numpage; i++) p[i].create();
   dirty = lastkey = 0;
-  while (!(s = u.dispatch()))
+  while (!(s = u.dispatch())) {
     lastkey = f.p[0].wait();
+    fprintf(stderr,"wait:%d\n",lastkey);
+  }
 d.closedisplay();
 return s==-1 ? 0 : s;
 }

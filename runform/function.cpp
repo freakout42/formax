@@ -1,30 +1,37 @@
+#include <stdio.h>
 #include "runform.h"
 
 int Function::dispatch() {
 int s;
+fprintf(stderr,"dispatch:%d\n",f.lastkey);
 switch(f.lastkey) {
- case 0:           s = enter_the_form();                            break;
- case KEF_RIGHT:   s = fedit(0);                                    break;
- case KEF_LEFT:    s = fedit(-1);                                   break;
- case KEF_NXTFLD:  s = fmove(0, 1);                                 break;
- case KEF_PREFLD:  s = fmove(0, -1);                                break;
- case KEF_NAVI1:   s = fmove(0, NFIELD1+1);                         break;
- case KEF_NAVI2:   s = fmove(0, NFIELD1+2);                         break;
- case KEF_NAVI3:   s = fmove(0, NFIELD1+3);                         break;
- case KEF_NAVI4:   s = fmove(0, NFIELD1+4);                         break;
- case KEF_NAVI5:   s = fmove(0, NFIELD1+5);                         break;
- case KEF_NAVI6:   s = fmove(0, NFIELD1+6);                         break;
- case KEF_NAVI7:   s = fmove(0, NFIELD1+7);                         break;
- case KEF_NAVI8:   s = fmove(0, NFIELD1+8);                         break;
- case KEF_NAVI9:   s = fmove(0, NFIELD1+9);                         break;
- case KEF_NXTREC:  s = fmover(1);                                   break;
- case KEF_PREREC:  s = fmover(-1);                                  break;
- case KEF_EXIT:    s = fexit();                                     break;
- case KEF_CANCEL:  s = fquit();                                     break;
- case KEF_COMMIT:  s = f.rmode==MOD_QUERY ? fquery() : fcreate();   break;
- case KEF_DELETE:  s = fdelete();                                   break;
- case KEF_INSERT:  s = finsert();                                   break;
- default: ;
+ case 0:            s = enter_the_form();                            break;
+ case KEF_RIGHT:    s = fedit(0);                                    break;
+ case KEF_LEFT:     s = fedit(-1);                                   break;
+ case KEF_NXTFLD:   s = fmove(0, 1);                                 break;
+ case KEF_PREFLD:   s = fmove(0, -1);                                break;
+ case KEF_NAVI1:    s = fmove(0, NFIELD1+1);                         break;
+ case KEF_NAVI2:    s = fmove(0, NFIELD1+2);                         break;
+ case KEF_NAVI3:    s = fmove(0, NFIELD1+3);                         break;
+ case KEF_NAVI4:    s = fmove(0, NFIELD1+4);                         break;
+ case KEF_NAVI5:    s = fmove(0, NFIELD1+5);                         break;
+ case KEF_NAVI6:    s = fmove(0, NFIELD1+6);                         break;
+ case KEF_NAVI7:    s = fmove(0, NFIELD1+7);                         break;
+ case KEF_NAVI8:    s = fmove(0, NFIELD1+8);                         break;
+ case KEF_NAVI9:    s = fmove(0, NFIELD1+9);                         break;
+ case KEF_NXTREC:   s = fmover(1);                                   break;
+ case KEF_PREREC:   s = fmover(-1);                                  break;
+ case KEF_EXIT:     s = fexit();                                     break;
+ case KEF_CANCEL:   s = fquit();                                     break;
+ case KEF_COMMIT:
+  switch(f.rmode) {
+   case MOD_UPDATE:
+   case MOD_QUERY:  s = fquery();                                    break;
+   case MOD_INSERT: s = fcreate();                                   break;
+  }                                                                  break;
+ case KEF_DELETE:   s = fdelete();                                   break;
+ case KEF_INSREC:   s = finsert();                                   break;
+ default:           s = fedit(0); //f.lastkey);
 }
 f.p[1].refr();
 return notrunning;
@@ -40,6 +47,8 @@ return notrunning;
 
 int Function::fmove(int bi, int fi) {
 //f.curblock = (f.curblock + f.numblock + bi) % f.numblock;
+fprintf(stderr,"fmove:%d\n",fi);
+fprintf(stderr,"fmove2:%d\n",f.curfield);
 if (fi < NFIELD1) f.curfield = CB.blockfields[ (CF.sequencenum-1 + CB.fieldcount + fi) % CB.fieldcount ];
 else              f.curfield = fi - NFIELD1 - 1;
 return f.curfield;
@@ -99,6 +108,7 @@ return 0;
 }
 
 int Function::fquery() {
+return 1;
 if (f.b[1].select()) notrunning = -2; else {
   if (CB.q->rows > 0) {
     CB.currentrecord = 1;

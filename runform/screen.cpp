@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <cstdarg>
+#include <stdio.h>
 #include <stdlib.h>
 #include <termio.h>
 #include <term.h>
@@ -31,7 +32,7 @@ static attrel attrels[] = {
   { COL_FIELD,           A_REVERSE,             COLOR_MAGENTA, COLOR_WHITE },   /* field */
   { COL_QUERY,           A_REVERSE,             COLOR_CYAN,    COLOR_BLACK },   /* query */
   { COL_HEADER,          A_BOLD,                COLOR_WHITE,   COLOR_BLUE },    /* status header */
-  { MARKCOLOR,           A_REVERSE,             COLOR_MAGENTA, COLOR_YELLOW },  /* marked range info */
+  { COL_NEWREC,          A_REVERSE,             COLOR_YELLOW,  COLOR_BLACK },   /* insert */
   { AUTOCALCCOLOR,       A_REVERSE,             0,             0 },             /* autocalc info */
   { FORMDISPLAYCOLOR,    A_REVERSE,             0,             0 },             /* formula display info */
   { MESSAGECOLOR,        A_BOLD|A_BLINK,        0,             0 },             /* messages */
@@ -129,8 +130,10 @@ return f.e->v(i,3);
 }
 
 int Screen::getkey() {
-int ck;
-ck = ispunctation(getkb());
+int ck, kb;
+kb = getkb();
+fprintf(stderr,"getkb:%d\n",kb);
+ck = ispunctation(kb);
 switch(ck) {
   case KEY_F(1):       return KEF_HELP;
   case KEY_F(2):       return KEF_LIST;
@@ -140,7 +143,7 @@ switch(ck) {
   case KEY_F(6):       return KEF_INSREC;
   case KEY_F(7):       return KEF_QUERY;
   case KEY_F(8):       return KEF_EXIT;
-  case KEY_F(9):
+  case KEY_F(9):       return KEF_CANCEL;
   case KEY_CANCEL:     return KEF_CANCEL;
   case KEY_HOME:       return KEF_HOME;
   case KEY_LEFT:       return KEF_LEFT;
@@ -162,24 +165,29 @@ switch(ck) {
  }
 }
 
+int Screen::wgetc() {
+return wgetch(stdscr);
+}
+
 int Screen::getkb() {
 int ch;
 ch = wgetch(stdscr);
+fprintf(stderr,"wgetch:%d\n",ch);
+//if (firststart) {
+  fprintf(stderr,"wgetchx:%d\n",firststart);
+  if (ch == '^') ch = '%';
+  else if (ch == '%') {
+                 ch = '^';
+                 fprintf(stderr,"wgetchy:%d\n",ch);
+  }
+  firststart = 0;
+//}
+fprintf(stderr,"wgetch2:%d\n",ch);
 switch(ch) {
   case KEY_F0:                                /* Help */
   case KEY_CTRL('@'):  return KEY_F(1);       /* Help                           Help */
-//case KEY_CTRL('U'):  return KEY_F(2);       /* List of values                 List */
-//case KEY_CTRL('W'):  return KEY_F(3);       /* Copy                           Copy */
-//case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field             DuplicateField Paste */
-//case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record                    DuplicateRecord */
-//case KEY_CTRL('J'):  return KEY_F(6);       /* Insert record                  InsertRecord */
-//case KEY_CTRL('X'):  return KEY_F(7);       /* Query                          EnterQuery */
-//case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit                  Exit */
-//case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel                Rollback */
-//case KEY_CTRL('?'):  return KEY_F(10);      /* ?                              ? */
   case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
   case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char                  Left */
-  case KEY_CANCEL:
   case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel                ExitCancel */
   case KEY_CTRL('D'):  return KEY_DC;         /* Delete (record)                DeleteCharacter DeleteRecord? */
   case KEY_CTRL('E'):  return KEY_END;        /* End / Next block               EndOfLine NextBlock */
@@ -187,12 +195,12 @@ switch(ch) {
   case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field                 PreviousField */
   case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace                      DeleteBackward */
   case KEY_CTRL('I'):  return KEY_TAB;        /* Next field                     NextField */
-  case KEY_CTRL('J'):  return KEY_F(6);       /* Insert record                  InsertRecord */
+  case KEY_CTRL('J'):  return KEY_IC;         /* Insert toggle                  InsertReplace */
   case KEY_CTRL('K'):  return KEY_F(7);       /* Delete record                  DeleteRecord */
   case KEY_CTRL('L'):  return KEY_F(0);       /* Refresh                        Refresh */
   case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept                  Commit Select Execute */
   case KEY_CTRL('N'):  return KEY_DOWN;       /* Next record                    Down NextRecord */
-  case KEY_CTRL('O'):  return KEY_IC;         /* Insert toggle                  InsertReplace InsertRecord? */
+  case KEY_CTRL('O'):  return KEY_F(6);       /* Insert record                  InsertRecord */
   case KEY_CTRL('P'):  return KEY_UP;         /* Previoud record                PreviousRecord */
 //case KEY_CTRL('Q'):  return KEY_F(?);       /* ?                              ? */
   case KEY_CTRL('R'):  return KEY_PPAGE;      /* Previous set of records        PreviousSetOfRecords */
@@ -204,12 +212,12 @@ switch(ch) {
   case KEY_CTRL('X'):  return KEY_F(7);       /* Query                          EnterQuery */
   case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field             DuplicateField Paste */
   case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit                  Exit */
-//case '/', '>'                                                                 Menu */
  }
 return ch;
 }
 
 int Screen::sedit(char *toe, int pos) {
+//if (*toe && pos > 0) { /*toe[0] = (unsigned char)pos; toe[1] = '\0';*/ pos = 0; }
 return f.p[0].getst(0, 0, 80, EDITCOLOR, toe, pos, "", SMLSIZE, NULL);
 }
 

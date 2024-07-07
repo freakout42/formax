@@ -23,13 +23,16 @@ return fieldcount;
 int Block::select() {
 int i;
 char wall[MEDSIZE];
+char sep[7];
 *wall = '\0';
+*sep = '\0';
 for (i=0; i<fieldcount; i++) {
   if (f.l[blockfields[i]].querywhere[0]) {
-    if (*wall) cats(t(wall), " AND ");
-               cats(t(wall), "(");
-               cats(t(wall), f.l[blockfields[i]].querywhere);
-               cats(t(wall), ")");
+    cats(t(wall), sep);
+    strcpy(sep, " AND ");
+    cats(t(wall), "(");
+    cats(t(wall), f.l[blockfields[i]].querywhere);
+    cats(t(wall), ")");
   }
 }
 if (*wall) let(where, wall);
@@ -59,16 +62,19 @@ int Block::insert(int r) {
 int i, j;
 char columnslist[MEDSIZE];
 char valueslist[SMLSIZE];
+char sep;
 *columnslist = '\0';
 *valueslist = '\0';
+sep = '\0';
 for (i=j=0; i<fieldcount; i++) {
- if (q->v(r, i+1)) {
-  if (*columnslist) cats(t(columnslist), ",");
-                    cats(t(columnslist), f.l[blockfields[i]].name);
-  if (*valueslist)  cats(t(valueslist),  ",");
-                    cats(t(valueslist),  "?");
-  bindv[j++] = q->v(r, i+1);
- }
+  if (q->v(r, i+1)) {
+    catc(t(columnslist), sep);
+    cats(t(columnslist), f.l[blockfields[i]].name);
+    catc(t(valueslist),  sep);
+    cats(t(valueslist),  "?");
+    sep = ',';
+    bindv[j++] = q->v(r, i+1);
+  }
 }
 bindv[j] = NULL;
 letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s)", table, columnslist, valueslist);

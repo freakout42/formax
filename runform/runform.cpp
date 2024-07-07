@@ -33,6 +33,7 @@ exit(ecd);
 
 // global
 char *lclocale;
+int  firststart  = 1;
 int  insertmode  = 1;
 int  monochrome  = 0;           // -k
 int  usedefault  = 0;           // -c

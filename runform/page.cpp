@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "runform.h"
 
@@ -38,7 +39,7 @@ deletewindow();
 static char *rmodes[] = { "Insert", "Query ", "Update", "Delete" };
 
 int Page::wait() {
-int i;
+//int i;
 wera();
 writef(0,  2, 0, 2,  "%2s-",    f.id);
 writes(0,  5,                   f.name);
@@ -50,9 +51,11 @@ writef(0, 56, COL_HEADER,3,"%s",(char*)(insertmode ? "Ins" : "Rep"));
 writef(0, 63, 0, 3,  "%3d",     f.lastkey);
 writes(0, 67,                   "runform-");
 writes(0, 75,                   (char*)VERSION);
+fprintf(stderr,"page:%d\n\n",f.lastkey);
+//if (f.lastkey) wgetc();
 refr();
-for (i=0; i<f.numfield; i++) f.l[i].show(i == f.curfield);
-for (i=1; i<f.numpage;  i++) f.p[i].refr();
+//for (i=0; i<f.numfield; i++) f.l[i].show(i == f.curfield);
+//for (i=1; i<f.numpage;  i++) f.p[i].refr();
 return getkey();
 }
 
