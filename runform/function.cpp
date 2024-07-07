@@ -1,9 +1,7 @@
-#include <stdio.h>
 #include "runform.h"
 
 int Function::dispatch() {
 int s;
-fprintf(stderr,"dispatch:%d\n",f.lastkey);
 switch(f.lastkey) {
  case 0:            s = enter_the_form();                            break;
  case KEF_RIGHT:    s = fedit(0);                                    break;
@@ -31,7 +29,7 @@ switch(f.lastkey) {
   }                                                                  break;
  case KEF_DELETE:   s = fdelete();                                   break;
  case KEF_INSREC:   s = finsert();                                   break;
- default:           s = fedit(0); //f.lastkey);
+ default:           s = fedit(f.lastkey);
 }
 f.p[1].refr();
 return notrunning;
@@ -47,8 +45,6 @@ return notrunning;
 
 int Function::fmove(int bi, int fi) {
 //f.curblock = (f.curblock + f.numblock + bi) % f.numblock;
-fprintf(stderr,"fmove:%d\n",fi);
-fprintf(stderr,"fmove2:%d\n",f.curfield);
 if (fi < NFIELD1) f.curfield = CB.blockfields[ (CF.sequencenum-1 + CB.fieldcount + fi) % CB.fieldcount ];
 else              f.curfield = fi - NFIELD1 - 1;
 return f.curfield;
@@ -108,7 +104,6 @@ return 0;
 }
 
 int Function::fquery() {
-return 1;
 if (f.b[1].select()) notrunning = -2; else {
   if (CB.q->rows > 0) {
     CB.currentrecord = 1;

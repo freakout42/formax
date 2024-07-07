@@ -50,11 +50,10 @@ dbc = NULL;
 }
 
 int Record::execute(SQLCHAR *sql, char *b[]) {
-int i;
-int s;
-SQLINTEGER indicator;
-indicator = SQL_NTS;
-for (i=0; b[i]; i++) ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], 0, &indicator);
+int i, s;
+SQLLEN len;
+len = SQL_NTS;
+for (i=0; b[i]; i++) ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], 0, &len);
 let(sqlcmd, (char*)sql);
 s = 0;
 if ((ret = SQLPrepare(stmt, sql, SQL_NTS))) s = 10; else

@@ -297,6 +297,15 @@ keyword (for, while, do, switch, if, ...). Bool is not
 compared - no if (ispresent == NULL) or (isempty[0] == '\0')
 just use !ispresent or *isempty.
 
+Operations
+==========
+
+Install
+-------
+
+    sudo apt-get update
+    sudo apt-get -y install unixodbc
+
 License
 =======
 

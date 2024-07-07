@@ -1,6 +1,6 @@
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
-CXXFLAGS=-g	-O0 -Wall -Werror
+CXXFLAGS=-g -O0 -Wall -Werror
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
 VALGRINDSUP=--gen-suppressions=all
 

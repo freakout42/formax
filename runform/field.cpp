@@ -43,7 +43,7 @@ switch(f.rmode) {
   if (f.b[blockindex].q->rows) {
     c = f.b[blockindex].q->w(CB.currentrecord, sequencenum);
     if (*c) let(buf, *c); else *buf = '\0';
-    pressed = f.p[0].sedit(buf, 0); //pos);
+    pressed = f.p[0].sedit(buf, pos);
     if (*c==NULL || strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);
     if ((*c==NULL && *buf) || strcmp(*c, buf)) {
       strcpy(*c, buf);

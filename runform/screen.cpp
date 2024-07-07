@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <cstdarg>
-#include <stdio.h>
 #include <stdlib.h>
 #include <termio.h>
 #include <term.h>
@@ -132,7 +131,6 @@ return f.e->v(i,3);
 int Screen::getkey() {
 int ck, kb;
 kb = getkb();
-fprintf(stderr,"getkb:%d\n",kb);
 ck = ispunctation(kb);
 switch(ck) {
   case KEY_F(1):       return KEF_HELP;
@@ -166,23 +164,12 @@ switch(ck) {
 }
 
 int Screen::wgetc() {
-return wgetch(stdscr);
+return wgetch(stdscr); // wgetch(wndw); getch();
 }
 
 int Screen::getkb() {
 int ch;
-ch = wgetch(stdscr);
-fprintf(stderr,"wgetch:%d\n",ch);
-//if (firststart) {
-  fprintf(stderr,"wgetchx:%d\n",firststart);
-  if (ch == '^') ch = '%';
-  else if (ch == '%') {
-                 ch = '^';
-                 fprintf(stderr,"wgetchy:%d\n",ch);
-  }
-  firststart = 0;
-//}
-fprintf(stderr,"wgetch2:%d\n",ch);
+ch = wgetc();
 switch(ch) {
   case KEY_F0:                                /* Help */
   case KEY_CTRL('@'):  return KEY_F(1);       /* Help                           Help */
@@ -217,7 +204,10 @@ return ch;
 }
 
 int Screen::sedit(char *toe, int pos) {
-//if (*toe && pos > 0) { /*toe[0] = (unsigned char)pos; toe[1] = '\0';*/ pos = 0; }
+if (pos > 0) {
+  toe[0] = (unsigned char)pos; toe[1] = '\0';
+  pos = 1;
+}
 return f.p[0].getst(0, 0, 80, EDITCOLOR, toe, pos, "", SMLSIZE, NULL);
 }
 
