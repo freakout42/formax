@@ -1,6 +1,7 @@
+all:  CXXFLAGS=-O3 -DNDEBUG
+test: CXXFLAGS=-g -O0 -Wall -Werror
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
-test: CXXFLAGS=-g -O0 -Wall -Werror
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
 VALGRINDSUP=--gen-suppressions=all
 

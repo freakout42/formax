@@ -9,5 +9,6 @@ let(prikey,    "id");
 let(attrs,     "line,mtext");
 letf(t(where), "page_id = %d", page_id);
 let(order,     "line");
+columni = 2;
 return 0;
 }

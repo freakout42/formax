@@ -9,5 +9,6 @@ let(prikey,    "id");
 let(attrs,     "name,ysiz,xsiz,vwpy0,vwpx0,border");
 letf(t(where), "form_id = %d", form_id);
 let(order,     "seq");
+columni = 6;
 return 0;
 }

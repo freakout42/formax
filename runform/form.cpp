@@ -6,6 +6,7 @@ let(table,  "forms");
 let(prikey, "id");
 let(attrs,  "id,name,title");
 let(order,  "id");
+columni = 3;
 d.ysiz = 0;
 return 0;
 }

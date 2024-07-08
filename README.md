@@ -222,18 +222,38 @@ Feature roadmap
 User guide
 ==========
 
-Basic
------
+A form is a fill-in-the-blanks template on your computer
+screen that allows you to enter, update, delete and query
+informationin a database. Forms are composed of blocks,
+records and fields.
 
-Keys
-----
+Basic tasks
+-----------
+
 
 Playground
 ----------
 
-luis@haydn.mailpost.de
-
     "LineCodePage"="ISO-8859-15:1999 (Latin-9, \"euro\")"
+
+Operations
+==========
+
+Install
+-------
+
+Fork in github and create codespace or download and extract
+https://github.com/freakout42/formax/archive/refs/heads/main.zip
+On codespace/debian do the following to build and run the example
+
+    sudo apt-get update
+    sudo apt-get -y install unixodbc
+    sudo apt-get -y install libsqliteodbc
+    sudo apt-get -y install libncurses5-dev
+    sudo apt-get -y install flex
+    ./configure
+    make
+    dist/formax/bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so dist/formax/lib/scotty.{frm,sq3}
 
 Development
 ===========
@@ -299,25 +319,6 @@ bracket. Opening curly bracket is always at the same line as
 keyword (for, while, do, switch, if, ...). Bool is not
 compared - no if (ispresent == NULL) or (isempty[0] == '\0')
 just use !ispresent or *isempty.
-
-Operations
-==========
-
-Install
--------
-
-Fork in github and create codespace or download and extract
-https://github.com/freakout42/formax/archive/refs/heads/main.zip
-On codespace/debian do the following to build and run the example
-
-    sudo apt-get update
-    sudo apt-get -y install unixodbc
-    sudo apt-get -y install libsqliteodbc
-    sudo apt-get -y install libncurses5-dev
-    sudo apt-get -y install flex
-    ./configure
-    make
-    dist/formax/bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so dist/formax/lib/scotty.{frm,sq3}
 
 License
 =======

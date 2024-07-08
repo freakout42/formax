@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdlib.h>
 #include <sql.h>
 #include <sqlext.h>
@@ -64,25 +65,26 @@ return s;
 
 int Record::clear() {
 q->freed();
+if (q->alloc(columni)) return 13;
 return 0;
 }
 
 int Record::query() {
-SQLUSMALLINT i;
+SQLSMALLINT i;
 SQLLEN indicator;
 int j;
 char **qp;
-clear();
+if (clear()) return 13;
 *whereorder = '\0';
 j = *where ? letf(whereorder, sizeof(whereorder), " where %s", where) : 0;
 if (*order) letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
 letf((char*)querystr, sizeof(querystr), "select %s from %s%s", attrs, table, whereorder);
 bindv[0] = NULL;
 if ((ret = execute(querystr, bindv))) return ret;
-if ((ret = SQLNumResultCols(stmt, &columni))) {
+if ((ret = SQLNumResultCols(stmt, &i))) {
+  assert(i != columni);
   return 12;
 }
-if (q->alloc(columni)) return 13;
 while (SQL_SUCCEEDED(ret = SQLFetch(stmt))) {
   q->rows++;
   for (i = 1; i <= columni; i++) {

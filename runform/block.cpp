@@ -17,6 +17,7 @@ if (*attrs) cats(t(attrs), ","); /* build the column list for query */
 cats(t(attrs), f.l[att].name);
 blockfields[fieldcount++] = att;
 if (f.l[att].isprimarykey) primarykeys[prikeycnt++] = att;
+columni = fieldcount;
 return fieldcount;
 }
 

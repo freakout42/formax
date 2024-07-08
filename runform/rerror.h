@@ -18,6 +18,7 @@ INSERT INTO errors (num, severity, etext) VALUES ( 50, 3, 'SQL');
 INSERT INTO errors (num, severity, etext) VALUES (100, 1, 'At first record');
 INSERT INTO errors (num, severity, etext) VALUES (101, 2, 'Can''t edit a key field');
 INSERT INTO errors (num, severity, etext) VALUES (102, 2, 'Record must be entered or deleted first');
+INSERT INTO errors (num, severity, etext) VALUES (103, 1, 'At last record');
 INSERT INTO errors (num, severity, etext) VALUES (200, 2, 'Field is protected against update');
 INSERT INTO errors (num, severity, etext) VALUES (207, 2, 'Must be in range');
 INSERT INTO errors (num, severity, etext) VALUES (208, 2, 'Form running in query-only mode. No changes');

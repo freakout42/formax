@@ -9,5 +9,6 @@ let(prikey, "id");
 let(attrs,  "name,prikey,whereand,orderby");
 let(where,  "form_id = 1");
 let(order,  "seq");
+columni = 4;
 return 0;
 }
