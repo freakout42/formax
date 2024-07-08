@@ -48,14 +48,13 @@ writef(0, 29, 0, 9,  "%s",      f.l[f.curfield].name);
 writef(0, 39, 0, 9,  "%4d/%4d", CB.currentrecord, CB.q->rows);
 writef(0, 49, COL_HEADER,6,"%s",rmodes[f.rmode]);
 writef(0, 56, COL_HEADER,3,"%s",(char*)(insertmode ? "Ins" : "Rep"));
-writef(0, 63, 0, 3,  "%3d",     f.lastkey);
+writef(0, 63, 0, 3,  "%3d",     LK);
 writes(0, 67,                   "runform-");
 writes(0, 75,                   (char*)VERSION);
-if (f.lastkey == '%') redraw();
 refr();
 for (i=0; i<f.numfield; i++) f.l[i].show(i == f.curfield);
 for (i=1; i<f.numpage;  i++) f.p[i].refr();
-return getkey();
+return LK ? LK : getkb();
 }
 
 int Page::message(int ern, char *pnt) {
@@ -68,7 +67,7 @@ if (strlen(pntst) > LINE0SIZE-12) i = strlen(pntst) - LINE0SIZE + 12; else i = 0
 writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, f.d.msg(ern), pntst+i);
 wmov(0,0);
 refr();
-return getkey();
+return getkb();
 }
 return 0;
 }

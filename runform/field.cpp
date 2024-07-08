@@ -32,11 +32,9 @@ if (cur) f.p[1].wmov(line, col);
 int Field::edit(int pos) {
 int s;
 int pressed;
-int changed;
 char buf[SMLSIZE];
 char **c;
-pressed = -1;
-changed = 0;
+pressed = 0;
 switch(f.rmode) {
  case MOD_INSERT:
  case MOD_UPDATE:
@@ -45,10 +43,7 @@ switch(f.rmode) {
     if (*c) let(buf, *c); else *buf = '\0';
     pressed = f.p[0].sedit(buf, pos);
     if (*c==NULL || strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);
-    if ((*c==NULL && *buf) || strcmp(*c, buf)) {
-      strcpy(*c, buf);
-      changed = 1;
-    }
+    if ((*c==NULL && *buf) || strcmp(*c, buf)) strcpy(*c, buf);
   }
   break;
  case MOD_QUERY:
@@ -56,5 +51,6 @@ switch(f.rmode) {
   s = colquery(queryhuman, querywhere, name, 1, 0);
   break;
 }
-return changed;
+pressed = pressed==KEY_ENTER ? KEF_NXTFLD : f.mapkey(pressed);
+return pressed;
 }

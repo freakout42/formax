@@ -17,7 +17,6 @@ public:
   void toggle();
   int wgetc();
 	int getkb();
-	int getkey();
   int sedit(char *toe, int pos);
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
   int ysiz;

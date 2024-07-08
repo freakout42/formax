@@ -27,6 +27,7 @@ public:
   int fill(int id);
   void clear();
   int run();
+  int mapkey(int ckey);
 private:
 };
 
