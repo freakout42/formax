@@ -69,7 +69,7 @@ return 0;
 
 int Record::query() {
 SQLUSMALLINT i;
-SQLINTEGER indicator;
+SQLLEN indicator;
 int j;
 char **qp;
 clear();
