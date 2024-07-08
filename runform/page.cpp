@@ -51,7 +51,7 @@ writef(0, 56, COL_HEADER,3,"%s",(char*)(insertmode ? "Ins" : "Rep"));
 writef(0, 63, 0, 3,  "%3d",     f.lastkey);
 writes(0, 67,                   "runform-");
 writes(0, 75,                   (char*)VERSION);
-//if (f.lastkey) wgetc();
+if (f.lastkey == '%') redraw();
 refr();
 for (i=0; i<f.numfield; i++) f.l[i].show(i == f.curfield);
 for (i=1; i<f.numpage;  i++) f.p[i].refr();

@@ -113,6 +113,7 @@ void Screen::wera() { werase(wndw); }
 void Screen::wbox() { box(wndw, 0, 0); }
 void Screen::wmov(int y, int x) { wmove(wndw, y, x); }
 void Screen::refr() { wrefresh(wndw); }
+void Screen::redraw() { redrawwin(wndw); }
 void Screen::closedisplay() { endwin(); }
 
 void Screen::toggle() {
@@ -204,10 +205,6 @@ return ch;
 }
 
 int Screen::sedit(char *toe, int pos) {
-if (pos > 0) {
-  toe[0] = (unsigned char)pos; toe[1] = '\0';
-  pos = 1;
-}
 return f.p[0].getst(0, 0, 80, EDITCOLOR, toe, pos, "", SMLSIZE, NULL);
 }
 
@@ -219,7 +216,7 @@ return f.p[0].getst(0, 0, 80, EDITCOLOR, toe, pos, "", SMLSIZE, NULL);
 int Screen::getst(int y, int x, int width, int colcode, char *s, int pos, char *legal, int max, int *chg) {
 int done;                    /* end-of-loop flag */
 int changed;                 /* changed the string */
-int first;                   /* first input flag */
+int first;                   /* first input flag/char */
 int c;                       /* input key */
 int sx;                      /* current position x */
 int len;                     /* currrent string len  */
@@ -231,9 +228,11 @@ int endx;                    /* end position   */
 
 done = 0;
 changed = 0;
-first = 1;
+first = 0;
 c = 0;
-if (pos == -999) pos = -1; else if (pos < 0) pos += strlen(s) + 1;
+if (pos == -9999) pos = -1;
+else if (pos < 0 && pos > -1000) pos += strlen(s) + 1;
+else if (pos < 0) { first = -1 * (pos + 1000); pos = 0; }
 sx = x + pos;
 len = strlen(s);
 so = se;
@@ -257,7 +256,7 @@ while (!done) {              /* input loop */
   if ((int)strlen(so) > width && sx < endx) mvwaddch(wndw, y, endx, '>');
   wmov(y, sx);      /* move to cursor pos */
   refr();        /* show the screen */
-  switch (c = getkb()) {     /* get pressed key  */
+  switch (c = first ? first : getkb()) {     /* get pressed key  */
    case KEY_HOME:            /* go to start of field */
     pos = 0;
     sx  = x;
@@ -325,7 +324,7 @@ while (!done) {              /* input loop */
       if (   ((legal[0] == 0)  /* legal input? */
           || (strchr(legal, c) != NULL)) ) {
         changed = TRUE;
-/*      if (pos==0 && first) len = 0;    erase on pos0 */
+        if (pos==0 && first) len = 0; /* erase on pos0 */
         if (len < max) {
           if (insertmode) {
             memmove(se+pos+1, se+pos, len - pos +1);

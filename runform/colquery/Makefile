@@ -1,11 +1,10 @@
-CFLAGS=-g -O0 -Wall -Werror -DYY_NO_UNPUT -DYY_SKIP_YYWRAP $(DEBUG)
+CFLAGS=-DYY_NO_UNPUT -DYY_SKIP_YYWRAP
+test: CFLAGS=-g -O0 -Wall -Werror -DYY_NO_UNPUT -DYY_SKIP_YYWRAP $(DEBUG)
 LDFLAGS=-r
 YFLAGS=-Wno-conflicts-sr -d --name-prefix=cq
 LEXFLAGS=--prefix=cq
 
 all: colq
-	./colq "2 a" "3-7"
-	./colq "%h" "*hi"
 
 colq: colq.c colquery.o colquery.h yyerror.o
 	$(CC) $(CFLAGS) -DYYDEBUG colq.c colquery.o yyerror.o -o $@

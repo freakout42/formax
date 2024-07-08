@@ -5,6 +5,7 @@ public:
   void createwindow(int y, int x, int py, int px);
   void deletewindow();
   void refr();
+  void redraw();
 	void closedisplay();
   void wmov(int y, int x);
 	void wera();

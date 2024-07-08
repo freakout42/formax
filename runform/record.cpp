@@ -62,12 +62,17 @@ if (ret) f.p[0].message(50, sqlcmd);
 return s;
 }
 
+int Record::clear() {
+q->freed();
+return 0;
+}
+
 int Record::query() {
 SQLUSMALLINT i;
 SQLINTEGER indicator;
 int j;
 char **qp;
-q->freed();
+clear();
 *whereorder = '\0';
 j = *where ? letf(whereorder, sizeof(whereorder), " where %s", where) : 0;
 if (*order) letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);

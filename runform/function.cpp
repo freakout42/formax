@@ -25,11 +25,12 @@ switch(f.lastkey) {
   switch(f.rmode) {
    case MOD_UPDATE:
    case MOD_QUERY:  s = fquery();                                    break;
-   case MOD_INSERT: s = fcreate();                                   break;
+   case MOD_INSERT: s = fcreate(); fmquery();                        break;
   }                                                                  break;
- case KEF_DELETE:   s = fdelete();                                   break;
+ case KEF_QUERY:    s = fmquery();                                   break;
+ case KEF_DELETE:   s = fdelete(); fmquery();                        break;
  case KEF_INSREC:   s = finsert();                                   break;
- default:           s = fedit(f.lastkey);
+ default:           s = fedit(-1000 - f.lastkey);
 }
 f.p[1].refr();
 return notrunning;
@@ -100,6 +101,13 @@ return 0;
 int Function::fquit() {
 if (f.dirty) MSG(401);
 notrunning = -1;
+return 0;
+}
+
+int Function::fmquery() {
+f.b[1].clear();
+CB.currentrecord = 0;
+f.rmode = MOD_QUERY;
 return 0;
 }
 

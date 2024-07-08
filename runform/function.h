@@ -15,6 +15,7 @@ private:
   int fquit();
   int finsert();
   int fcreate();
+  int fmquery();
   int fquery();
   int fdelete();
 };

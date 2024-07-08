@@ -20,6 +20,7 @@ public:
   void disconnect();
   int ropen();
   void rclose();
+  int clear();
   int query();
   char *c(int row, int col);
   int n(int row, int col);
