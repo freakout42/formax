@@ -3,18 +3,16 @@ formax: enterprise-applications on terminals
 
 # ALPHA - ALPHA - ALPHA - ALPHA - ALPHA - ALPHA
 
-**formax** is a tool for developing and executing fast,
-powerful and user-friedly character-based, interactive
-database applications. The basic concepts of Oracle
+**formax** is a tool for developing and executing
+user-friedly character-based database applications with
+extreme efficiency of labor. The basic concepts of Oracle
 SQL-Forms 3.0 are combined with curses as the terminal
-interface, ODBC for universal database access and Javascript
-as the trigger language. The best ideas for a powerful user
-interface from Emacs, Clipper, SAP and Lotus/1-2-3. The
-result is the most effective solution possible for the
-end-user. Don't see **formax** as a romantic nostalgica! The
-concepts of Oracle's SQL-Forms are still used today and
-could be very interesting for certain use cases on a
-terminal.
+interface, ODBC for universal database access and JavaScript
+as trigger language. The result is the most efficient
+solution possible for the end-user. Don't see **formax** as
+a romantic nostalgica! The concepts of Oracle's SQL-Forms
+are still used today and could be very interesting for
+certain use cases on a terminal.
 
 Introduction
 ============
@@ -202,8 +200,11 @@ single-row form. Expected 08/2024.
 Feature roadmap
 ---------------
 
- - multiple blocks master-detail
- - form for forms
+ - transaction processing
+ - validation on field content level
+ - multiple blocks and master-detail
+ - form for forms - designer module
+ - list of values - subforms
  - dev guide en
  - user guide in en, de, fr, ...
  - man pages
@@ -212,11 +213,11 @@ Feature roadmap
  - cqy.y: resolv 5 shift/reduce conflicts
  - sap-like batchinput
  - triggers with embedded javascript (elk)
- - help
+ - help screens
  - domains with central maintaining
- - direct field keys 1..9 ?
- - key macro
+ - key macros
  - multiple databases
+ - database validation (engine responsibility?)
 
 User guide
 ==========
@@ -227,8 +228,10 @@ Basic
 Keys
 ----
 
-PuTTY
------
+Playground
+----------
+
+luis@haydn.mailpost.de
 
     "LineCodePage"="ISO-8859-15:1999 (Latin-9, \"euro\")"
 
