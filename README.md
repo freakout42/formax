@@ -1,8 +1,5 @@
 formax: enterprise-applications on terminals
 ============================================
-
-# ALPHA - ALPHA - ALPHA - ALPHA - ALPHA - ALPHA
-
 **formax** is a tool for developing and executing
 user-friedly character-based database applications with
 extreme efficiency of labor. The basic concepts of Oracle
@@ -16,7 +13,6 @@ certain use cases on a terminal.
 
 Introduction
 ============
-
 **formax** forms access the database and generate a screen
 that presents the data. The source form (.inp in practice a
 sql-script to create a sqlite3 database) is compiled into a
@@ -41,52 +37,46 @@ necessary.
 
 Components
 ==========
-
 **formax** consists of the following programs, or
 components, that you can execute independently from the
 command line.
 
 generate
 --------
+makeform is a shell script which can produce the sql script
+(.inp) which in turn can create the form database (.frm) by
+using the sqlite3 utility. The produced sql script
+represents in practice the source code of the form
+application and can be edited to change the default
+behaviour or to add objects to the form.
 
-    makeform is a shell script which can produce the sql
-    script (.inp) which in turn can create the form database
-    (.frm) by using the sqlite3 utility. The produced sql
-    script represents in practice the source code of the
-    form application and can be edited to change the default
-    behaviour or to add objects to the form.
-
-    editform can edit the form database with a form.
-    NOT YET IMPLEMENTED.
+editform can edit the form database with a form.
+NOT YET IMPLEMENTED.
 
 runform
 -------
-
-    Execute forms (.frm) interactively on a terminal by the
-    end-user.
+Execute forms (.frm) interactively on a terminal by the
+end-user.
 
 colquery
 --------
-
-    Parser for a natural query language. Translats human
-    properties to SQL where clauses.
+Parser for a natural query language. Translats human
+properties to SQL where clauses.
 
 regex
 -----
-
-    Regular expression engine for validating user entered
-    data.
-    See: github.com/kokke/tiny-regex-c
+Regular expression engine for validating user entered data.
+NOT YET IMPLEMENTED.
+See: github.com/kokke/tiny-regex-c
 
 elk
 ---
-
-    Javascript engine for 3GL triggers.
-    See: github.com/cesanta/elk
+Javascript engine for 3GL triggers.
+NOT YET IMPLEMENTED.
+See: github.com/cesanta/elk
 
 Objects
 =======
-
 A **formax** application is made up of objects. These
 objects contain all the information that is needed for an
 application. They have a 1:1 relationship to the tables in
@@ -96,7 +86,6 @@ for reading the form-database and for processing.
 
 Forms
 -----
-
 The primary object of a **formax** application is the form.
 A form is made up of additional objects. These objects link
 the form to database elements, such as columns and tables,
@@ -104,33 +93,28 @@ and provide control over the flow of execution.
 
 Blocks
 ------
-
 Describe each section or subsection of the form, and serve
 as the basis of default database interaction.
 
 Fields
 ------
-
 Represent columns or data entry areas and describe how the
 data should be displayed and validated an how an operator
 should interact with the data while it is entered.
 
 Pages
 -----
-
 Are collections of display information, such as constant
 text. All fields are displayed on some page.
 
 Triggers
 --------
-
 Are sets of processing commands associated with event
 points, such as when a particular function key is pressed by
 the operator.
 
 Processing
 ==========
-
 When a form is executed **formax** follows a pre-defined set
 of rules for how actions should occur. These actions include
 navigation whithin the application and the validation of
@@ -139,7 +123,6 @@ default behaviour to meet the needs of your application.
 
 Events and Functions
 --------------------
-
 All processing centers around events. Put simply, events are
 things that occur when a form is exeecuted. **formax** knows
 about events and handles them by executing functions. Note
@@ -151,7 +134,6 @@ processes of navigation and validation.
 
 Trigger Points
 --------------
-
 Every function that an event calls might have on or more
 trigger point associated with it. A trigger point is
 temporal place in an event with a specific trigger type is
@@ -161,7 +143,6 @@ processes, a particular event.
 
 Navigation
 ==========
-
 Navigation is an internal function that is invoked by
 specific events. **formax** perfoms navigation primarily to
 move the cursor from one location to another. The main
@@ -172,7 +153,6 @@ form.
 
 Validation
 ==========
-
 Validation is an internal function that is invoked by
 specific events. Validation is the process by which
 **formax** determines whether the data in an object is valid
@@ -180,7 +160,6 @@ or correct.
 
 Trigger Processing
 ==================
-
 Events invoke functions, which have trigger points. When
 **formax** processes a trigger point, it executes, or fires,
 the associated trigger. Every trigger pont has a specific
@@ -188,8 +167,7 @@ type of trigger associated with it.
 
 Status
 ======
-
-Current 0.9.0 is ALPHA and unusable - the generator can only
+Current 0.9.x is ALPHA and unusable - the generator can only
 create a single-block single-page form. runform can display
 the page - wait for a key - and exit.
 
@@ -199,7 +177,6 @@ single-row form. Expected 08/2024.
 
 Feature roadmap
 ---------------
-
  - multi-record fields
  - transaction processing
  - validation on field content level
