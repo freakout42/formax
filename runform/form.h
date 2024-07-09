@@ -10,7 +10,7 @@ public:
   rPage rpage;
   rMap rmap;
   Qdata *e;
-  Screen d;
+  Screen y;
   Block b[NBLOCKS];
   Field l[NFIELDS];
   Page  p[NBLOCKS];

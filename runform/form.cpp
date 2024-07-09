@@ -7,7 +7,7 @@ let(prikey, "id");
 let(attrs,  "id,name,title");
 let(order,  "id");
 columni = 3;
-d.ysiz = 0;
+y.ysiz = 0;
 return 0;
 }
 
@@ -81,48 +81,53 @@ for (i=0; i<numpage;  i++) p[i].destroy();
 int Form::run() {
 int i, s;
 Function u;
-if (d.init()) return 6;
+if (y.init()) return 6;
   for (i=0; i<numpage; i++) p[i].create();
   dirty = 0;
   lastkey = -1;
   while (!(s = u.dispatch())) {
     lastkey = f.p[0].wait();
   }
-d.closedisplay();
+y.closedisplay();
 return s==-1 ? 0 : s;
 }
 
 int Form::mapkey(int ckey) {
 int ck;
 ck = ispunctation(ckey);
-switch(ck) {
-  case KEY_F(1):       return KEF_HELP;
-  case KEY_F(2):       return KEF_LIST;
-  case KEY_F(3):       return KEF_COPY;
-  case KEY_F(4):       return KEF_PASTE;
-  case KEY_F(5):       return KEF_COPYREC;
-  case KEY_F(6):       return KEF_INSREC;
-  case KEY_F(7):       return KEF_QUERY;
-  case KEY_F(8):       return KEF_EXIT;
-  case KEY_F(9):       return KEF_CANCEL;
-  case KEY_ESC:        return KEF_CANCEL;
-  case KEY_CANCEL:     return KEF_CANCEL;
-  case KEY_HOME:       return KEF_HOME;
-  case KEY_LEFT:       return KEF_LEFT;
-  case KEY_DC:         return KEF_DELETE;
-  case KEY_END:        return KEF_END;
-  case KEY_RIGHT:      return KEF_RIGHT;
-  case KEY_BTAB:       return KEF_PREFLD;
-  case KEY_BACKSPACE:  return KEF_BACKDEL;
-  case KEY_TAB:        return KEF_NXTFLD;
-//case KEY_F(0):       return KEF_REFRESH;
-  case KEY_ENTER:      return KEF_COMMIT;
-  case KEY_DOWN:       return KEF_NXTREC;
-  case KEY_IC:         return KEF_INSERT;
-  case KEY_UP:         return KEF_PREREC;
-  case KEY_PPAGE:      return KEF_PRESETR;
-  case KEY_NPAGE:      return KEF_NXTSETR;
-  case KEF_NAVI0:      return KEF_MENU;
+switch(ck) {                                  /* C */
+  case KEY_F(0):       return KEF_REFRESH;    /* l */
+  case KEY_F(1):       return KEF_HELP;       /* @ */
+  case KEY_F(2):       return KEF_COPY;       /* c */
+  case KEY_F(3):       return KEF_PASTE;      /* v */
+  case KEY_F(4):       return KEF_LIST;       /* u */
+  case KEY_F(5):       return KEF_COPYREC;    /* t */
+  case KEY_F(6):       return KEF_INSERT;     /* o */
+  case KEY_F(7):       return KEF_DELETE;     /* k */
+  case KEY_F(8):       return KEF_EXIT;       /* z */
+  case KEY_F(9):       return KEF_QUIT;       /* y */
+  case KEY_F(10):      return KEF_QUERY;      /* x */
+
+  case KEY_ESC:        return KEF_CANCEL;     /* esc */
+  case KEY_CANCEL:     return KEF_CANCEL;     /* cancel */
+
+  case KEY_IC:         return KEF_INSERT;     /* j */
+  case KEY_HOME:       return KEF_HOME;       /* a */
+  case KEY_PPAGE:      return KEF_PRESETR;    /* r */
+  case KEY_DC:         return KEF_DELETE;     /* d */
+  case KEY_END:        return KEF_END;        /* e */
+  case KEY_NPAGE:      return KEF_NXTSETR;    /* w */
+
+  case KEY_UP:         return KEF_PREREC;     /* p */
+  case KEY_LEFT:       return KEF_LEFT;       /* b */
+  case KEY_DOWN:       return KEF_NXTREC;     /* n */
+  case KEY_RIGHT:      return KEF_RIGHT;      /* f */
+
+  case KEY_TAB:        return KEF_NXTFLD;     /* i */
+  case KEY_BTAB:       return KEF_PREFLD;     /* g */
+  case KEY_BACKSPACE:  return KEF_BACKDEL;    /* h */
+  case KEY_ENTER:      return KEF_COMMIT;     /* m */
+
   default:             return ck;
  }
 }

@@ -229,7 +229,6 @@ Operations
 
 Install
 -------
-
 Fork in github and create codespace or download and extract
 https://github.com/freakout42/formax/archive/refs/heads/main.zip
 On codespace/debian do the following to build and run the example
@@ -245,7 +244,6 @@ On codespace/debian do the following to build and run the example
 
 Development
 ===========
-
 **formax** is implemented in pure C++ without calls to the
 OS (except malloc/free). Interface to the user is solely
 done with curses-lib. Interface to the database is solely
@@ -264,7 +262,6 @@ on special cases.
 
 Structure
 ---------
-
 runform.cpp holds main() and has the only OS-interfaces for
 running and checking the command line. record.cpp calls ODBC
 and screen.cpp calls curses. All the other sources are pure
@@ -275,31 +272,29 @@ holds all the event functions.
 
 Variable names
 --------------
-
 One character variable names (pattern like jquery $) are
 used for some fundamental values:
 
   | V | Description            | Type     | Source         |
   | - | ---------------------- | -------- | -------------- |
-  | t | char* target with size | Macro    | runform.h      |
-  | f | current Form object    | Variable | runform.h      |
-  | d | query result data      | Variable | qdata.h        |
-  | w | query result pointer   | Method   | qdata.h        |
-  | v | query result string    | Type     | qdata.h        |
-  | c | query result transfer  | Type     | qdata.h        |
-  | n | query result to_int    | Type     | qdata.h        |
-  | i | loop integer           | Variable |                |
-  | s | status integer         | Variable |                |
-  | q | query result object    | Type     | qdata.h        |
-  | e | error messages array   | Type     | rerror.h       |
-  | d | curses stdscr windows  | Type     | screen.h       |
   | b | blocks array           | Variable | form.h         |
+  | c | query result transfer  | Type     | qdata.h        |
+  | d | query result data      | Variable | qdata.h        |
+  | e | error messages array   | Type     | rerror.h       |
+  | f | current Form object    | Variable | runform.h      |
+  | i | loop integer           | Variable |                |
   | l | fields array           | Variable | form.h         |
+  | n | query result to_int    | Type     | qdata.h        |
   | p | pages array            | Variable | form.h         |
+  | q | query result object    | Type     | qdata.h        |
+  | s | status integer         | Variable |                |
+  | t | char* target with size | Macro    | runform.h      |
+  | v | query result string    | Type     | qdata.h        |
+  | w | query result pointer   | Method   | qdata.h        |
+  | y | curses stdscr window   | Type     | screen.h       |
 
 Indenting
 ---------
-
 2 spaces indenting is used and the top level of functions is
 not indented. Use 1 space between keyword and opening
 bracket. Do not use space between function name and opening
@@ -310,7 +305,6 @@ just use !ispresent or *isempty.
 
 License
 =======
-
 Simplified BSD License  
 Copyright (c) 2024, Axel K. Reinhold  
 All rights reserved.  

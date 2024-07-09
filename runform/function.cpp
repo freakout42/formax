@@ -2,34 +2,36 @@
 
 int Function::dispatch() {
 switch(f.mapkey(LK)) {
- case -1:           LK = enter_the_form();                            break;
- case KEF_RIGHT:    LK = fedit(0);                                    break;
- case KEF_LEFT:     LK = fedit(-1);                                   break;
- case KEF_NXTFLD:   LK = fmove(0, 1);                                 break;
- case KEF_PREFLD:   LK = fmove(0, -1);                                break;
- case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                         break;
- case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                         break;
- case KEF_NAVI3:    LK = fmove(0, NFIELD1+3);                         break;
- case KEF_NAVI4:    LK = fmove(0, NFIELD1+4);                         break;
- case KEF_NAVI5:    LK = fmove(0, NFIELD1+5);                         break;
- case KEF_NAVI6:    LK = fmove(0, NFIELD1+6);                         break;
- case KEF_NAVI7:    LK = fmove(0, NFIELD1+7);                         break;
- case KEF_NAVI8:    LK = fmove(0, NFIELD1+8);                         break;
- case KEF_NAVI9:    LK = fmove(0, NFIELD1+9);                         break;
- case KEF_NXTREC:   LK = fmover(1);                                   break;
- case KEF_PREREC:   LK = fmover(-1);                                  break;
- case KEF_EXIT:     LK = fexit();                                     break;
- case KEF_CANCEL:   LK = fquit();                                     break;
- case KEF_COMMIT:
-  switch(f.rmode) {
-   case MOD_UPDATE:
-   case MOD_QUERY:  LK = fquery();                                    break;
-   case MOD_INSERT: LK = fcreate(); fmquery();                        break;
-  }                                                                   break;
- case KEF_QUERY:    LK = fmquery();                                   break;
- case KEF_DELETE:   LK = fdelete(); fmquery();                        break;
- case KEF_INSREC:   LK = finsert();                                   break;
- default:           LK = fedit(-1000 - LK);
+  case -1:           LK = enter_the_form();                            break;
+  case KEF_RIGHT:    LK = fedit(0);                                    break;
+  case KEF_LEFT:     LK = fedit(-1);                                   break;
+  case KEF_NXTFLD:   LK = fmove(0, 1);                                 break;
+  case KEF_PREFLD:   LK = fmove(0, -1);                                break;
+//case KEF_NAVI0:    LK = fmenu();                                     break;
+  case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                         break;
+  case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                         break;
+  case KEF_NAVI3:    LK = fmove(0, NFIELD1+3);                         break;
+  case KEF_NAVI4:    LK = fmove(0, NFIELD1+4);                         break;
+  case KEF_NAVI5:    LK = fmove(0, NFIELD1+5);                         break;
+  case KEF_NAVI6:    LK = fmove(0, NFIELD1+6);                         break;
+  case KEF_NAVI7:    LK = fmove(0, NFIELD1+7);                         break;
+  case KEF_NAVI8:    LK = fmove(0, NFIELD1+8);                         break;
+  case KEF_NAVI9:    LK = fmove(0, NFIELD1+9);                         break;
+  case KEF_NAVI10:   LK = fmove(0, NFIELD1+9);                         break;
+  case KEF_NXTREC:   LK = fmover(1);                                   break;
+  case KEF_PREREC:   LK = fmover(-1);                                  break;
+  case KEF_EXIT:     LK = fexit();                                     break;
+  case KEF_CANCEL:   LK = fquit();                                     break;
+  case KEF_COMMIT:
+   switch(f.rmode) {
+    case MOD_UPDATE:
+    case MOD_QUERY:  LK = fquery();                                    break;
+    case MOD_INSERT: LK = fcreate(); fmquery();                        break;
+   }                                                                   break;
+  case KEF_QUERY:    LK = fmquery();                                   break;
+  case KEF_INSERT:   LK = finsert();                                   break;
+  case KEF_DELETE:   LK = fdelete(); fmquery();                        break;
+  default:           LK = fedit(-1000 - LK);
 }
 return notrunning;
 }

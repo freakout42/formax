@@ -35,13 +35,13 @@ exit(ecd);
 char *lclocale;
 int  firststart  = 1;
 int  insertmode  = 1;
-int  monochrome  = 0;           // -k
-int  usedefault  = 0;           // -c
-int  squerymode  = 1;           // -i
-int  autocommit  = 1;           // -a
-int  deleprompt  = 0;           // -d
-int  queryonlym  = 0;           // -q
-char *shiftednum = "`!@#$%^&*("; // -n us
+int  monochrome  = 0;             // -k
+int  usedefault  = 0;             // -c
+int  squerymode  = 1;             // -i
+int  autocommit  = 1;             // -a
+int  deleprompt  = 0;             // -d
+int  queryonlym  = 0;             // -q
+char *shiftednum = "`!@#$%^&*()"; // -n us
 Form f;
 
 int main(int argc, char *argv[]) { //, char **envp
@@ -61,10 +61,10 @@ while ((i = getopt(argc, argv, "acdikl:n:qVy:")) != -1) {
               printf("%s\n", xencrypt(optarg,1)); exit(99);
     case 'l': let(drv, optarg); break;
     case 'n':
-      if (!strcmp(optarg, "us")) ; // shiftednum = "`!@#$%^&*(";
-      if (!strcmp(optarg, "uk"))      shiftednum = "\\!\"£$%^&*(";
-      if (!strcmp(optarg, "de"))      shiftednum = "<!\"§$%&/()";
-      if (!strcmp(optarg, "fr"))      shiftednum = "<&é\"'(-è_ç";
+      if (!strcmp(optarg, "us")) ; // shiftednum = "`!@#$%^&*()";
+      if (!strcmp(optarg, "uk"))      shiftednum = "\\!\"£$%^&*()";
+      if (!strcmp(optarg, "de"))      shiftednum = "<!\"§$%&/()=";
+      if (!strcmp(optarg, "fr"))      shiftednum = "<&é\"'(-è_çá";
       break;
     case 'k': monochrome = 1; break;
     case 'c': usedefault = 1; break;

@@ -137,34 +137,33 @@ int Screen::getkb() {
 int ch;
 ch = wgetc();
 switch(ch) {
-  case KEY_F0:                                /* Help */
-  case KEY_CTRL('@'):  return KEY_F(1);       /* Help                           Help */
-  case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
-  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char                  Left */
-  case KEY_CTRL('C'):  return KEY_F(9);       /* Rollback Cancel                ExitCancel */
-  case KEY_CTRL('D'):  return KEY_DC;         /* Delete (record)                DeleteCharacter DeleteRecord? */
-  case KEY_CTRL('E'):  return KEY_END;        /* End / Next block               EndOfLine NextBlock */
-  case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char                      Right */
-  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field                 PreviousField */
-  case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace                      DeleteBackward */
-  case KEY_CTRL('I'):  return KEY_TAB;        /* Next field                     NextField */
-  case KEY_CTRL('J'):  return KEY_IC;         /* Insert toggle                  InsertReplace */
-  case KEY_CTRL('K'):  return KEY_F(7);       /* Delete record                  DeleteRecord */
-  case KEY_CTRL('L'):  return KEY_F(0);       /* Refresh                        Refresh */
-  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept                  Commit Select Execute */
-  case KEY_CTRL('N'):  return KEY_DOWN;       /* Next record                    Down NextRecord */
-  case KEY_CTRL('O'):  return KEY_F(6);       /* Insert record                  InsertRecord */
-  case KEY_CTRL('P'):  return KEY_UP;         /* Previoud record                PreviousRecord */
-//case KEY_CTRL('Q'):  return KEY_F(?);       /* ?                              ? */
-  case KEY_CTRL('R'):  return KEY_PPAGE;      /* Previous set of records        PreviousSetOfRecords */
-//case KEY_CTRL('S'):  return KEY_F(?);       /* ?                              ? */
-  case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record                    DuplicateRecord */
-  case KEY_CTRL('U'):  return KEY_F(2);       /* List of values                 List */
-  case KEY_CTRL('V'):  return KEY_NPAGE;      /* Next set of records            NextSetOfRecords */
-  case KEY_CTRL('W'):  return KEY_F(3);       /* Copy                           Copy */
-  case KEY_CTRL('X'):  return KEY_F(7);       /* Query                          EnterQuery */
-  case KEY_CTRL('Y'):  return KEY_F(4);       /* Paste / Copy field             DuplicateField Paste */
-  case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit                  Exit */
+/* KEF_HELP    */  case KEY_CTRL('@'):  return KEY_F(1);       /* Help                           Help */
+/* KEF_HOME    */  case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
+/* KEF_LEFT    */  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char                  Left */
+/* KEF_COPY    */  case KEY_CTRL('C'):  return KEY_F(2);       /* Copy                           Copy */
+/* KEF_DELETE  */  case KEY_CTRL('D'):  return KEY_DC;         /* Delete (record)                DeleteCharacter DeleteRecord */
+/* KEF_END     */  case KEY_CTRL('E'):  return KEY_END;        /* End / Next block               EndOfLine NextBlock */
+/* KEF_RIGHT   */  case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char                      Right */
+/* KEF_PREFLD  */  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field                 PreviousField */
+/* KEF_BACKDEL */  case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace                      DeleteBackward */
+/* KEF_NXTFLD  */  case KEY_CTRL('I'):  return KEY_TAB;        /* Next field                     NextField */
+/* KEF_INSERT  */  case KEY_CTRL('J'):  return KEY_IC;         /* Insert toggle (record)         InsertReplace InsertRecord */
+/* KEF_DELETE  */  case KEY_CTRL('K'):  return KEY_F(7);       /* Delete record                  DeleteRecord */
+/* KEF_REFRESH */  case KEY_CTRL('L'):  return KEY_F(0);       /* Refresh                        Refresh */
+/* KEF_COMMIT  */  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept                  Commit Select Execute */
+/* KEF_NXTREC  */  case KEY_CTRL('N'):  return KEY_DOWN;       /* Next record                    Down NextRecord */
+/* KEF_INSERT  */  case KEY_CTRL('O'):  return KEY_F(6);       /* Insert record                  InsertRecord */
+/* KEF_PREREC  */  case KEY_CTRL('P'):  return KEY_UP;         /* Previoud record                PreviousRecord */
+//                 case KEY_CTRL('Q'):  return KEY_F(?);       /* ?                              ? */
+/* KEF_PRESETR */  case KEY_CTRL('R'):  return KEY_PPAGE;      /* Previous set of records        PreviousSetOfRecords */
+//                 case KEY_CTRL('S'):  return KEY_F(?);       /* ?                              ? */
+/* KEF_COPYREC */  case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record                    DuplicateRecord */
+/* KEF_LIST    */  case KEY_CTRL('U'):  return KEY_F(4);       /* List of values                 List */
+/* KEF_PASTE   */  case KEY_CTRL('V'):  return KEY_F(3);       /* Paste / Copy field             DuplicateField Paste */
+/* KEF_NXTSETR */  case KEY_CTRL('W'):  return KEY_NPAGE;      /* Next set of records            NextSetOfRecords */
+/* KEF_QUERY   */  case KEY_CTRL('X'):  return KEY_F(10);      /* Query                          EnterQuery */
+/* KEF_QUIT    */  case KEY_CTRL('Y'):  return KEY_F(9);       /* Rollback Cancel                ExitCancel */
+/* KEF_EXIT    */  case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit                  Exit */
  }
 return ch;
 }
