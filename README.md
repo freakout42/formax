@@ -222,7 +222,6 @@ Feature roadmap
 
 User guide
 ==========
-
 A form is a fill-in-the-blanks template on your computer
 screen that allows you to enter, update, delete and query
 informationin a database. Forms are composed of blocks,
