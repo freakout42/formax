@@ -42,7 +42,7 @@ necessary.
 Components
 ==========
 
-**fromax** consists of the following programs, or
+**formax** consists of the following programs, or
 components, that you can execute independently from the
 command line.
 
@@ -131,7 +131,7 @@ the operator.
 Processing
 ==========
 
-When a form is executed **fromax** follows a pre-defined set
+When a form is executed **formax** follows a pre-defined set
 of rules for how actions should occur. These actions include
 navigation whithin the application and the validation of
 data. Within the processing rules, you can customize the
@@ -200,6 +200,7 @@ single-row form. Expected 08/2024.
 Feature roadmap
 ---------------
 
+ - multi-record fields
  - transaction processing
  - validation on field content level
  - multiple blocks and master-detail
@@ -234,7 +235,18 @@ Basic tasks
 Playground
 ----------
 
-    "LineCodePage"="ISO-8859-15:1999 (Latin-9, \"euro\")"
+
+~~~
+REGEDIT4
+
+[HKEY_CURRENT_USER\SOFTWARE\SimonTatham\PuTTY\Sessions\formax]
+"Present"=dword:00000001
+"HostName"="formax.toarx.de"
+"TerminalType"="putty"
+"UserName"="scott"
+"LineCodePage"="ISO-8859-15:1999 (Latin-9, \"euro\")"
+
+~~~
 
 Operations
 ==========

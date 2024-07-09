@@ -9,5 +9,6 @@ let(prikey, "id");
 let(attrs,  "num,severity,etext");
 let(where,  "");
 let(order,  "num");
+columni = 3;
 return 0;
 }

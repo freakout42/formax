@@ -52,7 +52,10 @@ return 0;
 int Function::fmover(int ri) {
 if (CB.currentrecord > 0) {
   CB.currentrecord += ri;
-  if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
+  if (CB.currentrecord > CB.q->rows) {
+    MSG(103);
+    CB.currentrecord = CB.q->rows;
+  }
   if (CB.currentrecord < 1) {
     MSG(100);
     CB.currentrecord = 1;
