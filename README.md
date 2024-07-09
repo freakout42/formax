@@ -212,12 +212,14 @@ Playground
 ----------
 You can play with an example form simply connecting by ssh
 to formax.toarx.de with user *scott* and password *tiger*.
-If you are using PuTTY you must set:\
+If you are using PuTTY you must set for the session:\
 Window->Translation->Remote character set = ISO-8859-15\
 Connection->Data->Terminal-type string = putty\
-for the session. If you add the following to your registry,
-you will find a loadable session which you can open in PuTTY
-or start with "putty -load formax" from the command line.
+
+For maximum convenience you can add the following to your
+registry. Then you will find a loadable session which you
+can open in PuTTY or start with "putty -load formax" from
+the command line.
 
 ~~~
 REGEDIT4
