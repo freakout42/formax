@@ -206,7 +206,15 @@ records and fields.
 
 Basic tasks
 -----------
-
+~~~
+Edit:   Edit with "Left/Right" and characters
+Query:  Edit conditions in each field
+Insert: Press "Insert" or Ctrl-o
+Update: Move to the record and field with
+        "Up/Down" and "Tab" and edit
+Delete: Move to the record
+        Press "Delete" or Ctrl-k
+~~~
 
 Playground
 ----------
@@ -253,21 +261,26 @@ On codespace/debian do the following to build and run the example
 
 Development
 ===========
-**formax** is implemented in pure C++ without calls to the
-OS (except malloc/free). Interface to the user is solely
-done with curses-lib. Interface to the database is solely
-through ODBC. Both libraries are not used directly but
-wrapped by the Screen and Record classes. Record is a simple
-ORM inspired by rails ActiceRecord. The form-database is a
-sqlite-database. The form generator builds a SQL script that
-creates the default form database.
 
-Everything is compiled with -Wall -Werror and memchecked
-with valgrind. Only int and char types are used and where
-possible static variables are used. Sourcecode lines are
+**formax** is implemented in pure C++. Interface to the user
+is solely done with curses-lib. Interface to the database is
+solely through ODBC. Both libraries are not used directly
+but wrapped by the Screen and Record classes. Record is a
+simple ORM inspired by rails ActiceRecord. The form-database
+is a sqlite-database. The form generator builds a SQL script
+that creates the default form database. Sourcecode lines are
 grouped into blocks of maximum 40. These groups have a top
 comment which explains the purpose. Other commenting is only
 on special cases.
+
+Security
+--------
+There are no calls to the OS (except malloc/free).
+Everything is compiled with -Wall -Werror and memchecked
+with valgrind. Only int and char types are used and where
+possible static variables are used. Everything that comes
+from outside is passed to ODBC with bind=variables. The
+environment is cleaned up to the minimum.
 
 Structure
 ---------
