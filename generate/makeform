@@ -12,6 +12,13 @@ INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE, ' $1');
 EOF
 }
 
+guidmap() {
+LINE=`expr $LINE + 1`
+  cat <<EOF
+UPDATE maps set mtext = mtext || '                      $1' where line = $LINE;
+EOF
+}
+
 cat <<EOF
 #PRAGMA encoding="ISO-8859-15";
 `./extractsql ../runform/form.h`
@@ -36,17 +43,30 @@ EOF
   LINE=`expr $LINE + 1`
 done
 LINE=`expr $LINE + 1`
-#helpmap 'F3    Ctrl+w Copy'
-#helpmap 'F4    Ctrl+y Paste'
-#helpmap 'F5    Ctrl+t Copy Record'
-helpmap 'F6    Ctrl+o Insert Record'
-helpmap 'F7    Ctrl+x Query'
-helpmap 'F8    Ctrl+z Quit'
-helpmap 'F9    Ctrl+c Cancel'
-helpmap 'Del   Ctrl+d Delete Record'
-helpmap 'Right Ctrl+f Edit Pos1'
-helpmap 'Left  Ctrl+b Edit End'
-helpmap 'Down  Ctrl+n Next Record'
-helpmap 'Up    Ctrl+p Previous Record'
+#elpmap 'F2    Ctrl+c Copy'
+#elpmap 'F3    Ctrl+v Paste'
+#elpmap 'F5    Ctrl+t Copy-Record'
+
+helpmap 'Right Ctrl+f Edit-Pos1        Edit:   Edit with "Left/Right" and characters'
+helpmap 'Left  Ctrl+b Edit-End'
+helpmap 'Down  Ctrl+n Next-Record      Update: Move to the record and field with'
+helpmap 'Up    Ctrl+p Previous-Record          "Up/Down" and "Tab" and edit'
 helpmap 'Enter Ctrl+m Execute'
+helpmap 'F6    Ctrl+o Insert-Record    Insert: Press "Insert" or Ctrl-o'
+helpmap 'F7    Ctrl+k Delete-Record    Delete: Move to the record'
+helpmap 'F8    Ctrl+z Exit                     Press "Delete" or Ctrl-k'
+helpmap 'F9    Ctrl+y Quit'          
+helpmap 'F10   Ctrl+x Query            Query:  Edit conditions in each field'
+
+exit
+
+LINE=1
+guidmap ''
+guidmap ''
+guidmap ''
+guidmap ''
+guidmap ''
+guidmap ''
+guidmap ''
+
 exit

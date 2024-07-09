@@ -48,7 +48,7 @@ writef(0, 29, 0, 9,  "%s",      f.l[f.curfield].name);
 writef(0, 39, 0, 9,  "%4d/%4d", CB.currentrecord, CB.q->rows);
 writef(0, 49, COL_HEADER,6,"%s",rmodes[f.rmode]);
 writef(0, 56, COL_HEADER,3,"%s",(char*)(insertmode ? "Ins" : "Rep"));
-writef(0, 63, 0, 3,  "%3d",     LK);
+//writef(0, 63, 0, 3,  "%3d",     LK);
 writes(0, 67,                   "runform-");
 writes(0, 75,                   (char*)VERSION);
 refr();

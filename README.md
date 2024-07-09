@@ -179,6 +179,7 @@ Feature roadmap
 ---------------
  - multi-record fields
  - transaction processing
+ - checksumming form with database password
  - validation on field content level
  - multiple blocks and master-detail
  - form for forms - designer module
@@ -219,7 +220,7 @@ Delete: Move to the record
 Playground
 ----------
 You can play with an example form simply connecting by ssh
-to formax.toarx.de with user *scott* and password *tiger*.
+to *formax.toarx.de* with user *scott* and password *tiger*.
 If you are using PuTTY you must set for the session:\
 Window->Translation->Remote character set = ISO-8859-15\
 Connection->Data->Terminal-type string = putty\
@@ -250,18 +251,19 @@ Fork in github and create codespace or download and extract
 https://github.com/freakout42/formax/archive/refs/heads/main.zip
 On codespace/debian do the following to build and run the example
 
-    sudo apt-get update
-    sudo apt-get -y install unixodbc
-    sudo apt-get -y install libsqliteodbc
-    sudo apt-get -y install libncurses5-dev
-    sudo apt-get -y install flex
-    ./configure
-    make
-    dist/formax/bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so dist/formax/lib/scotty.{frm,sq3}
+~~~
+sudo apt-get update
+sudo apt-get -y install unixodbc
+sudo apt-get -y install libsqliteodbc
+sudo apt-get -y install libncurses5-dev
+sudo apt-get -y install flex
+./configure
+make
+dist/formax/bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so dist/formax/lib/scotty.{frm,sq3}
+~~~
 
 Development
 ===========
-
 **formax** is implemented in pure C++. Interface to the user
 is solely done with curses-lib. Interface to the database is
 solely through ODBC. Both libraries are not used directly
@@ -279,8 +281,10 @@ There are no calls to the OS (except malloc/free).
 Everything is compiled with -Wall -Werror and memchecked
 with valgrind. Only int and char types are used and where
 possible static variables are used. Everything that comes
-from outside is passed to ODBC with bind=variables. The
-environment is cleaned up to the minimum.
+from outside is passed to ODBC with bind variables. There is
+no free SQL enterable as is was possible with original
+SQL-Forms. The password for the database is encrypted on the
+command line.
 
 Structure
 ---------
