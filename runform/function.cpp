@@ -3,11 +3,10 @@
 int Function::dispatch() {
 switch(f.mapkey(LK)) {
   case -1:           LK = enter_the_form();                            break;
-  case KEF_RIGHT:    LK = fedit(0);                                    break;
-  case KEF_LEFT:     LK = fedit(-1);                                   break;
+  case KEF_NAVI0:    LK = 0 /* fmenu() */;                             break;
+  case KEF_REFRESH:  LK = 0 /* frefresh() */;                          break;
   case KEF_NXTFLD:   LK = fmove(0, 1);                                 break;
   case KEF_PREFLD:   LK = fmove(0, -1);                                break;
-//case KEF_NAVI0:    LK = fmenu();                                     break;
   case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                         break;
   case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                         break;
   case KEF_NAVI3:    LK = fmove(0, NFIELD1+3);                         break;
@@ -17,20 +16,38 @@ switch(f.mapkey(LK)) {
   case KEF_NAVI7:    LK = fmove(0, NFIELD1+7);                         break;
   case KEF_NAVI8:    LK = fmove(0, NFIELD1+8);                         break;
   case KEF_NAVI9:    LK = fmove(0, NFIELD1+9);                         break;
-  case KEF_NAVI10:   LK = fmove(0, NFIELD1+9);                         break;
+  case KEF_NAVI10:   LK = 0 /* fcommit() */ ;                          break;
   case KEF_NXTREC:   LK = fmover(1);                                   break;
   case KEF_PREREC:   LK = fmover(-1);                                  break;
-  case KEF_EXIT:     LK = fexit();                                     break;
-  case KEF_CANCEL:   LK = fquit();                                     break;
-  case KEF_COMMIT:
+  case KEF_INSERT:
    switch(f.rmode) {
     case MOD_UPDATE:
-    case MOD_QUERY:  LK = fquery();                                    break;
-    case MOD_INSERT: LK = fcreate(); fmquery();                        break;
+    case MOD_QUERY:  LK = insert_record();                             break;
+    default:         LK = 0; f.y.toggle();                             break;
    }                                                                   break;
-  case KEF_QUERY:    LK = fmquery();                                   break;
-  case KEF_INSERT:   LK = finsert();                                   break;
-  case KEF_DELETE:   LK = fdelete(); fmquery();                        break;
+  case KEF_DELETE:
+   switch(f.rmode) {
+    case MOD_UPDATE: LK = delete_record(); enter_query();              break;
+    case MOD_INSERT:                       enter_query();              break;
+    default:         LK = 0; MSG(MSG_NOREC);                           break;
+   }                                                                   break;
+  case KEF_QUERY:    LK = enter_query();                               break;
+  case KEF_COMMIT:
+   switch(f.rmode) {
+    case MOD_UPDATE: LK = enter_query();                               break;
+    case MOD_QUERY:  LK = execute_query();                             break;
+    case MOD_INSERT: LK = create_record(); enter_query();              break;
+   }                                                                   break;
+  case KEF_EXIT:     LK = fexit();                                     break;
+  case KEF_QUIT:
+  case KEF_CANCEL:
+   switch(f.rmode) {
+    case MOD_UPDATE: 
+    case MOD_QUERY:  LK = fquit();                                     break;
+    default:         enter_query(); LK = 0;                            break;
+   }                                                                   break;
+  case KEF_RIGHT:    LK = fedit(0);                                    break;
+  case KEF_LEFT:     LK = fedit(-1);                                   break;
   default:           LK = fedit(-1000 - LK);
 }
 return notrunning;
@@ -55,25 +72,25 @@ int Function::fmover(int ri) {
 if (CB.currentrecord > 0) {
   CB.currentrecord += ri;
   if (CB.currentrecord > CB.q->rows) {
-    MSG(103);
+    MSG(MSG_LAST);
     CB.currentrecord = CB.q->rows;
   }
   if (CB.currentrecord < 1) {
-    MSG(100);
+    MSG(MSG_FIRST);
     CB.currentrecord = 1;
   }
 }
 return 0;
 }
 
-int Function::finsert() {
+int Function::insert_record() {
 int s;
 s = CB.q->splice(CB.currentrecord++);
 f.rmode = MOD_INSERT;
 return 0;
 }
 
-int Function::fcreate() {
+int Function::create_record() {
 CB.insert(CB.currentrecord);
 return 0;
 }
@@ -87,7 +104,7 @@ switch(f.rmode) {
   changed = CF.edit(pos);
   break;
  case MOD_UPDATE:
-  if (CF.isprimarykey) MSG(101); else changed = CF.edit(pos);
+  if (CF.isprimarykey) MSG(MSG_EDITKEY); else changed = CF.edit(pos);
   if (changed != KEF_CANCEL) CB.update(CB.currentrecord, CF.sequencenum);
   break;
 }
@@ -95,25 +112,25 @@ return changed==KEF_CANCEL ? 0 : changed;
 }
 
 int Function::fexit() {
-if (!f.dirty) MSG(401);
+if (!f.dirty) MSG(MSG_CLEAN);
 notrunning = -1;
 return 0;
 }
 
 int Function::fquit() {
-if (f.dirty) MSG(401);
+if (f.dirty) MSG(MSG_DIRTY);
 notrunning = -1;
 return 0;
 }
 
-int Function::fmquery() {
+int Function::enter_query() {
 f.b[1].clear();
 CB.currentrecord = 0;
 f.rmode = MOD_QUERY;
 return 0;
 }
 
-int Function::fquery() {
+int Function::execute_query() {
 if (f.b[1].select()) notrunning = -2; else {
   if (CB.q->rows > 0) {
     CB.currentrecord = 1;
@@ -126,9 +143,8 @@ if (f.b[1].select()) notrunning = -2; else {
 return 0;
 }
 
-int Function::fdelete() {
+int Function::delete_record() {
 f.b[1].destroy(CB.currentrecord);
-fquery();
 return 0;
 }
 

@@ -1,3 +1,4 @@
+#ifndef BEGINSQL
 // form configuration
 class Form: public Record {
 public:
@@ -30,8 +31,7 @@ public:
   int mapkey(int ckey);
 private:
 };
-
-#ifdef BEGINSQL
+#else
 CREATE TABLE forms
   (id        INTEGER PRIMARY KEY NOT NULL,
    name      TEXT    NOT NULL DEFAULT 'form0',

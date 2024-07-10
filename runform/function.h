@@ -13,9 +13,9 @@ private:
   int fedit(int pos);
   int fexit();
   int fquit();
-  int finsert();
-  int fcreate();
-  int fmquery();
-  int fquery();
-  int fdelete();
+  int insert_record();
+  int create_record();
+  int enter_query();
+  int execute_query();
+  int delete_record();
 };

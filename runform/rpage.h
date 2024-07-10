@@ -1,3 +1,4 @@
+#ifndef BEGINSQL
 // page configuration
 class rPage: public Record {
 public:
@@ -5,8 +6,7 @@ public:
 private:
   char *name;
 };
-
-#ifdef BEGINSQL
+#else
 CREATE TABLE pages
   (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id   INTEGER NOT NULL DEFAULT 1,

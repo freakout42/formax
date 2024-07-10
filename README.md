@@ -35,6 +35,102 @@ therefore generally consists of modifying the contents of
 these triggers in order to alter the default behavior if
 necessary.
 
+Status
+======
+
+Current 0.9.9 is ALPHA and unusable - the generator can only
+create a single-block single-page form. You are able to
+create, retrieve, update and delete (CRUD) records in this
+table.
+
+Feature roadmap
+---------------
+ - multi-record fields
+ - transaction processing
+ - checksumming form with database password
+ - validation on field content level
+ - multiple blocks and master-detail
+ - form for forms - designer module
+ - list of values - subforms
+ - dev guide en
+ - user guide in en, de, fr, ...
+ - man pages
+ - import script for page layout
+ - menue multiple forms
+ - cqy.y: resolv 5 shift/reduce conflicts
+ - sap-like batchinput
+ - triggers with embedded javascript (elk)
+ - help screens
+ - domains with central maintaining
+ - key macros
+ - multiple databases
+ - database validation (engine responsibility?)
+
+Operations
+==========
+
+Install
+-------
+Fork in github and create codespace or download and extract
+https://github.com/freakout42/formax/archive/refs/heads/main.zip
+On codespace/debian do the following to build and run the example:
+
+~~~
+sudo apt-get update
+sudo apt-get -y install unixodbc
+sudo apt-get -y install libsqliteodbc
+sudo apt-get -y install libncurses5-dev
+sudo apt-get -y install flex
+./configure
+make
+cd dist/formax
+bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so lib/scotty.{frm,sq3}
+~~~
+
+User guide
+==========
+A form is a fill-in-the-blanks template on your computer
+screen that allows you to enter, update, delete and query
+informationin a database. Forms are composed of blocks,
+records and fields.
+
+Basic tasks
+-----------
+~~~
+Edit:   Edit with "Left/Right" and characters
+Query:  Edit conditions in each field
+Insert: Press "Insert" or Ctrl-o
+Update: Move to the record and field with
+        "Up/Down" and "Tab" and edit
+Delete: Move to the record
+        Press "Delete" or Ctrl-k
+~~~
+
+Playground
+----------
+You can play with an example form simply connecting by ssh
+to *formax.toarx.de* with user *scott* and password *tiger*.
+If you are using PuTTY you must set for the session:\
+Window->Translation->Remote character set = ISO-8859-15\
+Connection->Data->Terminal-type string = putty\
+
+For maximum convenience you can add the following to your
+registry. Then you will find a loadable session which you
+can open in PuTTY or start with "putty -load formax" from
+the command line.
+
+~~~
+REGEDIT4
+
+[HKEY_CURRENT_USER\SOFTWARE\SimonTatham\PuTTY\Sessions\formax]
+"Present"=dword:00000001
+"HostName"="formax.toarx.de"
+"TerminalType"="putty"
+"UserName"="scott"
+"LineCodePage"="ISO-8859-15:1999 (Latin-9, \"euro\")"
+
+~~~
+
 Components
 ==========
 **formax** consists of the following programs, or
@@ -142,7 +238,7 @@ tools for modifying the way that **formax** handles, or
 processes, a particular event.
 
 Navigation
-==========
+----------
 Navigation is an internal function that is invoked by
 specific events. **formax** perfoms navigation primarily to
 move the cursor from one location to another. The main
@@ -152,115 +248,18 @@ form, block, record or field in the form, or as outside the
 form.
 
 Validation
-==========
+----------
 Validation is an internal function that is invoked by
 specific events. Validation is the process by which
 **formax** determines whether the data in an object is valid
 or correct.
 
 Trigger Processing
-==================
+------------------
 Events invoke functions, which have trigger points. When
 **formax** processes a trigger point, it executes, or fires,
 the associated trigger. Every trigger pont has a specific
 type of trigger associated with it.
-
-Status
-======
-Current 0.9.x is ALPHA and unusable - the generator can only
-create a single-block single-page form. runform can display
-the page - wait for a key - and exit.
-
-1.0.0 will be able to create, retrieve, update and delete
-(CRUD) records in a table by a single-block, single-page,
-single-row form. Expected 08/2024.
-
-Feature roadmap
----------------
- - multi-record fields
- - transaction processing
- - checksumming form with database password
- - validation on field content level
- - multiple blocks and master-detail
- - form for forms - designer module
- - list of values - subforms
- - dev guide en
- - user guide in en, de, fr, ...
- - man pages
- - import script for page layout
- - menue multiple forms
- - cqy.y: resolv 5 shift/reduce conflicts
- - sap-like batchinput
- - triggers with embedded javascript (elk)
- - help screens
- - domains with central maintaining
- - key macros
- - multiple databases
- - database validation (engine responsibility?)
-
-User guide
-==========
-A form is a fill-in-the-blanks template on your computer
-screen that allows you to enter, update, delete and query
-informationin a database. Forms are composed of blocks,
-records and fields.
-
-Basic tasks
------------
-~~~
-Edit:   Edit with "Left/Right" and characters
-Query:  Edit conditions in each field
-Insert: Press "Insert" or Ctrl-o
-Update: Move to the record and field with
-        "Up/Down" and "Tab" and edit
-Delete: Move to the record
-        Press "Delete" or Ctrl-k
-~~~
-
-Playground
-----------
-You can play with an example form simply connecting by ssh
-to *formax.toarx.de* with user *scott* and password *tiger*.
-If you are using PuTTY you must set for the session:\
-Window->Translation->Remote character set = ISO-8859-15\
-Connection->Data->Terminal-type string = putty\
-
-For maximum convenience you can add the following to your
-registry. Then you will find a loadable session which you
-can open in PuTTY or start with "putty -load formax" from
-the command line.
-
-~~~
-REGEDIT4
-
-[HKEY_CURRENT_USER\SOFTWARE\SimonTatham\PuTTY\Sessions\formax]
-"Present"=dword:00000001
-"HostName"="formax.toarx.de"
-"TerminalType"="putty"
-"UserName"="scott"
-"LineCodePage"="ISO-8859-15:1999 (Latin-9, \"euro\")"
-
-~~~
-
-Operations
-==========
-
-Install
--------
-Fork in github and create codespace or download and extract
-https://github.com/freakout42/formax/archive/refs/heads/main.zip
-On codespace/debian do the following to build and run the example
-
-~~~
-sudo apt-get update
-sudo apt-get -y install unixodbc
-sudo apt-get -y install libsqliteodbc
-sudo apt-get -y install libncurses5-dev
-sudo apt-get -y install flex
-./configure
-make
-dist/formax/bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so dist/formax/lib/scotty.{frm,sq3}
-~~~
 
 Development
 ===========

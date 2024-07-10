@@ -1,3 +1,4 @@
+#ifndef BEGINSQL
 // field configuration
 class rField: public Record {
 public:
@@ -5,8 +6,7 @@ public:
 private:
   char *name;
 };
-
-#ifdef BEGINSQL
+#else
 CREATE TABLE fields
   (id        INTEGER PRIMARY KEY NOT NULL,
    form_id   INTEGER NOT NULL DEFAULT 1,

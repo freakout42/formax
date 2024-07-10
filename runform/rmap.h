@@ -1,10 +1,10 @@
+#ifndef BEGINSQL
 // map configuration
 class rMap: public Record {
 public:
   int init(int page_id);
 };
-
-#ifdef BEGINSQL
+#else
 CREATE TABLE maps
   (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    page_id   INTEGER NOT NULL DEFAULT 1,

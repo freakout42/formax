@@ -248,7 +248,7 @@ while (!done) {              /* input loop */
       pos++;
       sx++;
     }
-    else done = TRUE;
+//    else done = TRUE;
     break;
    case KEY_BACKSPACE:      /* erase backward */
    case KEY_CTRL('H'):

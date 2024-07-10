@@ -96,7 +96,7 @@ int Form::mapkey(int ckey) {
 int ck;
 ck = ispunctation(ckey);
 switch(ck) {                                  /* C */
-  case KEY_F(0):       return KEF_REFRESH;    /* l */
+  case KEY_F(0):       return KEF_REFRESH;    /* l      frefresh */
   case KEY_F(1):       return KEF_HELP;       /* @ */
   case KEY_F(2):       return KEF_COPY;       /* c */
   case KEY_F(3):       return KEF_PASTE;      /* v */
@@ -106,28 +106,23 @@ switch(ck) {                                  /* C */
   case KEY_F(7):       return KEF_DELETE;     /* k */
   case KEY_F(8):       return KEF_EXIT;       /* z */
   case KEY_F(9):       return KEF_QUIT;       /* y */
-  case KEY_F(10):      return KEF_QUERY;      /* x */
-
+  case KEY_F(10):      return KEF_QUERY;      /* x      enter_query */
   case KEY_ESC:        return KEF_CANCEL;     /* esc */
   case KEY_CANCEL:     return KEF_CANCEL;     /* cancel */
-
-  case KEY_IC:         return KEF_INSERT;     /* j */
+  case KEY_IC:         return KEF_INSERT;     /* j      create_record */
   case KEY_HOME:       return KEF_HOME;       /* a */
   case KEY_PPAGE:      return KEF_PRESETR;    /* r */
-  case KEY_DC:         return KEF_DELETE;     /* d */
+  case KEY_DC:         return KEF_DELETE;     /* d      delete_record */
   case KEY_END:        return KEF_END;        /* e */
   case KEY_NPAGE:      return KEF_NXTSETR;    /* w */
-
-  case KEY_UP:         return KEF_PREREC;     /* p */
+  case KEY_UP:         return KEF_PREREC;     /* p      fmover */
   case KEY_LEFT:       return KEF_LEFT;       /* b */
-  case KEY_DOWN:       return KEF_NXTREC;     /* n */
+  case KEY_DOWN:       return KEF_NXTREC;     /* n      fmover */
   case KEY_RIGHT:      return KEF_RIGHT;      /* f */
-
-  case KEY_TAB:        return KEF_NXTFLD;     /* i */
-  case KEY_BTAB:       return KEF_PREFLD;     /* g */
+  case KEY_TAB:        return KEF_NXTFLD;     /* i      fmove */
+  case KEY_BTAB:       return KEF_PREFLD;     /* g      fmove */
   case KEY_BACKSPACE:  return KEF_BACKDEL;    /* h */
-  case KEY_ENTER:      return KEF_COMMIT;     /* m */
-
+  case KEY_ENTER:      return KEF_COMMIT;     /* m      execute */
   default:             return ck;
  }
 }

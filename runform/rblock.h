@@ -1,3 +1,4 @@
+#ifndef BEGINSQL
 // block configuration
 class rBlock: public Record {
 public:
@@ -5,8 +6,7 @@ public:
 private:
   char *name;
 };
-
-#ifdef BEGINSQL
+#else
 CREATE TABLE blocks
   (id        INTEGER PRIMARY KEY NOT NULL,
    form_id   INTEGER NOT NULL DEFAULT 1,
