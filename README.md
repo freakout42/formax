@@ -72,7 +72,7 @@ Operations
 Install
 -------
 Fork in github and create codespace or download and extract
-https://github.com/freakout42/formax/archive/refs/heads/main.zip
+https://github.com/freakout42/formax/archive/refs/heads/main.zip \
 On codespace/debian do the following to build and run the example:
 ~~~
 sudo apt-get update
@@ -107,7 +107,7 @@ User guide
 ==========
 A form is a fill-in-the-blanks template on your computer
 screen that allows you to enter, update, delete and query
-informationin a database. Forms are composed of blocks,
+information in a database. Forms are composed of blocks,
 records and fields.
 
 Basic tasks
@@ -115,20 +115,22 @@ Basic tasks
 ~~~
 Edit:   Edit with "Left/Right" and characters
 Query:  Edit conditions in each field
-Insert: Press "Insert" or Ctrl-o
 Update: Move to the record and field with
-        "Up/Down" and "Tab" and edit
+        "Up/Down" and "Tab" and edit the field
+Insert: Press "Insert" or Ctrl-o
 Delete: Move to the record
         Press "Delete" or Ctrl-k
+Commit: Press "Enter" to save the changes
 ~~~
 
 Playground
 ----------
-You can play with an example form simply connecting by ssh
+You can play with an example form simply by connecting ssh
 to *formax.toarx.de* with user *scott* and password *tiger*.
-If you are using PuTTY you must set for the session:\
-Window->Translation->Remote character set = ISO-8859-15\
-Connection->Data->Terminal-type string = putty\
+If you are using PuTTY you must set for the session:
+
+    Window->Translation->Remote character set = ISO-8859-15
+    Connection->Data->Terminal-type string = putty
 
 For maximum convenience you can add the following to your
 registry. Then you will find a loadable session which you
@@ -177,15 +179,13 @@ properties to SQL where clauses.
 
 regex
 -----
-Regular expression engine for validating user entered data.
-NOT YET IMPLEMENTED.
-See: github.com/kokke/tiny-regex-c
+Regular expression engine for validating user entered data.\
+NOT YET IMPLEMENTED. See: github.com/kokke/tiny-regex-c
 
 elk
 ---
-Javascript engine for 3GL triggers.
-NOT YET IMPLEMENTED.
-See: github.com/cesanta/elk
+Javascript engine for 3GL triggers.\
+NOT YET IMPLEMENTED. See: github.com/cesanta/elk
 
 Objects
 =======
@@ -285,10 +285,8 @@ solely through ODBC. Both libraries are not used directly
 but wrapped by the Screen and Record classes. Record is a
 simple ORM inspired by rails ActiceRecord. The form-database
 is a sqlite-database. The form generator builds a SQL script
-that creates the default form database. Sourcecode lines are
-grouped into blocks of maximum 40. These groups have a top
-comment which explains the purpose. Other commenting is only
-on special cases.
+that creates the default form database and can be edited to
+change the default behaviour.
 
 Security
 --------
@@ -334,15 +332,20 @@ used for some fundamental values:
   | w | query result pointer   | Method   | qdata.h        |
   | y | curses stdscr window   | Type     | screen.h       |
 
-Indenting
----------
+Coding Rules
+------------
+Sourcecode lines are grouped into blocks of maximum 40.
+These groups have a top comment which explains the purpose.
+Other commenting is only on special cases.
+
 2 spaces indenting is used and the top level of functions is
 not indented. Use 1 space between keyword and opening
 bracket. Do not use space between function name and opening
 bracket. Opening curly bracket is always at the same line as
 keyword (for, while, do, switch, if, ...). Bool is not
 compared - no if (ispresent == NULL) or (isempty[0] == '\0')
-just use !ispresent or *isempty.
+just use !ispresent or *isempty. Omit curly brackets after
+compound statements when possible.
 
 License
 =======
