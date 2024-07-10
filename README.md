@@ -37,11 +37,9 @@ necessary.
 
 Status
 ======
-
-Current 0.9.9 is ALPHA and unusable - the generator can only
-create a single-block single-page form. You are able to
-create, retrieve, update and delete (CRUD) records in this
-table.
+Current 0.9.9 is ALPHA - the generator can only create a
+single-block single-page form. You are able to create,
+retrieve, update and delete (CRUD) records in this table.
 
 Feature roadmap
 ---------------
@@ -74,7 +72,6 @@ Install
 Fork in github and create codespace or download and extract
 https://github.com/freakout42/formax/archive/refs/heads/main.zip
 On codespace/debian do the following to build and run the example:
-
 ~~~
 sudo apt-get update
 sudo apt-get -y install unixodbc
@@ -85,6 +82,23 @@ sudo apt-get -y install flex
 make
 cd dist/formax
 bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so lib/scotty.{frm,sq3}
+~~~
+
+On RHEL/CentOS/Alma/Rocky do the following:
+~~~
+sudo yum -y group install "Development Tools"
+sudo yum -y install unixODBC
+sudo yum -y install unixODBC-devel
+sudo yum -y install ncurses-devel
+sudo yum -y install sqlite
+rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-0.9998-1.x86_64.rpm
+curl -L -oformax.zip https://github.com/freakout42/formax/archive/refs/heads/main.zip
+unzip formax.zip
+cd formax-main
+./configure
+make
+cd dist/formax
+bin/runform -l/usr/lib64/libsqlite3odbc.so lib/scotty.{frm,sq3}
 ~~~
 
 User guide

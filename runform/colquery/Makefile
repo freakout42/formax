@@ -1,6 +1,7 @@
 CFLAGS=-DYY_NO_UNPUT -DYY_SKIP_YYWRAP
 test: CFLAGS=-g -O0 -Wall -Werror -DYY_NO_UNPUT -DYY_SKIP_YYWRAP $(DEBUG)
 LDFLAGS=-r
+YACC=bison
 YFLAGS=-Wno-conflicts-sr -d --name-prefix=cq
 LEXFLAGS=--prefix=cq
 
@@ -27,8 +28,10 @@ cql.o: cql.l cqy.o
 
 cqy.o: cqy.y
 	$(YACC) $(YFLAGS) cqy.y
+	test -f cqy.tab.c && mv cqy.tab.c y.tab.c
 	$(CC) $(CFLAGS) -c y.tab.c
 	mv y.tab.o $@
+	test -f cqy.tab.h && mv cqy.tab.h y.tab.h
 	mv y.tab.h colq.h
 
 colquery.h: cqy.o
