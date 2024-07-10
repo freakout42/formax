@@ -94,9 +94,6 @@ sudo yum -y install unixODBC-devel
 sudo yum -y install ncurses-devel
 sudo yum -y install sqlite
 rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-0.9998-1.x86_64.rpm
-curl -L -oformax.zip https://github.com/freakout42/formax/archive/refs/heads/main.zip
-unzip formax.zip
-cd formax-main
 ./configure
 make
 cd dist/formax

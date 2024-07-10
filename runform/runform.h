@@ -57,5 +57,6 @@ extern int   autocommit;
 extern int   deleprompt;
 extern int   queryonlym;
 extern char  *shiftednum;
+extern char  *username;
 extern Form f;
 

@@ -3,7 +3,17 @@
 int Function::dispatch() {
 switch(f.mapkey(LK)) {
   case -1:           LK = enter_the_form();                            break;
-  case KEF_NAVI0:    LK = 0 /* fmenu() */;                             break;
+  case KEF_HELP:            /* fhelp() */
+  case KEF_BACKDEL:         /* fbackdel() */
+  case KEF_COPY:            /* fhelp() */
+  case KEF_PASTE:           /* fpaste() */
+  case KEF_LIST:            /* flist() */
+  case KEF_COPYREC:         /* fcopyrec() */
+  case KEF_NAVI0:           /* fmenu() */
+  case KEF_HOME:            /* fhome() */
+  case KEF_END:             /* fend() */
+  case KEF_PRESETR:         /* fpresetr() */
+  case KEF_NXTSETR:         /* fnxtsetr() */
   case KEF_REFRESH:  LK = 0 /* frefresh() */;                          break;
   case KEF_NXTFLD:   LK = fmove(0, 1);                                 break;
   case KEF_PREFLD:   LK = fmove(0, -1);                                break;
