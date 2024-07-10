@@ -94,11 +94,11 @@ without any bandwidth-requirements.
 
 ### Status
 
-Current version 0.9.0 can do nothing. We expect 1.0.0 to be
-released 08/2024 with the ability to Insert, Query, Update
-and Delete (CRUD) in one table with single-row mode. Full
-Forms3 functionality is a big task and depends highly on the
-community participation.
+Current v0.9.9 is ALPHA - the generator can only create a
+single-block single-page form. You are able to create,
+retrieve, update and delete (CRUD) records in this table.
+Full Forms3 functionality is a big task and depends highly
+on the community participation in the future.
 
 ### License
 
