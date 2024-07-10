@@ -11,6 +11,8 @@ a romantic nostalgica! The concepts of Oracle's SQL-Forms
 are still used today and could be very interesting for
 certain use cases on a terminal.
 
+[![formax](https://formax.freakout.de/assets/logo.jpg"formax")](https://formax.freakout.de/ "formax")
+
 Introduction
 ============
 **formax** forms access the database and generate a screen
