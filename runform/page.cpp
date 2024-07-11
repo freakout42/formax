@@ -49,7 +49,8 @@ writef(0, 34, 0, 9,  "%s",      f.l[f.curfield].name);
 writef(0, 44, 0, 9,  "%4d/%4d", CB.currentrecord, CB.q->rows);
 writef(0, 54, COL_HEADER,6,"%s",rmodes[f.rmode]);
 writef(0, 61, COL_HEADER,3,"%s",(char*)(insertmode ? "Ins" : "Rep"));
-writes(0, 67,                   "runform-");
+//ites(0, 67,                   "runform-");
+writef(0, 70, 0, 4,  "%4d",     f.lastcmd);
 writes(0, 75,                   (char*)VERSION);
 refr();
 for (i=0; i<f.numfield; i++) f.l[i].show(i == f.curfield);
@@ -65,6 +66,7 @@ if (f.y.ysiz > 0) {
 if (pnt) pntst = pnt; else pntst = empty;
 if (strlen(pntst) > LINE0SIZE-12) i = strlen(pntst) - LINE0SIZE + 12; else i = 0;
 writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, f.y.msg(ern), pntst+i);
+writef(0, 76, 0, 4,  "%04d",     f.lastcmd);
 wmov(0,0);
 refr();
 return getkb();

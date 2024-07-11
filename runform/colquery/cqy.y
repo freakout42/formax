@@ -2,7 +2,7 @@
         int oper;
         char *item;
         }
-%type   <item>  list const constm constk constq constd constt
+%type   <item>  list const constm constd
                 svalue value comp pexpr expr query match qstr
 %token  <oper>  OR
 %token  <oper>  AND
@@ -14,8 +14,6 @@
 %token  <item>  SQLNULL
 %token  <item>  NUMBER
 %token  <item>  MDATE
-%token  <item>  KWDATE
-%token  <item>  QDATE
 %token  <item>  DATE
 %token  <item>  TIME
 %token  <item>  STRING
@@ -106,45 +104,13 @@ svalue  : constm
         }
         | comp constm
         {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYMM') %s %s", cqcolumn, $1, $2);
+        sprintf (tmp, "{fn YEAR(%s)} * 100 + {fn MONTH(%s)} %s %s", cqcolumn, cqcolumn, $1, $2);
         $$ = cqstr (tmp);
         }
         | constm BETWEEN constm
         {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYMM') BETWEEN %s AND %s",
-                cqcolumn, $1, $3);
-        $$ = cqstr (tmp);
-        }
-        | constk
-        {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYIW') = %s", cqcolumn, $1);
-        $$ = cqstr (tmp);
-        }
-        | comp constk
-        {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYIW') %s %s", cqcolumn, $1, $2);
-        $$ = cqstr (tmp);
-        }
-        | constk BETWEEN constk
-        {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYIW') BETWEEN %s AND %s",
-                cqcolumn, $1, $3);
-        $$ = cqstr (tmp);
-        }
-        | constq
-        {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYQ') = %s", cqcolumn, $1);
-        $$ = cqstr (tmp);
-        }
-        | comp constq
-        {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYQ') %s %s", cqcolumn, $1, $2);
-        $$ = cqstr (tmp);
-        }
-        | constq BETWEEN constq
-        {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYQ') BETWEEN %s AND %s",
-                cqcolumn, $1, $3);
+        sprintf (tmp, "{fn YEAR(%s)} * 100 + {fn MONTH(%s)} BETWEEN %s AND %s",
+                cqcolumn, cqcolumn, $1, $3);
         $$ = cqstr (tmp);
         }
         | constd
@@ -160,22 +126,6 @@ svalue  : constm
         | constd BETWEEN constd
         {
         sprintf (tmp, "%s BETWEEN %s AND %s + .99999", cqcolumn, $1, $3);
-        $$ = cqstr (tmp);
-        }
-        | constt
-        {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYMMDDHH24MI') = %s", cqcolumn, $1);
-        $$ = cqstr (tmp);
-        }
-        | comp constt
-        {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYMMDDHH24MI') %s %s",cqcolumn,$1,$2);
-        $$ = cqstr (tmp);
-        }
-        | constt BETWEEN constt
-        {
-        sprintf (tmp, "TO_CHAR(%s,'YYYYMMDDHH24MI') BETWEEN %s AND %s",
-                cqcolumn, $1, $3);
         $$ = cqstr (tmp);
         }
         | comp const
@@ -251,25 +201,7 @@ constm  : MDATE
         cqtype(DATE);
         }
         ;
-constk  : KWDATE
-        {
-        $$ = cqstr ($1);
-        cqtype(DATE);
-        }
-        ;
-constq  : QDATE
-        {
-        $$ = cqstr ($1);
-        cqtype(DATE);
-        }
-        ;
 constd  : DATE
-        {
-        $$ = cqstr ($1);
-        cqtype(DATE);
-        }
-        ;
-constt  : TIME
         {
         $$ = cqstr ($1);
         cqtype(DATE);

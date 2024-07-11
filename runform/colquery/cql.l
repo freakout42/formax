@@ -20,9 +20,6 @@ ye19    ([5-9][0-9])
 ye20    ([0-4][0-9])
 year    ([0-9][0-9])
 lyear   ((19|20)[0-9][0-9])
-week    (([0-4][0-9])|(5[0-3]))
-sweek   ([0-9])
-quart   ([Ii]{1,3}|IV|iv)
 ddmys   {lday}{lmon}{ye19}
 ddmys2  {lday}{lmon}{ye20}
 ddmysl  {lday}{lmon}{lyear}
@@ -40,19 +37,6 @@ my20    {mon}\.{ye20}
 ly20    {lmon}\.{ye20}
 ml      {mon}\.{lyear}
 ll      {lmon}\.{lyear}
-k19     {week}\/{ye19}
-k20     {week}\/{ye20}
-k       {week}\/{lyear}
-sk19    {sweek}\/{ye19}
-sk20    {sweek}\/{ye20}
-sk      {sweek}\/{lyear}
-q19     {quart}\/{ye19}
-q20     {quart}\/{ye20}
-q       {quart}\/{lyear}
-hour    ([0-2]?[0-9])
-min     ([0-5][0-9])
-t       ({ddmy}|{dlmy}|{ddly}|{dlly}){w}{hour}:{min}
-tl      ({ddml}|{dlml}|{ddll}|{dlll}){w}{hour}:{min}
 %{
 #undef input
 #undef unput
@@ -71,6 +55,7 @@ extern int cqtype;
 static char tmp[1024];
 /*static char *p;*/
 
+/*
 static char *rom2d (roman)
         unsigned char *roman;
 {
@@ -86,6 +71,7 @@ else    dec[0] = '2';
 dec[1] = '\0';
 return dec;
 }
+ */
 %}
 %%
         {if (cqtype==DATE) BEGIN DATET;}
@@ -102,54 +88,24 @@ return dec;
          cqlval.item = (char*) yytext;
          return(COMPARE);
         }
-{my19}  {sprintf (tmp, "'19%s0%.1s'", yytext+2, yytext);
+{my19}  {sprintf (tmp, "19%s0%.1s", yytext+2, yytext);
          cqlval.item = tmp;
          return(MDATE);}
-{my20}  {sprintf (tmp, "'20%.2s0%.1s'", yytext+2, yytext);
+{my20}  {sprintf (tmp, "20%.2s0%.1s", yytext+2, yytext);
          cqlval.item = tmp;
          return(MDATE);}
-{ly19}  {sprintf (tmp, "'19%s%.2s'", yytext+3, yytext);
+{ly19}  {sprintf (tmp, "19%s%.2s", yytext+3, yytext);
          cqlval.item = tmp;
          return(MDATE);}
-{ly20}  {sprintf (tmp, "'20%.2s%.2s'", yytext+3, yytext);
+{ly20}  {sprintf (tmp, "20%.2s%.2s", yytext+3, yytext);
          cqlval.item = tmp;
          return(MDATE);}
-{ml}    {sprintf (tmp, "'%s0%.1s'", yytext+2, yytext);
+{ml}    {sprintf (tmp, "%s0%.1s", yytext+2, yytext);
          cqlval.item = tmp;
          return(MDATE);}
-{ll}    {sprintf (tmp, "'%s%.2s'", yytext+3, yytext);
+{ll}    {sprintf (tmp, "%s%.2s", yytext+3, yytext);
          cqlval.item = tmp;
          return(MDATE);}
-{k19}   {sprintf (tmp, "'19%s%.2s'", yytext+3, yytext);
-         cqlval.item = tmp;
-         return(KWDATE);}
-{k20}   {sprintf (tmp, "'20%.2s%.2s'", yytext+3, yytext);
-         cqlval.item = tmp;
-         return(KWDATE);}
-{k}     {sprintf (tmp, "'%s%.2s'", yytext+3, yytext);
-         cqlval.item = tmp;
-         return(KWDATE);}
-{sk19}  {sprintf (tmp, "'19%s0%.1s'", yytext+2, yytext);
-         cqlval.item = tmp;
-         return(KWDATE);}
-{sk20}  {sprintf (tmp, "'20%s0%.1s'", yytext+2, yytext);
-         cqlval.item = tmp;
-         return(KWDATE);}
-{sk}    {sprintf (tmp, "'%s0%.1s'", yytext+2, yytext);
-         cqlval.item = tmp;
-         return(KWDATE);}
-{q19}   {sprintf (tmp, "'19%s%s'",
-                        yytext+strlen((char*)yytext)-2, rom2d(yytext));
-         cqlval.item = tmp;
-         return(QDATE);}
-{q20}   {sprintf (tmp, "'20%s%s'",
-                        yytext+strlen((char*)yytext)-2, rom2d(yytext));
-         cqlval.item = tmp;
-         return(QDATE);}
-{q}     {sprintf (tmp, "'%s%s'",
-                        yytext+strlen((char*)yytext)-4, rom2d(yytext));
-         cqlval.item = tmp;
-         return(QDATE);}
 <DATET>{ddmys}  {
          sprintf (tmp, "TO_DATE('%c%c.%c%c.19%c%c','DD.MM.RR')",
                                          *(yytext+0), *(yytext+1),
@@ -215,12 +171,6 @@ return dec;
          cqlval.item = tmp;
          return(DATE);
         }
-{t}     {sprintf (tmp, "TO_CHAR(TO_DATE('%s','DD.MM.RR HH24:MI'),'YYYYMMDDHH24MI')", yytext);
-         cqlval.item = tmp;
-         return(TIME);}
-{tl}    {sprintf (tmp, "TO_CHAR(TO_DATE('%s','DD.MM.YYYY HH24:MI'),'YYYYMMDDHH24MI')", yytext);
-         cqlval.item = tmp;
-         return(TIME);}
 {n}     {if (cqnonumbers)
           {sprintf (tmp, "'%s'", yytext); cqlval.item = tmp;}
          else

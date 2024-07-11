@@ -20,6 +20,7 @@ public:
   int numpage;
   int curblock;
   int curfield;
+  int lastcmd;
   int lastkey;
   int dirty;
   int rmode;

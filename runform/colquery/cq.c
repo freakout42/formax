@@ -97,13 +97,9 @@ if (type==0 || type==STRING) fprintf (out,
 "*hallo              suche nach Zeichenkette\n"
 "~meier              aehnlich\n");
 
-#ifndef DB
 if (type==0 || type==DATE) fprintf (out,
 "10.03.94            Datum\n"
-"29/94               Kalenderwoche\n"
-"12.94               Monat\n"
-"VI/94               Quartal\n");
-#endif
+"12.94               Monat\n");
 
 fprintf (out,
 "10,12,15            Liste verschiedener Werte\n"
@@ -116,11 +112,7 @@ fprintf (out,
 "10-17&!12           UND-Bedingung: 10 bis 17 ohne 12\n"
 "(10-17&!12)37       Klammern fuer komplexe Abfragen\n"
 
-#ifdef DB
-"[land==5]           beliebige DB-Abfrage\n"
-#else
 "[land='DE']         beliebige SQL-Abfrage\n"
-#endif
 "================================================================\n");
 }
 

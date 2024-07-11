@@ -1,22 +1,23 @@
 #include "runform.h"
 
 int Function::dispatch() {
-switch(f.mapkey(LK)) {
+f.lastcmd = f.mapkey(LK);
+switch(f.lastcmd) {
   case -1:           LK = enter_the_form();                            break;
+#ifdef NOTYETIMPLEMENTED
   case KEF_HELP:            /* fhelp() */
   case KEF_BACKDEL:         /* fbackdel() */
   case KEF_COPY:            /* fhelp() */
   case KEF_PASTE:           /* fpaste() */
   case KEF_LIST:            /* flist() */
   case KEF_COPYREC:         /* fcopyrec() */
-  case KEF_NAVI0:           /* fmenu() */
   case KEF_HOME:            /* fhome() */
   case KEF_END:             /* fend() */
   case KEF_PRESETR:         /* fpresetr() */
   case KEF_NXTSETR:         /* fnxtsetr() */
-  case KEF_REFRESH:  LK = 0 /* frefresh() */;                          break;
-  case KEF_NXTFLD:   LK = fmove(0, 1);                                 break;
-  case KEF_PREFLD:   LK = fmove(0, -1);                                break;
+  case KEF_REFRESH:         /* frefresh() */
+  case KEF_NAVI0:           /* fmenu() */
+#endif
   case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                         break;
   case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                         break;
   case KEF_NAVI3:    LK = fmove(0, NFIELD1+3);                         break;
@@ -26,7 +27,8 @@ switch(f.mapkey(LK)) {
   case KEF_NAVI7:    LK = fmove(0, NFIELD1+7);                         break;
   case KEF_NAVI8:    LK = fmove(0, NFIELD1+8);                         break;
   case KEF_NAVI9:    LK = fmove(0, NFIELD1+9);                         break;
-  case KEF_NAVI10:   LK = 0 /* fcommit() */ ;                          break;
+  case KEF_NXTFLD:   LK = fmove(0, 1);                                 break;
+  case KEF_PREFLD:   LK = fmove(0, -1);                                break;
   case KEF_NXTREC:   LK = fmover(1);                                   break;
   case KEF_PREREC:   LK = fmover(-1);                                  break;
   case KEF_INSERT:
@@ -42,6 +44,7 @@ switch(f.mapkey(LK)) {
     default:         LK = 0; MSG(MSG_NOREC);                           break;
    }                                                                   break;
   case KEF_QUERY:    LK = enter_query();                               break;
+  case KEF_NAVI10:
   case KEF_COMMIT:
    switch(f.rmode) {
     case MOD_UPDATE: LK = enter_query();                               break;
@@ -58,7 +61,11 @@ switch(f.mapkey(LK)) {
    }                                                                   break;
   case KEF_RIGHT:    LK = fedit(0);                                    break;
   case KEF_LEFT:     LK = fedit(-1);                                   break;
-  default:           LK = fedit(-1000 - LK);
+  default:
+   if (isprintable(LK))
+                     LK = fedit(-1000 - LK);
+   else              LK = 0;
+                                                                       break;
 }
 return notrunning;
 }
