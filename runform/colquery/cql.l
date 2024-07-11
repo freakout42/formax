@@ -2,7 +2,6 @@
 %k 5000
 %o 10000
 %p 3000
-%START DATET
 n       [0-9]+\.?[0-9]*
 c       [A-Za-z0-9\.]+
 o       \".*\"
@@ -16,27 +15,30 @@ day     ([1-9])
 lday    ((0[1-9])|([1-2][0-9])|(3[0-1]))
 mon     ([1-9])
 lmon    ((0[1-9])|(1[0-2]))
-ye19    ([5-9][0-9])
-ye20    ([0-4][0-9])
-year    ([0-9][0-9])
-lyear   ((19|20)[0-9][0-9])
+ye19    ([7-9][0-9])
+ye20    ([0-6][0-9])
+year    ((19|20)[0-9][0-9])
 ddmys   {lday}{lmon}{ye19}
 ddmys2  {lday}{lmon}{ye20}
-ddmysl  {lday}{lmon}{lyear}
+ddmysl  {lday}{lmon}{year}
+ddm9    {day}\.{mon}\.{ye19}
+dem9    {lday}\.{mon}\.{ye19}
+ddn9    {day}\.{lmon}\.{ye19}
+den9    {lday}\.{lmon}\.{ye19}
+ddm2    {day}\.{mon}\.{ye20}
+dem2    {lday}\.{mon}\.{ye20}
+ddn2    {day}\.{lmon}\.{ye20}
+den2    {lday}\.{lmon}\.{ye20}
 ddmy    {day}\.{mon}\.{year}
-dlmy    {lday}\.{mon}\.{year}
-ddly    {day}\.{lmon}\.{year}
-dlly    {lday}\.{lmon}\.{year}
-ddml    {day}\.{mon}\.{lyear}
-dlml    {lday}\.{mon}\.{lyear}
-ddll    {day}\.{lmon}\.{lyear}
-dlll    {lday}\.{lmon}\.{lyear}
+demy    {lday}\.{mon}\.{year}
+ddny    {day}\.{lmon}\.{year}
+deny    {lday}\.{lmon}\.{year}
 my19    {mon}\.{ye19}
 ly19    {lmon}\.{ye19}
 my20    {mon}\.{ye20}
 ly20    {lmon}\.{ye20}
-ml      {mon}\.{lyear}
-ll      {lmon}\.{lyear}
+ml      {mon}\.{year}
+ll      {lmon}\.{year}
 %{
 #undef input
 #undef unput
@@ -74,7 +76,6 @@ return dec;
  */
 %}
 %%
-        {if (cqtype==DATE) BEGIN DATET;}
 ","     {return(OR);}
 "&"     {return(AND);}
 "-"     {return(BETWEEN);}
@@ -106,68 +107,58 @@ return dec;
 {ll}    {sprintf (tmp, "%s%.2s", yytext+3, yytext);
          cqlval.item = tmp;
          return(MDATE);}
-<DATET>{ddmys}  {
-         sprintf (tmp, "TO_DATE('%c%c.%c%c.19%c%c','DD.MM.RR')",
-                                         *(yytext+0), *(yytext+1),
-                                         *(yytext+2), *(yytext+3),
-                                         *(yytext+4), *(yytext+5));
+{ddmys}  {
+         sprintf (tmp, "19%c%c%c%c%c%c", *(yytext+4), *(yytext+5), *(yytext+2), *(yytext+3), *(yytext+0), *(yytext+1));
          cqlval.item = tmp;
          return(DATE);
         }
-<DATET>{ddmys2} {
-         sprintf (tmp, "TO_DATE('%c%c.%c%c.20%c%c','DD.MM.RR')",
-                                         *(yytext+0), *(yytext+1),
-                                         *(yytext+2), *(yytext+3),
-                                         *(yytext+4), *(yytext+5));
+{ddmys2} {
+         sprintf (tmp, "20%c%c%c%c%c%c", *(yytext+4), *(yytext+5), *(yytext+2), *(yytext+3), *(yytext+0), *(yytext+1));
          cqlval.item = tmp;
          return(DATE);
         }
-<DATET>{ddmysl} {
-         sprintf (tmp, "TO_DATE('%c%c.%c%c.%c%c%c%c','DD.MM.YYYY')",
-                                         *(yytext+0), *(yytext+1),
-                                         *(yytext+2), *(yytext+3),
-                                         *(yytext+4), *(yytext+5),
-                                         *(yytext+6), *(yytext+7));
+{ddmysl} {
+         sprintf (tmp, "%c%c%c%c%c%c%c%c", *(yytext+4), *(yytext+5), *(yytext+6), *(yytext+7), *(yytext+2), *(yytext+3), *(yytext+0), *(yytext+1));
          cqlval.item = tmp;
          return(DATE);
         }
-{ddmy}  {
-         sprintf (tmp, "TO_DATE('%s','DD.MM.RR')", yytext);
+{ddm9}  {
+         sprintf (tmp, "19%c%c0%c0%c", *(yytext+4), *(yytext+5), *(yytext+2), *(yytext+0));
          cqlval.item = tmp;
          return(DATE);
         }
-{ddly}  {
-         sprintf (tmp, "TO_DATE('%s','DD.MM.RR')", yytext);
+{dem9}  {
+         sprintf (tmp, "19%c%c0%c%c%c", *(yytext+5), *(yytext+6), *(yytext+3), *(yytext+0), *(yytext+1));
          cqlval.item = tmp;
          return(DATE);
         }
-{dlmy}  {
-         sprintf (tmp, "TO_DATE('%s','DD.MM.RR')", yytext);
+{ddn9}  {
+         sprintf (tmp, "19%c%c%c%c0%c", *(yytext+5), *(yytext+6), *(yytext+2), *(yytext+3), *(yytext+0));
          cqlval.item = tmp;
          return(DATE);
         }
-{dlly}  {
-         sprintf (tmp, "TO_DATE('%s','DD.MM.RR')", yytext);
+{den9}  {
+         sprintf (tmp, "19%c%c%c%c%c%c", *(yytext+6), *(yytext+7), *(yytext+3), *(yytext+4), *(yytext+0), *(yytext+1));
          cqlval.item = tmp;
          return(DATE);
         }
-{ddml}  {
-         sprintf (tmp, "TO_DATE('%s','DD.MM.YYYY')", yytext);
+{ddm2}  {
+         sprintf (tmp, "20%c%c0%c0%c", *(yytext+4), *(yytext+5), *(yytext+2), *(yytext+0));
          cqlval.item = tmp;
          return(DATE);
         }
-{dlml}  {
-         sprintf (tmp, "TO_DATE('%s','DD.MM.YYYY')", yytext);
+{dem2}  {
+         sprintf (tmp, "20%c%c0%c%c%c", *(yytext+5), *(yytext+6), *(yytext+3), *(yytext+0), *(yytext+1));
          cqlval.item = tmp;
          return(DATE);
         }
-{ddll}  {
-         sprintf (tmp, "TO_DATE('%s','DD.MM.YYYY')", yytext);
+{ddn2}  {
+         sprintf (tmp, "20%c%c%c%c0%c", *(yytext+5), *(yytext+6), *(yytext+2), *(yytext+3), *(yytext+0));
          cqlval.item = tmp;
          return(DATE);
         }
-{dlll}  {
-         sprintf (tmp, "TO_DATE('%s','DD.MM.YYYY')", yytext);
+{den2}  {
+         sprintf (tmp, "20%c%c%c%c%c%c", *(yytext+6), *(yytext+7), *(yytext+3), *(yytext+4), *(yytext+0), *(yytext+1));
          cqlval.item = tmp;
          return(DATE);
         }

@@ -115,7 +115,7 @@ svalue  : constm
         }
         | constd
         {
-        sprintf (tmp, "%s BETWEEN %s AND %s + .99999", cqcolumn, $1, $1);
+        sprintf (tmp, "{fn YEAR(%s)} * 10000 + {fn MONTH(%s)} * 100 + {fn DAY(%s)} = %s", cqcolumn, cqcolumn, cqcolumn, $1);
         $$ = cqstr (tmp);
         }
         | comp constd

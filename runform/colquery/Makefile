@@ -37,5 +37,5 @@ cqy.o: cqy.y
 colquery.h: cqy.o
 
 clean:
-	rm -f *.o y.tab.[ch] colq.h colquery.map colq lex.cq.c y.tab.c cql.c *.output cqy.tab.* test
+	rm -f *.o y.tab.[ch] colq.h colquery.map colq lex.cq.c y.tab.c cql.c *.output cqy.tab.* test *core.*
 
