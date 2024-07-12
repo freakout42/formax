@@ -12,9 +12,9 @@ no-mouse C++-application and the minimal bandwidth needs,
 result in massive savings of working time for data
 maintenance.
 ~~~
-**Don't look at formax as a romantic nostalgica!**
-**It is provided as a serious alternative for specific**
-**use-cases for which it can have massive advantages.**
+Don't look at formax as a romantic nostalgica!
+It is provided as a serious alternative for specific
+use-cases for which it can have massive advantages.
 ~~~
 The basic concepts of Oracle SQL-Forms 3.0 (1988) are
 combined with curses as the terminal interface, ODBC for
