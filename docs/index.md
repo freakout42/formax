@@ -12,7 +12,7 @@ no-mouse C++-application and the minimal bandwidth needs,
 result in massive savings of working time for data
 maintenance.
 ~~~
-Don't look at formax as a romantic nostalgica!
+Don't look at **formax** as a romantic nostalgica!
 It is provided as a serious alternative for specific
 use-cases for which it can have massive advantages.
 ~~~
