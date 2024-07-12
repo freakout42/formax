@@ -6,8 +6,8 @@ extreme efficiency of labor. The basic concepts of Oracle
 SQL-Forms 3.0 are combined with curses as the terminal
 interface, ODBC for universal database access and JavaScript
 as trigger language. The result is the most efficient
-solution possible for the end-user. Don't see **formax** as
-a romantic nostalgica! The concepts of Oracle's SQL-Forms
+solution possible for the end-user. Don't look at **formax**
+as a romantic nostalgica! The concepts of Oracle's SQL-Forms
 are still used today and could be very interesting for
 certain use cases on a terminal.
 
@@ -36,6 +36,16 @@ containing a default action or nothing. Programming
 therefore generally consists of modifying the contents of
 these triggers in order to alter the default behavior if
 necessary.
+
+**formax** encorporates the concept of Oracle SQL-Forms with
+modern standards and current database best pratices and
+technologies:
+ - single-column autoincrement primary key field
+ - database integrity enforced through database
+ - JavaScript for client scripting
+ - regular expressions for validation
+ - no free SQL for the end-user
+ - freedom to choose the database provider
 
 Status
 ======
@@ -72,7 +82,7 @@ Operations
 Install
 -------
 Fork in github and create codespace or download and extract
-https://github.com/freakout42/formax/archive/refs/heads/main.zip \
+https://github.com/freakout42/formax/archive/refs/heads/main.zip  
 On codespace/debian do the following to build and run the example:
 ~~~
 sudo apt-get update

@@ -2,6 +2,7 @@
 %k 5000
 %o 10000
 %p 3000
+%START DATET
 n       [0-9]+\.?[0-9]*
 c       [A-Za-z0-9\.]+
 o       \".*\"
@@ -33,6 +34,9 @@ ddmy    {day}\.{mon}\.{year}
 demy    {lday}\.{mon}\.{year}
 ddny    {day}\.{lmon}\.{year}
 deny    {lday}\.{lmon}\.{year}
+een9    {lmon}\/{lday}\/{ye19}
+een2    {lmon}\/{lday}\/{ye20}
+eeny    {lmon}\/{lday}\/{year}
 my19    {mon}\.{ye19}
 ly19    {lmon}\.{ye19}
 my20    {mon}\.{ye20}
@@ -76,6 +80,7 @@ return dec;
  */
 %}
 %%
+        {if (cqtype==DATE) BEGIN DATET;}
 ","     {return(OR);}
 "&"     {return(AND);}
 "-"     {return(BETWEEN);}
@@ -107,17 +112,17 @@ return dec;
 {ll}    {sprintf (tmp, "%s%.2s", yytext+3, yytext);
          cqlval.item = tmp;
          return(MDATE);}
-{ddmys}  {
+<DATET>{ddmys}  {
          sprintf (tmp, "19%c%c%c%c%c%c", *(yytext+4), *(yytext+5), *(yytext+2), *(yytext+3), *(yytext+0), *(yytext+1));
          cqlval.item = tmp;
          return(DATE);
         }
-{ddmys2} {
+<DATET>{ddmys2} {
          sprintf (tmp, "20%c%c%c%c%c%c", *(yytext+4), *(yytext+5), *(yytext+2), *(yytext+3), *(yytext+0), *(yytext+1));
          cqlval.item = tmp;
          return(DATE);
         }
-{ddmysl} {
+<DATET>{ddmysl} {
          sprintf (tmp, "%c%c%c%c%c%c%c%c", *(yytext+4), *(yytext+5), *(yytext+6), *(yytext+7), *(yytext+2), *(yytext+3), *(yytext+0), *(yytext+1));
          cqlval.item = tmp;
          return(DATE);
@@ -159,6 +164,41 @@ return dec;
         }
 {den2}  {
          sprintf (tmp, "20%c%c%c%c%c%c", *(yytext+6), *(yytext+7), *(yytext+3), *(yytext+4), *(yytext+0), *(yytext+1));
+         cqlval.item = tmp;
+         return(DATE);
+        }
+{ddmy}  {
+         sprintf (tmp, "%c%c%c0%c%c0%c", *(yytext+4), *(yytext+5), *(yytext+6), *(yytext+7), *(yytext+2), *(yytext+0));
+         cqlval.item = tmp;
+         return(DATE);
+        }
+{demy}  {
+         sprintf (tmp, "%c%c%c%c0%c%c%c", *(yytext+5), *(yytext+6), *(yytext+7), *(yytext+8), *(yytext+3), *(yytext+0), *(yytext+1));
+         cqlval.item = tmp;
+         return(DATE);
+        }
+{ddny}  {
+         sprintf (tmp, "%c%c%c%c%c%c0%c", *(yytext+5), *(yytext+6), *(yytext+7), *(yytext+8), *(yytext+2), *(yytext+3), *(yytext+0));
+         cqlval.item = tmp;
+         return(DATE);
+        }
+{deny}  {
+         sprintf (tmp, "%c%c%c%c%c%c%c%c", *(yytext+6), *(yytext+7), *(yytext+8), *(yytext+9), *(yytext+3), *(yytext+4), *(yytext+0), *(yytext+1));
+         cqlval.item = tmp;
+         return(DATE);
+        }
+{een9}  {
+         sprintf (tmp, "19%c%c%c%c%c%c", *(yytext+6), *(yytext+7), *(yytext+0), *(yytext+1), *(yytext+3), *(yytext+4));
+         cqlval.item = tmp;
+         return(DATE);
+        }
+{een2}  {
+         sprintf (tmp, "20%c%c%c%c%c%c", *(yytext+6), *(yytext+7), *(yytext+0), *(yytext+1), *(yytext+3), *(yytext+4));
+         cqlval.item = tmp;
+         return(DATE);
+        }
+{eeny}  {
+         sprintf (tmp, "%c%c%c%c%c%c%c%c", *(yytext+6), *(yytext+7), *(yytext+8), *(yytext+9), *(yytext+0), *(yytext+1), *(yytext+3), *(yytext+4));
          cqlval.item = tmp;
          return(DATE);
         }

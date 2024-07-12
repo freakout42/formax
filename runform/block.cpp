@@ -59,6 +59,7 @@ bindv[1] = NULL;
 return execute(querystr, bindv);
 }
 
+// insert into emp (ename) values ('oewwdwfo') returning id;
 int Block::insert(int r) {
 int i, j;
 char columnslist[MEDSIZE];
