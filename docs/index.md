@@ -17,16 +17,17 @@ It is provided as a serious alternative for specific
 use-cases for which it can have massive advantages.
 ~~~
 The basic concepts of Oracle SQL-Forms 3.0 (1988) are
-combined with curses as the terminal interface, ODBC for
-universal database access and Javascript as the trigger
-language. The best ideas for a powerful user interface came
-from Emacs, Clipper, SAP and Lotus/1-2-3. The result is the
-most effective solution possible. By eleminating all
-proprietary dependencies und being open-source including all
-dependencies with a permissive license the system is
-future-proof. The minimal costs to build a **formax**
-application makes adapting this technology a no-brainer for
-any enterprise.
+combined with modern standards and current database best
+pratices and technologies. Using ODBC for universal database
+access and JavaScript as the trigger language opens this
+concept universally. The best ideas for a powerful user
+interface came from Emacs, Clipper, SAP, Lightroom and
+Lotus/1-2-3. The result is the most effective solution
+possible for the end-user. By eleminating all proprietary
+dependencies und being open-source with a permissive license
+the system is totally future-proof. The minimal costs to
+build a **formax** application makes adapting this
+technology a no-brainer for any enterprise.
 
 In every system of decent size is the need for something
 like **formax**. The system-adminstrator needs to change a
@@ -53,8 +54,8 @@ favour of web based as the only option. The result was a
 massive increase of complexity and bandwidth requirements in
 magnitudes of millions and leaving a big technology hole in
 the industry. **formax** wants to bring back this lean
-option to the market for all popular databases and all kinds
-of terminals and emulations.
+option to the market. And not only for Oracle-PL/SQL. With
+ODBC/JavaScript being open for everybody.
 
 ### Goals
 
