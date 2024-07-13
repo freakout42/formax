@@ -71,9 +71,7 @@ return 0;
 
 int Record::query() {
 SQLSMALLINT i;
-SQLLEN indicator;
 int j;
-char **qp;
 if (clear()) return 13;
 *whereorder = '\0';
 j = *where ? letf(whereorder, sizeof(whereorder), " where %s", where) : 0;
@@ -81,26 +79,32 @@ if (*order) letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
 letf((char*)querystr, sizeof(querystr), "select %s from %s%s", attrs, table, whereorder);
 bindv[0] = NULL;
 if ((ret = execute(querystr, bindv))) return ret;
-if ((ret = SQLNumResultCols(stmt, &i))) {
-  assert(i != columni);
-  return 12;
+if ((ret = SQLNumResultCols(stmt, &i))) return 12;
+assert(i == columni);
+do {
+  j = fetch(0);
+  if (j > 0) return j;
+} while (!j);
+return SQLFreeStmt(stmt, SQL_CLOSE);
 }
-while (SQL_SUCCEEDED(ret = SQLFetch(stmt))) {
-  q->rows++;
+
+int Record::fetch(int row) {
+SQLRETURN s;
+SQLSMALLINT i;
+SQLLEN indicator;
+char **qp;
+if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
+  if (!row) row = q->rows++ + 1;
   for (i = 1; i <= columni; i++) {
     ret = SQLGetData(stmt, i, SQL_C_CHAR, buf, sizeof(buf), &indicator);
     if (SQL_SUCCEEDED(ret)) {
-/*
- *    if (indicator == SQL_NULL_DATA) *buf = '\0';
- *    if (!(qp = q->w(q->rows, i))) return 13;
- *    if (!(*qp = strdup(buf))) return 13;
- */
-      if (!(qp = q->w(q->rows, i))) return 13;
+      if (!(qp = q->w(row, i))) return 13;
+//      if (*qp) free(*qp);
       if (indicator == SQL_NULL_DATA) *qp = NULL; else if (!(*qp = strdup(buf))) return 13;
     }
     else return 14;
   }
 }
-return SQLFreeStmt(stmt, SQL_CLOSE);
+return SQL_SUCCEEDED(s) ? 0 : -1;
 }
 

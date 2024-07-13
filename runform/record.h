@@ -33,6 +33,7 @@ protected:
   char where[SMLSIZE];
   char order[SMLSIZE];
   int execute(SQLCHAR *sql, char *bndv[]);
+  int fetch(int row);
 private:
   SQLHENV env;
   SQLRETURN ret;
