@@ -36,6 +36,7 @@
 #define CB f.b[f.curblock]
 #define CF f.l[f.curfield]
 #define LK f.lastkey
+#define DY f.dirty
 #define MSG(n) f.p[0].message(n, NULL)
 
 enum { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };

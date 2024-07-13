@@ -57,7 +57,7 @@ enum {
   COL_QUERY,           /* =19 */
   COL_HEADER,          /* =20 */
   COL_NEWREC,          /* =21 */
-  AUTOCALCCOLOR,       /* =22 */
+  COL_COMMIT,          /* =22 */
   FORMDISPLAYCOLOR,    /* =23 */
   MESSAGECOLOR,        /* =24 */
   PROMPTCOLOR,         /* =25 */

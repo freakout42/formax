@@ -18,4 +18,5 @@ private:
   int enter_query();
   int execute_query();
   int delete_record();
+  int clear_record();
 };

@@ -7,6 +7,7 @@ public:
   int update(int row, int col);
   int insert(int row);
   int destroy(int r);
+  int clear(int r);
   int fieldcount;
   int prikeycnt;
   int blockfields[NFIELD1]; /* array index l[] */

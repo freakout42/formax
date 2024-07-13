@@ -32,7 +32,7 @@ static attrel attrels[] = {
   { COL_QUERY,           A_REVERSE,             COLOR_CYAN,    COLOR_BLACK },   /* query */
   { COL_HEADER,          A_BOLD,                COLOR_WHITE,   COLOR_BLUE },    /* status header */
   { COL_NEWREC,          A_REVERSE,             COLOR_YELLOW,  COLOR_BLACK },   /* insert */
-  { AUTOCALCCOLOR,       A_REVERSE,             0,             0 },             /* autocalc info */
+  { COL_COMMIT,          A_BOLD,                COLOR_GREEN,   COLOR_BLACK },   /* commit key action */
   { FORMDISPLAYCOLOR,    A_REVERSE,             0,             0 },             /* formula display info */
   { MESSAGECOLOR,        A_BOLD|A_BLINK,        0,             0 },             /* messages */
   { PROMPTCOLOR,         A_BOLD,                0,             0 },             /* prompt */

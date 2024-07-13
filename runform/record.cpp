@@ -93,13 +93,15 @@ SQLRETURN s;
 SQLSMALLINT i;
 SQLLEN indicator;
 char **qp;
+int old;
 if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
-  if (!row) row = q->rows++ + 1;
+  old = 0;  
+  if (row) old = 1; else row = q->rows++ + 1;
   for (i = 1; i <= columni; i++) {
     ret = SQLGetData(stmt, i, SQL_C_CHAR, buf, sizeof(buf), &indicator);
     if (SQL_SUCCEEDED(ret)) {
       if (!(qp = q->w(row, i))) return 13;
-//      if (*qp) free(*qp);
+      if (old) free(*qp);
       if (indicator == SQL_NULL_DATA) *qp = NULL; else if (!(*qp = strdup(buf))) return 13;
     }
     else return 14;

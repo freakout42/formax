@@ -9,7 +9,9 @@ as trigger language. The result is the most efficient
 solution possible for the end-user. Don't look at **formax**
 as a romantic nostalgica! The concepts of Oracle's SQL-Forms
 are still used today and could be very interesting for
-certain use cases on a terminal.
+certain use cases on a terminal. Especially when they can be
+used in not Oracle-PL/SQL environments for the first time
+after 40 years.
 
 [![formax](https://formax.freakout.de/assets/logo.jpg "formax")](https://formax.freakout.de/ "formax")
 

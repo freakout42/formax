@@ -20,11 +20,22 @@ return 0;
 }
 
 int Qdata::splice(int rown) {
-void *s;
-assert(allocatedrows > rows);
-s = memmove(w(rown+2,1), w(rown+1,1), (allocatedrows-rows++)*cols);
-memset(w(rown+1,1), 0, cols * (sizeof(void*)));
-return s != NULL;
+int i;
+char **clr;
+if (rown > 0) {
+  if (allocatedrows == rows) w(rows+1, 1);
+  memmove(w(rown+2,1), w(rown+1,1), (allocatedrows-rown-1)*cols);
+  memset(w(rown+1,1), 0, cols * (sizeof(void*)));
+  rows++;
+} else {
+  rown *= -1;
+  clr = w(rown,1);
+  for (i=0; i<cols; i++) free(*(clr+i));
+  memmove(w(rown,1), w(rown+1,1), (allocatedrows-rown)*cols);
+  memset(w(rows,1), 0, cols * (sizeof(void*)));
+  rows--;
+}
+return 0;
 }
 
 void Qdata::freed() {

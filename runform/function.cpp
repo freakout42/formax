@@ -39,16 +39,16 @@ switch(f.lastcmd) {
    }                                                                   break;
   case KEF_DELETE:
    switch(f.rmode) {
-    case MOD_UPDATE: LK = delete_record(); enter_query();              break;
-    case MOD_INSERT:                       enter_query();              break;
+    case MOD_UPDATE: LK = delete_record();                             break;
+    case MOD_INSERT: LK = clear_record();                              break;
     default:         LK = 0; MSG(MSG_NOREC);                           break;
    }                                                                   break;
   case KEF_QUERY:    LK = enter_query();                               break;
   case KEF_NAVI10:
   case KEF_COMMIT:
    switch(f.rmode) {
-    case MOD_UPDATE: LK = enter_query();                               break;
     case MOD_QUERY:  LK = execute_query();                             break;
+    case MOD_UPDATE: LK = enter_query();                               break;
     case MOD_INSERT: LK = create_record(); enter_query();              break;
    }                                                                   break;
   case KEF_EXIT:     LK = fexit();                                     break;
@@ -102,8 +102,12 @@ return 0;
 
 int Function::insert_record() {
 int s;
-s = CB.q->splice(CB.currentrecord++);
-f.rmode = MOD_INSERT;
+if (f.rmode == MOD_UPDATE && !(s = CB.q->splice(CB.currentrecord++))) {
+  f.rmode = MOD_INSERT;
+  DY = 0;
+} else {
+  MSG(MSG_QUERYM);
+}
 return 0;
 }
 
@@ -141,7 +145,7 @@ return 0;
 }
 
 int Function::enter_query() {
-f.b[1].clear();
+f.b[1].clear(CB.currentrecord);
 CB.currentrecord = 0;
 f.rmode = MOD_QUERY;
 return 0;
@@ -155,13 +159,22 @@ if (f.b[1].select()) notrunning = -2; else {
   } else {
     CB.currentrecord = 0;
     f.rmode = MOD_QUERY;
+    MSG(MSG_NOREC);
   }
 }
 return 0;
 }
 
 int Function::delete_record() {
-f.b[1].destroy(CB.currentrecord);
+if (MSG(MSG_DELASK) == KEY_ENTER) {
+  f.b[1].destroy(CB.currentrecord);
+  clear_record();
+}
+return 0;
+}
+
+int Function::clear_record() {
+CB.q->splice(-CB.currentrecord);
 return 0;
 }
 

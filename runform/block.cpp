@@ -59,6 +59,10 @@ bindv[1] = NULL;
 return execute(querystr, bindv);
 }
 
+int Block::clear(int r) {
+return 0;
+}
+
 // insert into emp (ename) values ('oewwdwfo') returning id;
 int Block::insert(int r) {
 int i, j;
