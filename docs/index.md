@@ -102,6 +102,7 @@ without any bandwidth-requirements.
 Current v0.9.9 is ALPHA - the generator can only create a
 single-block single-page form. You are able to create,
 retrieve, update and delete (CRUD) records in this table.
+No triggers, no transactions, no help, no designer-tool yet.
 Full Forms3 functionality is a big task and depends highly
 on the community participation in the future.
 
