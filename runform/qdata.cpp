@@ -1,3 +1,4 @@
+/* #include <stdio.h> */
 /* query data handling */
 #include <assert.h>
 #include <stdlib.h>
@@ -6,6 +7,7 @@
 void Qdata::init() {
 rows = 0;
 cols = 0;
+allocatedrows = 0;
 d = NULL;
 }
 
@@ -16,6 +18,7 @@ rows = 0;
 cols = coln;
 allocatedrows = 2;
 if (!(d = (char*(*)[])malloc(allocatedrows * cols * (sizeof(void*))))) return 13;
+memset(d, 0, allocatedrows * cols * (sizeof(void*)));
 return 0;
 }
 
@@ -24,14 +27,14 @@ int i;
 char **clr;
 if (rown > 0) {
   if (allocatedrows == rows) w(rows+1, 1);
-  memmove(w(rown+2,1), w(rown+1,1), (allocatedrows-rown-1)*cols);
+  memmove(w(rown+2,1), w(rown+1,1), (rows-rown) * cols * (sizeof(void*)));
   memset(w(rown+1,1), 0, cols * (sizeof(void*)));
   rows++;
 } else {
   rown *= -1;
   clr = w(rown,1);
   for (i=0; i<cols; i++) free(*(clr+i));
-  memmove(w(rown,1), w(rown+1,1), (allocatedrows-rown)*cols);
+  memmove(w(rown,1), w(rown+1,1), (rows-rown) * cols * (sizeof(void*)));
   memset(w(rows,1), 0, cols * (sizeof(void*)));
   rows--;
 }

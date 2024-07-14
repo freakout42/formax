@@ -42,8 +42,11 @@ switch(f.rmode) {
     c = f.b[blockindex].q->w(CB.currentrecord, sequencenum);
     if (*c) let(buf, *c); else *buf = '\0';
     pressed = f.p[0].sedit(buf, pos);
-    if (*c==NULL || strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);
-    if ((*c==NULL && *buf) || strcmp(*c, buf)) strcpy(*c, buf);
+    if (*c==NULL && *buf) *c = strdup(buf);
+    else {
+      if (strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);
+      if (strcmp(*c, buf)) strcpy(*c, buf);
+    }
   }
   break;
  case MOD_QUERY:

@@ -11,9 +11,8 @@ runform: curkeys.h $(OBJS) cqerror.o colquery/colquery.o
 	$(CXX) $(OBJS) cqerror.o colquery/colquery.o -lcurses -lodbc -o $@
 
 test: runform $(EXAMPLE)
-	valgrind --quiet --leak-check=yes --suppressions=valgrind.sup ./runform -nuk $(EXAMPLE) 2>$@
-	test -f $@
-	test ! -s $@
+	valgrind --quiet --leak-check=yes --track-origins=yes --suppressions=valgrind.sup ./runform -nuk $(EXAMPLE) 2>$@
+	test -f $@ -a ! -s $@
 
 curkeys.h: curkeys
 	./curkeys >$@

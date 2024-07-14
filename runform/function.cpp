@@ -166,9 +166,17 @@ return 0;
 }
 
 int Function::delete_record() {
-if (MSG(MSG_DELASK) == KEY_ENTER) {
+switch(MSG(MSG_DELASK)) {
+ case KEY_ENTER:
+ case 'y':
+ case 'j':
+ case 'o':
+ case 'Y':
+ case 'J':
+ case 'O':
   f.b[1].destroy(CB.currentrecord);
   clear_record();
+  if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
 }
 return 0;
 }
