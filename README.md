@@ -77,6 +77,7 @@ Feature roadmap
  - key macros
  - multiple databases
  - database validation (engine responsibility?)
+ - full SQL-Forms-3 functionality
 
 Operations
 ==========

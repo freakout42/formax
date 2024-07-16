@@ -72,7 +72,8 @@ static char empty[] = "";
 char *pntst;
 if (f.y.ysiz > 0) {
 if (pnt) pntst = pnt; else pntst = empty;
-if (strlen(pntst) > LINE0SIZE-12) i = strlen(pntst) - LINE0SIZE + 12; else i = 0;
+//if (strlen(pntst) > LINE0SIZE-12) i = strlen(pntst) - LINE0SIZE + 12; else 
+i = 0;
 writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, f.y.msg(ern), pntst+i);
 writef(0, 76, 0, 4, "%04d", f.lastcmd);
 wmov(0,0);

@@ -4,17 +4,18 @@ typedef void * SQLHENV;
 typedef void * SQLHSTMT;
 typedef unsigned char SQLCHAR;
 typedef signed short int SQLSMALLINT;
+typedef unsigned short int SQLUSMALLINT;
 typedef SQLSMALLINT SQLRETURN;
 #endif
 class Record {
 public:
-  SQLHDBC dbc;
   char table[SMLSIZE];
   char sqlcmd[MEDSIZE];
   SQLCHAR querystr[MEDSIZE];
   char *bindv[NBINDPA];
   char whereorder[MEDSIZE];
   int connect(char *dsn);
+  int connect(Record r);
   int commit();
   int rollback();
   void disconnect();
@@ -26,6 +27,7 @@ public:
   int n(int row, int col);
   Qdata *q;
 protected:
+  SQLRETURN ret;
   SQLHSTMT stmt;
   SQLSMALLINT columni;
   char prikey[SMLSIZE];
@@ -33,9 +35,11 @@ protected:
   char where[SMLSIZE];
   char order[SMLSIZE];
   int execute(SQLCHAR *sql, char *bndv[]);
+  int complete();
   int fetch(int row);
 private:
   SQLHENV env;
-  SQLRETURN ret;
+  SQLHDBC dbc;
+  SQLUSMALLINT moreresults;
 };
 

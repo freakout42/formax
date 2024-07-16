@@ -49,6 +49,7 @@ extern int catc(char *target, size_t maxlen, char source);
 extern int debugf(char *format, ...);
 extern char *xencrypt(char *toe, int rev);
 
+extern int   useodbcve3;
 extern int   monochrome;
 extern int   usedefault;
 extern int   firststart;

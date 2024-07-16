@@ -63,7 +63,6 @@ int Block::clear(int r) {
 return 0;
 }
 
-// insert into emp (ename) values ('oewwdwfo') returning id;
 int Block::insert(int r) {
 int i, j;
 char columnslist[MEDSIZE];
@@ -77,13 +76,19 @@ for (i=j=0; i<fieldcount; i++) {
     catc(t(columnslist), sep);
     cats(t(columnslist), f.l[blockfields[i]].name);
     catc(t(valueslist),  sep);
+#ifdef NOYUSEBIND4INSERT
+    letf(t(valueslist),  "'%s'", q->v(r, i+1));
+#else
     cats(t(valueslist),  "?");
-    sep = ',';
     bindv[j++] = q->v(r, i+1);
+#endif
+    sep = ',';
   }
 }
 bindv[j] = NULL;
-letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s)", table, columnslist, valueslist);
-return execute(querystr, bindv);
+letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s) returning %s", table, columnslist, valueslist, attrs);
+if ((ret = execute(querystr, bindv))) return ret;
+if ((ret = fetch(r))) MSG(MSG_NOREC);
+return complete();
 }
 

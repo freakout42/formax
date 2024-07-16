@@ -49,7 +49,7 @@ switch(f.lastcmd) {
    switch(f.rmode) {
     case MOD_QUERY:  LK = execute_query();                             break;
     case MOD_UPDATE: LK = enter_query();                               break;
-    case MOD_INSERT: LK = create_record(); enter_query();              break;
+    case MOD_INSERT: LK = create_record();                             break;
    }                                                                   break;
   case KEF_EXIT:     LK = fexit();                                     break;
   case KEF_QUIT:

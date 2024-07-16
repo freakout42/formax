@@ -1,8 +1,8 @@
-#define USAGE "runform-(%02d) %s\nusage: runform [-acdikq] [-n lg] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
-#define FORMFRM argv[optind+ /* command-line arguments */                         0]       //       //         //
-#define FORMDSN argv[optind+                                                               1]       //         //
-#define FORMUID argv[optind+                                                                        2]         //
-#define FORMPWD argv[optind+                                                                                   3]
+#define USAGE "runform-(%02d) %s\nusage: runform [-3acdikq] [-n lg] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
+#define FORMFRM argv[optind+ /* command-line arguments */                          0]       //       //         //
+#define FORMDSN argv[optind+                                                                1]       //         //
+#define FORMUID argv[optind+                                                                         2]         //
+#define FORMPWD argv[optind+                                                                                    3]
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +25,8 @@ char *est[] = {
   "SQL execute error",            // 11
   "SQL columns error",            // 12
   "no more memeory",              // 13
-  "SQL getdata error"             // 14
+  "SQL getdata error",            // 14
+  "SQL bind error",               // 15
 };
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
@@ -35,6 +36,7 @@ exit(ecd);
 char *lclocale;
 int  firststart  = 1;
 int  insertmode  = 1;
+int  useodbcve3  = 0;             // -3
 int  monochrome  = 0;             // -k
 int  usedefault  = 0;             // -c
 int  squerymode  = 1;             // -i
@@ -55,7 +57,7 @@ setenv("LC_ALL", CHARSET, 1);
 lclocale = setlocale(LC_ALL, CHARSET);
 
 // command-line arguments and options check and process
-while ((i = getopt(argc, argv, "acdikl:n:qVy:")) != -1) {
+while ((i = getopt(argc, argv, "3acdikl:n:qVy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
     case 'y': printf("%s\n", xencrypt(optarg,0));
@@ -67,6 +69,7 @@ while ((i = getopt(argc, argv, "acdikl:n:qVy:")) != -1) {
       if (!strcmp(optarg, "de"))      shiftednum = "<!\"§$%&/()=";
       if (!strcmp(optarg, "fr"))      shiftednum = "<&é\"'(-è_çá";
       break;
+    case '3': useodbcve3 = 1; break;
     case 'k': monochrome = 1; break;
     case 'c': usedefault = 1; break;
     case 'i': squerymode = 0; break;
@@ -95,18 +98,18 @@ switch(argc - optind) {
  default: usage(2);
 }
 if (f.b[0].connect(dsn)) usage(8);
-for (i=1; i<NBLOCKS; i++) f.b[i].dbc = f.b[0].dbc;
+for (i=1; i<NBLOCKS; i++) f.b[i].connect(f.b[0]);
 
 // check, open and read the form - sqlite3 file named .frm
 if ((filesq3 = fopen(FORMFRM, "r")) == NULL) usage(3);
 fclose(filesq3); // check for file existence because sqlite creates empty db
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, FORMFRM);
 if (f.connect(dsn)) usage(4);
-f.rerror.dbc = f.dbc;
-f.rblock.dbc = f.dbc;
-f.rfield.dbc = f.dbc;
-f.rpage.dbc = f.dbc;
-f.rmap.dbc = f.dbc;
+f.rerror.connect(f);
+f.rblock.connect(f);
+f.rfield.connect(f);
+f.rpage.connect(f);
+f.rmap.connect(f);
 if (f.init()) usage(5);
 
 // load and run the form
