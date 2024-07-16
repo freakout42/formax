@@ -19,12 +19,13 @@ return 0;
 
 void Field::show(int cur) {
 int color;
-if (cur) color = COL_CURRENT;
-else switch(f.rmode) {
+switch(f.rmode) {
  case MOD_QUERY:  color = COL_QUERY;  break;
  case MOD_INSERT: color = COL_NEWREC; break;
+ case MOD_DELETE: color = COL_DELETED; break;
  default:         color = COL_FIELD;
 }
+if (cur && f.rmode != MOD_DELETE) color = COL_CURRENT;
 f.p[1].writef(line, col, color, dlen, "%s", f.rmode==MOD_QUERY ? queryhuman : f.b[blockindex].q->v(CB.currentrecord, sequencenum));
 if (cur) f.p[1].wmov(line, col);
 }

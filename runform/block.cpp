@@ -45,10 +45,15 @@ return f.l[blockfields[c]].name;
 }
 
 int Block::update(int r, int c) {
+#ifdef NOTUSEBIND
+letf((char*)querystr, sizeof(querystr), "update %s set %s = '%s' where %s = '%s'", table, cn(c-1), q->v(r, c),
+                                           f.l[primarykeys[0]].name, q->v(r, f.l[primarykeys[0]].sequencenum));
+#else
 letf((char*)querystr, sizeof(querystr), "update %s set %s = ? where %s = ?", table, cn(c-1), f.l[primarykeys[0]].name);
 bindv[0] = q->v(r, c);
 bindv[1] = q->v(r, f.l[primarykeys[0]].sequencenum);
 bindv[2] = NULL;
+#endif
 return execute(querystr, bindv);
 }
 
@@ -76,7 +81,7 @@ for (i=j=0; i<fieldcount; i++) {
     catc(t(columnslist), sep);
     cats(t(columnslist), f.l[blockfields[i]].name);
     catc(t(valueslist),  sep);
-#ifdef NOYUSEBIND4INSERT
+#ifdef NOTUSEBIND
     letf(t(valueslist),  "'%s'", q->v(r, i+1));
 #else
     cats(t(valueslist),  "?");

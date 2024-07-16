@@ -1,4 +1,7 @@
+#undef DEBUG
+#ifdef DEBUG
 #include <stdio.h>
+#endif
 #include <assert.h>
 #include <stdlib.h>
 #include <sql.h>
@@ -84,10 +87,9 @@ if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) s = 10; else {
     }
   }
 }
-if (s) {
-  fprintf(stderr, "SQL: %d %d %s\n", s, ret, sqlcmd);
-  f.p[0].message(50, sqlcmd);
-}
+#ifdef DEBUG
+fprintf(stderr, "SQL: %d %d %s\n", s, ret, sqlcmd);
+#endif
 return s;
 }
 
@@ -122,19 +124,23 @@ SQLRETURN s;
 SQLSMALLINT i;
 SQLLEN indicator;
 char **qp;
-int old;
 //if (row) s = SQLMoreResults(stmt);
 if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
-  old = 0;  
-  if (row) old = 1; else row = q->rows++ + 1;
+  if (!row) row = q->rows++ + 1;
   for (i = 1; i <= columni; i++) {
     ret = SQLGetData(stmt, i, SQL_C_CHAR, buf, sizeof(buf), &indicator);
     if (SQL_SUCCEEDED(ret)) {
       if (!(qp = q->w(row, i))) return 13;
-      if (old) free(*qp);
+      free(*qp);
       if (indicator == SQL_NULL_DATA) *qp = NULL; else if (!(*qp = strdup(buf))) return 13;
+/*
+    } else {
+//      while (SQLGetDiagRec(SQL_HANDLE_STMT, hStmt, ++rec, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS) {
+//        fprintf(stderr, "[%s]%s\n", szSqlState, szError );
+//      }
+      return 14;
+ */
     }
-    else return 14;
   }
 }
 return SQL_SUCCEEDED(s) ? 0 : -1;

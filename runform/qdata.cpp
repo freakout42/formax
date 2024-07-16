@@ -50,9 +50,12 @@ init();
 
 /* return a valid pointer for new query-column data */
 char **Qdata::w(int row, int col) {
+int i;
 if (row > allocatedrows) {
+  i = allocatedrows;
   if (allocatedrows) allocatedrows *= 10; else allocatedrows = 2;
   if (!(d = (char*(*)[])realloc(d, allocatedrows * cols * (sizeof(void*))))) return NULL;
+  memset(w(i+1,1), 0, (allocatedrows - i) * cols * (sizeof(void*)));
 }
 return &((*d)[(row - 1) * cols + col - 1]);
 }

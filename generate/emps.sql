@@ -1,22 +1,14 @@
-/* build test database scotty.sq3 */
-create table depts
- (id         integer primary key not null,
-  dname      text,
-  loc        text
- );
-insert into depts values (10, 'ACCOUNTING', 'NEW YORK');
-insert into depts values (20, 'RESEARCH',   'DALLAS');
-insert into depts values (30, 'SALES',      'CHICAGO');
-insert into depts values (40, 'OPERATIONS', 'BOSTON');
-create table emps
- (id         integer primary key not null,
-  ename      text,
-  job        text,
-  mgr        integer,
-  hiredate   text,
-  sal        real,
-  comm       real,
-  dept_id    integer
+alter session set nls_date_format = 'yyyy-mm-dd hh24:mi:ss';
+DROP TABLE emps;
+CREATE TABLE emps
+ (id         NUMBER(11) NOT NULL,
+  ename      VARCHAR2(15),
+  job        VARCHAR2(12),
+  mgr        NUMBER(4),
+  hiredate   DATE,
+  sal        NUMBER(10,2),
+  comm       NUMBER(10,2),
+  dept_id    NUMBER(4)
  );
 insert into emps values (7369, 'MC''SMITH',  'CLERK',     7902, '1980-12-17', 800,  NULL, 20);
 insert into emps values (7499, 'ALLEN',  'SALESMAN',  7698, '1981-02-20', 1600, 300,  30);

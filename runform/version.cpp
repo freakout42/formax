@@ -61,7 +61,7 @@ if (po = strchr(xorder, ch)) {
 static char numord(int on) {
 return xorder[on];
 }
-char *xencrypt(char *toe, int rev) {
+char *xdecrypt(char *toe, int rev) {
 int i, j, k;
 for (i=0; toe[i] && i < 60; i++) {
   j = ordnum((unsigned char)toe[i]);

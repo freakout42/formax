@@ -50,6 +50,7 @@ switch(f.lastcmd) {
     case MOD_QUERY:  LK = execute_query();                             break;
     case MOD_UPDATE: LK = enter_query();                               break;
     case MOD_INSERT: LK = create_record();                             break;
+    case MOD_DELETE: LK = destroy_record();                            break;
    }                                                                   break;
   case KEF_EXIT:     LK = fexit();                                     break;
   case KEF_QUIT:
@@ -113,6 +114,7 @@ return 0;
 
 int Function::create_record() {
 CB.insert(CB.currentrecord);
+f.rmode = MOD_UPDATE;
 return 0;
 }
 
@@ -166,7 +168,15 @@ return 0;
 }
 
 int Function::delete_record() {
-switch(MSG(MSG_DELASK)) {
+f.rmode = MOD_DELETE;
+return 0;
+}
+
+int Function::destroy_record() {
+int s;
+s = KEY_ENTER;
+if (deleprompt) s = MSG(MSG_DELASK);
+switch(s) {
  case KEY_ENTER:
  case 'y':
  case 'j':
@@ -177,6 +187,8 @@ switch(MSG(MSG_DELASK)) {
   f.b[1].destroy(CB.currentrecord);
   clear_record();
   if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
+  ;;
+ default: f.rmode = MOD_UPDATE;
 }
 return 0;
 }

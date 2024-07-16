@@ -58,7 +58,7 @@ enum {
   COL_HEADER,          /* =20 */
   COL_NEWREC,          /* =21 */
   COL_COMMIT,          /* =22 */
-  FORMDISPLAYCOLOR,    /* =23 */
+  COL_DELETED,         /* =23 */
   MESSAGECOLOR,        /* =24 */
   PROMPTCOLOR,         /* =25 */
   INPUTCOLOR,          /* =26 */

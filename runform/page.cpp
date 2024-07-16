@@ -44,7 +44,8 @@ char commit[16];
 switch (f.rmode) {
  case MOD_QUERY:  strcpy(commit, "  Execute-Query");                           break;
  case MOD_UPDATE: strcpy(commit, "    Enter-Query");                           break;
- case MOD_INSERT: strcpy(commit, DY ? "  Insert-Record" : "  Delete-Record");  break;
+ case MOD_INSERT: strcpy(commit, "  Insert-Record");                           break;
+ case MOD_DELETE: strcpy(commit, "  Delete-Record");                           break;
  default:         strcpy(commit, "///////////////");
 }
 wera();

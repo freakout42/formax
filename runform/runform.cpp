@@ -60,8 +60,8 @@ lclocale = setlocale(LC_ALL, CHARSET);
 while ((i = getopt(argc, argv, "3acdikl:n:qVy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
-    case 'y': printf("%s\n", xencrypt(optarg,0));
-              printf("%s\n", xencrypt(optarg,1)); exit(99);
+    case 'y': printf("%s\n", xdecrypt(optarg,0));
+              printf("%s\n", xdecrypt(optarg,1)); exit(99);
     case 'l': let(drv, optarg); break;
     case 'n':
       if (!strcmp(optarg, "us")) ; // shiftednum = "`!@#$%^&*()";
@@ -92,7 +92,7 @@ switch(argc - optind) {
   snprintf(dsn, sizeof(dsn), "DSN=%s;UID=%s", FORMDSN, FORMUID);
   break;
  case 4:
-  xencrypt(FORMPWD,1);
+//  xdecrypt(FORMPWD,1);
   snprintf(dsn, sizeof(dsn), "DSN=%s;UID=%s;PWD=%s", FORMDSN, FORMUID, FORMPWD);
   break;
  default: usage(2);
