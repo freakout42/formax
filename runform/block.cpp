@@ -37,6 +37,7 @@ for (i=0; i<fieldcount; i++) {
   }
 }
 if (*wall) let(where, wall);
+bindv[0] = NULL;
 return query();
 }
 
@@ -45,27 +46,32 @@ return f.l[blockfields[c]].name;
 }
 
 int Block::update(int r, int c) {
-#ifdef NOTUSEBIND
-letf((char*)querystr, sizeof(querystr), "update %s set %s = '%s' where %s = '%s'", table, cn(c-1), q->v(r, c),
-                                           f.l[primarykeys[0]].name, q->v(r, f.l[primarykeys[0]].sequencenum));
-#else
+if (usebindvar) {
 letf((char*)querystr, sizeof(querystr), "update %s set %s = ? where %s = ?", table, cn(c-1), f.l[primarykeys[0]].name);
 bindv[0] = q->v(r, c);
 bindv[1] = q->v(r, f.l[primarykeys[0]].sequencenum);
 bindv[2] = NULL;
-#endif
-return execute(querystr, bindv);
+} else {
+letf((char*)querystr, sizeof(querystr), "update %s set %s = '%s' where %s = '%s'", table, cn(c-1), q->v(r, c),
+                                           f.l[primarykeys[0]].name, q->v(r, f.l[primarykeys[0]].sequencenum));
+bindv[0] = NULL;
+}
+if ((ret = execute(querystr, bindv))) return ret;
+return complete();
 }
 
 int Block::destroy(int r) {
+if (usebindvar) {
 letf((char*)querystr, sizeof(querystr), "delete from %s where %s = ?", table, f.l[primarykeys[0]].name);
 bindv[0] = q->v(r, f.l[primarykeys[0]].sequencenum);
 bindv[1] = NULL;
-return execute(querystr, bindv);
+} else {
+letf((char*)querystr, sizeof(querystr),
+  "delete from %s where %s = '%s'", table, f.l[primarykeys[0]].name, q->v(r, f.l[primarykeys[0]].sequencenum));
+bindv[0] = NULL;
 }
-
-int Block::clear(int r) {
-return 0;
+if ((ret = execute(querystr, bindv))) return ret;
+return complete();
 }
 
 int Block::insert(int r) {
@@ -76,22 +82,24 @@ char sep;
 *columnslist = '\0';
 *valueslist = '\0';
 sep = '\0';
-for (i=j=0; i<fieldcount; i++) {
+j = 0;
+for (i=0; i<fieldcount; i++) {
   if (q->v(r, i+1)) {
     catc(t(columnslist), sep);
     cats(t(columnslist), f.l[blockfields[i]].name);
     catc(t(valueslist),  sep);
-#ifdef NOTUSEBIND
-    letf(t(valueslist),  "'%s'", q->v(r, i+1));
-#else
+if (usebindvar) {
     cats(t(valueslist),  "?");
     bindv[j++] = q->v(r, i+1);
-#endif
+} else {
+    letf(t(valueslist),  "'%s'", q->v(r, i+1));
+}
     sep = ',';
   }
 }
 bindv[j] = NULL;
 letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s) returning %s", table, columnslist, valueslist, attrs);
+//letf((char*)querystr, sizeof(querystr), "begin; var id number; insert into %s (%s) values (%s) returning id into :id; print id; end;", table, columnslist, valueslist);
 if ((ret = execute(querystr, bindv))) return ret;
 if ((ret = fetch(r))) MSG(MSG_NOREC);
 return complete();

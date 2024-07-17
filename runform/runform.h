@@ -55,6 +55,8 @@ extern int   usedefault;
 extern int   firststart;
 extern int   insertmode;
 extern int   squerymode;
+extern int   usebindvar;
+extern int   querycharm;
 extern int   autocommit;
 extern int   deleprompt;
 extern int   queryonlym;

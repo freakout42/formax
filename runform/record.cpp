@@ -1,4 +1,4 @@
-#undef DEBUG
+#define DEBUG
 #ifdef DEBUG
 #include <stdio.h>
 #endif
@@ -77,13 +77,16 @@ ret = SQLPrepare(stmt, sql, SQL_NTS);
 if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) s = 10; else {
   for (i=0; !s && b[i]; i++) {
     ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], 0, &len);
+#ifdef DEBUG
+fprintf(stderr, "SQLBindParameter: %d %d %s\n", i, ret, b[i]);
+#endif
     if (ret) s = 15;
   }
   if (!s) {
-    ret = SQLNumResultCols(stmt, &i);
+//    ret = SQLNumResultCols(stmt, &i);
     ret = SQLExecute(stmt);
     if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO && ret != -1) s = 11; else {
-      if ((ret = SQLNumResultCols(stmt, &i))) s = 12; // else  assert(i == columni) rmode?;
+; //      if ((ret = SQLNumResultCols(stmt, &i))) s = 12; // else  assert(i == columni) rmode?;
     }
   }
 }
@@ -116,7 +119,8 @@ return complete();
 }
 
 int Record::complete() {
-return SQLFreeStmt(stmt, SQL_CLOSE);
+SQLFreeStmt(stmt, SQL_CLOSE);
+return 0;
 }
 
 int Record::fetch(int row) {

@@ -1,8 +1,8 @@
-#define USAGE "runform-(%02d) %s\nusage: runform [-3acdikq] [-n lg] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
-#define FORMFRM argv[optind+ /* command-line arguments */                          0]       //       //         //
-#define FORMDSN argv[optind+                                                                1]       //         //
-#define FORMUID argv[optind+                                                                         2]         //
-#define FORMPWD argv[optind+                                                                                    3]
+#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikq] [-n lg] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
+#define FORMFRM argv[optind+ /* command-line arguments */                            0]       //       //         //
+#define FORMDSN argv[optind+                                                                  1]       //         //
+#define FORMUID argv[optind+                                                                           2]         //
+#define FORMPWD argv[optind+                                                                                      3]
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,6 +40,8 @@ int  useodbcve3  = 0;             // -3
 int  monochrome  = 0;             // -k
 int  usedefault  = 0;             // -c
 int  squerymode  = 1;             // -i
+int  usebindvar  = 1;             // -b
+int  querycharm  = 1;             // -h
 int  autocommit  = 1;             // -a
 int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
@@ -57,7 +59,7 @@ setenv("LC_ALL", CHARSET, 1);
 lclocale = setlocale(LC_ALL, CHARSET);
 
 // command-line arguments and options check and process
-while ((i = getopt(argc, argv, "3acdikl:n:qVy:")) != -1) {
+while ((i = getopt(argc, argv, "3abcdhikl:n:qVy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
     case 'y': printf("%s\n", xdecrypt(optarg,0));
@@ -73,6 +75,8 @@ while ((i = getopt(argc, argv, "3acdikl:n:qVy:")) != -1) {
     case 'k': monochrome = 1; break;
     case 'c': usedefault = 1; break;
     case 'i': squerymode = 0; break;
+    case 'b': usebindvar = 0; break;
+    case 'h': querycharm = 0; break;
     case 'a': autocommit = 0; break;
     case 'd': deleprompt = 1; break;
     case 'q': queryonlym = 1; break;

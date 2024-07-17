@@ -128,7 +128,7 @@ switch(f.rmode) {
   break;
  case MOD_UPDATE:
   if (CF.isprimarykey) MSG(MSG_EDITKEY); else changed = CF.edit(pos);
-  if (changed != KEF_CANCEL) CB.update(CB.currentrecord, CF.sequencenum);
+  if (changed != KEF_CANCEL) if (CB.update(CB.currentrecord, CF.sequencenum)) f.p[0].message(MSG_SQL, CB.sqlcmd);
   break;
 }
 return changed==KEF_CANCEL ? 0 : changed;
@@ -147,7 +147,7 @@ return 0;
 }
 
 int Function::enter_query() {
-f.b[1].clear(CB.currentrecord);
+f.b[1].clear();
 CB.currentrecord = 0;
 f.rmode = MOD_QUERY;
 return 0;

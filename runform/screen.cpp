@@ -281,6 +281,7 @@ while (!done) {              /* input loop */
     changed = FALSE;
     done = TRUE;
     break;
+   case '\'': if (!usebindvar) break;
    default:             /* char input?    */
     if (   ((c >= ' ') && (c <= '~'))
         || ((c >= 0x80) && (c < 0xff)) ) {
