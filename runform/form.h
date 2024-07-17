@@ -23,7 +23,7 @@ public:
   int lastcmd;
   int lastkey;
   int dirty;
-  int rmode;
+  enum fmode rmode;
   int notrunning;
   int *init();
   int fill(int id);

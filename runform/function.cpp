@@ -130,6 +130,8 @@ switch(f.rmode) {
   if (CF.isprimarykey) MSG(MSG_EDITKEY); else changed = CF.edit(pos);
   if (changed != KEF_CANCEL) if (CB.update(CB.currentrecord, CF.sequencenum)) f.p[0].message(MSG_SQL, CB.sqlcmd);
   break;
+ case MOD_DELETE:
+  break;
 }
 return changed==KEF_CANCEL ? 0 : changed;
 }

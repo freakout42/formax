@@ -27,6 +27,7 @@ public:
   int n(int row, int col);
   Qdata *q;
 protected:
+  enum odrvr drv;
   SQLRETURN ret;
   SQLHSTMT stmt;
   SQLSMALLINT columni;

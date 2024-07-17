@@ -54,6 +54,8 @@ switch(f.rmode) {
   pressed = f.p[0].sedit(queryhuman, pos);
   s = colquery(queryhuman, querywhere, name, querycharm, 0);
   break;
+ case MOD_DELETE:
+  break;
 }
 pressed = pressed==KEY_ENTER ? KEF_NXTFLD : f.mapkey(pressed);
 return pressed;

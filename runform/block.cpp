@@ -98,10 +98,14 @@ if (usebindvar) {
   }
 }
 bindv[j] = NULL;
+if (drv == ODR_ORACLE) {
+letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s)", table, columnslist, valueslist);
+//letf((char*)querystr, sizeof(querystr), "begin var id number; insert into %s (%s) values (%s) returning id into :id; print id; end;", table, columnslist, valueslist);
+} else {
 letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s) returning %s", table, columnslist, valueslist, attrs);
-//letf((char*)querystr, sizeof(querystr), "begin; var id number; insert into %s (%s) values (%s) returning id into :id; print id; end;", table, columnslist, valueslist);
+}
 if ((ret = execute(querystr, bindv))) return ret;
-if ((ret = fetch(r))) MSG(MSG_NOREC);
+if (drv != ODR_ORACLE && (ret = fetch(r))) MSG(MSG_NOREC);
 return complete();
 }
 

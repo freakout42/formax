@@ -16,7 +16,7 @@ CREATE TABLE fields
    seq       INTEGER NOT NULL DEFAULT 1,
    ftype     INTEGER NOT NULL DEFAULT 1,    /* 1:CHAR 2:INT 3:FLOAT 4:DATE */
    len       INTEGER NOT NULL DEFAULT 30,   /* field length */
-   dlen      INTEGER NOT NULL DEFAULT 11,   /* display length =0 no display */
+   dlen      INTEGER NOT NULL DEFAULT 20,   /* display length =0 no display */
    btab      INTEGER NOT NULL DEFAULT 1,    /* if the field is a base table field */
    key       INTEGER NOT NULL DEFAULT 0,    /* if the field is a primary key field */
    dflt      TEXT    NOT NULL DEFAULT '',   /* default value */

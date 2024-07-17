@@ -1,4 +1,6 @@
 // constants macros and central procedures
+enum odrvr { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_UNKNOWN };
+enum fmode { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
 #include "../version.h"
 
 #define STATUSL 0
@@ -38,8 +40,6 @@
 #define LK f.lastkey
 #define DY f.dirty
 #define MSG(n) f.p[0].message(n, NULL)
-
-enum { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
 
 extern int isprintable(int c);
 extern int ispunctation(int c);

@@ -1,4 +1,4 @@
-#define DEBUG
+#undef DEBUG
 #ifdef DEBUG
 #include <stdio.h>
 #endif
@@ -11,6 +11,8 @@
 static char buf[HUGSIZE];
 
 int Record::connect(char *dsn) {
+char dbmsname[SMLSIZE];
+SQLSMALLINT len;
 if (useodbcve3) {
 if (ret = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env)) return ret;
 if (ret = SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, (void *) SQL_OV_ODBC3, 0)) return ret;
@@ -21,6 +23,13 @@ if (ret = SQLAllocEnv(&env)) return ret;
 if (ret = SQLAllocConnect(env, &dbc)) return ret;
 if (ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT)) return ret;
 }
+SQLGetInfo(dbc, SQL_DBMS_NAME, &dbmsname, SMLSIZE, &len);
+drv = ODR_UNKNOWN;
+if (!strcmp(dbmsname, "SQLite")) drv = ODR_SQLITE;
+if (!strcmp(dbmsname, "oracle")) drv = ODR_ORACLE;
+#ifdef DEBUG
+fprintf(stderr, "SQL_DBMS_NAME: %s\n", dbmsname);
+#endif
 if (ret = SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT, (SQLPOINTER)(autocommit ? SQL_AUTOCOMMIT_ON : SQL_AUTOCOMMIT_OFF), SQL_IS_UINTEGER)) return ret;
 if (ret = SQLGetFunctions(dbc, SQL_API_SQLMORERESULTS, &moreresults )) return ret;
 return ret;
@@ -28,6 +37,7 @@ return ret;
 
 int Record::connect(Record r) {
 dbc = r.dbc;
+drv = r.drv;
 moreresults = r.moreresults;
 return 0;
 }
@@ -76,7 +86,7 @@ let(sqlcmd, (char*)sql);
 ret = SQLPrepare(stmt, sql, SQL_NTS);
 if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) s = 10; else {
   for (i=0; !s && b[i]; i++) {
-    ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], 0, &len);
+    ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], SMLSIZE, &len);
 #ifdef DEBUG
 fprintf(stderr, "SQLBindParameter: %d %d %s\n", i, ret, b[i]);
 #endif
@@ -119,8 +129,12 @@ return complete();
 }
 
 int Record::complete() {
-SQLFreeStmt(stmt, SQL_CLOSE);
-return 0;
+ret = SQLFreeStmt(stmt, SQL_CLOSE);
+if (drv == ODR_ORACLE) {
+  SQLFreeHandle(SQL_HANDLE_STMT, stmt);
+  SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);
+}
+return ret;
 }
 
 int Record::fetch(int row) {
