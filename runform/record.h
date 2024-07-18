@@ -31,10 +31,12 @@ protected:
   SQLRETURN ret;
   SQLHSTMT stmt;
   SQLSMALLINT columni;
+  SQLSMALLINT querycols;
   char prikey[SMLSIZE];
   char attrs[SMLSIZE];
   char where[SMLSIZE];
   char order[SMLSIZE];
+  int succeeded(SQLRETURN s);
   int execdirect(SQLCHAR *sql);
   int execute(SQLCHAR *sql, char *bndv[]);
   int complete();

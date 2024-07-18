@@ -15,7 +15,7 @@ EOF
 guidmap() {
 LINE=`expr $LINE + 1`
   cat <<EOF
-UPDATE maps set mtext = mtext || '                      $1' where line = $LINE;
+UPDATE maps set mtext = mtext || '                            $1' where line = $LINE;
 EOF
 }
 
@@ -32,6 +32,7 @@ INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
 INSERT INTO blocks (id, form_id, name) VALUES (0, 1, 'dual');
 INSERT INTO pages  (form_id, name) VALUES (1, '$TABLE-0');
 INSERT INTO pages  (id, form_id, name, ysiz, vwpy0, border) VALUES (0, 1, 'formax', 1, 0, 0);
+INSERT INTO maps   (page_id, line, mtext) VALUES (1, 1, '         ');
 EOF
 LINE=1
 for COLUMN; do
@@ -58,15 +59,13 @@ helpmap 'F8    Ctrl+z Exit                     Press "Delete" or Ctrl-k'
 helpmap 'F9    Ctrl+y Quit'          
 helpmap 'F10   Ctrl+x Query            Query:  Edit conditions in each field'
 
-exit
-
-LINE=1
+LINE=0
+guidmap '   Query examples'
+guidmap '      >7700'
+guidmap '   %jon%'
+guidmap '     MANAGER,SALESMAN'
 guidmap ''
-guidmap ''
-guidmap ''
-guidmap ''
-guidmap ''
-guidmap ''
-guidmap ''
+guidmap '02/18/80-11/30/81'
+guidmap '     2000-3000'
 
 exit

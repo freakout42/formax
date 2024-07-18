@@ -26,8 +26,21 @@ switch(f.rmode) {
  default:         color = COL_FIELD;
 }
 if (cur && f.rmode != MOD_DELETE) color = COL_CURRENT;
-f.p[1].writef(line, col, color, dlen, "%s", f.rmode==MOD_QUERY ? queryhuman : f.b[blockindex].q->v(CB.currentrecord, sequencenum));
+f.p[1].writef(line, col, color, dlen, "%s", f.rmode==MOD_QUERY ? queryhuman : *valuep());
 if (cur) f.p[1].wmov(line, col);
+}
+
+void Field::clear() {
+char **v;
+if (f.rmode == MOD_QUERY) *queryhuman = '\0'; else {
+  v = valuep();
+  free(v);
+  v = NULL;
+}
+}
+
+char **Field::valuep() {
+return f.b[blockindex].q->w(CB.currentrecord, sequencenum);
 }
 
 int Field::edit(int pos) {
@@ -40,7 +53,7 @@ switch(f.rmode) {
  case MOD_INSERT:
  case MOD_UPDATE:
   if (f.b[blockindex].q->rows) {
-    c = f.b[blockindex].q->w(CB.currentrecord, sequencenum);
+    c = valuep();
     if (*c) let(buf, *c); else *buf = '\0';
     pressed = f.p[0].sedit(buf, pos);
     if (*c==NULL && *buf) *c = strdup(buf);

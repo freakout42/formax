@@ -37,7 +37,6 @@ for (i=0; i<fieldcount; i++) {
   }
 }
 if (*wall) let(where, wall);
-bindv[0] = NULL;
 return query();
 }
 

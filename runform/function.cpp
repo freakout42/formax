@@ -6,7 +6,6 @@ switch(f.lastcmd) {
   case -1:           LK = enter_the_form();                            break;
 #ifdef NOTYETIMPLEMENTED
   case KEF_HELP:            /* fhelp() */
-  case KEF_BACKDEL:         /* fbackdel() */
   case KEF_COPY:            /* fhelp() */
   case KEF_PASTE:           /* fpaste() */
   case KEF_LIST:            /* flist() */
@@ -37,11 +36,13 @@ switch(f.lastcmd) {
     case MOD_QUERY:  LK = insert_record();                             break;
     default:         LK = 0; f.y.toggle();                             break;
    }                                                                   break;
+  case KEF_BACKDEL:         /* fbackdel() */
   case KEF_DELETE:
    switch(f.rmode) {
+    case MOD_QUERY:  LK = fedit(KEF_DEL);                              break;
     case MOD_UPDATE: LK = delete_record();                             break;
     case MOD_INSERT: LK = clear_record();                              break;
-    default:         LK = 0; MSG(MSG_NOREC);                           break;
+    default:         LK = 0;                                           break;
    }                                                                   break;
   case KEF_QUERY:    LK = enter_query();                               break;
   case KEF_NAVI10:
@@ -74,7 +75,8 @@ return notrunning;
 int Function::enter_the_form() {
 f.curblock = 1;
 f.curfield = CB.blockfields[0];
-f.rmode = squerymode ? MOD_QUERY : MOD_INSERT;
+enter_query();
+if (!squerymode) insert_record();
 notrunning = trigger(PRE_FORM);
 return 0;
 }
@@ -103,7 +105,7 @@ return 0;
 
 int Function::insert_record() {
 int s;
-if (f.rmode == MOD_UPDATE && !(s = CB.q->splice(CB.currentrecord++))) {
+if ((f.rmode == MOD_UPDATE || f.rmode == MOD_QUERY) && !(s = CB.q->splice(CB.currentrecord++))) {
   f.rmode = MOD_INSERT;
   DY = 0;
 } else {
@@ -124,7 +126,7 @@ changed = 0;
 switch(f.rmode) {
  case MOD_INSERT:
  case MOD_QUERY:
-  changed = CF.edit(pos);
+  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos);
   break;
  case MOD_UPDATE:
   if (CF.isprimarykey) MSG(MSG_EDITKEY); else changed = CF.edit(pos);
@@ -161,9 +163,7 @@ if (f.b[1].select()) notrunning = -2; else {
     CB.currentrecord = 1;
     f.rmode = MOD_UPDATE;
   } else {
-    CB.currentrecord = 0;
-    f.rmode = MOD_QUERY;
-    MSG(MSG_NOREC);
+    return insert_record();
   }
 }
 return 0;

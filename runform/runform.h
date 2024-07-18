@@ -1,5 +1,5 @@
 // constants macros and central procedures
-enum odrvr { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_UNKNOWN };
+enum odrvr { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_SQLSRVR, ODR_UNKNOWN };
 enum fmode { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
 #include "../version.h"
 
@@ -54,6 +54,7 @@ extern int   monochrome;
 extern int   usedefault;
 extern int   firststart;
 extern int   insertmode;
+extern int   pwdencrypt;
 extern int   squerymode;
 extern int   usebindvar;
 extern int   querycharm;

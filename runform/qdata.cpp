@@ -25,7 +25,7 @@ return 0;
 int Qdata::splice(int rown) {
 int i;
 char **clr;
-if (rown > 0) {
+if (rown >= 0) {
   if (allocatedrows == rows) w(rows+1, 1);
   memmove(w(rown+2,1), w(rown+1,1), (rows-rown) * cols * (sizeof(void*)));
   memset(w(rown+1,1), 0, cols * (sizeof(void*)));

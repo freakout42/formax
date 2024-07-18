@@ -1,8 +1,8 @@
-#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikq] [-n lg] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
-#define FORMFRM argv[optind+ /* command-line arguments */                            0]       //       //         //
-#define FORMDSN argv[optind+                                                                  1]       //         //
-#define FORMUID argv[optind+                                                                           2]         //
-#define FORMPWD argv[optind+                                                                                      3]
+#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpq] [-n lg] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
+#define FORMFRM argv[optind+ /* command-line arguments */                             0]       //       //         //
+#define FORMDSN argv[optind+                                                                   1]       //         //
+#define FORMUID argv[optind+                                                                            2]         //
+#define FORMPWD argv[optind+                                                                                       3]
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,6 +39,7 @@ int  insertmode  = 1;
 int  useodbcve3  = 0;             // -3
 int  monochrome  = 0;             // -k
 int  usedefault  = 0;             // -c
+int  pwdencrypt  = 0;             // -p
 int  squerymode  = 1;             // -i
 int  usebindvar  = 1;             // -b
 int  querycharm  = 1;             // -h
@@ -59,7 +60,7 @@ setenv("LC_ALL", CHARSET, 1);
 lclocale = setlocale(LC_ALL, CHARSET);
 
 // command-line arguments and options check and process
-while ((i = getopt(argc, argv, "3abcdhikl:n:qVy:")) != -1) {
+while ((i = getopt(argc, argv, "3abcdhikl:n:pqVy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
     case 'y': printf("%s\n", xdecrypt(optarg,0));
@@ -74,6 +75,7 @@ while ((i = getopt(argc, argv, "3abcdhikl:n:qVy:")) != -1) {
     case '3': useodbcve3 = 1; break;
     case 'k': monochrome = 1; break;
     case 'c': usedefault = 1; break;
+    case 'p': pwdencrypt = 1; break;
     case 'i': squerymode = 0; break;
     case 'b': usebindvar = 0; break;
     case 'h': querycharm = 0; break;
@@ -96,7 +98,7 @@ switch(argc - optind) {
   snprintf(dsn, sizeof(dsn), "DSN=%s;UID=%s", FORMDSN, FORMUID);
   break;
  case 4:
-//  xdecrypt(FORMPWD,1);
+  if (pwdencrypt) xdecrypt(FORMPWD,1);
   snprintf(dsn, sizeof(dsn), "DSN=%s;UID=%s;PWD=%s", FORMDSN, FORMUID, FORMPWD);
   break;
  default: usage(2);

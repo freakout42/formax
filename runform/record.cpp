@@ -82,9 +82,8 @@ return (ret = SQLExecDirect(stmt, sql, strlen((char*)sql)));
 }
 
 int Record::execute(SQLCHAR *sql, char *b[]) {
-SQLSMALLINT i;
 SQLLEN len;
-int s;
+int i, s;
 s = 0;
 len = SQL_NTS;
 let(sqlcmd, (char*)sql);
@@ -95,10 +94,9 @@ if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) s = 10; else {
     if (ret) s = 15;
   }
   if (!s) {
-//    ret = SQLNumResultCols(stmt, &i);
     ret = SQLExecute(stmt);
     if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO && ret != -1) s = 11; else {
-; //      if ((ret = SQLNumResultCols(stmt, &i))) s = 12; // else  assert(i == columni) rmode?;
+      if ((ret = SQLNumResultCols(stmt, &querycols))) s = 12;
     }
   }
 }
@@ -143,6 +141,7 @@ int Record::fetch(int row) {
 SQLRETURN s;
 SQLSMALLINT i;
 SQLLEN indicator;
+char *decimal;
 char **qp;
 //if (row) s = SQLMoreResults(stmt);
 if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
@@ -152,17 +151,22 @@ if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
     if (SQL_SUCCEEDED(ret)) {
       if (!(qp = q->w(row, i))) return 13;
       free(*qp);
-      if (indicator == SQL_NULL_DATA) *qp = NULL; else if (!(*qp = strdup(buf))) return 13;
-/*
-    } else {
-//      while (SQLGetDiagRec(SQL_HANDLE_STMT, hStmt, ++rec, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS) {
-//        fprintf(stderr, "[%s]%s\n", szSqlState, szError );
-//      }
-      return 14;
- */
+      if (indicator == SQL_NULL_DATA) *qp = NULL; else {
+        decimal = buf + strspn(buf, "0123456789"); // cut trailing .00
+        if (*decimal == '.' && strspn(decimal, "0.") == strlen(decimal)) *decimal = '\0';
+        if (!(*qp = strdup(buf))) return 13;
+      }
     }
   }
 }
-return SQL_SUCCEEDED(s) ? 0 : -1;
+return succeeded(s) ? -1 : 0;
+}
+
+int Record::succeeded(SQLRETURN s) {
+return !SQL_SUCCEEDED(s);
+//    } else {
+//      while (SQLGetDiagRec(SQL_HANDLE_STMT, hStmt, ++rec, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS) {
+//        fprintf(stderr, "[%s]%s\n", szSqlState, szError );
+//      }
 }
 
