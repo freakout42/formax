@@ -35,6 +35,7 @@ protected:
   char attrs[SMLSIZE];
   char where[SMLSIZE];
   char order[SMLSIZE];
+  int execdirect(SQLCHAR *sql);
   int execute(SQLCHAR *sql, char *bndv[]);
   int complete();
   int fetch(int row);

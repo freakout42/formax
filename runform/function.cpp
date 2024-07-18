@@ -113,7 +113,7 @@ return 0;
 }
 
 int Function::create_record() {
-CB.insert(CB.currentrecord);
+if (CB.insert(CB.currentrecord)) f.p[0].message(MSG_SQL, CB.sqlcmd);
 f.rmode = MOD_UPDATE;
 return 0;
 }

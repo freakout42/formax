@@ -18,6 +18,7 @@ if (ret = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env)) return ret;
 if (ret = SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, (void *) SQL_OV_ODBC3, 0)) return ret;
 if (ret = SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc)) return ret;
 if (ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT)) return ret;
+//if (ret = SQLSetEnvAttr(dbc, SQL_ATTR_ODBC_VERSION, (void *)SQL_OV_ODBC3, 0)) return ret;
 } else {
 if (ret = SQLAllocEnv(&env)) return ret;
 if (ret = SQLAllocConnect(env, &dbc)) return ret;
@@ -76,6 +77,10 @@ SQLFreeHandle(SQL_HANDLE_ENV, env);
 dbc = NULL;
 }
 
+int Record::execdirect(SQLCHAR *sql) {
+return (ret = SQLExecDirect(stmt, sql, strlen((char*)sql)));
+}
+
 int Record::execute(SQLCHAR *sql, char *b[]) {
 SQLSMALLINT i;
 SQLLEN len;
@@ -87,9 +92,6 @@ ret = SQLPrepare(stmt, sql, SQL_NTS);
 if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) s = 10; else {
   for (i=0; !s && b[i]; i++) {
     ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], SMLSIZE, &len);
-#ifdef DEBUG
-fprintf(stderr, "SQLBindParameter: %d %d %s\n", i, ret, b[i]);
-#endif
     if (ret) s = 15;
   }
   if (!s) {

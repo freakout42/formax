@@ -1,4 +1,5 @@
 alter session set nls_date_format = 'yyyy-mm-dd hh24:mi:ss';
+SELECT owner, object_name, object_type FROM ALL_OBJECTS where owner='SCOTT';
 DROP TABLE emps;
 CREATE TABLE emps
  (id         NUMBER(11) NOT NULL,
