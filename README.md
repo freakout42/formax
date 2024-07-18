@@ -40,7 +40,7 @@ these triggers in order to alter the default behavior if
 necessary.
 
 **formax** encorporates the concept of Oracle SQL-Forms with
-modern standards and current database best pratices and
+modern standards and current database best practices and
 technologies:
  - single-column autoincrement primary key field
  - database integrity enforced through database

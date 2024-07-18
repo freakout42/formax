@@ -18,7 +18,7 @@ use-cases for which it can have massive advantages.
 ~~~
 The basic concepts of Oracle SQL-Forms 3.0 (1988) are
 combined with modern standards and current database best
-pratices and technologies. Using ODBC for universal database
+practices and technologies. Using ODBC for universal database
 access and JavaScript as the trigger language opens this
 concept universally. The best ideas for a powerful user
 interface came from Emacs, Clipper, SAP, Lightroom and
@@ -69,7 +69,8 @@ loving it due to the time savings they can achieve. The
 trained user can enter data with minimal effort and time,
 due to the fast application, optimized keyboard handling and
 ultra low bandwidth usage. The productivity these forms
-bring to the table cannot be achieved with any other tool.
+bring to the table cannot be achieved with any other tool
+out there.
 
 #### Development
 
@@ -83,19 +84,22 @@ place.
 
 Only the concept is inherited from SQL-Forms 3. There is no
 compatibility or migration utility for Oracle Forms sources.
+The source code is completely a new development of 2024.
 The database access layer OCI is replaced by ODBC, which
 opens the system to all kinds of databases. The terminal
 access layer Oracle-Terminal is replaced with ncurses which
-runs on any kind of system and terminal. PL-SQL as the
+runs on any kind of system and terminal. PL/SQL as the
 trigger language is replaced by JavaScript.
 
 #### Operations
 
 Zero administration cost is ensured by the leightweight
-concent itself. Secure access to the form is easily managed
-by setting up a PuTTY-session on any windows machine with
-zero-administration on the client. This works from anywhere
-without any bandwidth-requirements.
+concept itself. A single executable needs to be installed
+anywhere on the PATH (Yes - One=1 file is needed). Secure
+access to the form is easily managed by setting up a
+PuTTY-session on any windows machine with zero
+administration on the client. This works from anywhere
+without any bandwidth requirements.
 
 ### Status
 
