@@ -345,11 +345,12 @@ used for some fundamental values:
   | w | query result pointer   | Method   | qdata.h        |
   | y | curses stdscr window   | Type     | screen.h       |
 
-Coding Rules
+Coding Style
 ------------
-Sourcecode lines are grouped into blocks of maximum 40.
+Sourcecode lines are grouped into blocks of maximum 40 lines.
 These groups have a top comment which explains the purpose.
-Other commenting is only on special cases.
+Other commenting is only on special cases. Code should be
+short and self explaining by variable names.
 
 2 spaces indenting is used and the top level of functions is
 not indented. Use 1 space between keyword and opening
