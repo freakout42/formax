@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "runform.h"
 
@@ -36,7 +35,7 @@ for (i=0; i<NLINES; i++) free(map[i]);
 deletewindow();
 }
 
-static char *rmodes[] = { "Insert", "Query ", "Update", "Delete" };
+static char *rmodes[] = RMODENAMES;
 
 int Page::wait() {
 int i;

@@ -1,12 +1,10 @@
-#undef DEBUG
-#ifdef DEBUG
-#include <stdio.h>
-#endif
 #include <assert.h>
 #include <stdlib.h>
 #include <sql.h>
 #include <sqlext.h>
 #include "runform.h"
+
+#define FAILEDQ(hty) if (failed(hty)) return ret
 
 static char buf[HUGSIZE];
 
@@ -17,17 +15,18 @@ if (useodbcve3) {
 if (ret = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env)) return ret;
 if (ret = SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, (void *) SQL_OV_ODBC3, 0)) return ret;
 if (ret = SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc)) return ret;
-if (ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT)) return ret;
+ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT); FAILEDQ(SQL_HANDLE_DBC);
 //if (ret = SQLSetEnvAttr(dbc, SQL_ATTR_ODBC_VERSION, (void *)SQL_OV_ODBC3, 0)) return ret;
 } else {
 if (ret = SQLAllocEnv(&env)) return ret;
 if (ret = SQLAllocConnect(env, &dbc)) return ret;
-if (ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT)) return ret;
+ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT); FAILEDQ(SQL_HANDLE_DBC);
 }
 SQLGetInfo(dbc, SQL_DBMS_NAME, &dbmsname, SMLSIZE, &len);
 drv = ODR_UNKNOWN;
-if (!strcmp(dbmsname, "SQLite")) drv = ODR_SQLITE;
-if (!strcmp(dbmsname, "oracle")) drv = ODR_ORACLE;
+if (!strcmp(dbmsname, "SQLite"))               drv = ODR_SQLITE;
+if (!strcmp(dbmsname, "oracle"))               drv = ODR_ORACLE;
+if (!strcmp(dbmsname, "Microsoft SQL Server")) drv = ODR_SQLSRVR;
 #ifdef DEBUG
 fprintf(stderr, "SQL_DBMS_NAME: %s\n", dbmsname);
 #endif
@@ -100,6 +99,7 @@ if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) s = 10; else {
     }
   }
 }
+g.logf("SQL: %d %d %s\n", s, ret, sqlcmd);
 #ifdef DEBUG
 fprintf(stderr, "SQL: %d %d %s\n", s, ret, sqlcmd);
 #endif
@@ -160,13 +160,30 @@ if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
   }
 }
 return succeeded(s) ? -1 : 0;
+//return failed(SQL_HANDLE_STMT) ? 0 : -1;
 }
 
 int Record::succeeded(SQLRETURN s) {
 return !SQL_SUCCEEDED(s);
-//    } else {
-//      while (SQLGetDiagRec(SQL_HANDLE_STMT, hStmt, ++rec, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS) {
-//        fprintf(stderr, "[%s]%s\n", szSqlState, szError );
-//      }
+}
+
+int Record::failed(SQLSMALLINT hty) {
+SQLHANDLE handle;
+SQLCHAR szError[SMLSIZE];
+SQLCHAR szSqlState[SMLSIZE];
+SQLINTEGER nNativeError;
+SQLSMALLINT nErrorMsg;
+int rec;
+if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) {
+  switch (hty) {
+   case SQL_HANDLE_DBC:  handle = dbc;  break;
+   case SQL_HANDLE_STMT: handle = stmt; break;
+  }
+  rec = 1;
+  while (SQLGetDiagRec(hty, handle, rec++, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS)
+    if (szError[strlen((char*)szError)-1] == '\n') szError[strlen((char*)szError)-1] = '\0';
+  g.logf("[%s]%s\n", szSqlState, szError );
+  return ret;
+} else return 0;
 }
 

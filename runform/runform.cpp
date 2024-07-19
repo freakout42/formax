@@ -49,6 +49,7 @@ int  queryonlym  = 0;             // -q
 char *shiftednum = "`!@#$%^&*()"; // -n us
 char *username   = getenv("USER");
 Form f;
+Logger g;
 
 int main(int argc, char *argv[]) { //, char **envp
 int i, s;

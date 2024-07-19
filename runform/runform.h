@@ -1,6 +1,7 @@
 // constants macros and central procedures
-enum odrvr { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_SQLSRVR, ODR_UNKNOWN };
-enum fmode { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
+enum odrvr         { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_SQLSRVR, ODR_UNKNOWN };
+enum fmode         { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
+#define RMODENAMES { "Insert",   "Query ",  "Update",   "Delete" }
 #include "../version.h"
 
 #define STATUSL 0
@@ -16,6 +17,7 @@ enum fmode { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
 #define NBINDPA NFIELD1
 
 #include <string.h>
+#include "logger.h"
 #include "qdata.h"
 #include "record.h"
 #include "rerror.h"
@@ -64,4 +66,4 @@ extern int   queryonlym;
 extern char  *shiftednum;
 extern char  *username;
 extern Form f;
-
+extern Logger g;

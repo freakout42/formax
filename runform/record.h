@@ -36,7 +36,6 @@ protected:
   char attrs[SMLSIZE];
   char where[SMLSIZE];
   char order[SMLSIZE];
-  int succeeded(SQLRETURN s);
   int execdirect(SQLCHAR *sql);
   int execute(SQLCHAR *sql, char *bndv[]);
   int complete();
@@ -45,5 +44,7 @@ private:
   SQLHENV env;
   SQLHDBC dbc;
   SQLUSMALLINT moreresults;
+  int failed(SQLSMALLINT hty);
+  int succeeded(SQLRETURN s);
 };
 
