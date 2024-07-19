@@ -220,7 +220,7 @@ return dec;
 {y}     {*(yytext+yyleng-1) = '\0';
          cqlval.item = (char*) yytext+1;
          return(QUERY);}
-{s}     {sprintf (tmp, "'%s'", yytext+1);
+{s}     {sprintf (tmp, "'%%%s%%'", yytext+1);
          cqlval.item = tmp;
          return(SOUND);}
 {p}     {

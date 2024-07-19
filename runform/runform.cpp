@@ -28,6 +28,7 @@ char *est[] = {
   "no more memeory",              // 13
   "SQL getdata error",            // 14
   "SQL bind error",               // 15
+  "logging failed",               // 16
 };
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
@@ -68,7 +69,7 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqVy:")) != -1) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
     case 'y': printf("%s\n", xdecrypt(optarg,0));
               printf("%s\n", xdecrypt(optarg,1)); exit(99);
-    case 'g': g.setlogfile(optarg); break;
+    case 'g': if (g.setlogfile(optarg, argv[argc-1])) usage(16); break;
     case 'l': let(drv, optarg); break;
     case 'n':
       if (!strcmp(optarg, "us")) ; // shiftednum = "`!@#$%^&*()";
@@ -133,5 +134,6 @@ while(s) {
 // cleanup end exit
 f.disconnect();
 f.b[0].disconnect();
+g.lclose();
 exit(-s);
 }

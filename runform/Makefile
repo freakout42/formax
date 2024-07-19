@@ -3,8 +3,7 @@ test: CXXFLAGS=-g -O0 -Wall -Werror
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
-VALGRINDSUP=
-#--gen-suppressions=all
+VALGRINDSUP=--gen-suppressions=no #all
 
 all: runform
 
