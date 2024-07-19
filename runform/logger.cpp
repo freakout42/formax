@@ -3,14 +3,22 @@
 #include <sqlite3.h>
 #include "runform.h"
 
+void Logger::init() {
+session = 0;
+let(logpath, "");
+}
+
+void Logger::setlogfile(char *lg3) {
+let(logpath, lg3);
+}
+
 void Logger::logf(char *format, ...) {
-/*
 va_list args;
+if (*logpath) {
 va_start (args, format);
 vfprintf(stderr, format, args);
 va_end (args);
-*/
-}
+} }
 
 #ifdef nonono
 static int callback(void *NotUsed, int argc, char **argv, char **azColName){
@@ -28,7 +36,6 @@ int main(int argc, char **argv){
   char *zErrMsg = 0;
   int rc;
 
-  fprintf(stderr, "SQLITE_VERSION: %s\n", SQLITE_VERSION);
   rc = sqlite3_open("/app/rails/rr4/db/devl.sq3", &db);
   if( rc ){
     fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));

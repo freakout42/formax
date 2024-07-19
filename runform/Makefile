@@ -12,7 +12,8 @@ runform: curkeys.h $(OBJS) cqerror.o colquery/colquery.o
 	$(CXX) $(OBJS) cqerror.o colquery/colquery.o -lcurses -lsqlite3 -lodbc -o $@
 
 test: runform $(EXAMPLE)
-	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup ./runform -nuk $(EXAMPLE) 2>$@
+	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
+    ./runform -g/tmp/formax.log -nuk $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
 
 curkeys.h: curkeys

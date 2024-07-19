@@ -1,8 +1,9 @@
-#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpq] [-n lg] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
-#define FORMFRM argv[optind+ /* command-line arguments */                             0]       //       //         //
-#define FORMDSN argv[optind+                                                                   1]       //         //
-#define FORMUID argv[optind+                                                                            2]         //
-#define FORMPWD argv[optind+                                                                                       3]
+#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpq] [-n lg]\n" \
+              "  [-g logfile] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
+#define FORMFRM argv[optind+                 0]       //       //         //
+#define FORMDSN argv[optind+                          1]       //         //
+#define FORMUID argv[optind+                                   2]         //
+#define FORMPWD argv[optind+                                              3]
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -57,15 +58,17 @@ char dsn[SMLSIZE];
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
 
+g.init();
 setenv("LC_ALL", CHARSET, 1);
 lclocale = setlocale(LC_ALL, CHARSET);
 
 // command-line arguments and options check and process
-while ((i = getopt(argc, argv, "3abcdhikl:n:pqVy:")) != -1) {
+while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqVy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
     case 'y': printf("%s\n", xdecrypt(optarg,0));
               printf("%s\n", xdecrypt(optarg,1)); exit(99);
+    case 'g': g.setlogfile(optarg); break;
     case 'l': let(drv, optarg); break;
     case 'n':
       if (!strcmp(optarg, "us")) ; // shiftednum = "`!@#$%^&*()";

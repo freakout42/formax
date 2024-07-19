@@ -8,8 +8,8 @@ scotty.frm: scotty.inp
 	rm -f $@
 	sqlite3 $@ <scotty.inp
 
-scotty.inp: makeform
-	./makeform scotty formax1 emps id ename job mgr hiredate sal comm dept_id >$@
+scotty.inp: testform makeform
+	./testform >$@
 
 ../runform/runform:
 	( cd ../runform; make runform )

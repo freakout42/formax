@@ -1,0 +1,37 @@
+#!/bin/sh
+helpmap() {
+LINE=`expr $LINE + 1`
+  cat <<EOF
+INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE, ' $1');
+EOF
+}
+guidmap() {
+LINE=`expr $LINE + 1`
+  cat <<EOF
+UPDATE maps set mtext = mtext || '                            $1' where line = $LINE;
+EOF
+}
+. ./makeform scotty formax1 emps id ename job mgr hiredate sal comm dept_id
+LINE=`expr $LINE + 1`
+#elpmap 'F2    Ctrl+c Copy'
+#elpmap 'F3    Ctrl+v Paste'
+#elpmap 'F5    Ctrl+t Copy-Record'
+helpmap 'Right Ctrl+f Edit-Pos1        Edit:   Edit with "Left/Right" and characters'
+helpmap 'Left  Ctrl+b Edit-End'
+helpmap 'Down  Ctrl+n Next-Record      Update: Move to the record and field with'
+helpmap 'Up    Ctrl+p Previous-Record          "Up/Down" and "Tab" and edit'
+helpmap 'Enter Ctrl+m Execute'
+helpmap 'F6    Ctrl+o Insert-Record    Insert: Press "Insert" or Ctrl-o'
+helpmap 'F7    Ctrl+k Delete-Record    Delete: Move to the record'
+helpmap 'F8    Ctrl+z Exit                     Press "Delete" or Ctrl-k'
+helpmap 'F9    Ctrl+y Quit'          
+helpmap 'F10   Ctrl+x Query            Query:  Edit conditions in each field'
+LINE=0
+guidmap '   Query examples'
+guidmap '      >7700'
+guidmap '   ~jon'
+guidmap '     MANAGER,SALESMAN'
+guidmap ''
+guidmap '02/18/80-11/30/81'
+guidmap '     2000-3000'
+exit
