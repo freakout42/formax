@@ -3,15 +3,16 @@ test: CXXFLAGS=-g -O0 -Wall -Werror
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
-VALGRINDSUP=--gen-suppressions=all
+VALGRINDSUP=
+#--gen-suppressions=all
 
 all: runform
 
 runform: curkeys.h $(OBJS) cqerror.o colquery/colquery.o
-	$(CXX) $(OBJS) cqerror.o colquery/colquery.o -lcurses -lodbc -o $@
+	$(CXX) $(OBJS) cqerror.o colquery/colquery.o -lcurses -lsqlite3 -lodbc -o $@
 
 test: runform $(EXAMPLE)
-	valgrind --quiet --leak-check=yes --track-origins=yes --suppressions=valgrind.sup ./runform -nuk $(EXAMPLE) 2>$@
+	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup ./runform -nuk $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
 
 curkeys.h: curkeys

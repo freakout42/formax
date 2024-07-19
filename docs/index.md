@@ -113,9 +113,7 @@ on the community participation in the future.
 
 ### License
 
-GNU General Public License
-_Version 3, 29 June 2007_  
-
-Copyright (c) 2024, Axel K. Reinhold
+GNU General Public License _Version 3, 29 June 2007_  
+Copyright (c) 2024, Axel K. Reinhold.  
 All rights reserved.
 

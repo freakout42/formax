@@ -168,13 +168,16 @@ return !SQL_SUCCEEDED(s);
 }
 
 int Record::failed(SQLSMALLINT hty) {
+/*
 SQLHANDLE handle;
 SQLCHAR szError[SMLSIZE];
 SQLCHAR szSqlState[SMLSIZE];
 SQLINTEGER nNativeError;
 SQLSMALLINT nErrorMsg;
 int rec;
+*/
 if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) {
+/*
   switch (hty) {
    case SQL_HANDLE_DBC:  handle = dbc;  break;
    case SQL_HANDLE_STMT: handle = stmt; break;
@@ -183,6 +186,7 @@ if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) {
   while (SQLGetDiagRec(hty, handle, rec++, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS)
     if (szError[strlen((char*)szError)-1] == '\n') szError[strlen((char*)szError)-1] = '\0';
   g.logf("[%s]%s\n", szSqlState, szError );
+*/
   return ret;
 } else return 0;
 }

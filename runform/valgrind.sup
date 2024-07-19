@@ -9,3 +9,11 @@
    fun:setlocale
    fun:main
 }
+{
+   <lsqlite3>
+   Memcheck:Free
+   fun:free
+   fun:free_mem
+   fun:__libc_freeres
+   fun:_vgnU_freeres
+}
