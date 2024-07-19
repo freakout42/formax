@@ -62,7 +62,7 @@ helpmap 'F10   Ctrl+x Query            Query:  Edit conditions in each field'
 LINE=0
 guidmap '   Query examples'
 guidmap '      >7700'
-guidmap '   %jon%'
+guidmap '   ~jon'
 guidmap '     MANAGER,SALESMAN'
 guidmap ''
 guidmap '02/18/80-11/30/81'
