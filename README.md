@@ -78,6 +78,7 @@ Feature roadmap
  - multiple databases
  - database validation (engine responsibility?)
  - full SQL-Forms-3 functionality
+ - in-field editing
 
 Operations
 ==========
@@ -332,6 +333,7 @@ used for some fundamental values:
   | e | error messages array   | Type     | rerror.h       |
   | f | current Form object    | Variable | runform.h      |
   | i | loop integer           | Variable |                |
+  | g | logger                 | Variable | logger.h       |
   | l | fields array           | Variable | form.h         |
   | n | query result to_int    | Type     | qdata.h        |
   | p | pages array            | Variable | form.h         |

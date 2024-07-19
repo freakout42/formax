@@ -91,7 +91,7 @@ access layer Oracle-Terminal is replaced with ncurses which
 runs on any kind of system and terminal. PL/SQL as the
 trigger language is replaced by JavaScript.
 
-#### Operations
+#### Operations / Deployment
 
 Zero administration cost is ensured by the leightweight
 concept itself. A single executable needs to be installed
@@ -99,7 +99,8 @@ anywhere on the PATH (Yes - One=1 file is needed). Secure
 access to the form is easily managed by setting up a
 PuTTY-session on any windows machine with zero
 administration on the client. This works from anywhere
-without any bandwidth requirements.
+without any bandwidth requirements. Every user action (SQL)
+is logged in a central database.
 
 ### Status
 
