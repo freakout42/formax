@@ -48,6 +48,7 @@ technologies:
  - regular expressions for validation
  - no free SQL for the end-user
  - freedom to choose the database provider
+ - full logging of all queries in single place
 
 Status
 ======
