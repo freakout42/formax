@@ -145,7 +145,8 @@ svalue  : constm
         }
         | match
         {
-        sprintf (tmp, "{fn UCASE(%s)} LIKE {fn UCASE(%s)}", cqcolumn, $1);
+      /*sprintf (tmp, "{fn UCASE(%s)} LIKE {fn UCASE(%s)}", cqcolumn, $1);*/
+        sprintf (tmp, "%s LIKE %s", cqcolumn, $1);
         $$ = cqstr (tmp);
         cqtype(STRING);
         }

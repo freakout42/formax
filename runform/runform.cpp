@@ -59,7 +59,6 @@ char dsn[SMLSIZE];
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
 
-g.init();
 setenv("LC_ALL", CHARSET, 1);
 lclocale = setlocale(LC_ALL, CHARSET);
 
@@ -69,7 +68,7 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqVy:")) != -1) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
     case 'y': printf("%s\n", xdecrypt(optarg,0));
               printf("%s\n", xdecrypt(optarg,1)); exit(99);
-    case 'g': if (g.setlogfile(optarg, argv[argc-1])) usage(16); break;
+    case 'g': if (g.setlogfile(optarg)) usage(16); break;
     case 'l': let(drv, optarg); break;
     case 'n':
       if (!strcmp(optarg, "us")) ; // shiftednum = "`!@#$%^&*()";
@@ -90,6 +89,7 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqVy:")) != -1) {
     default: usage(1);
   }
 }
+g.init(FORMDSN);
 
 // check and open the database connection - if simple rw-filepath use sqlite
 switch(argc - optind) {
@@ -108,6 +108,7 @@ switch(argc - optind) {
   break;
  default: usage(2);
 }
+f.init();
 if (f.b[0].connect(dsn)) usage(8);
 for (i=1; i<NBLOCKS; i++) f.b[i].connect(f.b[0]);
 
@@ -121,12 +122,11 @@ f.rblock.connect(f);
 f.rfield.connect(f);
 f.rpage.connect(f);
 f.rmap.connect(f);
-if (f.init()) usage(5);
 
 // load and run the form
 s = 1;
 while(s) {
-  if ((i = f.fill(s))) usage(i);
+  if ((f.fill(s))) usage(5);
     if ((s = f.run()) < 0) usage(6);
   f.clear();
 }

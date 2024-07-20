@@ -24,7 +24,7 @@ public:
   int lastkey;
   int dirty;
   enum fmode rmode;
-  int *init();
+  void init();
   int fill(int id);
   void clear();
   int run();

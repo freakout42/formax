@@ -3,9 +3,10 @@ typedef struct sqlite3 sqlite3;
 #endif
 class Logger {
 public:
-  void init();
-  int setlogfile(char *lg3, char *dsn);
-  void logf(char *format, ...);
+  void init(char *dsn);
+  int setlogfile(char *lg3);
+  void logfmt(char *format, ...);
+  void logsql(char *sql, char *bnd[]);
   void lclose();
 private:
   sqlite3 *db;

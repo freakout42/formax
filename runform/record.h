@@ -44,6 +44,7 @@ private:
   SQLHENV env;
   SQLHDBC dbc;
   SQLUSMALLINT moreresults;
+  void setdrv(char *dbmsname);
   int failed(SQLSMALLINT hty);
   int succeeded(SQLRETURN s);
 };

@@ -158,7 +158,7 @@ return 0;
 }
 
 int Function::execute_query() {
-if (f.b[1].select()) notrunning = -2; else {
+if (f.b[1].select()) f.p[0].message(MSG_SQL, CB.sqlcmd); else {
   if (CB.q->rows > 0) {
     CB.currentrecord = 1;
     f.rmode = MOD_UPDATE;
