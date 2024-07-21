@@ -93,23 +93,28 @@ trigger language is replaced by JavaScript.
 
 #### Operations / Deployment
 
+Enterprise requirements are fundamental for this product.
 Zero administration cost is ensured by the leightweight
 concept itself. A single executable needs to be installed
 anywhere on the PATH (Yes - One=1 file is needed). Secure
 access to the form is easily managed by setting up a
 PuTTY-session on any windows machine with zero
-administration on the client. This works from anywhere
-without any bandwidth requirements. Every user action (SQL)
-is logged in a central database.
+administration on the client. This works securely from
+anywhere without any bandwidth requirements. Every user
+action (SQL) is logged in a central database.
 
 ### Status
 
-Current v0.9.9 is ALPHA - the generator can only create a
+Current v1.0.0 is BETA - the generator can only create a
 single-block single-page form. You are able to create,
 retrieve, update and delete (CRUD) records in this table.
 No triggers, no transactions, no help, no designer-tool yet.
 Full Forms3 functionality is a big task and depends highly
-on the community participation in the future.
+on the community participation in the future. The database
+has already all the configuration data for full Forms3
+functionality. Most of the later functionality of Oracle
+Forms was needed for the client-server and web frontends and
+did not extend the actual database functions.
 
 ### License
 

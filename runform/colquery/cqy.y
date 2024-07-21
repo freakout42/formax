@@ -36,6 +36,8 @@
 extern char     *cqop;
 extern char     *cqcolumn;
 extern int      cqcoltype;
+static char     *stomon();
+static char     *stoday();
 static char     *cqstr();
 extern char     *cqbuf;
 extern int      cqbufree;
@@ -99,33 +101,32 @@ value   : QUERY
         }
 svalue  : constm
         {
-        sprintf (tmp, "{fn YEAR(%s)} * 100 + {fn MONTH(%s)} = %s", cqcolumn, cqcolumn, $1);
+        sprintf (tmp, "%s = %s", stomon(cqcolumn), $1);
         $$ = cqstr (tmp);
         }
         | comp constm
         {
-        sprintf (tmp, "{fn YEAR(%s)} * 100 + {fn MONTH(%s)} %s %s", cqcolumn, cqcolumn, $1, $2);
+        sprintf (tmp, "%s %s %s", stomon(cqcolumn), $1, $2);
         $$ = cqstr (tmp);
         }
         | constm BETWEEN constm
         {
-        sprintf (tmp, "{fn YEAR(%s)} * 100 + {fn MONTH(%s)} BETWEEN %s AND %s",
-                cqcolumn, cqcolumn, $1, $3);
+        sprintf (tmp, "%s BETWEEN %s AND %s", stomon(cqcolumn), $1, $3);
         $$ = cqstr (tmp);
         }
         | constd
         {
-        sprintf (tmp, "{fn YEAR(%s)} * 10000 + {fn MONTH(%s)} * 100 + {fn DAY(%s)} = %s", cqcolumn, cqcolumn, cqcolumn, $1);
+        sprintf (tmp, "%s = %s", stoday(cqcolumn), $1);
         $$ = cqstr (tmp);
         }
         | comp constd
         {
-        sprintf (tmp, "%s %s %s", cqcolumn, $1, $2);
+        sprintf (tmp, "%s %s %s", stoday(cqcolumn), $1, $2);
         $$ = cqstr (tmp);
         }
         | constd BETWEEN constd
         {
-        sprintf (tmp, "%s BETWEEN %s AND %s + .99999", cqcolumn, $1, $3);
+        sprintf (tmp, "%s BETWEEN %s AND %s", stoday(cqcolumn), $1, $3);
         $$ = cqstr (tmp);
         }
         | comp const
@@ -233,6 +234,23 @@ const   : NUMBER
         }
         ;
 %%
+extern int cqnonumbers;
+static char *stomon(c)
+        char *c;
+{
+  static char t[256];
+  if (cqnonumbers == 2) snprintf (t, (size_t)sizeof(t), "strftime('%%Y%%m', %s)+0", c);
+  else                  snprintf (t, (size_t)sizeof(t), "{fn YEAR(%s)} * 100 + {fn MONTH(%s)}", c, c);
+  return t;
+}
+static char *stoday(c)
+        char *c;
+{
+  static char t[256];
+  if (cqnonumbers == 2) snprintf (t, (size_t)sizeof(t), "strftime('%%Y%%m%%d', %s)+0", c);
+  else                  snprintf (t, (size_t)sizeof(t), "{fn YEAR(%s)} * 10000 + {fn MONTH(%s)} * 100 + {fn DAY(%s)}", c, c, c);
+  return t;
+}
 static char *cqstr (s)
         char *s;
 {

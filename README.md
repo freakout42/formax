@@ -52,7 +52,7 @@ technologies:
 
 Status
 ======
-Current 0.9.9 is ALPHA - the generator can only create a
+Current 1.0.0 is BETA - the generator can only create a
 single-block single-page form. You are able to create,
 retrieve, update and delete (CRUD) records in this table.
 

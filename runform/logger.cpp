@@ -19,21 +19,15 @@
                       ")"
 
 static int session = -1;
+static char message[MEDSIZE];
+static char sqlquery[MEDSIZE];
 
 static int callback(void *NotUsed, int argc, char **argv, char **azColName){
-/* char *zErrMsg;
- * rc = sqlite3_exec(db, "select empno, ename from emps order by empno", callback, 0, &zErrMsg);
- * if( rc!=SQLITE_OK ){
- *   fprintf(stderr, "SQL error: %s\n", zErrMsg);
- *   sqlite3_free(zErrMsg);
- */
-/* int i;
- * for (i=0; i<argc; i++) {
- *   fprintf(stderr, "%s", argv[i] ? argv[i] : "NULL");
- */
 if (session == 0 && argc == 1) session = atoi(argv[0]);
 return 0;
 }
+// for (i=0; i<argc; i++) {
+//   fprintf(stderr, "%s", argv[i] ? argv[i] : "NULL");
 
 void Logger::init(char *dsn) {
 int rc;
@@ -66,30 +60,47 @@ return 0;
 
 void Logger::logfmt(char *format, ...) {
 va_list args;
-char msg[MEDSIZE];
-char sql[MEDSIZE];
 if (*logpath) {
 va_start (args, format);
-vsnprintf (t(msg), format, args);
-snprintf (t(sql), INSERTLOG, session, msg);
-sqlite3_exec(db, sql, callback, 0, NULL);
+vsnprintf (t(message), format, args);
+snprintf (t(sqlquery), INSERTLOG, session, message);
+sqlite3_exec(db, sqlquery, callback, 0, NULL);
 //vfprintf(stderr, format, args);
 va_end (args);
 } }
 
 void Logger::logsql(char *sql, char *bnd[]) {
-/*
-va_list args;
-char msg[MEDSIZE];
-char sql[MEDSIZE];
+int i, j, k, l, m;
+char *r;
+char apostrophe = '\'';
 if (*logpath) {
-va_start (args, format);
-vsnprintf (t(msg), format, args);
-snprintf (t(sql), INSERTLOG, session, msg);
-sqlite3_exec(db, sql, callback, 0, NULL);
-//vfprintf(stderr, format, args);
-va_end (args);
+//let(message, sql);
+m = (int)sizeof(message) - 8;
+i = k = l = 0;
+j = -1;
+while (sql[i] && k < m) {
+  switch (sql[i]) {
+   case '?':
+    if (j == -1) {
+      j = 0;
+      r = &apostrophe;
+    } else if (bnd[l][j]) {
+      r = bnd[l]+(j++);
+    } else {
+      j = -1;
+      l++;
+      i++;
+      r = &apostrophe;
+    }
+    break;
+   default:
+    r = sql+(i++);
+  }
+  message[k++] = *r;
+  if (*r == apostrophe) message[k++] = apostrophe;
 }
-*/
-}
+message[k++] = '\0';
+snprintf (t(sqlquery), INSERTLOG, session, message);
+sqlite3_exec(db, sqlquery, callback, 0, NULL);
+} }
 

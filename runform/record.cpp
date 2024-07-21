@@ -46,19 +46,20 @@ return 0;
 }
 
 int Record::commit() {
-ret = SQLEndTran(SQL_HANDLE_ENV, env, SQL_COMMIT);
-return ret;
+ret = SQLEndTran(SQL_HANDLE_ENV, env, SQL_COMMIT);                                             FAILEDQ(SQL_HANDLE_ENV);
+return 0;
 }
+
 int Record::rollback() {
-ret = SQLEndTran(SQL_HANDLE_ENV, env, SQL_ROLLBACK);
-return ret;
+ret = SQLEndTran(SQL_HANDLE_ENV, env, SQL_ROLLBACK);                                           FAILEDQ(SQL_HANDLE_ENV);
+return 0;
 }
 
 int Record::ropen() {
 if (stmt == NULL) {
   q = new(Qdata);
   q->init();
-  ret = SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);
+  ret = SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);                                           FAILEDQ(SQL_HANDLE_STMT);
 } else {
   ret = 0;
 }
@@ -68,42 +69,38 @@ return ret;
 void Record::rclose() {
 q->freed();
 delete(q);
-SQLFreeHandle(SQL_HANDLE_STMT, stmt);
-stmt = NULL;
-}
+if (stmt) {
+  SQLFreeHandle(SQL_HANDLE_STMT, stmt);
+  stmt = NULL;
+} }
 
 void Record::disconnect() {
-SQLDisconnect(dbc);
-SQLFreeHandle(SQL_HANDLE_DBC, dbc);
-SQLFreeHandle(SQL_HANDLE_ENV, env);
-dbc = NULL;
-}
+if (dbc) {
+  SQLDisconnect(dbc);
+  SQLFreeHandle(SQL_HANDLE_DBC, dbc);
+  SQLFreeHandle(SQL_HANDLE_ENV, env);
+  dbc = NULL;
+} }
 
 int Record::execdirect(SQLCHAR *sql) {
-return (ret = SQLExecDirect(stmt, sql, strlen((char*)sql)));
+ret = SQLExecDirect(stmt, sql, strlen((char*)sql));                                            FAILEDQ(SQL_HANDLE_STMT);
+return ret;
 }
 
 int Record::execute(SQLCHAR *sql, char *b[]) {
 SQLLEN len;
-int i, s;
-s = 0;
+int i;
 len = SQL_NTS;
 let(sqlcmd, (char*)sql);
-ret = SQLPrepare(stmt, sql, SQL_NTS);
-if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) s = 10; else {
-  for (i=0; !s && b[i]; i++) {
-    ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], SMLSIZE, &len);
-    if (ret) s = 15;
-  }
-  if (!s) {
-    ret = SQLExecute(stmt);
-    if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO && ret != -1) s = 11; else {
-      if ((ret = SQLNumResultCols(stmt, &querycols))) s = 12;
-    }
-  }
-}
 g.logsql(sqlcmd, b);
-return s;
+ret = SQLPrepare(stmt, sql, SQL_NTS);                                                          FAILEDQ(SQL_HANDLE_STMT);
+for (i=0; b[i]; i++) {
+  ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], SMLSIZE, &len);
+                                                                                               FAILEDQ(SQL_HANDLE_STMT);
+}
+ret = SQLExecute(stmt);                                                                        FAILEDQ(SQL_HANDLE_STMT);
+ret = SQLNumResultCols(stmt, &querycols);                                                      FAILEDQ(SQL_HANDLE_STMT);
+return ret;
 }
 
 int Record::clear() {
@@ -129,7 +126,7 @@ return complete();
 }
 
 int Record::complete() {
-ret = SQLFreeStmt(stmt, SQL_CLOSE);
+ret = SQLFreeStmt(stmt, SQL_CLOSE);                                                           FAILEDQ(SQL_HANDLE_STMT);
 if (drv == ODR_ORACLE) {
   SQLFreeHandle(SQL_HANDLE_STMT, stmt);
   SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);
@@ -168,26 +165,23 @@ return !SQL_SUCCEEDED(s);
 }
 
 int Record::failed(SQLSMALLINT hty) {
-/*
 SQLHANDLE handle;
 SQLCHAR szError[SMLSIZE];
 SQLCHAR szSqlState[SMLSIZE];
 SQLINTEGER nNativeError;
 SQLSMALLINT nErrorMsg;
 int rec;
-*/
 if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) {
-/*
   switch (hty) {
    case SQL_HANDLE_ENV:  handle = env;  break;
    case SQL_HANDLE_DBC:  handle = dbc;  break;
    case SQL_HANDLE_STMT: handle = stmt; break;
   }
   rec = 1;
-  while (SQLGetDiagRec(hty, handle, rec++, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS)
+  while (SQLGetDiagRec(hty, handle, rec++, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS) {
     if (szError[strlen((char*)szError)-1] == '\n') szError[strlen((char*)szError)-1] = '\0';
-  g.logf("[%s]%s\n", szSqlState, szError );
-*/
+    g.logfmt("[%s]%s", szSqlState, szError );
+  }
 } else ret = 0;
 return ret;
 }
