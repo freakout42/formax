@@ -11,6 +11,7 @@ LINE=`expr $LINE + 1`
 UPDATE maps set mtext = mtext || '                            $1' where line = $LINE;
 EOF
 }
+set scotty formax1 emps id ename job mgr hiredate sal comm dept_id
 . ./makeform scotty formax1 emps id ename job mgr hiredate sal comm dept_id
 LINE=`expr $LINE + 1`
 #elpmap 'F2    Ctrl+c Copy'
