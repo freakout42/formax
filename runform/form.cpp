@@ -1,13 +1,12 @@
 #include <assert.h>
 #include "runform.h"
 
-void Form::init() {
+Form::Form() {
 let(table,  "forms");
 let(prikey, "id");
 let(attrs,  "id,name,title");
 let(order,  "id");
 columni = 3;
-y.ysiz = 0;
 }
 
 // fill objects with configuation

@@ -2,6 +2,7 @@
 // form configuration
 class Form: public Record {
 public:
+  Form();
   char id[SMLSIZE];
   char name[SMLSIZE];
   char title[SMLSIZE];
@@ -23,8 +24,7 @@ public:
   int lastcmd;
   int lastkey;
   int dirty;
-  enum fmode rmode;
-  void init();
+  fmode rmode;
   int fill(int id);
   void clear();
   int run();

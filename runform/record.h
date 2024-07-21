@@ -9,7 +9,7 @@ typedef SQLSMALLINT SQLRETURN;
 #endif
 class Record {
 public:
-  enum odrvr drv;
+  odrvr drv;
   char table[SMLSIZE];
   char sqlcmd[MEDSIZE];
   SQLCHAR querystr[MEDSIZE];

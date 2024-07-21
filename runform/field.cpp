@@ -5,14 +5,18 @@
 #include "colquery/colquery.h"
 
 int Field::init(Qdata *fld, int rix) {
-let(name,  fld->v(rix, 1));
-dlen =     fld->n(rix, 2);
-line =     fld->n(rix, 3);
-col  =     fld->n(rix, 4);
-isprimarykey = fld->n(rix, 5);
+let(name,      fld->v(rix, 1));
+blockindex   = fld->n(rix, 2);
+pageindex    = fld->n(rix, 3);
+dlen         = fld->n(rix, 4);
+line         = fld->n(rix, 5);
+col          = fld->n(rix, 6);
+isprimarykey = fld->n(rix, 7);
+fieldtype    = (ftype)fld->n(rix, 8);
+fieldlen     = fld->n(rix, 9);
+basetable    = fld->n(rix,10);
 let(queryhuman, "");
 let(querywhere, "");
-blockindex = 1;
 sequencenum = f.b[blockindex].addattribute(rix-1);
 return 0;
 }
