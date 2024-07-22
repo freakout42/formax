@@ -339,6 +339,7 @@ used for some fundamental values:
   | n | query result to_int    | Type     | qdata.h        |
   | p | pages array            | Variable | form.h         |
   | q | query result object    | Type     | qdata.h        |
+  | r | trigger array          | Variable | form.h         |
   | s | status integer         | Variable |                |
   | t | char* target with size | Macro    | runform.h      |
   | v | query result string    | Type     | qdata.h        |

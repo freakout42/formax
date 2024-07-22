@@ -6,19 +6,16 @@ public:
   char id[SMLSIZE];
   char name[SMLSIZE];
   char title[SMLSIZE];
-  rError rerror;
-  rBlock rblock;
-  rField rfield;
-  rPage rpage;
-  rMap rmap;
   Qdata *e;
   Screen y;
-  Block b[NBLOCKS];
-  Field l[NFIELDS];
-  Page  p[NBLOCKS];
+  Block   b[NBLOCKS];
+  Field   l[NFIELDS];
+  Page    p[NBLOCKS];
+  Trigger r[NTRIGGERS];
   int numblock;
   int numfield;
   int numpage;
+  int numtrigger;
   int curblock;
   int curfield;
   int lastcmd;
@@ -29,7 +26,14 @@ public:
   void clear();
   int run();
   int mapkey(int ckey);
+  void rconnect();
 private:
+  rError rerror;
+  rBlock rblock;
+  rField rfield;
+  rPage rpage;
+  rTrigger rtrigger;
+  rMap rmap;
 };
 #else
 CREATE TABLE forms

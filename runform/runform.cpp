@@ -117,11 +117,7 @@ if ((filesq3 = fopen(FORMFRM, "r")) == NULL) usage(3);
 fclose(filesq3); // check for file existence because sqlite creates empty db
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, FORMFRM);
 if (f.connect(dsn)) usage(4);
-f.rerror.connect(f);
-f.rblock.connect(f);
-f.rfield.connect(f);
-f.rpage.connect(f);
-f.rmap.connect(f);
+f.rconnect();
 
 // load and run the form
 s = 1;
