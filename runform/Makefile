@@ -7,8 +7,8 @@ VALGRINDSUP=--gen-suppressions=no #all
 
 all: runform
 
-runform: curkeys.h $(OBJS) cqerror.o colquery/colquery.o
-	$(CXX) $(OBJS) cqerror.o colquery/colquery.o -lcurses -lsqlite3 -lodbc -o $@
+runform: curkeys.h $(OBJS) cqerror.o colquery/colquery.o regex/re.o
+	$(CXX) $(OBJS) cqerror.o colquery/colquery.o regex/re.o -lcurses -lsqlite3 -lodbc -o $@
 
 test: runform $(EXAMPLE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
@@ -20,6 +20,9 @@ curkeys.h: curkeys
 
 colquery/colquery.o:
 	cd colquery; make colquery.o
+
+regex/re.o:
+	cd regex; make re.o
 
 $(EXAMPLE):
 	cd ../generate; make

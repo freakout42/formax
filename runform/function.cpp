@@ -115,7 +115,7 @@ return 0;
 }
 
 int Function::create_record() {
-if (CB.insert(CB.currentrecord)) f.p[0].message(MSG_SQL, CB.sqlcmd);
+if (CB.insert(CB.currentrecord)) MSG1(MSG_SQL, CB.sqlcmd);
 f.rmode = MOD_UPDATE;
 return 0;
 }
@@ -129,8 +129,8 @@ switch(f.rmode) {
   if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos);
   break;
  case MOD_UPDATE:
-  if (CF.isprimarykey) MSG(MSG_EDITKEY); else changed = CF.edit(pos);
-  if (changed != KEF_CANCEL) if (CB.update(CB.currentrecord, CF.sequencenum)) f.p[0].message(MSG_SQL, CB.sqlcmd);
+  changed = CF.edit(pos);
+  if (changed != KEF_CANCEL) if (CB.update(CB.currentrecord, CF.sequencenum)) MSG1(MSG_SQL, CB.sqlcmd);
   break;
  case MOD_DELETE:
   break;
@@ -158,7 +158,7 @@ return 0;
 }
 
 int Function::execute_query() {
-if (f.b[1].select()) f.p[0].message(MSG_SQL, CB.sqlcmd); else {
+if (f.b[1].select()) MSG1(MSG_SQL, CB.sqlcmd); else {
   if (CB.q->rows > 0) {
     CB.currentrecord = 1;
     f.rmode = MOD_UPDATE;
