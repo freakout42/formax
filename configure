@@ -2,7 +2,7 @@
 NAME=formax
 test -f version.h || exit 1
 rm -rf dist Makefile
-for MODUL in generate runform runform/colquery runform/regex; do
+for MODUL in generate runform runform/colquery runform/regex runform/elk; do
   ( cd $MODUL; make clean; ) >/dev/null
 done
 test "$1" = "clean" && exit

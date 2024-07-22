@@ -20,6 +20,7 @@ enum ftype         { FTY_CHAR=1, FTY_INT, FTY_FLOAT, FTY_DATE };
 
 #include <string.h>
 #include "regex/re.h"
+#include "elk/elk.h"
 #include "logger.h"
 #include "qdata.h"
 #include "record.h"
