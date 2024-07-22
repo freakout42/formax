@@ -108,7 +108,6 @@ switch(argc - optind) {
   break;
  default: usage(2);
 }
-f.init();
 if (f.b[0].connect(dsn)) usage(8);
 if (f.b[0].drv == ODR_SQLITE) querycharm = 2;
 for (i=1; i<NBLOCKS; i++) f.b[i].connect(f.b[0]);

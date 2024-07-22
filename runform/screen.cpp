@@ -6,6 +6,10 @@
 #include <curses.h>
 #include "runform.h"
 
+Screen::Screen() {
+ysiz = 0;
+}
+
 static attrel attrels[] = {
 
   { COL_DEFAULT,         A_NORMAL,              -1,            -1 },            /* default */

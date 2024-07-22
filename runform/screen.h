@@ -1,6 +1,7 @@
 #include "curkeys.h"
 class Screen {
 public:
+  Screen();
 	int init();
   void createwindow(int y, int x, int py, int px);
   void deletewindow();

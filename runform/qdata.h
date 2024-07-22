@@ -10,7 +10,8 @@ public:
   int n(int row, int col);
   int alloc(int coln);
   int splice(int rown);
-  void init();
+  Qdata();
+  ~Qdata();
   void freed();
 private:
   char *(*d)[];

@@ -58,7 +58,6 @@ return 0;
 int Record::ropen() {
 if (stmt == NULL) {
   q = new(Qdata);
-  q->init();
   ret = SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);                                           FAILEDQ(SQL_HANDLE_STMT);
 } else {
   ret = 0;
@@ -67,7 +66,6 @@ return ret;
 }
 
 void Record::rclose() {
-q->freed();
 delete(q);
 if (stmt) {
   SQLFreeHandle(SQL_HANDLE_STMT, stmt);
@@ -104,7 +102,6 @@ return ret;
 }
 
 int Record::clear() {
-q->freed();
 if (q->alloc(columni)) return 13;
 return 0;
 }

@@ -1,13 +1,12 @@
 #include <assert.h>
 #include "runform.h"
 
-void Form::init() {
+Form::Form() {
 let(table,  "forms");
 let(prikey, "id");
 let(attrs,  "id,name,title");
 let(order,  "id");
 columni = 3;
-y.ysiz = 0;
 }
 
 // fill objects with configuation
@@ -42,7 +41,6 @@ if (rerror.init()) return 9;
 if ((s = rerror.query())) return s;
 e = rerror.q;
 rerror.q = new(Qdata);
-rerror.q->init();
 rerror.rclose();
 
 // blocks - block 0 is for free queries/sql statements

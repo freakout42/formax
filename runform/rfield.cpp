@@ -6,9 +6,9 @@ stmt = NULL;
 if ((s = ropen())) return s;
 let(table,     "fields");
 let(prikey,    "id");
-let(attrs,     "name,dlen,line,col,key");
+let(attrs,     "name,blcn,pgen,dlen,line,col,key,ftype,len,btab,dflt,enter,query,upd,updnul,mand,upper,lovtit,lov_id,lovi_id,low,high,valpatn,help");
 letf(t(where), "form_id = %d", form_id);
 let(order,     "seq");
-columni = 5;
+columni = 24;
 return 0;
 }
