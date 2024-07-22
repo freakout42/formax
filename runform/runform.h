@@ -18,6 +18,7 @@ enum ftype         { FTY_CHAR=1, FTY_INT, FTY_FLOAT, FTY_DATE };
 #define NBINDPA NFIELD1
 
 #include <string.h>
+#include "regex/re.h"
 #include "logger.h"
 #include "qdata.h"
 #include "record.h"
@@ -43,6 +44,7 @@ enum ftype         { FTY_CHAR=1, FTY_INT, FTY_FLOAT, FTY_DATE };
 #define LK f.lastkey
 #define DY f.dirty
 #define MSG(n) f.p[0].message(n, NULL)
+#define MSG1(n,c) f.p[0].message(n, c)
 
 extern int isprintable(int c);
 extern int ispunctation(int c);

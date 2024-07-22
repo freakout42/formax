@@ -2,7 +2,9 @@
 NAME=formax
 test -f version.h || exit 1
 rm -rf dist Makefile
-for MODUL in generate runform runform/colquery; do ( cd $MODUL; make clean; ) >/dev/null; done
+for MODUL in generate runform runform/colquery runform/regex; do
+  ( cd $MODUL; make clean; ) >/dev/null
+done
 test "$1" = "clean" && exit
 echo "configuring for $NAME" >&2
 cat >Makefile <<EOF

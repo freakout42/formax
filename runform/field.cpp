@@ -70,10 +70,20 @@ pressed = 0;
 switch(f.rmode) {
  case MOD_INSERT:
  case MOD_UPDATE:
+  if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }
+  if (!updateable)  { MSG(MSG_FLDPROT); return KEF_CANCEL; }
   if (f.b[blockindex].q->rows) {
     c = valuep();
     if (*c) let(buf, *c); else *buf = '\0';
     pressed = f.p[0].sedit(buf, pos);
+    if (*validreg) {
+      re_t re;
+      re = re_compile(validreg);
+      if (re_matchp(re, buf, &s) == -1) {
+        MSG1(MSG_NOMATCH, validreg);
+        return KEF_CANCEL;
+      }
+    }
     if (*c==NULL && *buf) *c = strdup(buf);
     else {
       if (strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);

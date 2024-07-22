@@ -61,7 +61,6 @@ Feature roadmap
  - multi-record fields
  - transaction processing
  - checksumming form with database password
- - validation on field content level
  - multiple blocks and master-detail
  - form for forms - designer module
  - list of values - subforms
