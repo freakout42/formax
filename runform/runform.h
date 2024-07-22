@@ -14,6 +14,7 @@ enum ftype         { FTY_CHAR=1, FTY_INT, FTY_FLOAT, FTY_DATE };
 #define NBLOCKS 20
 #define NFIELD1 40
 #define NFIELDS NBLOCKS*NFIELD1
+#define NTRIGGERS 80
 #define NPRIKEY 4
 #define NBINDPA NFIELD1
 
@@ -27,10 +28,12 @@ enum ftype         { FTY_CHAR=1, FTY_INT, FTY_FLOAT, FTY_DATE };
 #include "rblock.h"
 #include "rpage.h"
 #include "rmap.h"
+#include "rtrigger.h"
 #include "field.h"
 #include "block.h"
 #include "screen.h"
 #include "page.h"
+#include "trigger.h"
 #include "form.h"
 #include "function.h"
 

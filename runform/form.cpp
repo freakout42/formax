@@ -9,6 +9,15 @@ let(order,  "id");
 columni = 3;
 }
 
+void Form::rconnect() {
+rerror.connect(*this);
+rblock.connect(*this);
+rfield.connect(*this);
+rpage.connect(*this);
+rmap.connect(*this);
+rtrigger.connect(*this);
+}
+
 // fill objects with configuation
 int Form::fill(int fid) {
 int i, s;
@@ -23,6 +32,16 @@ let(id,    q->v(1, 1));
 let(name,  q->v(1, 2));
 let(title, q->v(1, 3));
 rclose();
+
+// triggers
+if (rtrigger.init(fid)) return 9;
+if ((s = rtrigger.query())) return s;
+numtrigger = rtrigger.q->rows;
+if (numtrigger > NTRIGGERS) return 7;
+for (i=0; i<numtrigger; i++) {
+  if (r[i].init(rtrigger.q, i+1)) return 9;
+}
+rtrigger.rclose();
 
 // pages - page 0 is status/edit/message window
 if (rpage.init(fid)) return 9;

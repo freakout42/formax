@@ -12,6 +12,7 @@ cat <<EOF
 `./extractsql ../runform/rfield.h`
 `./extractsql ../runform/rmap.h`
 `./extractsql ../runform/rpage.h`
+`./extractsql ../runform/rtrigger.h`
 INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
 INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
 INSERT INTO blocks (id, form_id, name) VALUES (0, 1, 'dual');
