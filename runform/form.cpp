@@ -41,7 +41,6 @@ if (rerror.init()) return 9;
 if ((s = rerror.query())) return s;
 e = rerror.q;
 rerror.q = new(Qdata);
-rerror.q->init();
 rerror.rclose();
 
 // blocks - block 0 is for free queries/sql statements

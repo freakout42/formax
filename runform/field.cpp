@@ -5,16 +5,30 @@
 #include "colquery/colquery.h"
 
 int Field::init(Qdata *fld, int rix) {
-let(name,      fld->v(rix, 1));
-blockindex   = fld->n(rix, 2);
-pageindex    = fld->n(rix, 3);
-dlen         = fld->n(rix, 4);
-line         = fld->n(rix, 5);
-col          = fld->n(rix, 6);
-isprimarykey = fld->n(rix, 7);
-fieldtype    = (ftype)fld->n(rix, 8);
-fieldlen     = fld->n(rix, 9);
-basetable    = fld->n(rix,10);
+let(name,       fld->v(rix, 1));
+blockindex    = fld->n(rix, 2);
+pageindex     = fld->n(rix, 3);
+displaylen    = fld->n(rix, 4);
+line          = fld->n(rix, 5);
+col           = fld->n(rix, 6);
+isprimarykey  = fld->n(rix, 7);
+fieldtype     = (ftype)fld->n(rix, 8);
+fieldlen      = fld->n(rix, 9);
+basetable     = fld->n(rix,10);
+let(defaultval, fld->v(rix,11));
+enterable     = fld->n(rix,12);
+queryable     = fld->n(rix,13);
+updateable    = fld->n(rix,14);
+updnulable    = fld->n(rix,15);
+mandatory     = fld->n(rix,16);
+uppercase     = fld->n(rix,17);
+let(lovtitle,   fld->v(rix,18));
+lov_id        = fld->n(rix,19);
+lovi_id       = fld->n(rix,20);
+lowvalue      = fld->n(rix,21);
+highvalue     = fld->n(rix,22);
+let(validreg,   fld->v(rix,23));
+let(helptext,   fld->v(rix,24));
 let(queryhuman, "");
 let(querywhere, "");
 sequencenum = f.b[blockindex].addattribute(rix-1);
@@ -30,7 +44,7 @@ switch(f.rmode) {
  default:         color = COL_FIELD;
 }
 if (cur && f.rmode != MOD_DELETE) color = COL_CURRENT;
-f.p[1].writef(line, col, color, dlen, "%s", f.rmode==MOD_QUERY ? queryhuman : *valuep());
+f.p[1].writef(line, col, color, displaylen, "%.*s", displaylen, f.rmode==MOD_QUERY ? queryhuman : *valuep());
 if (cur) f.p[1].wmov(line, col);
 }
 

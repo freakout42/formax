@@ -2,24 +2,38 @@
 class Field {
 public:
   char name[SMLSIZE];
+  int sequencenum;
+  char querywhere[MEDSIZE];
+  int isprimarykey;
+  int init(Qdata *fld, int rix);
+  void clear();
+  int edit(int pos);
+  void show(int cur);
+private:
+  char **valuep();
   int blkn;
   int pgen;
-  int dlen;
   int line;
   int col;
   int blockindex;
   int pageindex;
-  int sequencenum;
-  int isprimarykey;
   ftype fieldtype;
   int fieldlen;
   int basetable;
   char queryhuman[SMLSIZE];
-  char querywhere[MEDSIZE];
-  int init(Qdata *fld, int rix);
-  void show(int cur);
-  int edit(int pos);
-  void clear();
-private:
-  char **valuep();
+  int displaylen;
+  char defaultval[MEDSIZE];
+  int enterable;
+  int queryable;
+  int updateable;
+  int updnulable;
+  int mandatory;
+  int uppercase;
+  char lovtitle[SMLSIZE];
+  int lov_id;
+  int lovi_id;
+  int lowvalue;
+  int highvalue;
+  char validreg[SMLSIZE];
+  char helptext[SMLSIZE];
 };

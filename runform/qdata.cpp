@@ -1,19 +1,13 @@
-/* #include <stdio.h> */
 /* query data handling */
-#include <assert.h>
 #include <stdlib.h>
 #include "runform.h"
 
-void Qdata::init() {
-rows = 0;
-cols = 0;
-allocatedrows = 0;
-d = NULL;
-}
+Qdata::Qdata() { allocatedrows = 0; }
+Qdata::~Qdata() { freed(); }
 
 /* factorize by 10 for performance */
 int Qdata::alloc(int coln) {
-freed();
+if (allocatedrows) freed();
 rows = 0;
 cols = coln;
 allocatedrows = 2;
@@ -43,10 +37,11 @@ return 0;
 
 void Qdata::freed() {
 int i;
-for (i=0; i<rows*cols; i++) free((*d)[i]);
+if (allocatedrows) {
+for (i=0; i<rows*cols; i++) if ((*d)[i]) free((*d)[i]);
 free(d);
-init();
-}
+allocatedrows = 0;
+} }
 
 /* return a valid pointer for new query-column data */
 char **Qdata::w(int row, int col) {
