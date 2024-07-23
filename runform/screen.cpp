@@ -172,8 +172,20 @@ switch(ch) {
 return ch;
 }
 
-int Screen::sedit(char *toe, int pos) {
-return f.p[0].getst(0, 0, 80, EDITCOLOR, toe, pos, "", SMLSIZE, NULL);
+int Screen::sedit(char *toe, int pos, ftype fty) {
+char *legal;
+char legalall[] = "";
+char legalint[] = "0123456789";
+char legalfloat[] = "0123456789.";
+char legaldate[] = "0123456789./-";
+switch (fty) {
+ case FTY_DATE:  legal = legaldate;  break;
+ case FTY_INT:   legal = legalint;   break;
+ case FTY_FLOAT: legal = legalfloat; break;
+ case FTY_CHAR:
+ case FTY_ALL:   legal = legalall;   break;
+}
+return f.p[0].getst(0, 0, 80, EDITCOLOR, toe, pos, legal, SMLSIZE, NULL);
 }
 
 /* Allows the user to edit a string with only certain characters allowed
