@@ -65,7 +65,10 @@ int Field::edit(int pos) {
 int s;
 int pressed;
 char buf[SMLSIZE];
+char buf2[SMLSIZE];
+char *u;
 char **c;
+re_t re;
 pressed = 0;
 switch(f.rmode) {
  case MOD_INSERT:
@@ -75,14 +78,35 @@ switch(f.rmode) {
   if (f.b[blockindex].q->rows) {
     c = valuep();
     if (*c) let(buf, *c); else *buf = '\0';
-    pressed = f.p[0].sedit(buf, pos);
+    pressed = f.p[0].sedit(buf, pos, fieldtype);
     if (*validreg) {
-      re_t re;
       re = re_compile(validreg);
-      if (re_matchp(re, buf, &s) == -1) {
+      if (re_matchp(re, buf, &s) == -1) { // || s != (int)strlen(buf)
         MSG1(MSG_NOMATCH, validreg);
         return KEF_CANCEL;
       }
+    }
+    switch (fieldtype) {
+     case FTY_DATE:
+      s = colquery(buf, buf2, "q", 0, 268);
+      if (*buf2 == '{' && (u = rindex(buf2, ' ')) && u == buf2+strlen(buf2)-9) {
+        strncpy(buf, u+1, 4);
+        *(buf+4) = '-';
+        strncpy(buf+5, u+5, 2);
+        *(buf+7) = '-';
+        strncpy(buf+8, u+7, 2);
+        *(buf+10) = '\0';
+      }
+      re = re_compile("^[12]\\d\\d\\d-[012]\\d-[0123]\\d$");
+      if (re_matchp(re, buf, &s) == -1) {
+        MSG1(MSG_NOMATCH, "YYYY-MM-DD");
+        return KEF_CANCEL;
+      }
+      break;
+     case FTY_ALL:
+     case FTY_INT:
+     case FTY_FLOAT:
+     case FTY_CHAR: break;
     }
     if (*c==NULL && *buf) *c = strdup(buf);
     else {
@@ -92,7 +116,7 @@ switch(f.rmode) {
   }
   break;
  case MOD_QUERY:
-  pressed = f.p[0].sedit(queryhuman, pos);
+  pressed = f.p[0].sedit(queryhuman, pos, FTY_ALL);
   s = colquery(queryhuman, querywhere, name, querycharm, 0);
   break;
  case MOD_DELETE:

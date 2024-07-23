@@ -14,6 +14,7 @@ EOF
 sh ./makeform scotty formax1 emps id ename job mgr hiredate sal comm dept_id
   cat <<EOF
 UPDATE fields set valpatn = '[0-9a-f][0-9a-f][0-9a-f][0-9a-f]' where id=3;
+UPDATE fields set ftype = 4 where id=5;
 EOF
 LINE=9
 LINE=`expr $LINE + 1`
