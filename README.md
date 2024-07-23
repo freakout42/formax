@@ -3,13 +3,13 @@ formax: enterprise-applications on terminals
 
 **formax** is a tool for developing and executing
 user-friedly character-based database applications with
-extreme efficiency. The basic concepts of Oracle
-SQL-Forms 3.0 are combined with curses as the terminal
-interface, ODBC for universal database access and JavaScript
-as trigger language. The result is the most efficient
-solution possible for the end-user. Also the applications
-can be build with minimal effort. Click an the image for a
-non-technical description of the project and its goals.
+extreme efficiency. The basic concepts of Oracle SQL-Forms
+3.0 are combined with curses as the terminal interface, ODBC
+for universal database access and JavaScript as trigger
+language. The result is the most efficient solution possible
+for the end-user. The applications can also be build with
+minimal effort. Click on the image for a non-technical
+description of the project and its goals.
 
 [![formax](https://formax.freakout.de/assets/logo.jpg "formax")](https://formax.freakout.de/ "formax")
 
