@@ -11,12 +11,6 @@ scotty.frm: scotty.inp
 scotty.inp: testform makeform
 	./testform >$@
 
-../runform/runform:
-	( cd ../runform; make runform )
-
-test: scotty.sq3 scotty.frm ../runform/runform
-	../runform/runform scotty.frm scotty.sq3
-
 clean:
 	rm -f scotty.inp scotty.frm scotty.sq3
 
