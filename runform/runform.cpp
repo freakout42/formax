@@ -55,7 +55,7 @@ Logger g;
 
 int main(int argc, char *argv[]) { //, char **envp
 int i, s;
-char dsn[SMLSIZE];
+char dsn[MEDSIZE];
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
 
@@ -72,9 +72,9 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqVy:")) != -1) {
     case 'l': let(drv, optarg); break;
     case 'n':
       if (!strcmp(optarg, "us")) ; // shiftednum = "`!@#$%^&*()";
-      if (!strcmp(optarg, "uk"))      shiftednum = "\\!\"Ј$%^&*()";
-      if (!strcmp(optarg, "de"))      shiftednum = "<!\"§$%&/()=";
-      if (!strcmp(optarg, "fr"))      shiftednum = "<&й\"'(-и_зб";
+      if (!strcmp(optarg, "uk"))      shiftednum = "\\!\"пїЅ$%^&*()";
+      if (!strcmp(optarg, "de"))      shiftednum = "<!\"пїЅ$%&/()=";
+      if (!strcmp(optarg, "fr"))      shiftednum = "<&пїЅ\"'(-пїЅ_пїЅпїЅ";
       break;
     case '3': useodbcve3 = 1; break;
     case 'k': monochrome = 1; break;

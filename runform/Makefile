@@ -1,5 +1,6 @@
-all:  CXXFLAGS=-O3 -DNDEBUG
-test: CXXFLAGS=-g -O0 -Wall -Werror
+LINTING=-Wall -Werror -Wno-write-strings
+all:  CXXFLAGS=-O3 -DNDEBUG $(LINTING)
+test: CXXFLAGS=-g -O0 $(LINTING)
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 OBJA=cqerror.o colquery/colquery.o regex/re.o elk/elk.o

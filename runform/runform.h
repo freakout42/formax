@@ -40,7 +40,7 @@ enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE };
 
 #define max(x, y)	(((x) < (y)) ? (y) : (x))
 #define min(x, y)	(((x) < (y)) ? (x) : (y))
-#define let(target,source) strncpy(target, source, sizeof(target))
+#define let(target,source) strncpy(target, source, sizeof(target)-1)
 #define t(target) target, sizeof(target)
 
 #define CB f.b[f.curblock]

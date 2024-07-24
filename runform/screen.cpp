@@ -183,7 +183,8 @@ switch (fty) {
  case FTY_INT:   legal = legalint;   break;
  case FTY_FLOAT: legal = legalfloat; break;
  case FTY_CHAR:
- case FTY_ALL:   legal = legalall;   break;
+ case FTY_ALL:
+ default:        legal = legalall;
 }
 return f.p[0].getst(0, 0, 80, EDITCOLOR, toe, pos, legal, SMLSIZE, NULL);
 }

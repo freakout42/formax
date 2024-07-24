@@ -79,18 +79,6 @@ typedef struct attrel {
 //void setcolor(int pairi);
 //void uncolor(int pairi);
 
-#define A_NORMAL     0L
-#define A_ATTRIBUTES NCURSES_BITS(~(1UL - 1UL),0)
-#define A_CHARTEXT  (NCURSES_BITS(1UL,0) - 1UL)
-#define A_COLOR      NCURSES_BITS(((1UL) << 8) - 1UL,0)
-#define A_STANDOUT   NCURSES_BITS(1UL,8)
-#define A_UNDERLINE  NCURSES_BITS(1UL,9)
-#define A_REVERSE    NCURSES_BITS(1UL,10)
-#define A_BLINK      NCURSES_BITS(1UL,11)
-#define A_DIM        NCURSES_BITS(1UL,12)
-#define A_BOLD       NCURSES_BITS(1UL,13)
-#define A_PROTECT    NCURSES_BITS(1UL,16)
-
 //CSI  Ps SP q
 //ESC[2 q
 //          Set cursor style (DECSCUSR, VT520).

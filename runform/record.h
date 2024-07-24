@@ -34,7 +34,7 @@ protected:
   SQLSMALLINT querycols;
   char prikey[SMLSIZE];
   char attrs[SMLSIZE];
-  char where[SMLSIZE];
+  char where[MEDSIZE];
   char order[SMLSIZE];
   int execdirect(SQLCHAR *sql);
   int execute(SQLCHAR *sql, char *bndv[]);
