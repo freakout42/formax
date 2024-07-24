@@ -32,5 +32,5 @@ $(EXAMPLE):
 	cd ../generate; make
 
 clean:
-	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log
+	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_*
 

@@ -91,7 +91,7 @@ access layer Oracle-Terminal is replaced with ncurses which
 runs on any kind of system and terminal. PL/SQL as the
 trigger language is replaced by JavaScript.
 
-#### Operations / Deployment
+#### Operations / Deployment / Security / Logging
 
 Enterprise requirements are fundamental for this product.
 Zero administration cost is ensured by the leightweight
@@ -100,8 +100,10 @@ anywhere on the PATH (Yes - One=1 file is needed). Secure
 access to the form is easily managed by setting up a
 PuTTY-session on any windows machine with zero
 administration on the client. This works securely from
-anywhere without any bandwidth requirements. Every user
-action (SQL) is logged in a central database.
+anywhere without any bandwidth requirements. With a simple
+encrypted key 2FA is for free. Even 3-factor-authentication
+is easy and comfortable by adding a TOTP login. Every user
+action (SQL) can be logged in a central database.
 
 ### Status
 
