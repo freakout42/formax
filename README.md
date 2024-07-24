@@ -190,7 +190,7 @@ properties to SQL where clauses.
 regex
 -----
 Regular expression engine for validating user entered data.\
-NOT YET IMPLEMENTED. See: github.com/kokke/tiny-regex-c
+See: github.com/kokke/tiny-regex-c
 
 elk
 ---
@@ -221,7 +221,7 @@ as the basis of default database interaction.
 Fields
 ------
 Represent columns or data entry areas and describe how the
-data should be displayed and validated an how an operator
+data should be displayed and validated and how an operator
 should interact with the data while it is entered.
 
 Pages
@@ -313,11 +313,12 @@ Structure
 ---------
 runform.cpp holds main() and has the only OS-interfaces for
 running and checking the command line. record.cpp calls ODBC
-and screen.cpp calls curses. All the other sources are pure
-C++ without any external library calls. For every main
-object is an r-source for reading the form database and a
-separate source for the class. The central Function class
-holds all the event functions.
+and provides an interface in an ORM style like rails
+active-record. screen.cpp calls curses. All the other
+sources are pure C++ without any external library calls. For
+every main object is an r-source for reading the form
+database and a separate source for the class. The central
+Function class holds all the event functions.
 
 Variable names
 --------------

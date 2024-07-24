@@ -1,6 +1,7 @@
 #define MSG_ALLOC    24
 #define MSG_OPENKEY  26
 #define MSG_SQL      50
+#define MSG_HELP     51
 #define MSG_FIRST    100
 #define MSG_EDITKEY  101
 #define MSG_RECDIRTY 102
@@ -17,7 +18,7 @@
 #define MSG_CLEAN    401
 #define MSG_DIRTY    402
 #ifndef BEGINSQL
-// error configuration
+// error messages
 class rError: public Record {
 public:
   int init();
@@ -32,6 +33,7 @@ CREATE TABLE errors
   );
 INSERT INTO errors (num, severity, etext) VALUES (MSG_ALLOC,    3, 'Out of memory');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_OPENKEY,  3, 'Error opening key script file');
+INSERT INTO errors (num, severity, etext) VALUES (MSG_HELP,     3, '');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_SQL,      3, 'SQL');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_FIRST,    1, 'At first record');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_EDITKEY,  2, 'Can''t edit a key field');

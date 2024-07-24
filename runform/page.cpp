@@ -3,15 +3,17 @@
 
 int Page::init(Qdata *pag, int rix) {
 memset(map, 0, sizeof(map));
-let(name,pag->v(rix, 1));
-ysiz   = pag->n(rix, 2);
-xsiz   = pag->n(rix, 3);
-vwpy0  = pag->n(rix, 4);
-vwpx0  = pag->n(rix, 5);
-border = pag->n(rix, 6);
+page_id = pag->n(rix, 1);
+let(name, pag->v(rix, 2));
+ysiz    = pag->n(rix, 3);
+xsiz    = pag->n(rix, 4);
+vwpy0   = pag->n(rix, 5);
+vwpx0   = pag->n(rix, 6);
+border  = pag->n(rix, 7);
 return 0;
 }
 
+// must be rewritten for multiple pages
 int Page::maps(Qdata *qma) {
 int i, r;
 for (i = 1; i <= qma->rows; i++) {
@@ -70,7 +72,7 @@ int Page::message(int ern, char *pnt) {
 int i;
 static char empty[] = "";
 char *pntst;
-if (f.y.ysiz > 0) {
+if (f.y.ysiz > 0) { // can only display with open window
 if (pnt) pntst = pnt; else pntst = empty;
 if (strlen(pntst) > LINE0SIZE-12) i = strlen(pntst) - LINE0SIZE + 12; else 
 i = 0;

@@ -1,3 +1,13 @@
+/* all processing centers around events.
+ * Put simply, events are things that occur when a form is exeecuted.
+ * formax knows about events and handles them by executing functions.
+ * Note that during processing, events are usually nested.
+ * That is, the occurence of one event usually invokes
+ * functions that invoke other events.
+ * Inherent in the functions that events invoke -
+ * and that are invoked by your tiggers -
+ * are the processes of navigation and validation.
+ */
 #include "runform.h"
 
 int Function::dispatch() {
@@ -104,8 +114,8 @@ return 0;
 }
 
 int Function::insert_record() {
-int s;
-if ((f.rmode == MOD_UPDATE || f.rmode == MOD_QUERY) && !(s = CB.q->splice(CB.currentrecord++))) {
+if (f.rmode == MOD_UPDATE || f.rmode == MOD_QUERY) {
+  CB.q->splice(CB.currentrecord++);
   f.rmode = MOD_INSERT;
   DY = 0;
 } else {

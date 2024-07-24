@@ -1,3 +1,6 @@
+/* Pages are collections of display information, such as constant text.
+ * All fields are displayed on some page.
+ */
 #define LINE0SIZE 80
 class Page: public Screen {
 public:
@@ -13,5 +16,6 @@ protected:
   int vwpx0;
   int border;
 private:
+  int page_id;
   char *map[NLINES];
 };

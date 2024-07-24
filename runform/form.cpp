@@ -1,3 +1,10 @@
+/* The primary object of a formax application is the form.
+ * A form is made up of additional objects.
+ * These objects link the form to database elements,
+ * such as columns and tables,
+ * and provide control over the flow of execution.
+ * should be a pointer and not static
+ */
 #include <assert.h>
 #include "runform.h"
 
@@ -63,7 +70,7 @@ rerror.q = new(Qdata);
 rerror.rclose();
 
 // blocks - block 0 is for free queries/sql statements
-if (rblock.init()) return 9;
+if (rblock.init(fid)) return 9;
 if ((s = rblock.query())) return s;
 numblock = rblock.q->rows;
 if (numblock > NBLOCKS) return 7;

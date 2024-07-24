@@ -1,4 +1,5 @@
-/* builds curkeys.h for using keys without curses.h */
+/* builds curkeys.h for using keys without curses.h
+ */
 #include <stdio.h>
 #include <curses.h>
 

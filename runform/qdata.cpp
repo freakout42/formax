@@ -16,7 +16,8 @@ memset(d, 0, allocatedrows * cols * (sizeof(void*)));
 return 0;
 }
 
-int Qdata::splice(int rown) {
+/* splice +1 for insert -1 for delete */
+void Qdata::splice(int rown) {
 int i;
 char **clr;
 if (rown >= 0) {
@@ -32,7 +33,6 @@ if (rown >= 0) {
   memset(w(rows,1), 0, cols * (sizeof(void*)));
   rows--;
 }
-return 0;
 }
 
 void Qdata::freed() {
