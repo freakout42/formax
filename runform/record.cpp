@@ -174,7 +174,8 @@ if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) {
   switch (hty) {
    case SQL_HANDLE_ENV:  handle = env;  break;
    case SQL_HANDLE_DBC:  handle = dbc;  break;
-   case SQL_HANDLE_STMT: handle = stmt; break;
+   case SQL_HANDLE_STMT:
+   default:              handle = stmt;
   }
   rec = 1;
   while (SQLGetDiagRec(hty, handle, rec++, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS) {

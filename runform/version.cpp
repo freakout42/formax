@@ -53,7 +53,7 @@ static char xorder[] = XORKEY0;
 static char xorkey[] = XORKEY1;
 static int ordnum(int ch) {
 char *po;
-if (po = strchr(xorder, ch)) {
+if ((po = strchr(xorder, ch))) {
   return po - xorder;
 } else {
   return -1;

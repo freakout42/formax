@@ -24,7 +24,7 @@ return fieldcount;
 
 int Block::select() {
 int i;
-char wall[MEDSIZE];
+char wall[MEDSIZE-2];
 char sep[7];
 *wall = '\0';
 *sep = '\0';

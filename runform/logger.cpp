@@ -20,7 +20,7 @@
 
 static int session = -1;
 static char message[MEDSIZE];
-static char sqlquery[MEDSIZE];
+static char sqlquery[MEDSIZE*2];
 
 static int callback(void *NotUsed, int argc, char **argv, char **azColName){
 if (session == 0 && argc == 1) session = atoi(argv[0]);
