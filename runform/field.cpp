@@ -1,4 +1,8 @@
-// workhorse object
+/* workhorse object most of the action is here
+ * Represent columns or data entry areas and describe
+ * how the data should be displayed and validated
+ * and how an operator should interact with the data while it is entered
+ */
 #include <stdlib.h>
 #include <string.h>
 #include "runform.h"
@@ -50,13 +54,15 @@ if (cur) f.p[1].wmov(line, col);
 
 void Field::clear() {
 char **v;
-if (f.rmode == MOD_QUERY) *queryhuman = '\0'; else {
+if (f.rmode == MOD_QUERY) {
+  *queryhuman = '\0';
+} else {
   v = valuep();
   free(v);
   v = NULL;
-}
-}
+} }
 
+/* the current field value */
 char **Field::valuep() {
 return f.b[blockindex].q->w(CB.currentrecord, sequencenum);
 }
@@ -86,6 +92,7 @@ switch(f.rmode) {
         return KEF_CANCEL;
       }
     }
+    // missing range validation
     switch (fieldtype) {
      case FTY_DATE:
       s = colquery(buf, buf2, "q", 0, 268);

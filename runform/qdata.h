@@ -9,11 +9,11 @@ public:
   int m(int row, int col);
   int n(int row, int col);
   int alloc(int coln);
-  int splice(int rown);
+  void splice(int rown);
   Qdata();
   ~Qdata();
   void freed();
 private:
   char *(*d)[];
-  int allocatedrows;
+  int allocatedrows; // flag for filled
 };

@@ -6,9 +6,9 @@ stmt = NULL;
 if ((s = ropen())) return s;
 let(table,     "pages");
 let(prikey,    "id");
-let(attrs,     "name,ysiz,xsiz,vwpy0,vwpx0,border");
+let(attrs,     "id,name,ysiz,xsiz,vwpy0,vwpx0,border");
 letf(t(where), "form_id = %d", form_id);
 let(order,     "seq");
-columni = 6;
+columni = 7;
 return 0;
 }

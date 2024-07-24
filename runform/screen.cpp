@@ -137,6 +137,7 @@ int Screen::wgetc() {
 return wgetch(stdscr); // wgetch(wndw); getch();
 }
 
+/* map ctrl to function keys */
 int Screen::getkb() {
 int ch;
 ch = wgetc();

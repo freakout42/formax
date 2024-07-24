@@ -1,4 +1,8 @@
-// top objects of any form
+/* Top objects of any form
+ * Describe each section or subsection of the form,
+ * and serve as the basis of default database interaction.
+ * Corresponds to a single table.
+ */
 #include "runform.h"
 
 int Block::init(Qdata *blk, int rix) {
@@ -13,6 +17,7 @@ prikeycnt = 0;
 return 0;
 }
 
+/* the fields correspond to the columns of the table */
 int Block::addattribute(int att) {
 if (*attrs) cats(t(attrs), ","); /* build the column list for query */
 cats(t(attrs), f.l[att].name);

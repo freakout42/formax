@@ -1,3 +1,6 @@
+/* record.cpp calls ODBC and
+ * provides an interface in an ORM style like rails active-record.
+ */
 #include <assert.h>
 #include <stdlib.h>
 #include <sql.h>
