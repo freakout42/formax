@@ -248,7 +248,7 @@ static char *stoday(c)
 {
   static char t[256];
   if (cqnonumbers == 2) snprintf (t, (size_t)sizeof(t), "strftime('%%Y%%m%%d', %s)+0", c);
-  else                  snprintf (t, (size_t)sizeof(t), "{fn YEAR(%s)} * 10000 + {fn MONTH(%s)} * 100 + {fn DAY(%s)}", c, c, c);
+  else                  snprintf (t, (size_t)sizeof(t), "{fn YEAR(%s)} * 10000 + {fn MONTH(%s)} * 100 + {fn DAYOFMONTH(%s)}", c, c, c);
   return t;
 }
 static char *cqstr (s)
