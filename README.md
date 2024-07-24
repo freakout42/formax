@@ -88,6 +88,7 @@ https://github.com/freakout42/formax/archive/refs/heads/main.zip
 On codespace/debian do the following to build and run the example:
 ~~~
 sudo apt-get update
+sudo apt-get -y install python
 sudo apt-get -y install unixodbc
 sudo apt-get -y install libsqliteodbc
 sudo apt-get -y install libncurses5-dev
