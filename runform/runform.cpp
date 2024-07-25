@@ -108,28 +108,28 @@ switch(argc - optind) {
   break;
  default: usage(2);
 }
-if (f.b[0].connect(dsn)) usage(8);
-if (f.b[0].drv == ODR_SQLITE) querycharm = 2;
-for (i=1; i<NBLOCKS; i++) f.b[i].connect(f.b[0]);
+if (F(b[0]).connect(dsn)) usage(8);
+if (F(b[0]).drv == ODR_SQLITE) querycharm = 2;
+for (i=1; i<NBLOCKS; i++) F(b[i]).connect(F(b[0]));
 
 // check, open and read the form - sqlite3 file named .frm
 if ((filesq3 = fopen(FORMFRM, "r")) == NULL) usage(3);
 fclose(filesq3); // check for file existence because sqlite creates empty db
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, FORMFRM);
-if (f.connect(dsn)) usage(4);
-f.rconnect();
+if (F(connect)(dsn)) usage(4);
+F(rconnect)();
 
 // load and run the form
 s = 1;
 while(s) {
-  if ((f.fill(s))) usage(5);
-    if ((s = f.run()) < 0) usage(6);
-  f.clear();
+  if ((F(fill)(s))) usage(5);
+    if ((s = F(run)()) < 0) usage(6);
+  F(clear)();
 }
 
 // cleanup end exit
-f.disconnect();
-f.b[0].disconnect();
+F(disconnect)();
+F(b[0]).disconnect();
 g.lclose();
 exit(-s);
 }

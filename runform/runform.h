@@ -43,6 +43,7 @@ enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE };
 #define let(target,source) strncpy(target, source, sizeof(target)-1)
 #define t(target) target, sizeof(target)
 
+#define F(method) f.method
 #define CB f.b[f.curblock]
 #define CF f.l[f.curfield]
 #define LK f.lastkey

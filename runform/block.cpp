@@ -20,9 +20,9 @@ return 0;
 /* the fields correspond to the columns of the table */
 int Block::addattribute(int att) {
 if (*attrs) cats(t(attrs), ","); /* build the column list for query */
-cats(t(attrs), f.l[att].name);
+cats(t(attrs), F(l[att]).name);
 blockfields[fieldcount++] = att;
-if (f.l[att].isprimarykey) primarykeys[prikeycnt++] = att;
+if (F(l[att]).isprimarykey) primarykeys[prikeycnt++] = att;
 columni = fieldcount;
 return fieldcount;
 }
@@ -34,11 +34,11 @@ char sep[7];
 *wall = '\0';
 *sep = '\0';
 for (i=0; i<fieldcount; i++) {
-  if (f.l[blockfields[i]].querywhere[0]) {
+  if (F(l[blockfields[i]]).querywhere[0]) {
     cats(t(wall), sep);
     strcpy(sep, " AND ");
     cats(t(wall), "(");
-    cats(t(wall), f.l[blockfields[i]].querywhere);
+    cats(t(wall), F(l[blockfields[i]]).querywhere);
     cats(t(wall), ")");
   }
 }
@@ -47,18 +47,18 @@ return query();
 }
 
 char *Block::cn(int c) {
-return f.l[blockfields[c]].name;
+return F(l[blockfields[c]]).name;
 }
 
 int Block::update(int r, int c) {
 if (usebindvar) {
-letf((char*)querystr, sizeof(querystr), "update %s set %s = ? where %s = ?", table, cn(c-1), f.l[primarykeys[0]].name);
+letf((char*)querystr, sizeof(querystr), "update %s set %s = ? where %s = ?", table, cn(c-1), F(l[primarykeys[0]]).name);
 bindv[0] = q->v(r, c);
-bindv[1] = q->v(r, f.l[primarykeys[0]].sequencenum);
+bindv[1] = q->v(r, F(l[primarykeys[0]]).sequencenum);
 bindv[2] = NULL;
 } else {
 letf((char*)querystr, sizeof(querystr), "update %s set %s = '%s' where %s = '%s'", table, cn(c-1), q->v(r, c),
-                                           f.l[primarykeys[0]].name, q->v(r, f.l[primarykeys[0]].sequencenum));
+                                           F(l[primarykeys[0]]).name, q->v(r, F(l[primarykeys[0]]).sequencenum));
 bindv[0] = NULL;
 }
 if ((ret = execute(querystr, bindv))) return ret;
@@ -67,12 +67,12 @@ return complete();
 
 int Block::destroy(int r) {
 if (usebindvar) {
-letf((char*)querystr, sizeof(querystr), "delete from %s where %s = ?", table, f.l[primarykeys[0]].name);
-bindv[0] = q->v(r, f.l[primarykeys[0]].sequencenum);
+letf((char*)querystr, sizeof(querystr), "delete from %s where %s = ?", table, F(l[primarykeys[0]]).name);
+bindv[0] = q->v(r, F(l[primarykeys[0]]).sequencenum);
 bindv[1] = NULL;
 } else {
 letf((char*)querystr, sizeof(querystr),
-  "delete from %s where %s = '%s'", table, f.l[primarykeys[0]].name, q->v(r, f.l[primarykeys[0]].sequencenum));
+  "delete from %s where %s = '%s'", table, F(l[primarykeys[0]]).name, q->v(r, F(l[primarykeys[0]]).sequencenum));
 bindv[0] = NULL;
 }
 if ((ret = execute(querystr, bindv))) return ret;
@@ -91,7 +91,7 @@ j = 0;
 for (i=0; i<fieldcount; i++) {
   if (q->v(r, i+1)) {
     catc(t(columnslist), sep);
-    cats(t(columnslist), f.l[blockfields[i]].name);
+    cats(t(columnslist), F(l[blockfields[i]]).name);
     catc(t(valueslist),  sep);
 if (usebindvar) {
     cats(t(valueslist),  "?");

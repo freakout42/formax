@@ -8,6 +8,10 @@ private:
   int notrunning;
   int trigger(int trg);
   int enter_the_form();
+  int next_item();
+  int previous_item();
+  int next_record();
+  int previous_record();
   int fmove(int bi, int fi);
   int fmover(int ri);
   int fedit(int pos);

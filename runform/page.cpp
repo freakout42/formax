@@ -42,7 +42,7 @@ static char *rmodes[] = RMODENAMES;
 int Page::wait() {
 int i;
 char commit[16];
-switch (f.rmode) {
+switch (F(rmode)) {
  case MOD_QUERY:  strcpy(commit, "  Execute-Query");                           break;
  case MOD_UPDATE: strcpy(commit, "    Enter-Query");                           break;
  case MOD_INSERT: strcpy(commit, "  Insert-Record");                           break;
@@ -50,21 +50,21 @@ switch (f.rmode) {
  default:         strcpy(commit, "///////////////");
 }
 wera();
-writef(0,  2, 0, 2,  "%2s-",      f.id);
-writes(0,  5,                     f.name);
+writef(0,  2, 0, 2,  "%2s-",      F(id));
+writes(0,  5,                     F(name));
 writef(0, 16, 0, 8,  "%s",        username);
 writef(0, 25, 0, 8,  "%s",        CB.table);
 writef(0, 34, 0, 9,  "%s",        CF.name);
 writef(0, 44, 0, 9,  "%4d/%4d",   CB.currentrecord, CB.q->rows);
-writef(0, 54, COL_HEADER,6,"%s",  rmodes[f.rmode]);
+writef(0, 54, COL_HEADER,6,"%s",  rmodes[F(rmode)]);
 writef(0, 61, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
 //ites(0, 67,                     "runform-");
-//itef(0, 70, 0, 4,  "%4d",       f.lastcmd);
+//itef(0, 70, 0, 4,  "%4d",       F(lastcmd));
 //ites(0, 75,                     (char*)VERSION);
 writef(0, 65, COL_COMMIT,15,"%s", commit);
 refr();
-for (i=0; i<f.numfield; i++) f.l[i].show(i == f.curfield);
-for (i=1; i<f.numpage;  i++) f.p[i].refr();
+for (i=0; i<F(numfield); i++) F(l[i]).show(i == F(curfield));
+for (i=1; i<F(numpage);  i++) F(p[i]).refr();
 return LK ? LK : getkb();
 }
 
@@ -72,12 +72,12 @@ int Page::message(int ern, char *pnt) {
 int i;
 static char empty[] = "";
 char *pntst;
-if (f.y.ysiz > 0) { // can only display with open window
+if (F(y).ysiz > 0) { // can only display with open window
 if (pnt) pntst = pnt; else pntst = empty;
 if (strlen(pntst) > LINE0SIZE-12) i = strlen(pntst) - LINE0SIZE + 12; else 
 i = 0;
-writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, f.y.msg(ern), pntst+i);
-//writef(0, 76, 0, 4, "%04d", f.lastcmd);
+writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, F(y).msg(ern), pntst+i);
+//writef(0, 76, 0, 4, "%04d", F(lastcmd));
 wmov(0,0);
 refr();
 return getkb();

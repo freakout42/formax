@@ -35,26 +35,26 @@ let(validreg,   fld->v(rix,23));
 let(helptext,   fld->v(rix,24));
 let(queryhuman, "");
 let(querywhere, "");
-sequencenum = f.b[blockindex].addattribute(rix-1);
+sequencenum = F(b[blockindex].addattribute)(rix-1);
 return 0;
 }
 
 void Field::show(int cur) {
 int color;
-switch(f.rmode) {
+switch(F(rmode)) {
  case MOD_QUERY:  color = COL_QUERY;  break;
  case MOD_INSERT: color = COL_NEWREC; break;
  case MOD_DELETE: color = COL_DELETED; break;
  default:         color = COL_FIELD;
 }
-if (cur && f.rmode != MOD_DELETE) color = COL_CURRENT;
-f.p[1].writef(line, col, color, displaylen, "%.*s", displaylen, f.rmode==MOD_QUERY ? queryhuman : *valuep());
-if (cur) f.p[1].wmov(line, col);
+if (cur && F(rmode) != MOD_DELETE) color = COL_CURRENT;
+F(p[1].writef)(line, col, color, displaylen, "%.*s", displaylen, F(rmode)==MOD_QUERY ? queryhuman : *valuep());
+if (cur) F(p[1].wmov)(line, col);
 }
 
 void Field::clear() {
 char **v;
-if (f.rmode == MOD_QUERY) {
+if (F(rmode) == MOD_QUERY) {
   *queryhuman = '\0';
 } else {
   v = valuep();
@@ -64,7 +64,7 @@ if (f.rmode == MOD_QUERY) {
 
 /* the current field value */
 char **Field::valuep() {
-return f.b[blockindex].q->w(CB.currentrecord, sequencenum);
+return F(b[blockindex].q->w)(CB.currentrecord, sequencenum);
 }
 
 int Field::edit(int pos) {
@@ -76,15 +76,15 @@ char *u;
 char **c;
 re_t re;
 pressed = 0;
-switch(f.rmode) {
+switch(F(rmode)) {
  case MOD_INSERT:
  case MOD_UPDATE:
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }
   if (!updateable)  { MSG(MSG_FLDPROT); return KEF_CANCEL; }
-  if (f.b[blockindex].q->rows) {
+  if (F(b[blockindex].q->rows)) {
     c = valuep();
     if (*c) let(buf, *c); else *buf = '\0';
-    pressed = f.p[0].sedit(buf, pos, fieldtype);
+    pressed = F(p[0].sedit)(buf, pos, fieldtype);
     if (*validreg) {
       re = re_compile(validreg);
       if (re_matchp(re, buf, &s) == -1) { // || s != (int)strlen(buf)
@@ -123,12 +123,12 @@ switch(f.rmode) {
   }
   break;
  case MOD_QUERY:
-  pressed = f.p[0].sedit(queryhuman, pos, FTY_ALL);
+  pressed = F(p[0].sedit)(queryhuman, pos, FTY_ALL);
   s = colquery(queryhuman, querywhere, name, querycharm, 0);
   break;
  case MOD_DELETE:
   break;
 }
-pressed = pressed==KEY_ENTER ? KEF_NXTFLD : f.mapkey(pressed);
+pressed = pressed==KEY_ENTER ? KEF_NXTFLD : F(mapkey)(pressed);
 return pressed;
 }

@@ -129,8 +129,8 @@ insertmode = !insertmode;
 
 char *Screen::msg(int num) {
 int i;
-for (i=1; i<f.e->rows; i++) if (f.e->m(i,1) == num) break;
-return f.e->v(i,3);
+for (i=1; i<F(e)->rows; i++) if (F(e)->m(i,1) == num) break;
+return F(e)->v(i,3);
 }
 
 int Screen::wgetc() {
@@ -187,7 +187,7 @@ switch (fty) {
  case FTY_ALL:
  default:        legal = legalall;
 }
-return f.p[0].getst(0, 0, 80, EDITCOLOR, toe, pos, legal, SMLSIZE, NULL);
+return F(p[0]).getst(0, 0, 80, EDITCOLOR, toe, pos, legal, SMLSIZE, NULL);
 }
 
 /* Allows the user to edit a string with only certain characters allowed

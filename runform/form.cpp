@@ -109,7 +109,7 @@ if (y.init()) return 6;
   dirty = 0;
   lastkey = -1;
   while (!(s = u.dispatch())) {
-    lastkey = f.p[0].wait();
+    lastkey = F(p[0]).wait();
   }
 y.closedisplay();
 return s==-1 ? 0 : s;
