@@ -8,8 +8,8 @@ extreme efficiency. The basic concepts of Oracle SQL-Forms
 for universal database access and JavaScript as trigger
 language. The result is the most efficient solution possible
 for the end-user. The applications can also be build with
-minimal effort using a nocode approach. Click on the image
-for a non-technical description of the project and its goals.
+minimal effort using a nocode approach.  
+Click on the image for a non-technical description:
 
 [![formax](https://formax.freakout.de/assets/logo.jpg "formax")](https://formax.freakout.de/ "formax")
 
