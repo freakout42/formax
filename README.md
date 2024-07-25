@@ -57,6 +57,7 @@ retrieve, update and delete (CRUD) records in this table.
 Feature roadmap
 ---------------
  - multi-record fields
+ - TOTP 3FA
  - transaction processing
  - checksumming form with database password
  - multiple blocks and master-detail
@@ -96,7 +97,7 @@ sudo apt-get -y install flex
 ./configure
 make
 cd dist/formax
-bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so lib/scotty.{frm,sq3}
+bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so lib/scotty.frm lib/scotty.sq3
 ~~~
 
 On RHEL/CentOS/Alma/Rocky do the following:
@@ -110,7 +111,7 @@ rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-
 ./configure
 make
 cd dist/formax
-bin/runform -l/usr/lib64/libsqlite3odbc.so lib/scotty.{frm,sq3}
+bin/runform -l/usr/lib64/libsqlite3odbc.so lib/scotty.frm lib/scotty.sq3
 ~~~
 
 User guide
