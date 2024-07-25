@@ -15,4 +15,5 @@ CREATE TABLE triggers
    trgtyp    INTEGER NOT NULL DEFAULT 0,
    body      TEXT    NOT NULL DEFAULT ''
   );
+INSERT INTO triggers (body) VALUES ('1 + 2 * 3');
 #endif

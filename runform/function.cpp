@@ -88,7 +88,7 @@ F(curblock) = 1;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (!squerymode) insert_record();
-notrunning = trigger(PRE_FORM);
+notrunning = trigger(PRE_FORM) - 7;
 return 0;
 }
 
@@ -219,6 +219,6 @@ return 0;
 }
 
 int Function::trigger(int trg) {
-return 0;
+return F(r[0]).jsexec(F(r[0]).body);
 }
 

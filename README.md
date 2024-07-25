@@ -59,6 +59,8 @@ Feature roadmap
  - multi-record fields
  - TOTP 3FA
  - transaction processing
+ - in-field editing
+ - editor
  - checksumming form with database password
  - multiple blocks and master-detail
  - form for forms - designer module
@@ -77,7 +79,6 @@ Feature roadmap
  - multiple databases
  - database validation (engine responsibility?)
  - full SQL-Forms-3 functionality
- - in-field editing
 
 Operations
 ==========
