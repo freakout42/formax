@@ -100,7 +100,7 @@ cd dist/formax
 bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so lib/scotty.frm lib/scotty.sq3
 ~~~
 
-On RHEL/CentOS/Alma/Rocky do the following:
+On RHEL/CentOS/Oracle/Alma/Rocky do the following:
 ~~~
 sudo yum -y group install "Development Tools"
 sudo yum -y install unixODBC

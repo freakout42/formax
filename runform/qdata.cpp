@@ -1,4 +1,6 @@
-/* query data handling */
+/* query data handling
+ * should implement a Cell object to replace the simple char*
+ */
 #include <stdlib.h>
 #include "runform.h"
 
