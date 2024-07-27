@@ -103,7 +103,6 @@ for (i=0; i<numpage;  i++) p[i].destroy();
 // set-up screen and pages and execute through the event dispatcher
 int Form::run() {
 int i, s;
-Function u;
 if (y.init()) return 6;
   for (i=0; i<numpage; i++) p[i].create();
   dirty = 0;

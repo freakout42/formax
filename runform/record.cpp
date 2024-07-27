@@ -14,6 +14,7 @@ static char buf[HUGSIZE];
 void Record::setdrv(char *dbmsname) {
                                                drv = ODR_UNKNOWN;
 if (!strcmp(dbmsname, "SQLite"))               drv = ODR_SQLITE;
+if (!strcmp(dbmsname, "MySQL"))                drv = ODR_MYSQL;
 if (!strcmp(dbmsname, "PostgreSQL"))           drv = ODR_PG;
 if (!strcmp(dbmsname, "oracle"))               drv = ODR_ORACLE;
 if (!strcmp(dbmsname, "Microsoft SQL Server")) drv = ODR_SQLSRVR;

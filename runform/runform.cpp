@@ -52,6 +52,7 @@ char *shiftednum = "`!@#$%^&*()"; // -n us
 char *username   = getenv("USER");
 Form f;
 Logger g;
+Function u;
 
 int main(int argc, char *argv[]) { //, char **envp
 int i, s;

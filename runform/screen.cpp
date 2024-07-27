@@ -77,10 +77,13 @@ if (colcode == -1) {
   setcolor(colcode & TYPEM);
 } }
 
+static struct termios otermio;
+
 int Screen::init() {
 struct termios termio;
 int i;
-tcgetattr (0, &termio); /* give me all emacs-controls */
+tcgetattr (0, &termio); /* give me all attributes */
+otermio = termio;
 termio.c_cc[VINTR] = 0; /* ctrl-c */
 termio.c_cc[VSUSP] = 0; /* ctrl-z */
 #ifdef VLNEXT
@@ -118,7 +121,7 @@ void Screen::wbox() { box(wndw, 0, 0); }
 void Screen::wmov(int y, int x) { wmove(wndw, y, x); }
 void Screen::refr() { wrefresh(wndw); }
 void Screen::redraw() { redrawwin(wndw); }
-void Screen::closedisplay() { endwin(); }
+void Screen::closedisplay() { endwin(); tcsetattr (0, TCSANOW, &otermio); }
 
 void Screen::toggle() {
 insertmode = !insertmode;

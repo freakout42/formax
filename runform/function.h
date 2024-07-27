@@ -1,17 +1,16 @@
 // event functions - the workhorse
-enum { PRE_FORM };
 class Function {
 public:
   int dispatch();
-protected:
-private:
-  int notrunning;
-  int trigger(int trg);
-  int enter_the_form();
   int next_item();
   int previous_item();
   int next_record();
   int previous_record();
+protected:
+private:
+  int notrunning;
+  int trigger(char *trg);
+  int enter_the_form();
   int fmove(int bi, int fi);
   int fmover(int ri);
   int fedit(int pos);
@@ -25,3 +24,9 @@ private:
   int destroy_record();
   int clear_record();
 };
+#define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
+//jsval_t j_next_item(struct js *js, jsval_t *args, int nargs);
+JSEXT(next_item)
+JSEXT(previous_item)
+JSEXT(next_record)
+JSEXT(previous_record)
