@@ -1,0 +1,15 @@
+#!/bin/sh
+FORM=$1
+SQL="sqlite3 -batch $FORM.frm"
+$SQL "select mtext from maps order by line" >$FORM.map
+$EDITOR $FORM.map
+$SQL "delete from maps"
+LINE=0
+IFS=% sed "s/^/'/;s/\$/'/" $FORM.map | while read TEXT; do
+  LINE=`expr $LINE + 1`
+  $SQL "insert into maps (line, mtext) values ($LINE, $TEXT)"
+done
+./adjfield <$FORM.map | $SQL
+rm $FORM.map
+../runform/runform $FORM.frm $FORM.frm
+exit

@@ -88,7 +88,7 @@ F(curblock) = 1;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (!squerymode) insert_record();
-notrunning = trigger(PRE_FORM) - 7;
+notrunning = trigger(PRE_FORM);
 return 0;
 }
 
