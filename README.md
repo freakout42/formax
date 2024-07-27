@@ -67,6 +67,7 @@ Feature roadmap
  - list of values - subforms
  - dev guide en
  - user guide in en, de, fr, ...
+ - oper guide
  - man pages
  - import script for page layout
  - menue multiple forms

@@ -31,8 +31,8 @@ CREATE TABLE fields
    lovtit    TEXT    NOT NULL DEFAULT '',   /* title for list of values */
    lov_id    INTEGER NOT NULL DEFAULT 0,    /* block for list of values */
    lovi_id   INTEGER NOT NULL DEFAULT 0,    /* page for list of values */
-   low       INTEGER NOT NULL DEFAULT -99999999999, /* low range value */
-   high      INTEGER NOT NULL DEFAULT 99999999999,  /* high range value */
+   low       INTEGER NOT NULL DEFAULT 0,    /* low range value */
+   high      INTEGER NOT NULL DEFAULT 0,    /* high range value */
    valpatn   TEXT    NOT NULL DEFAULT '',   /* validation regex pattern */
    help      TEXT    NOT NULL DEFAULT ''    /* help text */
   );

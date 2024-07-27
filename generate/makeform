@@ -20,12 +20,16 @@ INSERT INTO pages  (form_id, name) VALUES (1, '$TABLE-0');
 INSERT INTO pages  (id, form_id, name, ysiz, vwpy0, border) VALUES (0, 1, 'formax', 1, 0, 0);
 INSERT INTO maps   (page_id, line, mtext) VALUES (1, 1, '         ');
 EOF
-LINE=1
+LINE=0
+FLDN=0
 for COLUMN; do
-if [ $LINE = 1 ]; then KEY=1; else KEY=0; fi
-  cat <<EOF
-INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' [$LINE]$COLUMN');
-INSERT INTO fields (seq, name, line, key) VALUES ($LINE, '$COLUMN', $LINE+1, $KEY);
-EOF
   LINE=`expr $LINE + 1`
+  FLDN=`expr $FLDN + 10`
+  if [ $LINE = 1 ]; then KEY=1; else KEY=0; fi
+    cat <<EOF
+INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' [$LINE]$COLUMN   ');
+INSERT INTO fields (seq, name, line, key) VALUES ($FLDN, '$COLUMN', $LINE+1, $KEY);
+EOF
 done
+exit
+INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' [$LINE]$COLUMN \$$LINE');
