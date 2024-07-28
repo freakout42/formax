@@ -13,6 +13,9 @@ if (!javascript) {
   javascript = js_create(engine, HUGSIZE);
 //  js_set(javascript, js_glob(javascript), "next_item", js_mkfun(j_next_item));
   JSEXE(next_item);
+  JSEXE(previous_item);
+  JSEXE(next_record);
+  JSEXE(previous_record);
 }
 let(name,trg->v(rix, 1));
 trgfld = trg->n(rix, 2);
