@@ -8,12 +8,12 @@ EOF
 guidmap() {
 LINE=`expr $LINE + 1`
   cat <<EOF
-UPDATE maps set mtext = mtext || '                         $1' where line = $LINE;
+UPDATE maps set mtext = mtext || '                   $1' where line = $LINE;
 EOF
 }
 sh ./makeform scotty formax1 emps id ename job mgr hiredate sal comm dept_id
   cat <<EOF
-UPDATE fields set valpatn = '[0-9a-f][0-9a-f][0-9a-f][0-9a-f]' where id=3;
+UPDATE fields set valpatn = '\d\d\d\d' where id=4;
 UPDATE fields set ftype = 4 where id=5;
 EOF
 LINE=9
@@ -32,11 +32,11 @@ helpmap 'F8    Ctrl+z Exit                     Press "Delete" or Ctrl-k'
 helpmap 'F9    Ctrl+y Quit'          
 helpmap 'F10   Ctrl+x Query            Query:  Edit conditions in each field'
 LINE=0
-guidmap '      Query examples'
-guidmap '      >7700'
-guidmap '   ~jon'
-guidmap '     MANAGER,SALESMAN'
+guidmap '            Query examples'
+guidmap '>7700'
+guidmap '~jon'
+guidmap 'MANAGER,SALESMAN'
 guidmap ''
 guidmap '02/18/80-11/30/81'
-guidmap '     2000-3000'
+guidmap '2000-3000'
 exit

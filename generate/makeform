@@ -26,10 +26,9 @@ for COLUMN; do
   LINE=`expr $LINE + 1`
   FLDN=`expr $FLDN + 10`
   if [ $LINE = 1 ]; then KEY=1; else KEY=0; fi
-    cat <<EOF
-INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' [$LINE]$COLUMN   ');
+  cat <<EOF
 INSERT INTO fields (seq, name, line, key) VALUES ($FLDN, '$COLUMN', $LINE+1, $KEY);
 EOF
+  printf "INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' [$LINE]%-14s \$$LINE');\\n" $COLUMN
 done
 exit
-INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' [$LINE]$COLUMN \$$LINE');
