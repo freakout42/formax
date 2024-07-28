@@ -9,7 +9,7 @@ public:
 protected:
 private:
   int notrunning;
-  int trigger(char *trg);
+  int trigger(int tid);
   int enter_the_form();
   int fmove(int bi, int fi);
   int fmover(int ri);

@@ -88,18 +88,20 @@ F(curblock) = 1;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (!squerymode) insert_record();
-notrunning = trigger("enter_the_form");
+notrunning = trigger(TRT_ENTERFORM); //"enter_the_form");
 return 0;
 }
 
 /* NAVIGATION */
-int Function::next_item()       { return fmove(0,  1); }
+int Function::next_item() {
+  
+  return fmove(0,  1);
+}
 int Function::previous_item()   { return fmove(0, -1); }
 int Function::next_record()     { return fmover(1);    }
 int Function::previous_record() { return fmover(-1);   }
 
 #define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
-//jsval_t j_next_item(struct js *js, jsval_t *args, int nargs) { return js_mknum(u.next_item()); }
 JSEXA(next_item)
 JSEXA(previous_item)
 JSEXA(next_record)
@@ -225,10 +227,10 @@ CB.q->splice(-CB.currentrecord);
 return 0;
 }
 
-int Function::trigger(char *trg) {
+int Function::trigger(int tid) {
 int i, s;
 s = -1;
-for (i=0; i<F(numtrigger); i++) if (F(r[i]).triggerid() == TRT_ENTERFORM) s = F(r[i]).jsexec();
+for (i=0; i<F(numtrigger); i++) if (F(r[i]).triggerid() == tid) s = F(r[i]).jsexec();
 return s;
 }
 
