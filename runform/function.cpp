@@ -227,12 +227,8 @@ return 0;
 
 int Function::trigger(char *trg) {
 int i, s;
-s = 0;
-char trgid[SMLSIZE];
-letf(t(trgid), "%d.%d.%s", F(curblock), F(curfield), trg);
-for (i=0; i<F(numtrigger); i++)
-  if (strcmp(F(r[i]).triggerid(), trgid))
-    s = F(r[i]).jsexec();
+s = -1;
+for (i=0; i<F(numtrigger); i++) if (F(r[i]).triggerid() == TRT_ENTERFORM) s = F(r[i]).jsexec();
 return s;
 }
 

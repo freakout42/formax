@@ -13,17 +13,14 @@ if (!javascript) {
   js_set(javascript, js_glob(javascript), "next_item", js_mkfun(j_next_item));
 }
 let(name,trg->v(rix, 1));
-trgblk = trg->n(rix, 2);
-trgfld = trg->n(rix, 3);
-trgtyp = trg->n(rix, 4);
-let(body,trg->v(rix, 5));
+trgfld = trg->n(rix, 2);
+trgtyp = trg->n(rix, 3);
+let(body,trg->v(rix, 4));
 return 0;
 }
 
-char *Trigger::triggerid() {
-static char tid[SMLSIZE];
-letf(t(tid), "%d.%d.%s", trgblk, trgfld, name);
-return tid;
+int Trigger::triggerid() {
+return trgfld * 100 + trgtyp;
 }
 
 int Trigger::jsexec() {
