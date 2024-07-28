@@ -20,7 +20,7 @@ return 0;
 }
 
 int Trigger::triggerid() {
-return trgfld * 100 + trgtyp;
+return (trgtyp<100 ? 0 : trgfld) * 1000 + trgtyp;
 }
 
 int Trigger::jsexec() {

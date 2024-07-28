@@ -230,6 +230,7 @@ return 0;
 int Function::trigger(int tid) {
 int i, s;
 s = -1;
+if (tid >= 100) tid += CF.field_id * 1000;
 for (i=0; i<F(numtrigger); i++) if (F(r[i]).triggerid() == tid) s = F(r[i]).jsexec();
 return s;
 }

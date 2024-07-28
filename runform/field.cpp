@@ -33,6 +33,7 @@ lowvalue      = fld->n(rix,21);
 highvalue     = fld->n(rix,22);
 let(validreg,   fld->v(rix,23));
 let(helptext,   fld->v(rix,24));
+field_id      = fld->n(rix,25);
 let(queryhuman, "");
 let(querywhere, "");
 sequencenum = F(b[blockindex].addattribute)(rix-1);

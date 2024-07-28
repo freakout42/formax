@@ -1,4 +1,4 @@
-enum ttyp { TRT_ENTERFORM, TRT_NEXTITEM };
+enum ttyp { TRT_ENTERFORM, TRT_NEXTITEM=100 };
 class Trigger {
 public:
   int init(Qdata *trg, int rix);
