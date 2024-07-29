@@ -20,7 +20,6 @@ public:
   int curfield;
   int lastcmd;
   int lastkey;
-  int dirty;
   fmode rmode;
   int fill(int id);
   void clear();

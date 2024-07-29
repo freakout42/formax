@@ -23,6 +23,19 @@ if (c && (pc = strchr(shiftednum, c))) return KEF_NAVI(pc - shiftednum);
 return c;
 }
 
+int yesno(int chr) {
+switch(chr) {
+ case KEY_ENTER:
+ case 'y':
+ case 'j':
+ case 'o':
+ case 'Y':
+ case 'J':
+ case 'O': return 1; break;
+ default:  return 0;
+}
+}
+
 int cats(char *target, size_t maxlen, char *source) {
 strncat(target, source, maxlen);
 return strlen(target);

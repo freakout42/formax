@@ -30,8 +30,8 @@ return (trgtyp<100 ? 0 : trgfld) * 1000 + trgtyp;
 
 int Trigger::jsexec() {
 jsval_t v;
-v = js_eval(javascript, "next_item()", ~0);
-//v = js_eval(javascript, body, ~0);
+//v = js_eval(javascript, "next_item()", ~0);
+v = js_eval(javascript, body, ~0);
 return atoi(js_str(javascript, v));
 }
 

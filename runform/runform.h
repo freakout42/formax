@@ -47,11 +47,11 @@ enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE };
 #define CB f.b[f.curblock]
 #define CF f.l[f.curfield]
 #define LK f.lastkey
-#define DY f.dirty
 #define MSG(n) f.p[0].message(n, NULL)
 #define MSG1(n,c) f.p[0].message(n, c)
 
 extern Function u;
+extern int yesno(int c);
 extern int isprintable(int c);
 extern int ispunctation(int c);
 extern int letf(char *target, size_t maxlen, char *format, ...);

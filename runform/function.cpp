@@ -13,7 +13,6 @@
 int Function::dispatch() {
 F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
-  case -1:           LK = enter_the_form();                            break;
 #ifdef NOTYETIMPLEMENTED
   case KEF_HELP:            /* fhelp() */
   case KEF_COPY:            /* fhelp() */
@@ -27,6 +26,7 @@ switch(F(lastcmd)) {
   case KEF_REFRESH:         /* frefresh() */
   case KEF_NAVI0:           /* fmenu() */
 #endif
+  case -1:           LK = enter_the_form();                            break;
   case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                         break;
   case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                         break;
   case KEF_NAVI3:    LK = fmove(0, NFIELD1+3);                         break;
@@ -67,10 +67,11 @@ switch(F(lastcmd)) {
   case KEF_QUIT:
   case KEF_CANCEL:
    switch(F(rmode)) {
-    case MOD_UPDATE: 
+    case MOD_UPDATE:
     case MOD_QUERY:  LK = fquit();                                     break;
-    default:         enter_query(); LK = 0;                            break;
-   }                                                                   break;
+    case MOD_INSERT: LK = clear_record();                              break;
+    case MOD_DELETE:                                                   break;
+   }                 F(rmode) = MOD_UPDATE; LK = 0;                    break;
   case KEF_RIGHT:    LK = fedit(0);                                    break;
   case KEF_LEFT:     LK = fedit(-1);                                   break;
   default:
@@ -115,6 +116,13 @@ return 0;
 }
 
 int Function::fmover(int ri) {
+switch (F(rmode)) {
+ case MOD_QUERY:  return 0;                                                         break;
+ case MOD_UPDATE:                                                                   break;
+ case MOD_INSERT: if (!yesno(MSG(MSG_DIRTY))) create_record(); else clear_record(); break;
+ case MOD_DELETE: if (!yesno(MSG(MSG_DIRTY))) destroy_record();                     break;
+}
+F(rmode) = MOD_UPDATE;
 if (CB.currentrecord > 0) {
   CB.currentrecord += ri;
   if (CB.currentrecord > CB.q->rows) {
@@ -134,7 +142,6 @@ int Function::insert_record() {
 if (F(rmode) == MOD_UPDATE || F(rmode) == MOD_QUERY) {
   CB.q->splice(CB.currentrecord++);
   F(rmode) = MOD_INSERT;
-  DY = 0;
 } else {
   MSG(MSG_QUERYM);
 }
@@ -166,13 +173,23 @@ return changed==KEF_CANCEL ? 0 : changed;
 }
 
 int Function::fexit() {
-if (!F(dirty)) MSG(MSG_CLEAN);
+   switch(F(rmode)) {
+    case MOD_QUERY:
+    case MOD_UPDATE: MSG(MSG_CLEAN);                                   break;
+    case MOD_INSERT: LK = create_record();                             break;
+    case MOD_DELETE: LK = destroy_record();                            break;
+   }
 notrunning = -1;
 return 0;
 }
 
 int Function::fquit() {
-if (F(dirty)) MSG(MSG_DIRTY);
+   switch(F(rmode)) {
+    case MOD_QUERY:
+    case MOD_UPDATE:                                                   break;
+    case MOD_INSERT:
+    case MOD_DELETE: MSG(MSG_DIRTY);                                   break;
+   }
 notrunning = -1;
 return 0;
 }
@@ -205,25 +222,16 @@ int Function::destroy_record() {
 int s;
 s = KEY_ENTER;
 if (deleprompt) s = MSG(MSG_DELASK);
-switch(s) {
- case KEY_ENTER:
- case 'y':
- case 'j':
- case 'o':
- case 'Y':
- case 'J':
- case 'O':
+if (yesno(s)) {
   F(b[1]).destroy(CB.currentrecord);
   clear_record();
-  if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
-  ;;
- default: F(rmode) = MOD_UPDATE;
-}
+} else F(rmode) = MOD_UPDATE;
 return 0;
 }
 
 int Function::clear_record() {
 CB.q->splice(-CB.currentrecord);
+if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
 return 0;
 }
 
