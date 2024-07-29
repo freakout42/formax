@@ -7,23 +7,25 @@
 static char engine[HUGSIZE];
 static struct js *javascript = NULL;
 
+#define JSEXE(func) js_set(javascript, js_glob(javascript), #func, js_mkfun(j_ ## func))
 int Trigger::init(Qdata *trg, int rix) {
 if (!javascript) {
   javascript = js_create(engine, HUGSIZE);
-  js_set(javascript, js_glob(javascript), "next_item", js_mkfun(j_next_item));
+//  js_set(javascript, js_glob(javascript), "next_item", js_mkfun(j_next_item));
+  JSEXE(next_item);
+  JSEXE(previous_item);
+  JSEXE(next_record);
+  JSEXE(previous_record);
 }
 let(name,trg->v(rix, 1));
-trgblk = trg->n(rix, 2);
-trgfld = trg->n(rix, 3);
-trgtyp = trg->n(rix, 4);
-let(body,trg->v(rix, 5));
+trgfld = trg->n(rix, 2);
+trgtyp = trg->n(rix, 3);
+let(body,trg->v(rix, 4));
 return 0;
 }
 
-char *Trigger::triggerid() {
-static char tid[SMLSIZE];
-letf(t(tid), "%d.%d.%s", trgblk, trgfld, name);
-return tid;
+int Trigger::triggerid() {
+return (trgtyp<100 ? 0 : trgfld) * 1000 + trgtyp;
 }
 
 int Trigger::jsexec() {

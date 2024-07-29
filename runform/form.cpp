@@ -105,7 +105,6 @@ int Form::run() {
 int i, s;
 if (y.init()) return 6;
   for (i=0; i<numpage; i++) p[i].create();
-  dirty = 0;
   lastkey = -1;
   while (!(s = u.dispatch())) {
     lastkey = F(p[0]).wait();
