@@ -86,8 +86,6 @@ Operations
 
 Install
 -------
-Fork in github and create codespace or download and extract
-https://github.com/freakout42/formax/archive/refs/heads/main.zip  
 System preparation:
 
 On codespace/debian/Ubuntu do the following:
@@ -110,7 +108,10 @@ sudo yum -y install unixODBC-devel
 sudo yum -y install ncurses-devel
 sudo yum -y install sqlite
 rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-0.9998-1.x86_64.rpm
+~~~
 
+Fork in github and create codespace or download and extract  
+https://github.com/freakout42/formax/archive/refs/heads/main.zip  
 Then do the following to build and run the example:
 ~~~
 ./configure
