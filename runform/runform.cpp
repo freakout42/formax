@@ -57,8 +57,18 @@ Function u;
 int main(int argc, char *argv[]) { //, char **envp
 int i, s;
 char dsn[MEDSIZE];
-char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
+char drv[SMLSIZE] = "libsqlite3odbc.so";
+char *drvs[] = { "/opt/sqlite/lib/libsqlite3odbc.so",
+                 "/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so",
+                 "/usr/lib64/libsqlite3odbc.so"
+               };
+for (i=0; i<3; i++) {
+  if ((filesq3 = fopen(drvs[i], "r"))) {
+    fclose(filesq3);
+    strcpy(drv, drvs[i]);
+  }
+}
 
 setenv("LC_ALL", CHARSET, 1);
 lclocale = setlocale(LC_ALL, CHARSET);

@@ -88,32 +88,35 @@ Install
 -------
 Fork in github and create codespace or download and extract
 https://github.com/freakout42/formax/archive/refs/heads/main.zip  
-On codespace/debian do the following to build and run the example:
+System preparation:
+
+On codespace/debian/Ubuntu do the following:
 ~~~
 sudo apt-get update
+sudo apt-get -y install build-essential
 sudo apt-get -y install python
 sudo apt-get -y install unixodbc
 sudo apt-get -y install libsqliteodbc
 sudo apt-get -y install libncurses5-dev
 sudo apt-get -y install flex
-./configure
-make
-cd dist/formax
-bin/runform -l/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so lib/scotty.frm lib/scotty.sq3
 ~~~
 
 On RHEL/CentOS/Oracle/Alma/Rocky do the following:
 ~~~
 sudo yum -y group install "Development Tools"
+sudo yum -y install python3
 sudo yum -y install unixODBC
 sudo yum -y install unixODBC-devel
 sudo yum -y install ncurses-devel
 sudo yum -y install sqlite
 rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-0.9998-1.x86_64.rpm
+
+Then do the following to build and run the example:
+~~~
 ./configure
 make
 cd dist/formax
-bin/runform -l/usr/lib64/libsqlite3odbc.so lib/scotty.frm lib/scotty.sq3
+bin/runform lib/scotty.frm lib/scotty.sq3
 ~~~
 
 User guide
