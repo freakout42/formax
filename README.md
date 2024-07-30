@@ -81,16 +81,13 @@ Feature roadmap
  - database validation (engine responsibility?)
  - full SQL-Forms-3 functionality
 
-Operations
-==========
-
 Install
--------
+=======
 System preparation:
 
 On codespace/debian/Ubuntu do the following:
 ~~~
-sudo apt-get update
+sudo apt-get -y update
 sudo apt-get -y install build-essential
 sudo apt-get -y install python
 sudo apt-get -y install unixodbc
@@ -101,6 +98,7 @@ sudo apt-get -y install flex
 
 On RHEL/CentOS/Oracle/Alma/Rocky do the following:
 ~~~
+sudo yum -y update
 sudo yum -y group install "Development Tools"
 sudo yum -y install python3
 sudo yum -y install unixODBC
@@ -118,26 +116,6 @@ Then do the following to build and run the example:
 make
 cd dist/formax
 bin/runform lib/scotty.frm lib/scotty.sq3
-~~~
-
-User guide
-==========
-A form is a fill-in-the-blanks template on your computer
-screen that allows you to enter, update, delete and query
-information in a database. Forms are composed of blocks,
-records and fields.
-
-Basic tasks
------------
-~~~
-Edit:   Edit with "Left/Right" and characters
-Query:  Edit conditions in each field
-Update: Move to the record and field with
-        "Up/Down" and "Tab" and edit the field
-Insert: Press "Insert" or Ctrl-o
-Delete: Move to the record
-        Press "Delete" or Ctrl-k
-Commit: Press "Enter" to save the changes
 ~~~
 
 Playground
@@ -315,58 +293,6 @@ from outside is passed to ODBC with bind variables. There is
 no free SQL enterable as is was possible with original
 SQL-Forms. The password for the database is encrypted on the
 command line.
-
-Structure
----------
-runform.cpp holds main() and has the only OS-interfaces for
-running and checking the command line. record.cpp calls ODBC
-and provides an interface in an ORM style like rails
-active-record. screen.cpp calls curses. All the other
-sources are pure C++ without any external library calls. For
-every main object is an r-source for reading the form
-database and a separate source for the class. The central
-Function class holds all the event functions.
-
-Variable names
---------------
-One character variable names (pattern like jquery $) are
-used for some fundamental values:
-
-  | V | Description            | Type     | Source         |
-  | - | ---------------------- | -------- | -------------- |
-  | b | blocks array           | Variable | form.h         |
-  | c | query result transfer  | Type     | qdata.h        |
-  | d | query result data      | Variable | qdata.h        |
-  | e | error messages array   | Type     | rerror.h       |
-  | f | current Form object    | Variable | runform.h      |
-  | i | loop integer           | Variable |                |
-  | g | logger                 | Variable | logger.h       |
-  | l | fields array           | Variable | form.h         |
-  | n | query result to_int    | Type     | qdata.h        |
-  | p | pages array            | Variable | form.h         |
-  | q | query result object    | Type     | qdata.h        |
-  | r | trigger array          | Variable | form.h         |
-  | s | status integer         | Variable |                |
-  | t | char* target with size | Macro    | runform.h      |
-  | v | query result string    | Type     | qdata.h        |
-  | w | query result pointer   | Method   | qdata.h        |
-  | y | curses stdscr window   | Type     | screen.h       |
-
-Coding Style
-------------
-Sourcecode lines are grouped into blocks of maximum 40 lines.
-These groups have a top comment which explains the purpose.
-Other commenting is only on special cases. Code should be
-short and self explaining by variable names.
-
-2 spaces indenting is used and the top level of functions is
-not indented. Use 1 space between keyword and opening
-bracket. Do not use space between function name and opening
-bracket. Opening curly bracket is always at the same line as
-keyword (for, while, do, switch, if, ...). Bool is not
-compared - no if (ispresent == NULL) or (isempty[0] == '\0')
-just use !ispresent or *isempty. Omit curly brackets after
-compound statements when possible.
 
 License
 =======
