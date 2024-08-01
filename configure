@@ -18,9 +18,9 @@ install: all
 \$(DIST).tar.gz: generate/scotty.sq3
 	mkdir dist
 	chmod g-s dist
-	mkdir \$(DIST) \$(DIST)/bin \$(DIST)/lib \$(DIST)/man \$(DIST)/man/man1
-	cp generate/makeform runform/runform \$(DIST)/bin
-	cp generate/scotty.* \$(DIST)/lib
+	mkdir \$(DIST) \$(DIST)/bin \$(DIST)/lib
+	cp generate/makeform generate/editform runform/runform \$(DIST)/bin
+	cp generate/scotty.* generate/formax.frm \$(DIST)/lib
 	strip \$(DIST)/bin/* 2>/dev/null || true
 	chmod -R u+rwX,g-w,g+rX,o-w,o+rX dist
 	cd dist; tar cf - $NAME | gzip -c >$NAME.tar.gz
