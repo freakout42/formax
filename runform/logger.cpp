@@ -4,10 +4,13 @@
 #include <sqlite3.h>
 #include "runform.h"
 
-#define INSERTLOGIN   "insert into sessions (logtime, odbcdsn) values (current_timestamp, '%s') returning id"
+#define INSERTLOGIN   "insert into sessions (loginame, sshconn, logtime,           odbcdsn) " \
+                                    "values ('%s',     '%s',    current_timestamp, '%s') returning id"
 #define INSERTLOG     "insert into logs (session_id, logtime, logtext) values (%d, current_timestamp, '%s')"
 #define CREATESESSION "create table sessions (" \
                         "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " \
+                        "loginame TEXT NOT NULL, " \
+                        "sshconn TEXT NOT NULL, " \
                         "logtime INTEGER NOT NULL, " \
                         "odbcdsn TEXT NOT NULL " \
                       ")"
@@ -31,7 +34,13 @@ return 0;
 
 void Logger::init(char *dsn) {
 int rc;
+char na[4];
+char *user;
+char *conn;
+char *tmp;
 char sql[SMLSIZE];
+strcpy(na, "n/a");
+user = conn = na;
 switch (session) {
  case -1:
   session = 0;
@@ -39,7 +48,9 @@ switch (session) {
   break;
  case 0:
   if ((rc = sqlite3_open(logpath, &db))) return;
-  letf(t(sql), INSERTLOGIN, dsn);
+  if ((tmp = getenv("USER"))) user = tmp;
+  if ((tmp = getenv("SSH_CONNECTION"))) conn = tmp;
+  letf(t(sql), INSERTLOGIN, user, conn, dsn);
   while ((rc = sqlite3_exec(db, sql, callback, 0, NULL)) != SQLITE_OK) {
     if (sqlite3_exec(db, CREATESESSION, callback, 0, NULL) != SQLITE_OK) return;
         sqlite3_exec(db, CREATELOGS,    callback, 0, NULL);
