@@ -1,5 +1,8 @@
 #!/bin/sh
 FORM=$1
+FLIB=`dirname $0`
+PATH=$FLIB:$PATH
+cp -v $FORM.frm $FORM.frm.bac || exit 1
 SQL="sqlite3 -batch $FORM.frm"
 $SQL "select mtext from maps order by line" >$FORM.map
 $EDITOR $FORM.map
@@ -9,7 +12,11 @@ IFS=% sed "s/^/'/;s/\$/'/" $FORM.map | while read TEXT; do
   LINE=`expr $LINE + 1`
   $SQL "insert into maps (line, mtext) values ($LINE, $TEXT)"
 done
-./adjfield <$FORM.map | $SQL
+adjfield <$FORM.map | $SQL
 rm $FORM.map
-../runform/runform $FORM.frm $FORM.frm
+runform formax.frm $FORM.frm
+$SQL .dump >$FORM.inp
+$EDITOR $FORM.inp
+rm $FORM.frm
+$SQL <$FORM.inp
 exit

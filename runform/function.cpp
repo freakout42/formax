@@ -225,7 +225,8 @@ if (deleprompt) s = MSG(MSG_DELASK);
 if (yesno(s)) {
   F(b[1]).destroy(CB.currentrecord);
   clear_record();
-} else F(rmode) = MOD_UPDATE;
+}
+F(rmode) = MOD_UPDATE;
 return 0;
 }
 

@@ -61,11 +61,11 @@ Feature roadmap
  - transaction processing
  - in-field editing
  - editor
- - checksumming form with database password
+ - checksumming form with password
  - multiple blocks and master-detail
  - list of values - subforms
  - menue multiple forms
- - cqy.y: resolv 5 shift/reduce conflicts
+ - cqy.y: 5 shift/reduce conflicts
  - sap-like batchinput
  - field help
  - key macros
@@ -173,6 +173,11 @@ elk
 ---
 Javascript engine for 3GL triggers.\
 See: github.com/cesanta/elk
+
+mex
+---
+Microemacs editor for editing.\
+See: github.com/freakout42/microemacs
 
 Objects
 =======

@@ -1,15 +1,11 @@
 #!/bin/sh
 helpmap() {
 LINE=`expr $LINE + 1`
-  cat <<EOF
-INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE, ' $1');
-EOF
+echo "INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE, ' $1');"
 }
 guidmap() {
 LINE=`expr $LINE + 1`
-  cat <<EOF
-UPDATE maps set mtext = mtext || '                   $1' where line = $LINE;
-EOF
+echo "UPDATE maps set mtext = mtext || ' $1' where line = $LINE;"
 }
 sh ./makeform scotty formax1 emps id ename job mgr hiredate sal comm dept_id
   cat <<EOF
@@ -32,7 +28,7 @@ helpmap 'F8    Ctrl+z Exit                     Press "Delete" or Ctrl-k'
 helpmap 'F9    Ctrl+y Quit'          
 helpmap 'F10   Ctrl+x Query            Query:  Edit conditions in each field'
 LINE=0
-guidmap '            Query examples'
+guidmap '                              Query examples Enter to execute'
 guidmap '>7700'
 guidmap '~jon'
 guidmap 'MANAGER,SALESMAN'
