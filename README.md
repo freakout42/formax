@@ -63,22 +63,13 @@ Feature roadmap
  - editor
  - checksumming form with database password
  - multiple blocks and master-detail
- - form for forms - designer module
  - list of values - subforms
- - dev guide en
- - user guide in en, de, fr, ...
- - oper guide
- - man pages
- - import script for page layout
  - menue multiple forms
  - cqy.y: resolv 5 shift/reduce conflicts
  - sap-like batchinput
- - triggers with embedded javascript (elk)
- - help screens
- - domains with central maintaining
+ - field help
  - key macros
  - multiple databases
- - database validation (engine responsibility?)
  - full SQL-Forms-3 functionality
 
 Install
@@ -87,7 +78,6 @@ System preparation:
 
 On codespace/debian/Ubuntu do the following:
 ~~~
-sudo apt-get -y update
 sudo apt-get -y install build-essential
 sudo apt-get -y install python
 sudo apt-get -y install unixodbc
@@ -98,7 +88,6 @@ sudo apt-get -y install flex
 
 On RHEL/CentOS/Oracle/Alma/Rocky do the following:
 ~~~
-sudo yum -y update
 sudo yum -y group install "Development Tools"
 sudo yum -y install python3
 sudo yum -y install unixODBC
@@ -159,8 +148,11 @@ represents in practice the source code of the form
 application and can be edited to change the default
 behaviour or to add objects to the form.
 
-editform can edit the form database with a form.
-NOT YET IMPLEMENTED.
+editform
+--------
+can edit the form layout by an editor and the fields table
+database with a form. The editor is called with the .inp
+file to make other adjustments before the .frm is recreated.
 
 runform
 -------
@@ -180,7 +172,7 @@ See: github.com/kokke/tiny-regex-c
 elk
 ---
 Javascript engine for 3GL triggers.\
-NOT YET IMPLEMENTED. See: github.com/cesanta/elk
+See: github.com/cesanta/elk
 
 Objects
 =======
@@ -250,13 +242,12 @@ processes, a particular event.
 
 Navigation
 ----------
+
 Navigation is an internal function that is invoked by
 specific events. **formax** perfoms navigation primarily to
 move the cursor from one location to another. The main
 concepts of navigation are the navigation unit and the
-cursor. The navigation unit is always defined as a specific
-form, block, record or field in the form, or as outside the
-form.
+cursor. The navigation unit is always the field.
 
 Validation
 ----------
@@ -292,7 +283,8 @@ possible static variables are used. Everything that comes
 from outside is passed to ODBC with bind variables. There is
 no free SQL enterable as is was possible with original
 SQL-Forms. The password for the database is encrypted on the
-command line.
+command line. Every executed SQL-statement can be logged in
+a central database.
 
 License
 =======
