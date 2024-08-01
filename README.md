@@ -293,8 +293,5 @@ a central database.
 
 License
 =======
-GNU General Public License
-_Version 3, 29 June 2007_  
-
-Copyright (c) 2024, Axel K. Reinhold
-All rights reserved.
+GNU General Public License _Version 3, 29 June 2007_  
+Copyright (c) 2024, Axel K. Reinhold. All rights reserved.
