@@ -196,7 +196,8 @@ list    : const OR const
         ;
 comp    : COMPARE
         {
-        $$ = cqstr ($1);
+        sprintf (tmp, "%s=", $1);
+        $$ = cqstr (tmp);
         }
         ;
 constm  : MDATE

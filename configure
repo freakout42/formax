@@ -8,18 +8,21 @@ done
 test "$1" = "clean" && exit
 echo "configuring for $NAME" >&2
 cat >Makefile <<EOF
-ARX=\$(DESTDIR)/opt
+ARX=\$(DESTDIR)/opt/arx
 DIST=dist/$NAME
 all: \$(DIST).tar.gz
 	@echo 'you can now run "sudo make install"'
-install: all
-	test -d \$(ARX) || mkdir \$(ARX)
-	gzip -cd <\$(DIST).tar.gz | tar x -p -C \$(ARX) -f -
+install: \$(DIST).tar.gz \$(ARX)/bin
+	for D in bin lib; do cp -p \$(DIST)/\$\$D/* \$(ARX)/\$\$D; done
+	chmod go-r \$(ARX)/bin/runform
+#	gzip -cd <\$(DIST).tar.gz | tar x -p -C \$(ARX) -f -
+\$(ARX)/bin:
+	for D in bin lib; do mkdir -p \$(ARX)/\$\$D; done
 \$(DIST).tar.gz: generate/scotty.sq3
 	mkdir dist
 	chmod g-s dist
 	mkdir \$(DIST) \$(DIST)/bin \$(DIST)/lib
-	cp generate/makeform generate/editform runform/runform \$(DIST)/bin
+	cp generate/makeform generate/editform generate/adjfield generate/extractsql runform/runform \$(DIST)/bin
 	cp generate/scotty.* generate/formax.frm \$(DIST)/lib
 	strip \$(DIST)/bin/* 2>/dev/null || true
 	chmod -R u+rwX,g-w,g+rX,o-w,o+rX dist

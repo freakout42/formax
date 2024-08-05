@@ -152,3 +152,138 @@ Database Terms
     the group of events that occurs between the data changes
     and the user commiting them.
 
+Components
+==========
+**formax** consists of the following programs, or
+components, that you can execute independently from the
+command line.
+
+generate
+--------
+makeform is a shell script which can produce the sql script
+(.inp) which in turn can create the form database (.frm) by
+using the sqlite3 utility. The produced sql script
+represents in practice the source code of the form
+application and can be edited to change the default
+behaviour or to add objects to the form.
+
+editform
+--------
+can edit the form layout by an editor and the fields table
+database with a form. The editor is called with the .inp
+file to make other adjustments before the .frm is recreated.
+
+runform
+-------
+Execute forms (.frm) interactively on a terminal by the
+end-user.
+
+colquery
+--------
+Parser for a natural query language. Translats human
+properties to SQL where clauses.
+
+regex
+-----
+Regular expression engine for validating user entered data.\
+See: github.com/kokke/tiny-regex-c
+
+elk
+---
+Javascript engine for 3GL triggers.\
+See: github.com/cesanta/elk
+
+mex
+---
+Microemacs editor for editing.\
+See: github.com/freakout42/microemacs
+
+Objects
+=======
+A **formax** application is made up of objects. These
+objects contain all the information that is needed for an
+application. They have a 1:1 relationship to the tables in
+the form-database and to the classes in the C++ source. In
+the source-code there is a separate class for every object 
+for reading the form-database and for processing.
+
+Forms
+-----
+The primary object of a **formax** application is the form.
+A form is made up of additional objects. These objects link
+the form to database elements, such as columns and tables,
+and provide control over the flow of execution.
+
+Blocks
+------
+Describe each section or subsection of the form, and serve
+as the basis of default database interaction.
+
+Fields
+------
+Represent columns or data entry areas and describe how the
+data should be displayed and validated and how an operator
+should interact with the data while it is entered.
+
+Pages
+-----
+Are collections of display information, such as constant
+text. All fields are displayed on some page.
+
+Triggers
+--------
+Are sets of processing commands associated with event
+points, such as when a particular function key is pressed by
+the operator.
+
+Processing
+==========
+When a form is executed **formax** follows a pre-defined set
+of rules for how actions should occur. These actions include
+navigation whithin the application and the validation of
+data. Within the processing rules, you can customize the
+default behaviour to meet the needs of your application.
+
+Events and Functions
+--------------------
+All processing centers around events. Put simply, events are
+things that occur when a form is exeecuted. **formax** knows
+about events and handles them by executing functions. Note
+that during processing, events are usually nested. That is,
+the occurence of one event usually invokes functions that
+invoke other events. Inherent in the functions that events
+invoke - and that are invoked by your tiggers - are the
+processes of navigation and validation.
+
+Trigger Points
+--------------
+Every function that an event calls might have on or more
+trigger point associated with it. A trigger point is
+temporal place in an event with a specific trigger type is
+associated. Trigger points and triggers are your primary
+tools for modifying the way that **formax** handles, or
+processes, a particular event.
+
+Navigation
+----------
+
+Navigation is an internal function that is invoked by
+specific events. **formax** perfoms navigation primarily to
+move the cursor from one location to another. The main
+concepts of navigation are the navigation unit and the
+cursor. The navigation unit is always the field.
+
+Validation
+----------
+Validation is an internal function that is invoked by
+specific events. Validation is the process by which
+**formax** determines whether the data in an object is valid
+or correct.
+
+Trigger Processing
+------------------
+Events invoke functions, which have trigger points. When
+**formax** processes a trigger point, it executes, or fires,
+the associated trigger. Every trigger pont has a specific
+type of trigger associated with it.
+

@@ -1,3 +1,14 @@
+Development
+===========
+**formax** is implemented in pure C++. Interface to the user
+is solely done with curses-lib. Interface to the database is
+solely through ODBC. Both libraries are not used directly
+but wrapped by the Screen and Record classes. Record is a
+simple ORM inspired by rails ActiceRecord. The form-database
+is a sqlite-database. The form generator builds a SQL script
+that creates the default form database and can be edited to
+change the default behaviour.
+
 Structure
 ---------
 runform.cpp holds main() and has the only OS-interfaces for
