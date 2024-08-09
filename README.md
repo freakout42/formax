@@ -163,7 +163,7 @@ a default form for the table `depts` and execute it.
 
 ~~~
 makeform deptform Departments depts id dname loc | sqlite3 myform.frm
-runform myform.frm mydb.sq3
+runform -i myform.frm mydb.sq3
 ~~~
 
 Use the following procedures for CRUD-actions on the table:
@@ -171,8 +171,8 @@ Use the following procedures for CRUD-actions on the table:
 ~~~
 Edit:     Edit with "Left/Right" and any characters
 Commit:   Press "Enter" to save the changes
+Retrieve: Edit conditions in each field and "Enter"
 Create:   Press "Insert" or Ctrl-o
-Retrieve: Edit conditions in each field
 Update:   Move to the record and field with
           "Up/Down" and "Tab" and edit the field
 Delete:   Move to the record

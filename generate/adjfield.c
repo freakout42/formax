@@ -4,7 +4,7 @@
 
 #define NXT getc(stdin); col++
 
-main() {
+int main() {
   int line=1, col=0, act, len;
   char t;
   char f[3];
@@ -24,4 +24,5 @@ main() {
       col = 0;
     }
   }
+  return 0;
 }

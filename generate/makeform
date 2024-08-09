@@ -8,13 +8,13 @@ TABLE=$3
 shift 3
 cat <<EOF
 #PRAGMA encoding="ISO-8859-15";
-`extractsql ../runform/form.h`
-`extractsql ../runform/rerror.h`
-`extractsql ../runform/rblock.h`
-`extractsql ../runform/rfield.h`
-`extractsql ../runform/rmap.h`
-`extractsql ../runform/rpage.h`
-`extractsql ../runform/rtrigger.h`
+`extractsql $ARX/runform/form.h`
+`extractsql $ARX/runform/rerror.h`
+`extractsql $ARX/runform/rblock.h`
+`extractsql $ARX/runform/rfield.h`
+`extractsql $ARX/runform/rmap.h`
+`extractsql $ARX/runform/rpage.h`
+`extractsql $ARX/runform/rtrigger.h`
 INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
 INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
 INSERT INTO blocks (id, form_id, name) VALUES (0, 1, 'dual');
