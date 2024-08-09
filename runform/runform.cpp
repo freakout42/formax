@@ -42,7 +42,7 @@ int  useodbcve3  = 0;             // -3
 int  monochrome  = 0;             // -k
 int  usedefault  = 0;             // -c
 int  pwdencrypt  = 0;             // -p
-int  squerymode  = 1;             // -i
+int  squerymode  = 0;             // -i
 int  usebindvar  = 1;             // -b
 int  querycharm  = 1;             // -h
 int  autocommit  = 1;             // -a
@@ -91,7 +91,7 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqVy:")) != -1) {
     case 'k': monochrome = 1; break;
     case 'c': usedefault = 1; break;
     case 'p': pwdencrypt = 1; break;
-    case 'i': squerymode = 0; break;
+    case 'i': squerymode = 1; break;
     case 'b': usebindvar = 0; break;
     case 'h': querycharm = 0; break;
     case 'a': autocommit = 0; break;

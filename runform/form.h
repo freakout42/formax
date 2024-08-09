@@ -21,6 +21,7 @@ public:
   int lastcmd;
   int lastkey;
   fmode rmode;
+  int dirty;
   int fill(int id);
   void clear();
   int run();

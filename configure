@@ -8,22 +8,22 @@ done
 test "$1" = "clean" && exit
 echo "configuring for $NAME" >&2
 cat >Makefile <<EOF
-ARX=\$(DESTDIR)/opt/arx
+ARX=/opt/arx
 DIST=dist/$NAME
 all: \$(DIST).tar.gz
 	@echo 'you can now run "sudo make install"'
-install: \$(DIST).tar.gz \$(ARX)/bin
-	for D in bin lib; do cp -p \$(DIST)/\$\$D/* \$(ARX)/\$\$D; done
-	chmod go-r \$(ARX)/bin/runform
-#	gzip -cd <\$(DIST).tar.gz | tar x -p -C \$(ARX) -f -
-\$(ARX)/bin:
-	for D in bin lib; do mkdir -p \$(ARX)/\$\$D; done
+install: \$(DIST).tar.gz \$(DESTDIR)\$(ARX)/bin
+	@for D in bin lib; do cp -vp \$(DIST)/\$\$D/* \$(DESTDIR)\$(ARX)/\$\$D; done
+	@chmod go-r \$(DESTDIR)\$(ARX)/bin/runform
+	@if [ -d \$(DESTDIR)/etc/profile.d ]; then cp -vp \$(DIST)/lib/arx.sh \$(DESTDIR)/etc/profile.d; else true; fi
+\$(DESTDIR)\$(ARX)/bin:
+	for D in bin lib; do mkdir -p \$(DESTDIR)\$(ARX)/\$\$D; done
 \$(DIST).tar.gz: generate/scotty.sq3
 	mkdir dist
 	chmod g-s dist
 	mkdir \$(DIST) \$(DIST)/bin \$(DIST)/lib
 	cp generate/makeform generate/editform generate/adjfield generate/extractsql runform/runform \$(DIST)/bin
-	cp generate/scotty.* generate/formax.frm \$(DIST)/lib
+	cp generate/arx.sh generate/formax.frm \$(DIST)/lib
 	strip \$(DIST)/bin/* 2>/dev/null || true
 	chmod -R u+rwX,g-w,g+rX,o-w,o+rX dist
 	cd dist; tar cf - $NAME | gzip -c >$NAME.tar.gz

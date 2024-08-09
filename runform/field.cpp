@@ -57,6 +57,7 @@ void Field::clear() {
 char **v;
 if (F(rmode) == MOD_QUERY) {
   *queryhuman = '\0';
+  *querywhere = '\0';
 } else {
   v = valuep();
   free(v);
@@ -78,9 +79,9 @@ char **c;
 re_t re;
 pressed = 0;
 switch(F(rmode)) {
- case MOD_INSERT:
  case MOD_UPDATE:
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }
+ case MOD_INSERT:
   if (!updateable)  { MSG(MSG_FLDPROT); return KEF_CANCEL; }
   if (F(b[blockindex].q->rows)) {
     c = valuep();

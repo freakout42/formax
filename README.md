@@ -100,10 +100,11 @@ REGEDIT4
 
 Install
 =======
-System preparation:
+System preparation is needed to install the dependencies:
 
 On codespace/debian/Ubuntu do the following:
 ~~~
+sudo apt-get -y update
 sudo apt-get -y install build-essential
 sudo apt-get -y install python
 sudo apt-get -y install unixodbc
@@ -114,6 +115,7 @@ sudo apt-get -y install flex
 
 On RHEL/CentOS/Oracle/Alma/Rocky do the following:
 ~~~
+sudo yum -y update
 sudo yum -y group install "Development Tools"
 sudo yum -y install python3
 sudo yum -y install unixODBC
@@ -123,13 +125,43 @@ sudo yum -y install sqlite
 rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-0.9998-1.x86_64.rpm
 ~~~
 
-Fork in github and create codespace or download and extract  
+Fork in github and create codespace or download and extract
 https://github.com/freakout42/formax/archive/refs/heads/main.zip  
-Then do the following to build and install:
+Then do the following to build and install into `/opt/arx/`.
+Nothing outside `/opt/arx/` will be touched in any way by
+the installation with the exception of /etc/profile.d/arx.sh
+which only adds `/opt/arx/bin` to the PATH.
+
 ~~~
 ./configure
 make
 sudo make install
+. /etc/profile.d/arx.sh
+~~~
+
+Getting started
+===============
+The following wil guide you to creation, maintenance and
+execution of a form by using `makeform` (create) `editform`
+(maintain) and `runform` (execute). First change into a new
+directory where your development will live. Create a new
+database including the table `depts` with:
+
+~~~
+sqlite3 mydb.sq3
+create table depts (id integer primary key not null, dname text, loc text);
+insert into depts values (10, 'ACCOUNTING', 'NEW YORK');
+insert into depts values (20, 'RESEARCH',   'DALLAS');
+insert into depts values (30, 'SALES',      'CHICAGO');
+insert into depts values (40, 'OPERATIONS', 'BOSTON');
+.quit
+~~~
+
+You should now have a sqlite-database in `mydb.sq3`. Create
+a default form for the table `depts` and execute it with:
+
+~~~
+
 ~~~
 
 License

@@ -60,7 +60,7 @@ switch(F(lastcmd)) {
    switch(F(rmode)) {
     case MOD_QUERY:  LK = execute_query();                             break;
     case MOD_UPDATE: LK = enter_query();                               break;
-    case MOD_INSERT: LK = create_record();                             break;
+    case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
     case MOD_DELETE: LK = destroy_record();                            break;
    }                                                                   break;
   case KEF_EXIT:     LK = fexit();                                     break;
@@ -70,8 +70,8 @@ switch(F(lastcmd)) {
     case MOD_UPDATE:
     case MOD_QUERY:  LK = fquit();                                     break;
     case MOD_INSERT: LK = clear_record();                              break;
-    case MOD_DELETE:                                                   break;
-   }                 F(rmode) = MOD_UPDATE; LK = 0;                    break;
+    case MOD_DELETE: F(rmode) = MOD_UPDATE; LK = 0;                    break;
+   }                                                                   break;
   case KEF_RIGHT:    LK = fedit(0);                                    break;
   case KEF_LEFT:     LK = fedit(-1);                                   break;
   default:
@@ -169,6 +169,7 @@ switch(F(rmode)) {
  case MOD_DELETE:
   break;
 }
+if (F(rmode) != MOD_QUERY && changed) F(dirty) = 1;
 return changed==KEF_CANCEL ? 0 : changed;
 }
 
@@ -197,6 +198,7 @@ return 0;
 int Function::enter_query() {
 F(b[1]).clear();
 CB.currentrecord = 0;
+F(dirty) = 0;
 F(rmode) = MOD_QUERY;
 return 0;
 }
@@ -225,14 +227,14 @@ if (deleprompt) s = MSG(MSG_DELASK);
 if (yesno(s)) {
   F(b[1]).destroy(CB.currentrecord);
   clear_record();
-}
-F(rmode) = MOD_UPDATE;
+} else F(rmode) = MOD_UPDATE;
 return 0;
 }
 
 int Function::clear_record() {
 CB.q->splice(-CB.currentrecord);
 if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
+if (CB.q->rows) F(rmode) = MOD_UPDATE; else enter_query(); 
 return 0;
 }
 

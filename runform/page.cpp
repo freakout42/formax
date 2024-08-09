@@ -43,11 +43,10 @@ int Page::wait() {
 int i;
 char commit[16];
 switch (F(rmode)) {
- case MOD_QUERY:  strcpy(commit, "  Execute-Query");                           break;
- case MOD_UPDATE: strcpy(commit, "    Enter-Query");                           break;
- case MOD_INSERT: strcpy(commit, "  Insert-Record");                           break;
- case MOD_DELETE: strcpy(commit, "  Delete-Record");                           break;
- default:         strcpy(commit, "///////////////");
+ case MOD_QUERY:  strcpy(commit,            "  Execute-Query");                      break;
+ case MOD_UPDATE: strcpy(commit,            "    Enter-Query");                      break;
+ case MOD_INSERT: strcpy(commit, F(dirty) ? "  Insert-Record" : "   Clear-Record" ); break;
+ case MOD_DELETE: strcpy(commit,            "  Delete-Record");                      break;
 }
 wera();
 writef(0,  2, 0, 2,  "%2s-",      F(id));

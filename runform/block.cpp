@@ -42,7 +42,7 @@ for (i=0; i<fieldcount; i++) {
     cats(t(wall), ")");
   }
 }
-if (*wall) let(where, wall);
+let(where, wall);
 return query();
 }
 
