@@ -1,4 +1,4 @@
-LINTING=-Wall -Werror -Wno-write-strings
+LINTING=-Wall -Werror -Wno-write-strings -Wno-unused-private-field
 all:  CXXFLAGS=-O3 -DNDEBUG $(LINTING)
 test: CXXFLAGS=-g -O0 $(LINTING)
 SRCS=$(wildcard *.cpp)
