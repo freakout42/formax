@@ -1,4 +1,4 @@
-LINTING=-Wall -Werror -Wno-write-strings -Wno-unused-private-field
+LINTING=-Wall -Werror -Wno-write-strings
 all:  CXXFLAGS=-O3 -DNDEBUG $(LINTING)
 test: CXXFLAGS=-g -O0 $(LINTING)
 SRCS=$(wildcard *.cpp)
@@ -30,7 +30,7 @@ elk/elk.o:
 	cd elk; make elk.o
 
 $(EXAMPLE):
-	cd ../generate; make
+	cd ../generate; make test
 
 clean:
 	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_*

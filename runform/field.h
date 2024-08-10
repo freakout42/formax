@@ -12,8 +12,8 @@ public:
   void show(int cur);
 private:
   char **valuep();
-  int blkn;
-  int pgen;
+//  int blkn;
+//  int pgen;
   int line;
   int col;
   int blockindex;

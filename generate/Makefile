@@ -1,4 +1,6 @@
-all: editform scotty.sq3 scotty.frm
+all: adjfield formax.frm
+
+test: all scotty.sq3 scotty.frm
 
 editform: adjfield formax.frm
 

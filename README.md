@@ -142,7 +142,7 @@ sudo make install
 Getting started
 ===============
 
-The following wil guide you to creation, execution and
+The following will guide you to creation, execution and
 maintenance of a form by using `makeform` (create),
 `runform` (execute) and `editform` (maintain). First change
 into a new directory where your development will live.
@@ -163,20 +163,24 @@ a default form for the table `depts` and execute it.
 
 ~~~
 makeform deptform Departments depts id dname loc | sqlite3 myform.frm
-runform -i myform.frm mydb.sq3
+runform myform.frm mydb.sq3
 ~~~
 
-Use the following procedures for CRUD-actions on the table:
+You will be in `Insert-Mode` and can enter data for new
+records. Press Enter without new data will get you into
+`Query-Mode`. Quit from the form after playing around with
+Ctrl-Y.
+
+Change the form layout and the default behaviour of
+the form with the `editform` utility. This will bring up
+your editor with the layout of the form and a form to
+maintain the field behaviour and at least the editor again
+with the full `.inp-file` for your form. You can test your
+changes by running runform again. Have Fun.
 
 ~~~
-Edit:     Edit with "Left/Right" and any characters
-Commit:   Press "Enter" to save the changes
-Retrieve: Edit conditions in each field and "Enter"
-Create:   Press "Insert" or Ctrl-o
-Update:   Move to the record and field with
-          "Up/Down" and "Tab" and edit the field
-Delete:   Move to the record
-          Press "Delete" or Ctrl-k
+editform myform
+runform myform.frm mydb.sq3
 ~~~
 
 License

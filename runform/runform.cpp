@@ -1,4 +1,4 @@
-#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpq] [-n lg]\n" \
+#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpqx] [-n lg]\n" \
               "  [-g logfile] [-l driverlib] form.frm sq3|dsn [username] [password]\n"
 #define FORMFRM argv[optind+                 0]       //       //         //
 #define FORMDSN argv[optind+                          1]       //         //
@@ -43,6 +43,7 @@ int  monochrome  = 0;             // -k
 int  usedefault  = 0;             // -c
 int  pwdencrypt  = 0;             // -p
 int  squerymode  = 0;             // -i
+int  updatemode  = 0;             // -x
 int  usebindvar  = 1;             // -b
 int  querycharm  = 1;             // -h
 int  autocommit  = 1;             // -a
@@ -74,7 +75,7 @@ setenv("LC_ALL", CHARSET, 1);
 lclocale = setlocale(LC_ALL, CHARSET);
 
 // command-line arguments and options check and process
-while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqVy:")) != -1) {
+while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqVxy")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
     case 'y': printf("%s\n", xdecrypt(optarg,0));
@@ -92,6 +93,7 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqVy:")) != -1) {
     case 'c': usedefault = 1; break;
     case 'p': pwdencrypt = 1; break;
     case 'i': squerymode = 1; break;
+    case 'x': updatemode = 1; break;
     case 'b': usebindvar = 0; break;
     case 'h': querycharm = 0; break;
     case 'a': autocommit = 0; break;

@@ -88,7 +88,7 @@ int Function::enter_the_form() {
 F(curblock) = 1;
 F(curfield) = CB.blockfields[0];
 enter_query();
-if (!squerymode) insert_record();
+if (updatemode) execute_query(); else if (!squerymode) insert_record();
 notrunning = trigger(TRT_ENTERFORM); //"enter_the_form");
 return 0;
 }

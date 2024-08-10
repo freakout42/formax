@@ -1,35 +1,22 @@
 #!/bin/sh
-NAME=formax
 test -f version.h || exit 1
-rm -rf dist Makefile
+rm -f Makefile
 for MODUL in generate runform runform/colquery runform/regex runform/elk; do
   ( cd $MODUL; make clean; ) >/dev/null
 done
 test "$1" = "clean" && exit
-echo "configuring for $NAME" >&2
 cat >Makefile <<EOF
 ARX=/opt/arx
-DIST=dist/$NAME
-all: \$(DIST).tar.gz
-	@echo 'you can now run "sudo make install"'
-install: \$(DIST).tar.gz \$(DESTDIR)\$(ARX)/bin
-	@for D in bin lib; do cp -vp \$(DIST)/\$\$D/* \$(DESTDIR)\$(ARX)/\$\$D; done
-	@chmod go-r \$(DESTDIR)\$(ARX)/bin/runform
+all: runform/runform generate/adjfield
+	@echo; echo 'you can now run "sudo make install"'
+install: all \$(DESTDIR)\$(ARX)/bin
+	@cp -vp generate/makeform generate/editform generate/adjfield generate/extractsql runform/runform \$(DESTDIR)\$(ARX)/bin
+	@cp -vp generate/arx.sh generate/formax.frm \$(DESTDIR)\$(ARX)/lib
+	@cp -rp runform \$(DESTDIR)\$(ARX)
 	@if [ -d \$(DESTDIR)/etc/profile.d ]; then cp -vp \$(DIST)/lib/arx.sh \$(DESTDIR)/etc/profile.d; else true; fi
 \$(DESTDIR)\$(ARX)/bin:
-	for D in bin lib; do mkdir -p \$(DESTDIR)\$(ARX)/\$\$D; done
-\$(DIST).tar.gz: generate/scotty.sq3
-	mkdir dist
-	chmod g-s dist
-	mkdir \$(DIST) \$(DIST)/bin \$(DIST)/lib
-	cp generate/makeform generate/editform generate/adjfield generate/extractsql runform/runform \$(DIST)/bin
-	cp generate/arx.sh generate/formax.frm \$(DIST)/lib
-	strip \$(DIST)/bin/* 2>/dev/null || true
-	chmod -R u+rwX,g-w,g+rX,o-w,o+rX dist
-	cd dist; tar cf - $NAME | gzip -c >$NAME.tar.gz
-	if [ -d archive ]; then cp \$(DIST).tar.gz archive/$DISTID.tar.gz; fi
-generate/scotty.sq3: runform/runform
-	rm -f \$@
+	@for D in bin lib; do mkdir -p \$(DESTDIR)\$(ARX)/\$\$D; done
+generate/adjfield:
 	cd generate; make
 runform/runform:
 	cd runform; make
