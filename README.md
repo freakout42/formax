@@ -50,12 +50,15 @@ technologies:
 
 Status
 ======
-Current 1.0.0 is BETA - the generator can only create a
-single-block single-page form. You are able to create,
-retrieve, update and delete (CRUD) records in this table.
+Stable 1.1.0 is useable for single-block single-page forms.
+makeform, runform and editform are undocumented. Without
+Oracle SQL-Forms KnowHow hard to use. Don't hesitate to
+create issues when in trouble.
 
 Feature roadmap
 ---------------
+ - boolean field
+ - help screen
  - multi-record fields
  - TOTP 3FA
  - transaction processing
