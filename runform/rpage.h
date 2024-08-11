@@ -4,7 +4,7 @@ class rPage: public Record {
 public:
   int init(int form_id);
 private:
-  char *name;
+//  char *name;
 };
 #else
 CREATE TABLE pages

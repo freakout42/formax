@@ -1,6 +1,7 @@
 #ifdef DEBUG
 #include <stdio.h>
 #endif
+#include "colquery.h"
 #include "colq.h"
 
 char *cqop;

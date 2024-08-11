@@ -1,3 +1,4 @@
+# MacOsX: brew install ncurses unixodbc sqliteodbc
 LINTING=-Wall -Werror -Wno-write-strings
 all:  CXXFLAGS=-O3 -DNDEBUG $(LINTING)
 test: CXXFLAGS=-g -O0 $(LINTING)
@@ -11,6 +12,9 @@ all: runform
 
 runform: curkeys.h $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
+
+run: runform $(EXAMPLE)
+	./runform -g/tmp/formax.log -nuk $(EXAMPLE)
 
 test: runform $(EXAMPLE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
