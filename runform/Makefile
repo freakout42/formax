@@ -1,6 +1,4 @@
-# MacOsX
-# brew instll unixodbc
-# brew instll sqliteodbc
+# MacOsX: brew install ncurses unixodbc sqliteodbc
 LINTING=-Wall -Werror -Wno-write-strings
 all:  CXXFLAGS=-O3 -DNDEBUG $(LINTING)
 test: CXXFLAGS=-g -O0 $(LINTING)
