@@ -83,10 +83,10 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqVxy")) != -1) {
     case 'g': if (g.setlogfile(optarg)) usage(16); break;
     case 'l': let(drv, optarg); break;
     case 'n':
-      if (!strcmp(optarg, "us")) ; // shiftednum = "`!@#$%^&*()";
-      if (!strcmp(optarg, "uk"))      shiftednum = "\\!\"�$%^&*()";
-      if (!strcmp(optarg, "de"))      shiftednum = "<!\"�$%&/()=";
-      if (!strcmp(optarg, "fr"))      shiftednum = "<&�\"'(-�_��";
+//    if (!strcmp(optarg, "us")) shiftednum = "`!@#$%^&*()";
+      if (!strcmp(optarg, "uk")) shiftednum = "\\!\"�$%^&*()";
+      if (!strcmp(optarg, "de")) shiftednum = "<!\"�$%&/()=";
+      if (!strcmp(optarg, "fr")) shiftednum = "<&�\"'(-�_��";
       break;
     case '3': useodbcve3 = 1; break;
     case 'k': monochrome = 1; break;

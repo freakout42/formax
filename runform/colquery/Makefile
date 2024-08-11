@@ -2,7 +2,7 @@ CFLAGS=-DYY_NO_UNPUT -DYY_SKIP_YYWRAP
 test: CFLAGS=-g -O0 -Wall -Werror -DYY_NO_UNPUT -DYY_SKIP_YYWRAP $(DEBUG)
 LDFLAGS=-r
 YACC=bison
-YFLAGS=-Wno-conflicts-sr -d --name-prefix=cq
+YFLAGS=-d --name-prefix=cq
 LEXFLAGS=--prefix=cq
 
 all: colq

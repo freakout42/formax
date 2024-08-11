@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <cstdarg>
 #include <stdlib.h>
-#include <termio.h>
+#include <termios.h>
 #include <term.h>
 #include <curses.h>
 #include "runform.h"
@@ -85,6 +85,9 @@ int i;
 tcgetattr (0, &termio); /* give me all attributes */
 otermio = termio;
 termio.c_cc[VINTR] = 0; /* ctrl-c */
+#ifdef VDSUSP
+termio.c_cc[VDSUSP] = 0; /* ctrl-y */
+#endif
 termio.c_cc[VSUSP] = 0; /* ctrl-z */
 #ifdef VLNEXT
 termio.c_cc[VLNEXT] = 0;/* ctrl-v */
@@ -232,7 +235,7 @@ while (!done) {              /* input loop */
     so = se + pos - width + 1;
   }
   wmov(y, x);                /* move to print string */
-  sprintf(tmp, "%-*.*s", width, width, so);
+  snprintf(t(tmp), "%-*.*s", width, width, so);
   tmp[width] = '\0';         /* cut to width   */
   while ((tp = strchr(tmp,'\t')) != NULL) *tp = ' '; /* tab erase */
   waddstr(wndw, tmp);        /* paint out string */
@@ -295,7 +298,7 @@ while (!done) {              /* input loop */
    case KEY_F(9):
    case KEY_CANCEL:
     wmove(wndw, y, x);
-    sprintf(tmp, "%-*.*s", width, width, s);
+    snprintf(t(tmp), "%-*.*s", width, width, s);
     tmp[width] = '\0';
     while ((tp = strchr(tmp,'\t')) != NULL) *tp = ' ';
     waddstr(wndw, tmp);
