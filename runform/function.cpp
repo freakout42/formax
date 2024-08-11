@@ -26,26 +26,26 @@ switch(F(lastcmd)) {
   case KEF_REFRESH:         /* frefresh() */
   case KEF_NAVI0:           /* fmenu() */
 #endif
-  case -1:           LK = enter_the_form();                            break;
-  case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                         break;
-  case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                         break;
-  case KEF_NAVI3:    LK = fmove(0, NFIELD1+3);                         break;
-  case KEF_NAVI4:    LK = fmove(0, NFIELD1+4);                         break;
-  case KEF_NAVI5:    LK = fmove(0, NFIELD1+5);                         break;
-  case KEF_NAVI6:    LK = fmove(0, NFIELD1+6);                         break;
-  case KEF_NAVI7:    LK = fmove(0, NFIELD1+7);                         break;
-  case KEF_NAVI8:    LK = fmove(0, NFIELD1+8);                         break;
-  case KEF_NAVI9:    LK = fmove(0, NFIELD1+9);                         break;
-  case KEF_NXTFLD:   LK = next_item();                                 break;
-  case KEF_PREFLD:   LK = previous_item();                             break;
-  case KEF_NXTREC:   LK = next_record();                               break;
-  case KEF_PREREC:   LK = previous_record();                           break;
+  case -1:           LK = enter_the_form();                                   break;
+  case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                                break;
+  case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                                break;
+  case KEF_NAVI3:    LK = fmove(0, NFIELD1+3);                                break;
+  case KEF_NAVI4:    LK = fmove(0, NFIELD1+4);                                break;
+  case KEF_NAVI5:    LK = fmove(0, NFIELD1+5);                                break;
+  case KEF_NAVI6:    LK = fmove(0, NFIELD1+6);                                break;
+  case KEF_NAVI7:    LK = fmove(0, NFIELD1+7);                                break;
+  case KEF_NAVI8:    LK = fmove(0, NFIELD1+8);                                break;
+  case KEF_NAVI9:    LK = fmove(0, NFIELD1+9);                                break;
+  case KEF_NXTFLD:   LK = next_item();                                        break;
+  case KEF_PREFLD:   LK = previous_item();                                    break;
+  case KEF_NXTREC:   LK = next_record();                                      break;
+  case KEF_PREREC:   LK = previous_record();                                  break;
   case KEF_INSERT:
    switch(F(rmode)) {
     case MOD_UPDATE:
     case MOD_QUERY:  LK = insert_record();                             break;
     default:         LK = 0; F(y).toggle();                            break;
-   }                                                                   break;
+   }                                                                          break;
   case KEF_BACKDEL:         /* fbackdel() */
   case KEF_DELETE:
    switch(F(rmode)) {
@@ -53,8 +53,8 @@ switch(F(lastcmd)) {
     case MOD_UPDATE: LK = delete_record();                             break;
     case MOD_INSERT: LK = clear_record();                              break;
     default:         LK = 0;                                           break;
-   }                                                                   break;
-  case KEF_QUERY:    LK = enter_query();                               break;
+   }                                                                          break;
+  case KEF_QUERY:    LK = enter_query();                                      break;
   case KEF_NAVI10:
   case KEF_COMMIT:
    switch(F(rmode)) {
@@ -62,8 +62,8 @@ switch(F(lastcmd)) {
     case MOD_UPDATE: LK = enter_query();                               break;
     case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
     case MOD_DELETE: LK = destroy_record();                            break;
-   }                                                                   break;
-  case KEF_EXIT:     LK = fexit();                                     break;
+   }                                                                          break;
+  case KEF_EXIT:     LK = fexit();                                            break;
   case KEF_QUIT:
   case KEF_CANCEL:
    switch(F(rmode)) {
@@ -71,14 +71,14 @@ switch(F(lastcmd)) {
     case MOD_QUERY:  LK = fquit();                                     break;
     case MOD_INSERT: LK = clear_record();                              break;
     case MOD_DELETE: F(rmode) = MOD_UPDATE; LK = 0;                    break;
-   }                                                                   break;
-  case KEF_RIGHT:    LK = fedit(0);                                    break;
-  case KEF_LEFT:     LK = fedit(-1);                                   break;
+   }                                                                          break;
+  case KEF_RIGHT:    LK = fedit(0);                                           break;
+  case KEF_LEFT:     LK = fedit(-1);                                          break;
   default:
    if (isprintable(LK))
                      LK = fedit(-1000 - LK);
    else              LK = 0;
-                                                                       break;
+                                                                              break;
 }
 return notrunning;
 }
