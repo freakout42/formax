@@ -15,7 +15,6 @@ IFS=% sed "s/^/'/;s/\$/'/" $FORM.map | while read TEXT; do
 done
 ${ARX:-/opt/arx}/bin/adjfield <$FORM.map | $SQL
 rm $FORM.map
-${ARX:-/opt/arx}/bin/runform -x ${ARX:-/opt/arx}/lib/formax.frm $FORM.frm
 $SQL .dump >$FORM.inp
 ${EDITOR:-vi} $FORM.inp
 rm $FORM.frm
