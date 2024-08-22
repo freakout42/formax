@@ -53,29 +53,27 @@ technologies and all required enterprise-features:
 Status
 ======
 Stable 1.1.0 is useable for single-block single-page forms.
-makeform, runform and editform are undocumented. Without
-Oracle SQL-Forms KnowHow hard to use. Don't hesitate to
-create issues when in trouble.
+Don't hesitate to create any issues when in trouble.
 
 Feature roadmap
 ---------------
  - boolean field
- - help screen
+ - field help
+ - key help screen
  - multi-record fields
  - TOTP 3FA
- - transaction processing
  - in-field editing
  - editor
  - checksumming form with password
+ - triggers
+ - transaction processing
  - multiple blocks and master-detail
  - list of values - subforms
  - menue multiple forms
  - cqy.y: 5 shift/reduce conflicts
  - sap-like batchinput
- - field help
  - key macros
  - multiple databases
- - full SQL-Forms-3 functionality
 
 Playground
 ----------

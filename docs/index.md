@@ -107,10 +107,15 @@ action (SQL) can be logged in a central database.
 
 ### Status
 
-Current v1.0.0 is BETA - the generator can only create a
+Current v1.1.0 is stable - the generator can only create a
 single-block single-page form. You are able to create,
-retrieve, update and delete (CRUD) records in this table.
-No triggers, no transactions, no help, no designer-tool yet.
+retrieve, update and delete (CRUD) records in this table. No
+triggers, no transactions, no help. The designer-tool is
+able to edit the page markup and to integrate the filed
+positions and lengths into the form. There is also a form to
+maintain the field properties. The rest must be done by
+editing the .inp-file.
+
 Full Forms3 functionality is a big task and depends highly
 on the community participation in the future. The database
 has already all the configuration data for full Forms3

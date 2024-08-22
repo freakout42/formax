@@ -61,3 +61,26 @@ compared - no if (ispresent == NULL) or (isempty[0] == '\0')
 just use !ispresent or *isempty. Omit curly brackets after
 compound statements when possible.
 
+Components
+==========
+
+colquery
+--------
+Parser for a natural query language. Translats human
+properties to SQL where clauses.
+
+regex
+-----
+Regular expression engine for validating user entered data.\
+See: github.com/kokke/tiny-regex-c
+
+elk
+---
+Javascript engine for 3GL triggers.\
+See: github.com/cesanta/elk
+
+mex
+---
+Microemacs editor for editing.\
+See: github.com/freakout42/microemacs
+

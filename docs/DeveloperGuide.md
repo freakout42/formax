@@ -31,7 +31,7 @@ Form Terms
  - Designer
 
     An application developer or programmer who uses
-    **formax** to create and modigy forms.
+    **formax** to create and modify forms.
 
  - Field
 
@@ -58,7 +58,9 @@ Form Terms
 
  - Operator
 
-    An end-user of a **formax** application.
+    An administrator of a **formax** application. He is
+    responsible for a stable, performant and secure runtime
+    environment.
 
  - Page
 
@@ -92,6 +94,10 @@ Form Terms
 
     A piece of logic that is executed at, or "tiggered" by,
     a form event.
+
+ - User
+
+    An end-user of a **formax** application.
 
 Database Terms
 ==============
@@ -177,26 +183,6 @@ runform
 -------
 Execute forms (.frm) interactively on a terminal by the
 end-user.
-
-colquery
---------
-Parser for a natural query language. Translats human
-properties to SQL where clauses.
-
-regex
------
-Regular expression engine for validating user entered data.\
-See: github.com/kokke/tiny-regex-c
-
-elk
----
-Javascript engine for 3GL triggers.\
-See: github.com/cesanta/elk
-
-mex
----
-Microemacs editor for editing.\
-See: github.com/freakout42/microemacs
 
 Objects
 =======
