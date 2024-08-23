@@ -168,8 +168,8 @@ switch(ch) {
 //                 case KEY_CTRL('Q'):  return KEY_F(?);       /* ?                              ? */
 /* KEF_PRESETR */  case KEY_CTRL('R'):  return KEY_PPAGE;      /* Previous set of records        PreviousSetOfRecords */
 //                 case KEY_CTRL('S'):  return KEY_F(?);       /* ?                              ? */
-/* KEF_COPYREC */  case KEY_CTRL('T'):  return KEY_F(5);       /* Copy record                    DuplicateRecord */
-/* KEF_LIST    */  case KEY_CTRL('U'):  return KEY_F(4);       /* List of values                 List */
+/* KEF_COPYREC */  case KEY_CTRL('T'):  return KEY_F(4);       /* Copy record                    DuplicateRecord */
+/* KEF_LIST    */  case KEY_CTRL('U'):  return KEY_F(5);       /* List of values                 List */
 /* KEF_PASTE   */  case KEY_CTRL('V'):  return KEY_F(3);       /* Paste / Copy field             DuplicateField Paste */
 /* KEF_NXTSETR */  case KEY_CTRL('W'):  return KEY_NPAGE;      /* Next set of records            NextSetOfRecords */
 /* KEF_QUERY   */  case KEY_CTRL('X'):  return KEY_F(10);      /* Query                          EnterQuery */
