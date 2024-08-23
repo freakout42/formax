@@ -44,6 +44,7 @@ switch(F(lastcmd)) {
    switch(F(rmode)) {
     case MOD_UPDATE:
     case MOD_QUERY:  LK = insert_record();                             break;
+    case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
     default:         LK = 0; F(y).toggle();                            break;
    }                                                                          break;
   case KEF_BACKDEL:         /* fbackdel() */
@@ -52,6 +53,7 @@ switch(F(lastcmd)) {
     case MOD_QUERY:  LK = fedit(KEF_DEL);                              break;
     case MOD_UPDATE: LK = delete_record();                             break;
     case MOD_INSERT: LK = clear_record();                              break;
+    case MOD_DELETE: LK = destroy_record();                            break;
     default:         LK = 0;                                           break;
    }                                                                          break;
   case KEF_QUERY:    LK = enter_query();                                      break;
@@ -176,7 +178,7 @@ return changed==KEF_CANCEL ? 0 : changed;
 int Function::fexit() {
    switch(F(rmode)) {
     case MOD_QUERY:
-    case MOD_UPDATE: MSG(MSG_CLEAN);                                   break;
+    case MOD_UPDATE: /*MSG(MSG_CLEAN);*/                               break;
     case MOD_INSERT: LK = create_record();                             break;
     case MOD_DELETE: LK = destroy_record();                            break;
    }

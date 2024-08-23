@@ -219,19 +219,19 @@ also the keys action in Edit-Mode if it has a different
 action there.
 
 | Key         | Ctrl+    | Function            | Edit-Mode
-|-------------|----------|---------------------|------------------
+|-------------|----------|---------------------|--------------
 | [F1]        | [Ctrl+@] | Help                |
-| [Home]      | [Ctrl+a] | Previous block      | Beginning of line
+| [Home]      | [Ctrl+a] | Previous block      | Begin of line
 | [Left]      | [Ctrl+b] | Edit field from end | Previous char
 | [F2]        | [Ctrl+c] | Copy                |
 | [Del]       | [Ctrl+d] | Delete record       | Delete char
 | [End]       | [Ctrl+e] | Next block          | End of line
 | [Right]     | [Ctrl+f] | Edit field          | Next char
 | [Backtab]   | [Ctrl+g] | Previous field      |
-| [Backspace] | [Ctrl+h] | Delete record       | Delete left char
+| [Backspace] | [Ctrl+h] | Delete record       | Delete left
 | [Tab]       | [Ctrl+i] | Next field          |
-| [Ins]       | [Ctrl+j] | Insert record       | Toggle Ins/Rep
-| [F7|Del]    | [Ctrl+k] | Delete record       | Delete char
+| [Ins]       | [Ctrl+j] | Insert record       | Mode Ins/Rep
+| [F7][Del]   | [Ctrl+k] | Delete record       | Delete char
 | [F0]        | [Ctrl+l] | Refresh             |
 | [Enter]     | [Ctrl+m] | Accept Commit Ok    |
 | [Down]      | [Ctrl+n] | Next record         |
