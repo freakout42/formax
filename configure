@@ -1,7 +1,7 @@
 #!/bin/sh
 test -f version.h || exit 1
 rm -f Makefile
-for MODUL in generate runform runform/colquery runform/regex runform/elk; do
+for MODUL in generate runform runform/colquery runform/regex runform/elk runform/crypt; do
   ( cd $MODUL; make clean; ) >/dev/null
 done
 test "$1" = "clean" && exit

@@ -1,5 +1,5 @@
 #define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpqx] [-n lg]\n" \
-  "  [-g logfile] [-l driverlib] [-t totpsec ] form.frm [user[:pass]@][sq3|dsn]..."
+  "  [-g logfile] [-l driverlib] [-t totpsec ] form.frm [user[:pass]@][sq3|dsn]...\n"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,7 +7,6 @@
 #include <locale.h>
 #include "runform.h"
 
-// global
 char *lclocale;
 int  firststart  = 1;
 int  insertmode  = 1;
@@ -23,10 +22,13 @@ int  autocommit  = 1;             // -a
 int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
 char *shiftednum = "`!@#$%^&*()"; // -n us
+char *ypassword  = NULL;
 char *username;
 Form f;
 Logger g;
 Function u;
+
+static char b64pwd[65];
 
 static void usage(int ecd) {
 char *est[] = {
@@ -62,8 +64,9 @@ if (strchr(dsn0, ';') == NULL && (filesq3 = fopen(dsn0, "r+"))) {
   *dsn1++ = '\0';
   if ((pwd = strchr(dsn0, ':'))) {
     *pwd++ = '\0';
-    if (pwdencrypt) xdecrypt(pwd, 1);
-    snprintf(dsn, MEDSIZE, "DSN=%s;UID=%s;PWD=%s", dsn1, dsn0, pwd);
+    let(b64pwd, pwd);
+    if (pwdencrypt) xdecrypt(b64pwd, 1);
+    snprintf(dsn, MEDSIZE, "DSN=%s;UID=%s;PWD=%s", dsn1, dsn0, b64pwd);
   } else {
     snprintf(dsn, MEDSIZE, "DSN=%s;UID=%s", dsn1, dsn0);
   }
@@ -76,8 +79,8 @@ int main(int argc, char *argv[]) { //, char **envp
 int i, s;
 char dsn0[MEDSIZE];
 char dsn[MEDSIZE];
-FILE *filesq3;
 char drv[SMLSIZE] = "libsqlite3odbc.so";
+FILE *filesq3;
 char *drvs[] = { "/opt/sqlite/lib/libsqlite3odbc.so",
                  "/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so",
                  "/usr/lib64/libsqlite3odbc.so"
@@ -97,8 +100,7 @@ lclocale = setlocale(LC_ALL, CHARSET);
 while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqt:Vxy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
-    case 'y': printf("%s\n", xdecrypt(optarg,0));
-              printf("%s\n", xdecrypt(optarg,1)); exit(99);
+    case 'y': ypassword = optarg; break;
     case 'g': if (g.setlogfile(optarg)) usage(16); break;
     case 'l': let(drv, optarg); break;
     case 'n':
@@ -122,6 +124,15 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqt:Vxy:")) != -1) {
   }
 }
 
+if ((i = genxorkey(argv[optind], XORKEY1))) usage(i);
+
+if (ypassword) {
+  let(b64pwd, ypassword);
+  printf("%s\n", xdecrypt(b64pwd, 0));
+  printf("%s\n", xdecrypt(b64pwd, 1));
+  exit(99);
+}
+
 // check and open the database connection - if simple rw-filepath use sqlite
 switch(argc - optind) {
  case 2:
@@ -137,9 +148,7 @@ g.init(argv[optind+1]);
 if (F(b[0]).drv == ODR_SQLITE) querycharm = 2;
 for (i=1; i<NBLOCKS; i++) F(b[i]).connect(F(b[0]));
 
-// check, open and read the form - sqlite3 file named .frm
-if ((filesq3 = fopen(argv[optind], "r")) == NULL) usage(3);
-fclose(filesq3); // check for file existence because sqlite creates empty db
+// open and read the form - sqlite3 file named .frm
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
 if (F(connect)(dsn)) usage(4);
 F(rconnect)();

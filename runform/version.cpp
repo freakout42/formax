@@ -61,28 +61,3 @@ va_end (args);
 return n+1;
 }
 
-#define XORKEY0 "%^&-_=+@?.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-static char xorder[] = XORKEY0;
-static char xorkey[] = XORKEY1;
-static int ordnum(int ch) {
-char *po;
-if ((po = strchr(xorder, ch))) {
-  return po - xorder;
-} else {
-  return -1;
-} }
-static char numord(int on) {
-return xorder[on];
-}
-char *xdecrypt(char *toe, int rev) {
-int i, j, k;
-for (i=0; toe[i] && i < 60; i++) {
-  j = ordnum((unsigned char)toe[i]);
-  if (j != -1) {
-    k = ordnum((unsigned char)xorkey[i]);
-    toe[i] = numord((j + (rev ? (sizeof(XORKEY0)-1) - k : k) ) % (sizeof(XORKEY0)-1));
-  }
-}
-return toe;
-}
-

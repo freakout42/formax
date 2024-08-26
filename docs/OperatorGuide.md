@@ -1,4 +1,12 @@
 Installation
+
+Security
+Reliability
+Cost
+Operational excellence
+Performance efficience
+Sustainability
+
 ============
 
 Install

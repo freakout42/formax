@@ -58,7 +58,13 @@ extern int letf(char *target, size_t maxlen, char *format, ...);
 extern int cats(char *target, size_t maxlen, char *source);
 extern int catc(char *target, size_t maxlen, char source);
 extern int debugf(char *format, ...);
-extern char *xdecrypt(char *toe, int rev);
+
+extern "C" {
+int genxorkey(char *frm, char *key);
+void to64frombits(char *out, char *in, int inlen);
+int from64tobits(char *out, char *in, int maxlen);
+char *xdecrypt(char *toe, int rev);
+}
 
 extern int   useodbcve3;
 extern int   monochrome;

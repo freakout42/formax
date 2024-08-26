@@ -4,7 +4,7 @@ all:  CXXFLAGS=-O3 -DNDEBUG $(LINTING)
 test: CXXFLAGS=-g -O0 $(LINTING)
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
-OBJA=cqerror.o colquery/colquery.o regex/re.o elk/elk.o
+OBJA=cqerror.o colquery/colquery.o regex/re.o elk/elk.o crypt/libmd5.a
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
 VALGRINDSUP=--gen-suppressions=no #all
 
@@ -33,9 +33,13 @@ regex/re.o:
 elk/elk.o:
 	cd elk; make elk.o
 
+crypt/libmd5.a:
+	cd crypt; make
+
 $(EXAMPLE):
 	cd ../generate; make test
 
 clean:
+	cd crypt; make clean
 	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_*
 
