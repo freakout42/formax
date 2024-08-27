@@ -42,6 +42,7 @@ int genxorkey(char *pat, char *key) {
   struct MD5Context ctx;
   unsigned char d[48];
 
+  if (pat == NULL) memset(xorkey, 'y', 64); else {
   if ((f = fopen(pat, "r")) == NULL) return 4;
   fseek(f, 0, SEEK_END);
   fsize = ftell(f);
@@ -59,5 +60,6 @@ int genxorkey(char *pat, char *key) {
   to64frombits(xorkey, d, 48);
   xorkey[64] = '\0';
   free(buf);
+  }
   return 0;
 }
