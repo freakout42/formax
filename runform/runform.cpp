@@ -1,5 +1,5 @@
 #define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpqx] [-n lg]\n" \
-  "  [-g logfile] [-l driverlib] [-t totpsec ] form.frm [user[:pass]@][sq3|dsn]...\n"
+  "  [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...\n"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -79,6 +79,10 @@ int main(int argc, char *argv[]) { //, char **envp
 int i, s;
 char dsn0[MEDSIZE];
 char dsn[MEDSIZE];
+char totpdigest[8];
+char totpresult[8];
+
+// search for the sqlite3 driver
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
 char *drvs[] = { "/opt/sqlite/lib/libsqlite3odbc.so",
@@ -101,6 +105,12 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqt:Vxy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
     case 'y': ypassword = optarg; break;
+    case 't':
+      fputs("TOTP: ", stdout);
+      fgets(totpdigest, 8, stdin);
+      snprintf(totpresult, 8, "%06d\n", res4key(optarg));
+      if (strcmp(totpdigest, totpresult)) usage(1);
+      break;
     case 'g': if (g.setlogfile(optarg)) usage(16); break;
     case 'l': let(drv, optarg); break;
     case 'n':

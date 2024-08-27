@@ -1,4 +1,4 @@
-OBJECTS = md5.o base64.o xdecrypt.o totp.o
+OBJECTS = md5.o base64.o xdecrypt.o totp.o sha1.o hmacsha1.o
 CFLAGS = -O2 -Wall
 
 all: libmd5.a

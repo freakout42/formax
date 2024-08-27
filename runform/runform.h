@@ -62,6 +62,7 @@ extern int debugf(char *format, ...);
 extern "C" {
 int genxorkey(char *frm, char *key);
 char *xdecrypt(char *toe, int rev);
+int res4key(char *key);
 }
 
 extern int   useodbcve3;
