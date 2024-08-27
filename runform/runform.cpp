@@ -144,6 +144,9 @@ switch(argc - optind) {
  default: usage(2);
 }
 if (F(b[0]).connect(dsn)) usage(8);
+memset(dsn, 'y', MEDSIZE);
+genxorkey(NULL, NULL);
+
 g.init(argv[optind+1]);
 if (F(b[0]).drv == ODR_SQLITE) querycharm = 2;
 for (i=1; i<NBLOCKS; i++) F(b[i]).connect(F(b[0]));
