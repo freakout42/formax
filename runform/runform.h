@@ -61,8 +61,6 @@ extern int debugf(char *format, ...);
 
 extern "C" {
 int genxorkey(char *frm, char *key);
-void to64frombits(char *out, char *in, int inlen);
-int from64tobits(char *out, char *in, int maxlen);
 char *xdecrypt(char *toe, int rev);
 }
 
