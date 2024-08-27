@@ -127,6 +127,7 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqt:Vxy:")) != -1) {
 if ((i = genxorkey(argv[optind], XORKEY1))) usage(i);
 
 if (ypassword) {
+  if (getuid()) usage(1);
   let(b64pwd, ypassword);
   printf("%s\n", xdecrypt(b64pwd, 0));
   printf("%s\n", xdecrypt(b64pwd, 1));

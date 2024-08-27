@@ -1,15 +1,14 @@
-TARGET   = md5sum
-OBJECTS  = md5.o base64.o xdecrypt.o
-CFLAGS   = -O2 -Wall
+OBJECTS = md5.o base64.o xdecrypt.o totp.o
+CFLAGS = -O2 -Wall
 
-all: $(TARGET)
-
-$(TARGET): md5sum.o libmd5.a
-	$(CC) -o $@ md5sum.o libmd5.a
+all: libmd5.a
 
 libmd5.a: $(OBJECTS)
 	$(AR) rcs $@ $(OBJECTS)
 
+totp: totp.c sha1.o hmacsha1.o
+	$(CC) -DWITHMAIN -o $@ totp.c sha1.o hmacsha1.o -lm
+
 clean:
-	rm -f *.o *.a $(TARGET)
+	rm -f *.o *.a $(TARGET) totp
 
