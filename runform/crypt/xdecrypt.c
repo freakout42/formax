@@ -18,6 +18,7 @@ static char numord(int on) {
 return xorder[on];
 }
 
+/* simple shift algo secure since key > pass */
 char *xdecrypt(char *toe, int rev) {
 int i, j, k;
 unsigned char buf[256];
@@ -35,6 +36,7 @@ if (rev) { from64tobits(buf, toe, 64); strcpy(toe, buf); }
 return toe;
 }
 
+/* key is combined with forms md5 */
 int genxorkey(char *pat, char *key) {
   char *buf;
   int fsize;
