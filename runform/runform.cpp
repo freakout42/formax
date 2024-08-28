@@ -77,7 +77,7 @@ if (strchr(dsn0, ';') == NULL && (filesq3 = fopen(dsn0, "r+"))) {
 
 int main(int argc, char *argv[]) { //, char **envp
 int i, s;
-char dsn0[MEDSIZE];
+char dsn0[SMLSIZE];
 char dsn[MEDSIZE];
 char totpdigest[8];
 char totpresult[8];
@@ -107,7 +107,7 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqt:Vxy:")) != -1) {
     case 'y': ypassword = optarg; break;
     case 't':
       fputs("TOTP: ", stdout);
-      fgets(totpdigest, 8, stdin);
+      if (!fgets(totpdigest, 8, stdin)) usage(1);
       snprintf(totpresult, 8, "%06d\n", res4key(optarg));
       if (strcmp(totpdigest, totpresult)) usage(1);
       break;

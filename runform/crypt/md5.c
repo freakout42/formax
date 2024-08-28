@@ -12,7 +12,7 @@
 void
 byteSwap(UWORD32 *buf, unsigned words)
 {
-        md5byte *p = (md5byte *)buf;
+        char *p = (char *)buf;
 
         do {
                 *buf++ = (UWORD32)((unsigned)p[3] << 8 | p[2]) << 16 |
@@ -37,19 +37,19 @@ ctx->bytes[1] = 0;
 }
 
 /* Update context to reflect the concatenation of another buffer full of bytes. */
-void MD5Update(struct MD5Context *ctx, md5byte const *buf, unsigned len) {
+void MD5Update(struct MD5Context *ctx, char *buf, unsigned len) {
 UWORD32 t;
 t = ctx->bytes[0];
 /* Carry from low to high */
 if ((ctx->bytes[0] = t + len) < t) ctx->bytes[1]++;
 t = 64 - (t & 0x3f);    /* Space available in ctx->in (at least 1) */
 if (t > len) {
-  memcpy((md5byte *)ctx->in + 64 - t, buf, len);
+  memcpy((char *)ctx->in + 64 - t, buf, len);
   return;
 }
 
 /* First chunk is an odd size */
-memcpy((md5byte *)ctx->in + 64 - t, buf, t);
+memcpy((char *)ctx->in + 64 - t, buf, t);
 byteSwap(ctx->in, 16);
 MD5Transform(ctx->buf, ctx->in);
 buf += t;
@@ -71,9 +71,9 @@ memcpy(ctx->in, buf, len);
 /* Final wrapup - pad to 64-byte boundary with the bit pattern
  * 1 0* (64-bit count of bits processed, MSB-first)
  */
-void MD5Final(md5byte digest[16], struct MD5Context *ctx) {
+void MD5Final(char digest[16], struct MD5Context *ctx) {
 int count = ctx->bytes[0] & 0x3f;       /* Number of bytes in ctx->in */
-md5byte *p = (md5byte *)ctx->in + count;
+char *p = (char *)ctx->in + count;
 /* Set the first char of padding to 0x80.  There is always room. */
 *p++ = 0x80;
 /* Bytes of padding needed to make 56 bytes (-8..55) */
@@ -82,7 +82,7 @@ if (count < 0) {        /* Padding forces an extra block */
   memset(p, 0, count + 8);
   byteSwap(ctx->in, 16);
   MD5Transform(ctx->buf, ctx->in);
-  p = (md5byte *)ctx->in;
+  p = (char *)ctx->in;
   count = 56;
 }
 memset(p, 0, count);
@@ -108,7 +108,7 @@ MD5Init(ctx);
  * reflect the addition of 16 longwords of new data.  MD5Update blocks
  * the data and converts bytes into longwords for this routine.
  */
-void MD5Transform(UWORD32 buf[4], UWORD32 const in[16]) {
+void MD5Transform(UWORD32 buf[4], UWORD32 in[16]) {
 register UWORD32 a, b, c, d;
 a = buf[0];
 b = buf[1];

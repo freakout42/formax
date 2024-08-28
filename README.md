@@ -57,9 +57,7 @@ Don't hesitate to create any issues when in trouble.
 
 Feature roadmap
 ---------------
- - boolean field
- - field help
- - key help screen
+ - full field functionality
  - multi-record fields
  - in-field editing
  - editor

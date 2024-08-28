@@ -21,7 +21,7 @@ return xorder[on];
 /* simple shift algo secure since key > pass */
 char *xdecrypt(char *toe, int rev) {
 int i, j, k;
-unsigned char buf[256];
+char buf[256];
 if (strlen(toe) < 64) {
 if (!rev) { to64frombits(buf, toe, strlen(toe)+1); strcpy(toe, buf); }
 for (i=0; toe[i] && i < 64; i++) {
@@ -42,7 +42,7 @@ int genxorkey(char *pat, char *key) {
   int fsize;
   FILE* f;
   struct MD5Context ctx;
-  unsigned char d[48];
+  char d[48];
 
   if (pat == NULL) memset(xorkey, 'y', 64); else {
   if ((f = fopen(pat, "r")) == NULL) return 4;
