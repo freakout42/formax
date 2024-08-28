@@ -9,11 +9,11 @@
 #define IPAD 0x36
 #define OPAD 0x5C
 
-int sha1(uint8_t *digest, const uint8_t *data, size_t databytes);
+int sha1(uint8_t *digest, uint8_t *data, size_t databytes);
 
 void hmacsha1(void *d, void *k, int kl, void *msg, int msgl) {
 	int i;
-	char *buf;
+	unsigned char *buf;
   uint8_t hash[20];
   if (kl > 64) return;
   if ((buf = malloc(64 + 20 + msgl)) == NULL) return;

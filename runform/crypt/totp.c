@@ -105,8 +105,6 @@ void hmacsha1(void *d, void *k, int kl, void *msg, int msgl);
 
 static uint8_t *hmac(unsigned char *key, int kl, uint64_t interval) {
 static uint8_t d[20];
-unsigned char *md;
-md = (unsigned char *)&interval;
 hmacsha1(d, key, kl, (unsigned char *)&interval, sizeof(interval)); 
 return d;
 }
