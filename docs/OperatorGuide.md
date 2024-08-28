@@ -133,9 +133,8 @@ ssh-key must be generated and an .ssh/authorized created:
 In `/usr/local/bin/formax` having mode 755:
 ~~~
 #!/bin/sh
-stty susp undef
-/opt/formax/bin/runform -g/tmp/formax.log /opt/formax/lib/scotty.frm \
-  dbuser:dbpass@dbdsn
+/opt/formax/bin/runform -g/tmp/formax.log \
+  /opt/formax/lib/scotty.frm dbuser:dbpass@dbdsn
 exit
 ~~~
 
