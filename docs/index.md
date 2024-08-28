@@ -1,20 +1,20 @@
 **formax** is a tool for developing and executing fast,
-powerful and user-friedly character-based, interactive
+powerful and user-friendly character-based, interactive
 database applications. Do not confuse these applications
 with data-management tools like Toad, phpMyAdmin or
 SQLServer Management Studio. These are for database-admins.
 **formax** builds and runs end-user applications, which can
-be used without any SQL-knowledge and ensure only valid data
+be used without any SQL knowledge and ensure only valid data
 operations. The user is typically an enterprise employee in
-the office or home-office. He is trained to use these forms
+the office or homeoffice. He is trained to use these forms
 with unmatched efficiency. The fast, keyboard-optimized,
-no-mouse C++-application and the minimal bandwidth needs,
+nomouse C++-application and the minimal bandwidth needs,
 result in massive savings of working time for data
 maintenance.
 ~~~
 Don't look at formax as a romantic nostalgica!
-It is provided as a serious alternative for specific
-use-cases for which it can have massive advantages.
+It is provided as serious alternative for specific
+use-cases for which it can have massive advantages
 ~~~
 The basic concepts of Oracle SQL-Forms 3.0 (1988) are
 combined with modern standards and current database best
@@ -24,8 +24,8 @@ concept universally. The best ideas for a powerful user
 interface came from Emacs, Clipper, SAP, Lightroom and
 Lotus/1-2-3. The result is the most effective solution
 possible for the end-user. By eleminating all proprietary
-dependencies und being open-source with a permissive license
-the system is totally future-proof. The minimal costs to
+dependencies und being opensource with a permissive license
+the system is totally futureproof. The minimal costs to
 build a **formax** application makes adapting this
 technology a no-brainer for any enterprise.
 
@@ -121,7 +121,7 @@ on the community participation in the future. The database
 has already all the configuration data for full Forms3
 functionality. Most of the later functionality of Oracle
 Forms was needed for the client-server and web frontends and
-did not extend the actual database functions.
+did not extend the real application functionality.
 
 ### License
 

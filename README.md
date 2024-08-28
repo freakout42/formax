@@ -136,6 +136,7 @@ which only adds `/opt/arx/bin` to the PATH.
 make
 sudo make install
 . /etc/profile.d/arx.sh
+./runform/runform generate/formax.frm generate/formax.frm
 ~~~
 
 Getting started
