@@ -172,5 +172,7 @@ generated forms against the production database.
 
 If 3FA is required, a totp token must be generated and
 supplied with the `-t` switch. The qr code for the token can
-be used with any authenticator on the smart-phone of the
-user to supply the code to the runform program at startup.
+be used with any authenticator. The smart-phone of the user
+can supply the code to the runform program at startup. To
+login the ssh-key file, the passphrase and the smartphone
+forms an easy 3FA.
