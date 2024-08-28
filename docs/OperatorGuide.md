@@ -87,7 +87,9 @@ Build
 =====
 
 Fork in github and create codespace or download and extract:
+
     https://github.com/freakout42/formax/archive/refs/heads/main.zip  
+
 Then do the following to build and install into `/opt/arx/`.
 Nothing outside `/opt/arx/` will be touched in any way by
 the installation with the exception of /etc/profile.d/arx.sh
@@ -107,6 +109,7 @@ Copy /opt/arx to your production/development/test machines.
 Also /etc/profile.d/arx.sh should be installed for
 convienience. On the production host `/opt/arx/bin/runform`
 should have mode 2751:
+
     -rwxr-s--x 1 axel devel 266152 Aug 10 16:05 runform
 
 Forms
@@ -115,6 +118,7 @@ Forms
 The forms should be copied into a directory owned by a
 developer which primary group matches the group of the
 runform binary with mode 751 and the forms 640:
+
     drwxr-x--x 2 axel devel 6     Jul  4 16:07 lib
     -rw-r----- 1 axel devel 36864 Aug 10 16:05 lib/scotty.frm
 
@@ -123,7 +127,9 @@ Users
 
 Every user needs an account on the production machine. A
 ssh-key must be generated and an .ssh/authorized created:
+
     command="/usr/local/bin/formax",no-X11-forwarding,no-agent-forwarding ssh-rsa AAAA...
+
 In `/usr/local/bin/formax` having mode 755:
 ~~~
 #!/bin/sh
