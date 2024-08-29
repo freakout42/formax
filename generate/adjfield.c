@@ -16,7 +16,7 @@ int main() {
       f[0] = NXT;
       f[1] = t = NXT;
       len = 2;
-      while(t != '\n' && (t == '_' || (t >= '0' && t <= '9'))) { t = NXT; len++; }
+      while(t == '_' || t == '.' || (t >= '0' && t <= '9')) { len = t=='.' ? 1 : len+1; t = NXT; }
       printf("UPDATE fields set line = %d, col = %d, dlen = %d where id = %d;\n", line, act, len, atoi(f));
     }
     if (t == '\n') {

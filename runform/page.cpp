@@ -16,10 +16,23 @@ return 0;
 // must be rewritten for multiple pages
 int Page::maps(Qdata *qma) {
 int i, r;
+char *t, *p;
 for (i = 1; i <= qma->rows; i++) {
   r = qma->n(i, 1) - 1;
   if (r > NLINES) return 1;
   map[r] = qma->c(i, 2);
+  p = NULL;
+  // white the $nn_ pos markers
+  for (t=map[r]; *t; t++) {
+    if (*t == '$') {
+      p = t;
+    } else {
+      if (p && (!(*t == '_' || *t == '.' || (*t >= '0' && *t <= '9')))) {
+        if (t - p > 1) while (p < t) *p++ = ' ';
+        p = NULL;
+      }
+    }
+  }
 }
 return 0;
 }
