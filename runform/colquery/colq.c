@@ -5,10 +5,7 @@
 #include <unistd.h>
 #include "colquery.h"
 
-int main (argc, argv)
-	int argc;
-	char *argv[];
-{
+int main (int argc, char *argv[]) {
 int rc = 0;            /* parser return code			*/
 char query[2048];      /* query output buffer			*/
 char where[1024] = ""; /* input buffer				*/

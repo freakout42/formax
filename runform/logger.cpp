@@ -69,7 +69,7 @@ let(logpath, lg3);
 return 0;
 }
 
-void Logger::logfmt(char *format, ...) {
+void Logger::logfmt(const char *format, ...) {
 va_list args;
 if (*logpath) {
 va_start (args, format);

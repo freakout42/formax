@@ -7,8 +7,7 @@
 char *cqop;
 static char *ip;
 
-int cqinput ()
-{
+int cqinput (void) {
 #ifdef DEBUG
 fprintf(stderr,"i:0%02x\n", *ip);
 #endif
@@ -21,9 +20,7 @@ void unput ()
 ip--;
 }
 
-int parse (i, o)
-	char *i, *o;
-{
+int parse (char *i, char *o) {
 #ifdef DEBUG
 int status;
 #endif

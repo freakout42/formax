@@ -354,7 +354,7 @@ writef(y, x, 0, strlen(str), str);
 }
 
 /* Prints a string in video memory at a selected location in a color */
-void Screen::writef(int y, int x, int colcode, int width, char *format, ...) {
+void Screen::writef(int y, int x, int colcode, int width, const char *format, ...) {
 va_list args;
 char s[MEDSIZE];
 int oldy, oldx;

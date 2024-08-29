@@ -14,7 +14,7 @@ public:
 	char *msg(int num);
   int setattributs(int attrib);
   void writes(int y, int x, char *str);
-  void writef(int y, int x, int colcode, int width, char *format, ...);
+  void writef(int y, int x, int colcode, int width, const char *format, ...);
   void toggle();
   int wgetc();
 	int getkb();

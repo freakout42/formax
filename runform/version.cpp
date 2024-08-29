@@ -3,7 +3,7 @@
 #include "runform.h"
 
 // avoid include <stdio.h> need
-int letf(char *target, size_t maxlen, char *format, ...) {
+int letf(char *target, size_t maxlen, const char *format, ...) {
 va_list args;
 int n;
 va_start (args, format);
@@ -36,7 +36,7 @@ switch(chr) {
 }
 }
 
-int cats(char *target, size_t maxlen, char *source) {
+int cats(char *target, size_t maxlen, const char *source) {
 strncat(target, source, maxlen);
 return strlen(target);
 }

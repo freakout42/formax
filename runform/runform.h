@@ -54,13 +54,13 @@ extern Function u;
 extern int yesno(int c);
 extern int isprintable(int c);
 extern int ispunctation(int c);
-extern int letf(char *target, size_t maxlen, char *format, ...);
-extern int cats(char *target, size_t maxlen, char *source);
+extern int letf(char *target, size_t maxlen, const char *format, ...);
+extern int cats(char *target, size_t maxlen, const char *source);
 extern int catc(char *target, size_t maxlen, char source);
 extern int debugf(char *format, ...);
 
 extern "C" {
-int genxorkey(char *frm, char *key);
+int genxorkey(char *frm, const char *key);
 char *xdecrypt(char *toe, int rev);
 int res4key(char *key);
 }
