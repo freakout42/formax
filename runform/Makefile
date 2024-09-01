@@ -14,11 +14,11 @@ runform: curkeys.h $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
 
 run: runform $(EXAMPLE)
-	./runform -g/tmp/formax.log -nuk $(EXAMPLE)
+	./runform -g/tmp/formax.log $(EXAMPLE)
 
 test: runform $(EXAMPLE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
-    ./runform -g/tmp/formax.log -nuk $(EXAMPLE) 2>$@
+    ./runform -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
 
 curkeys.h: curkeys
@@ -37,9 +37,9 @@ crypt/libmd5.a:
 	cd crypt; make
 
 $(EXAMPLE):
-	cd ../generate; make test
+	cd ../generate; make clean test
 
 clean:
-	cd crypt; make clean
-	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_*
+	for D in colquery regex elk crypt; do ( cd $$D; make clean; ); done
+	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_* $(EXAMPLE)
 

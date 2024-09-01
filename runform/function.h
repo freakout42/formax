@@ -11,6 +11,7 @@ private:
   int notrunning;
   int trigger(int tid);
   int enter_the_form();
+  int switch_mode(fmode mod);
   int fmove(int bi, int fi);
   int fmover(int ri);
   int fedit(int pos);

@@ -9,6 +9,7 @@ public:
   int init(Qdata *fld, int rix);
   void clear();
   int edit(int pos);
+  int noedit();
   void show(int cur);
 private:
   char **valuep();

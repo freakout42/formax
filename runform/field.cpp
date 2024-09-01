@@ -40,22 +40,32 @@ sequencenum = F(b[blockindex].addattribute)(rix-1);
 return 0;
 }
 
+int Field::noedit() {
+switch(CM) {
+ case MOD_UPDATE: if (!updateable) return 1;
+ case MOD_QUERY:  break;
+ case MOD_INSERT: break;
+ case MOD_DELETE: break;
+}
+return 0;
+}
+
 void Field::show(int cur) {
 int color;
-switch(F(rmode)) {
+switch(CM) {
  case MOD_QUERY:  color = COL_QUERY;  break;
  case MOD_INSERT: color = COL_NEWREC; break;
  case MOD_DELETE: color = COL_DELETED; break;
  default:         color = COL_FIELD;
 }
-if (cur && F(rmode) != MOD_DELETE) color = COL_CURRENT;
-F(p[1].writef)(line, col, color, displaylen, "%.*s", displaylen, F(rmode)==MOD_QUERY ? queryhuman : *valuep());
+if (cur && CM != MOD_DELETE) color = COL_CURRENT;
+F(p[1].writef)(line, col, color, displaylen, "%.*s", displaylen, CM==MOD_QUERY ? queryhuman : *valuep());
 if (cur) F(p[1].wmov)(line, col);
 }
 
 void Field::clear() {
 char **v;
-if (F(rmode) == MOD_QUERY) {
+if (CM == MOD_QUERY) {
   *queryhuman = '\0';
   *querywhere = '\0';
 } else {
@@ -78,7 +88,7 @@ char *u;
 char **c;
 re_t re;
 pressed = 0;
-switch(F(rmode)) {
+switch(CM) {
  case MOD_UPDATE:
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }
  case MOD_INSERT:
