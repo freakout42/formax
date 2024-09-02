@@ -3,8 +3,8 @@ formax: enterprise-applications on terminals
 
 **formax** is a tool for developing and executing
 user-friedly character-based database applications with
-extreme efficiency. The basic concepts of Oracle SQL-Forms
-3.0 are combined with curses as the terminal interface, ODBC
+extreme efficiency. The concept of Oracle SQL-Forms
+3.0 is combined with curses as the terminal interface, ODBC
 for universal database access and JavaScript as trigger
 language. The result is the most efficient solution possible
 for the end-user. The applications can also be build with
@@ -49,27 +49,6 @@ technologies and all required enterprise-features:
  - no free SQL for the end-user
  - no operating system exits in the form-engine
  - 3FA security can be setup easily
-
-Status
-======
-Stable 1.1.0 is useable for single-block single-page forms.
-Don't hesitate to create any issues when in trouble.
-
-Feature roadmap
----------------
- - full field functionality
- - multi-record fields
- - in-field editing
- - editor
- - triggers
- - transaction processing
- - multiple blocks and master-detail
- - list of values - subforms
- - menue multiple forms
- - cqy.y: 5 shift/reduce conflicts
- - sap-like batchinput
- - key macros
- - multiple databases
 
 Playground
 ----------
@@ -136,7 +115,6 @@ which only adds `/opt/arx/bin` to the PATH.
 make
 sudo make install
 . /etc/profile.d/arx.sh
-./runform/runform generate/formax.frm generate/formax.frm
 ~~~
 
 Getting started
@@ -182,6 +160,27 @@ changes by running runform again. Have Fun.
 editform myform
 runform myform.frm mydb.sq3
 ~~~
+
+Status
+======
+Stable 1.1.0 is useable for single-block single-page forms.
+Don't hesitate to create any issues when in trouble.
+
+Feature roadmap
+---------------
+ - full field functionality
+ - multi-record fields
+ - in-field editing
+ - editor
+ - triggers
+ - transaction processing
+ - multiple blocks and master-detail
+ - list of values - subforms
+ - menue multiple forms
+ - cqy.y: 5 shift/reduce conflicts
+ - sap-like batchinput
+ - key macros
+ - multiple databases
 
 License
 =======
