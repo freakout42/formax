@@ -1,191 +1,117 @@
-Form Terms
-==========
-
- - Application
-
-    A form or a series of forms that satisfies a business function.
-
- - Base table
-
-    The database table on which a block is based.
-
- - Base table field
-
-    A field that corresponds to a column in the base table
-    of the block that owned the field.
-
- - Block
-
-    A logical collection of fields in a form. A block can
-    correspond to one table in the database or to no table.
-
- - Constant text
-
-    Text that appears in a form time it is run.
-
- - Context
-
-    A concept that you can use to determine what parts of a
-    form you can currently access from within the interface.
-
- - Designer
-
-    An application developer or programmer who uses
-    **formax** to create and modify forms.
-
- - Field
-
-    An area on a page that can display data and accept
-    operator input. The data that they display can
-    correspond to data from a column in a database table.
-
- - Form
-
-    A logical collection of blocks, fields and triggers.
-
- - Form database
-
-    A sqlite-database containing all the objects that make
-    up the form.
-
- - Multi-record block
-
-    A block that can display more than one record at a time.
-
- - Object
-
-    A group of data, such as a form, block, field or trigger.
-
- - Operator
-
-    An administrator of a **formax** application. He is
-    responsible for a stable, performant and secure runtime
-    environment.
-
- - Page
-
-    A collection of display information. Similar in concept
-    to a slide Projection, a page displays fields and
-    constant text to operators on their computer or terminal
-    screen when they execute a form.
-
- - Pop-up window
-
-    A **formax** object that overlays an area of the current
-    display. The form displays a pop-up window in response
-    to some event or user action.
-
- - Record
-
-    Data from one row in a database table or view, as
-    presented in a form.
-
- - Scope
-
-    The domain, or range, in which a trigger operates. This
-    domain is determined by the level (form, block, or field)
-    at which you define the trigger.
-
- - Single-record block
-
-    A block that can display only one record at a time.
-
- - Trigger
-
-    A piece of logic that is executed at, or "tiggered" by,
-    a form event.
-
- - User
-
-    An end-user of a **formax** application.
-
-Database Terms
-==============
-
- - Column
-
-    In a database table, a "vertical" group of cells that
-    represent one kind of data.
-
- - Constraint
-
-    A rule or restriction concerning a piece of data that is
-    enforced at the data level, rather than the object or
-    application level.
-
- - Database
-
-    A collection of tables controlled by one data dictionary.
-
- - Foreign key
-
-    A value or column in one table that refers to a primary
-    key in another table.
-
- - Index
-
-    An optional structure associated with a table that is
-    used by the database software to locate rows of the
-    table quickly, and optionally to guarantee that every
-    row is unique.
-
- - Lock
-
-    A restriction that assigns temporary ownership, or
-    control, of a database resource (table or row) to a
-    user. A lock can prevent other users from changing data
-    that a user is updating.
-
- - Primary key
-
-    Information used to identify a row in a table. Also
-    known as a key.
-
- - Row
-
-    In a database table, a "horizontal" group of column
-    values.
-
- - Table
-
-    The basic unit of information in a relational database
-    management system. A table is a two dimensional grid
-    that is made up of rows and columns.
-
- - Transaction
-
-    A logical unit of work. Specifically, a transaction is
-    the group of events that occurs between the data changes
-    and the user commiting them.
-
-Components
-==========
-**formax** consists of the following programs, or
-components, that you can execute independently from the
-command line.
-
-generate
---------
-makeform is a shell script which can produce the sql script
-(.inp) which in turn can create the form database (.frm) by
-using the sqlite3 utility. The produced sql script
-represents in practice the source code of the form
-application and can be edited to change the default
-behaviour or to add objects to the form.
-
-editform
---------
-can edit the form layout by an editor and the fields table
-database with a form. The editor is called with the .inp
-file to make other adjustments before the .frm is recreated.
-
-runform
--------
-Execute forms (.frm) interactively on a terminal by the
-end-user.
+What is **formax**?
+===================
+
+**formax** is a "no-code" development framework for forms
+based applications. These applications can enter, query,
+update and delete data in any database which has an
+ODBC-driver. With no programming simply by assigning form
+fields to database tables and columns a working form can be
+build within 5 minutes without any coding.
+
+The forms run within a terminal. They are full-screen,
+interactive and keyboard driven. Any terminal with a
+terminfo (ncurses) database is supported with usable
+function keys and color support.
+
+The system is enterprise-ready. Security, reliability, cost
+and operational excellence are fully covered and the
+important properties for developers - performance and
+sustainability are on top with C++ and open source.
+
+Terms
+=====
+
+| Term             | Explanation                            |
+|------------------|----------------------------------------|
+| Application      | forms that satisfy a business function |
+| Base table       | database table a block is based on     |
+| Base table field | field that corresponds to a column in  |
+|                  | the base table of the fields block     |
+| Block            | logical collection of fields in a form |
+|                  | corresponds to table in the database   |
+| Constant text    | text that appears in a running form    |
+| Context          | concept that you can use to determine  |
+|                  | what parts of a form you can access    |
+| Designer         | application developer or programmer    |
+| Field            | area on a page that can display data   |
+|                  | and accept user input                  |
+| Form             | collection of blocks, fields, triggers |
+| Form database    | sqlite-database containing the form    |
+| Multirecord block| block with more than one record        |
+| Object           | group of data, such as a form, block,  |
+|                  | field or trigger                       |
+| Operator         | administrator of an application        |
+|                  | responsible for a stable, performant   |
+|                  | and secure runtime environment         |
+| Page             | collection of display information      |
+| Pop-up window    | overlays an area of the current display|
+|                  | displays in response to user action    |
+| Record           | data from one row in a database table  |
+| Scope            | domain in which a trigger operates     |
+|                  | determined by the level (form, block,  |
+|                  | or field) of the trigger definition    |
+| Trigger          | piece of logic executed at a form event|
+| User             | end-user of a **formax** application   |
+| Column           | "vertical" group of cells in a database|
+| Constraint       | rule or restriction concerning a piece |
+|                  | of data that is enforced at data level,|
+|                  | rather than the application level      |
+| Database         | collection of tables                   |
+| Foreign key      | column that refers to a primary key    |
+| Index            | optional structure of a table that is  |
+|                  | used by the database software to locate|
+|                  | rows quickly and optionally guarantee  |
+|                  | that every row is unique               |
+| Lock             | restriction that assigns control of a  |
+|                  | resource to a user - can prevent other |
+|                  | users from changing data meanwhile     |
+| Primary key      | information used to identify a row     |
+| Row              | "horizontal" group of cells in database|
+| Table            | basic unit of information in database  |
+|                  | 2 dimensional grid of rows and columns |
+| Transaction      | logical unit of work                   |
+
+Programs
+========
+
+**formax** contains the following programs, that you can
+execute independently from the command line:
+
+ - makeform
+
+is a shell script which can produce a form for a table with
+default functionality. The input parameters are just the table
+and column names - the output is a sql script (.inp). This
+script can create the form database (.frm). In practice the
+produced sql script represents the source code of the form.
+You edit the script to change the default behaviour or to
+add objects to the form. The form database is all you need
+to run the application.
+
+ - editform
+
+is another shell script. It offers a more convenient way to
+change a form by three steps. First it extracts the
+boilerplate from the main page and loads it into your
+preferred editor. Edit the form layout and the field
+positions and lengths with a WYSIWYG concept. The edited
+file is inserted back to the form. The next step is running
+a form to modify all the fields properties, which makes up a
+great portion of any form development work. Last the editor
+is called with the .inp file to make other fine adjustments
+before the .frm is recreated.
+
+ - runform
+
+is the heart of the system. This single executable runs
+forms (.frm) interactively on a terminal. It needs only two
+parameters to run - the form database file and the ODBC-DSN.
+It is run by the end-user typically wrapped into a shell
+script within his ssh startup command.
 
 Objects
 =======
+
 A **formax** application is made up of objects. These
 objects contain all the information that is needed for an
 application. They have a 1:1 relationship to the tables in
@@ -193,47 +119,72 @@ the form-database and to the classes in the C++ source. In
 the source-code there is a separate class for every object 
 for reading the form-database and for processing.
 
-Forms
------
+Form
+----
+
 The primary object of a **formax** application is the form.
 A form is made up of additional objects. These objects link
 the form to database elements, such as columns and tables,
 and provide control over the flow of execution.
 
-Blocks
-------
+Block
+-----
+
 Describe each section or subsection of the form, and serve
 as the basis of default database interaction.
 
-Fields
-------
+Field
+-----
+
 Represent columns or data entry areas and describe how the
 data should be displayed and validated and how an operator
 should interact with the data while it is entered.
 
-Pages
------
+Page
+----
+
 Are collections of display information, such as constant
 text. All fields are displayed on some page.
 
-Triggers
---------
+Trigger
+-------
+
 Are sets of processing commands associated with event
 points, such as when a particular function key is pressed by
 the operator.
 
 Processing
 ==========
-When a form is executed **formax** follows a pre-defined set
+
+When a form is executed runform follows a pre-defined set
 of rules for how actions should occur. These actions include
 navigation whithin the application and the validation of
 data. Within the processing rules, you can customize the
 default behaviour to meet the needs of your application.
 
+Status and mode
+---------------
+
+On top of the screen runform displays a status line. The
+status line indicates the current form, block, field, record
+and mode. The current mode determines the action that will
+be processed with the current data (block, field, record) by
+using the keyboard. There are four main modes for the four
+main actions and the special Edit-mode for entering data.
+
+| Mode             | Action                                |
+|------------------|---------------------------------------|
+| Insert-Mode      | Create   -> Enter new records/data    |
+| Query-Mode       | Retrieve -> Search in database        |
+| Update-Mode      | Update   -> Display and change data   |
+| Delete-Mode      | Delete   -> Delete records/data       |
+| Edit-Mode        |             Edit data                 |
+
 Events and Functions
 --------------------
+
 All processing centers around events. Put simply, events are
-things that occur when a form is exeecuted. **formax** knows
+things that occur when a form is exeecuted. runform knows
 about events and handles them by executing functions. Note
 that during processing, events are usually nested. That is,
 the occurence of one event usually invokes functions that
@@ -243,6 +194,7 @@ processes of navigation and validation.
 
 Trigger Points
 --------------
+
 Every function that an event calls might have on or more
 trigger point associated with it. A trigger point is
 temporal place in an event with a specific trigger type is
@@ -254,22 +206,93 @@ Navigation
 ----------
 
 Navigation is an internal function that is invoked by
-specific events. **formax** perfoms navigation primarily to
+specific events. runform perfoms navigation primarily to
 move the cursor from one location to another. The main
 concepts of navigation are the navigation unit and the
 cursor. The navigation unit is always the field.
 
 Validation
 ----------
+
 Validation is an internal function that is invoked by
-specific events. Validation is the process by which
-**formax** determines whether the data in an object is valid
-or correct.
+specific events. Validation is the process by which runform
+determines whether the data in an object is valid or
+correct.
 
 Trigger Processing
 ------------------
+
 Events invoke functions, which have trigger points. When
-**formax** processes a trigger point, it executes, or fires,
+runform processes a trigger point, it executes, or fires,
 the associated trigger. Every trigger pont has a specific
 type of trigger associated with it.
 
+Development
+===========
+
+In version 1.x developing with **formax** is kind of a
+rudimentary	task only supported by a simple script
+`editform`. Version 1 first attention applys to user
+experience and documentation. Anything beyond layout editing
+and field properties has to be done by editing the .inp
+file and needs knowledge from the source code or adapted
+experience from Oracle Forms jobs. Since 1.x can only handle
+one block, table and page this is not a big deal anyway.
+Follow the "Getting started" instruction in the README first
+to get the basic idea for development quickly.
+
+Page layout
+-----------
+
+The `editform` script can extract the pages boilerplate
+(background) into your preferred editor. The placeholder for
+the fields are `$nn___` with nn as the field number and the
+`_`s imply the display length of the field. A trailing `.
+` means the length is only 1 character (for binary 0/1
+fields). The edited text file is incorporated into the form
+database after writing.
+
+Field properties
+----------------
+
+After the layout `editform` brings up runform itself with a
+form for the forms fields. The effect of the properties is
+as follows:
+
+| Property | Effect for runform                            |
+|----------|-----------------------------------------------|
+| Id       | primary key   - DO NOT CHANGE                 |
+| form_id  | form  id = 1  - DO NOT CHANGE                 |
+| blkn     | block id = 1  - DO NOT CHANGE                 |
+| pagn     | page  id = 1  - DO NOT CHANGE                 |
+| name     | name corresponds to column name of the table  |
+| Help     | help text                                     |
+| Seq      | sequence for user navigation                  |
+| Line     | line position in layout (*1)                  |
+| Col      | column position in layout (*1)                |
+| Dlen     | display length in layout (*1)                 |
+| Type     | column type 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE |
+| Length   | column length                                 |
+| Table    | 0=no database column 1=database column        |
+| Pkey     | primary key   - DO NOT CHANGE                 |
+| Default  | default value in Insert-Mode                  |
+| Enter    | allowed to edit in Insert-Mode                |
+| Query    | allowed to edit in Query-Mode                 |
+| Update   | allowed to edit in Update-Mode                |
+| UpdateNul| allowed to edit in Update-Mode when NULL      |
+| Mandatory| not NULL in Insert-Mode                       |
+| Uppercase| convert to uppercase                          |
+| Low      | minimum value                                 |
+| High     | maximum value                                 |
+| Pattern  | regular expression (pcre)                     |
+| ListOfVal| title                                         |
+
+(*1) This property is adjusted by the `editform` script upon
+     the field placeholders from the boilerplate text file.
+
+.inp file edit
+--------------
+
+At the end `editform` brings up the editor with the .inp
+file loaded. Look into the source code and into the table
+schemas for informations to alter the forms behaviour.

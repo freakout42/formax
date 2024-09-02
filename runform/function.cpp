@@ -98,6 +98,7 @@ return 0;
 /* NAVIGATION */
 int Function::switch_mode(fmode mod) {
 CM = mod;
+if (CF.noedit()) fmove(0, 0);
 return 0;
 }
 

@@ -42,10 +42,10 @@ return 0;
 
 int Field::noedit() {
 switch(CM) {
- case MOD_UPDATE: if (!updateable) return 1;
- case MOD_QUERY:  break;
- case MOD_INSERT: break;
- case MOD_DELETE: break;
+ case MOD_UPDATE: if (isprimarykey || !(updateable || (updnulable && *valuep()==NULL))) return 1; break;
+ case MOD_QUERY:  if (!queryable)                                                       return 1; break;
+ case MOD_INSERT: if (!enterable)                                                       return 1; break;
+ case MOD_DELETE:                                                                                 break;
 }
 return 0;
 }
@@ -92,7 +92,7 @@ switch(CM) {
  case MOD_UPDATE:
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }
  case MOD_INSERT:
-  if (!updateable)  { MSG(MSG_FLDPROT); return KEF_CANCEL; }
+  if (noedit()) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
   if (F(b[blockindex].q->rows)) {
     c = valuep();
     if (*c) let(buf, *c); else *buf = '\0';
@@ -104,7 +104,6 @@ switch(CM) {
         return KEF_CANCEL;
       }
     }
-    // missing range validation
     switch (fieldtype) {
      case FTY_DATE:
       s = colquery(buf, buf2, "q", 0, 268);
@@ -122,10 +121,16 @@ switch(CM) {
         return KEF_CANCEL;
       }
       break;
-     case FTY_ALL:
      case FTY_INT:
-     case FTY_FLOAT:
+      if (lowvalue + highvalue != 0 && (lowvalue > atoi(buf) || highvalue < atoi(buf))) {
+        letf(t(buf2), "%d - %d", lowvalue, highvalue);
+        MSG1(MSG_NORANGE, buf2);
+        return KEF_CANCEL;
+      }
+      break;
+     case FTY_FLOAT: break;
      case FTY_CHAR: break;
+     case FTY_ALL: break;
     }
     if (*c==NULL && *buf) *c = strdup(buf);
     else {

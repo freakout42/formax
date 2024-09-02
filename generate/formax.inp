@@ -83,8 +83,8 @@ INSERT INTO fields VALUES(6,1,1,1,'seq',60,0,30,3,1,0,'',5,7,1,1,1,1,0,0,'',0,0,
 INSERT INTO fields VALUES(7,1,1,1,'ftype',70,0,30,2,1,0,'',5,21,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(8,1,1,1,'len',80,0,30,2,1,0,'',6,21,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(9,1,1,1,'dlen',68,0,30,3,1,0,'',8,7,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(10,1,1,1,'btab',100,0,30,3,1,0,'',7,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(11,1,1,1,'key',110,0,30,1,1,0,'',7,30,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(10,1,1,1,'btab',100,0,30,1,1,0,'',7,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(11,1,1,1,'key',110,0,30,1,1,0,'',7,31,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(12,1,1,1,'dflt',120,0,30,20,1,0,'',8,21,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(13,1,1,1,'line',65,0,30,3,1,0,'',6,7,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(14,1,1,1,'col',66,0,30,3,1,0,'',7,7,1,1,1,1,0,0,'',0,0,0,0,'','');
@@ -98,7 +98,7 @@ INSERT INTO fields VALUES(21,1,1,1,'lovtit',210,0,30,20,1,0,'',17,13,1,1,1,1,0,0
 INSERT INTO fields VALUES(22,1,1,1,'lov_id',220,0,30,3,1,0,'',17,36,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(23,1,1,1,'lovi_id',230,0,30,3,1,0,'',17,42,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(24,1,1,1,'low',240,0,30,11,1,0,'',20,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(25,1,1,1,'high',250,0,30,11,1,0,'',20,36,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(25,1,1,1,'high',250,0,30,11,1,0,'',20,30,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(26,1,1,1,'valpatn',260,0,30,34,1,0,'',21,13,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(27,1,1,1,'help',55,0,30,40,1,0,'',2,13,1,1,1,1,0,0,'',0,0,0,0,'','');
 CREATE TABLE maps
@@ -107,27 +107,27 @@ CREATE TABLE maps
    line INTEGER NOT NULL DEFAULT 1,
    mtext TEXT NOT NULL DEFAULT ''
   );
-INSERT INTO maps VALUES(380,1,1,' Id $1 / $2 $3 blkn $4 pagn $5______________________');
-INSERT INTO maps VALUES(381,1,2,' Help       $27_____________________________________');
-INSERT INTO maps VALUES(382,1,3,'');
-INSERT INTO maps VALUES(383,1,4,' Layout     Properties');
-INSERT INTO maps VALUES(384,1,5,' Seq  $6_   Type    $7  0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE');
-INSERT INTO maps VALUES(385,1,6,' Line $13   Length  $8');
-INSERT INTO maps VALUES(386,1,7,' Col  $14   Table   $10 Pkey $11. ');
-INSERT INTO maps VALUES(387,1,8,' Dlen $9_   Default $12_________________');
-INSERT INTO maps VALUES(388,1,9,'');
-INSERT INTO maps VALUES(389,1,10,' Action');
-INSERT INTO maps VALUES(390,1,11,' Enter      $15. edit in Insert-Mode');
-INSERT INTO maps VALUES(391,1,12,' Query      $16. edit in Query-Mode');
-INSERT INTO maps VALUES(392,1,13,' Update     $17. edit in Update-Mode');
-INSERT INTO maps VALUES(393,1,14,' UpdateNul  $18. edit in Update-Mode if NULL');
-INSERT INTO maps VALUES(394,1,15,' Mandatory  $19. must in Insert-Mode');
-INSERT INTO maps VALUES(395,1,16,' Uppercase  $20. convert uppercase Blk   Id');
-INSERT INTO maps VALUES(396,1,17,' ListOfVal  $21_________________ / $22 / $23');
-INSERT INTO maps VALUES(397,1,18,'');
-INSERT INTO maps VALUES(398,1,19,' Validation');
-INSERT INTO maps VALUES(399,1,20,' Low        $24________ High       $25________');
-INSERT INTO maps VALUES(400,1,21,' Pattern    $26_______________________________');
+INSERT INTO maps VALUES(401,1,1,' Id $1 / $2 $3 blkn $4 pagn $5______________________');
+INSERT INTO maps VALUES(402,1,2,' Help       $27_____________________________________');
+INSERT INTO maps VALUES(403,1,3,'');
+INSERT INTO maps VALUES(404,1,4,' Layout     Database');
+INSERT INTO maps VALUES(405,1,5,' Seq  $6_   Type    $7  0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE');
+INSERT INTO maps VALUES(406,1,6,' Line $13   Length  $8');
+INSERT INTO maps VALUES(407,1,7,' Col  $14   Table   $10. Pkey $11. ');
+INSERT INTO maps VALUES(408,1,8,' Dlen $9_   Default $12_________________');
+INSERT INTO maps VALUES(409,1,9,'');
+INSERT INTO maps VALUES(410,1,10,' Action');
+INSERT INTO maps VALUES(411,1,11,' Enter      $15. edit in Insert-Mode');
+INSERT INTO maps VALUES(412,1,12,' Query      $16. edit in Query-Mode');
+INSERT INTO maps VALUES(413,1,13,' Update     $17. edit in Update-Mode');
+INSERT INTO maps VALUES(414,1,14,' UpdateNul  $18. edit in Update-Mode if NULL');
+INSERT INTO maps VALUES(415,1,15,' Mandatory  $19. must in Insert-Mode');
+INSERT INTO maps VALUES(416,1,16,' Uppercase  $20. convert uppercase Blk   Id');
+INSERT INTO maps VALUES(417,1,17,' ListOfVal  $21_________________ / $22 / $23');
+INSERT INTO maps VALUES(418,1,18,'');
+INSERT INTO maps VALUES(419,1,19,' Validation');
+INSERT INTO maps VALUES(420,1,20,' Low        $24________ High $25________');
+INSERT INTO maps VALUES(421,1,21,' Pattern    $26_______________________________');
 CREATE TABLE pages
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -159,5 +159,5 @@ INSERT INTO triggers VALUES(1,1,'enter_the_form',0,0,0,'0');
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('triggers',1);
 INSERT INTO sqlite_sequence VALUES('pages',1);
-INSERT INTO sqlite_sequence VALUES('maps',400);
+INSERT INTO sqlite_sequence VALUES('maps',421);
 COMMIT;

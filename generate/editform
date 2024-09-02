@@ -3,10 +3,12 @@ if [ "`dirname $0`" = "." ]; then
   ADJFIELD=./adjfield
   RUNFORM=../runform/runform
   FORMAXFRM=formax.frm
+  LOGGING=-g/tmp/formax.log
 else
   ADJFIELD=adjfield
   RUNFORM=runform
   FORMAXFRM=${ARX:-/opt/arx}/lib/formax.frm
+  LOGGING=""
 fi
 FORM=$1
 if ! cp -v $FORM.frm $FORM.frm.bac; then
@@ -24,7 +26,7 @@ IFS=% sed "s/^/'/;s/\$/'/" $FORM.map | while read TEXT; do
 done
 $ADJFIELD <$FORM.map | $SQL
 rm $FORM.map
-$RUNFORM -x $FORMAXFRM $FORM.frm
+$RUNFORM $LOGGING -x $FORMAXFRM $FORM.frm
 $SQL .dump >$FORM.inp
 ${EDITOR:-vi} $FORM.inp
 rm $FORM.frm
