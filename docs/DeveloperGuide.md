@@ -25,8 +25,7 @@ Terms
 |------------------|----------------------------------------|
 | Application      | forms that satisfy a business function |
 | Base table       | database table a block is based on     |
-| Base table field | field that corresponds to a column in<br>|
-|                  | the base table of the fields block     |
+| Base table field | field that corresponds to a column in<br>the base table of the fields block     |
 | Block            | logical collection of fields in a form |
 |                  | corresponds to table in the database   |
 | Constant text    | text that appears in a running form    |
