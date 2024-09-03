@@ -1,7 +1,7 @@
 // constants macros and central procedures
 enum odrvr         { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_SQLSRVR, ODR_ADS, ODR_UNKNOWN };
 enum fmode         { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
-enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE };
+enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE, FTY_BOOL };
 #define RMODENAMES { "Insert",   "Query ",  "Update",   "Delete" }
 #include "../version.h"
 
@@ -44,11 +44,12 @@ enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE };
 #define t(target) target, sizeof(target)
 
 #define F(method) f.method
-#define CB f.b[f.curblock]
-#define CF f.l[f.curfield]
-#define LK f.lastkey
-#define MSG(n) f.p[0].message(n, NULL)
-#define MSG1(n,c) f.p[0].message(n, c)
+#define CM F(rmode)
+#define CB F(b)[F(curblock)]
+#define CF F(l)[F(curfield)]
+#define LK F(lastkey)
+#define MSG(n) F(p)[0].message(n, NULL)
+#define MSG1(n,c) F(p)[0].message(n, c)
 
 extern Function u;
 extern int yesno(int c);

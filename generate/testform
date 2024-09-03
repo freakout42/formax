@@ -9,8 +9,10 @@ echo "UPDATE maps set mtext = mtext || ' $1' where line = $LINE;"
 }
 ARX=`pwd`/.. sh ./makeform scotty formax1 emps id ename job mgr hiredate sal comm dept_id
   cat <<EOF
-UPDATE fields set valpatn = '\d\d\d\d' where id=4;
+UPDATE fields set ftype = 2, dlen = 4, len = 4, low = 7000, high = 8999, valpatn = '\d\d\d\d' where id=4;
 UPDATE fields set ftype = 4 where id=5;
+UPDATE fields set upd = 0 where id=6;
+UPDATE fields set ftype = 2, dlen = 1, len = 1, low = 0, high = 1 where id=7;
 EOF
 LINE=9
 LINE=`expr $LINE + 1`

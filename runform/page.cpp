@@ -15,11 +15,26 @@ return 0;
 
 // must be rewritten for multiple pages
 int Page::maps(Qdata *qma) {
-int i, r;
+int i, r, y;
+char *t, *p;
 for (i = 1; i <= qma->rows; i++) {
   r = qma->n(i, 1) - 1;
   if (r > NLINES) return 1;
   map[r] = qma->c(i, 2);
+  y = 1;
+  p = NULL;
+  // white the $nn_ pos markers
+  for (t=map[r]; y; t++) {
+    if (*t == '$') {
+      p = t;
+    } else {
+      if (p && (!(*t == '_' || *t == '.' || (*t >= '0' && *t <= '9')))) {
+        if (t - p > 1) while (p < t) *p++ = ' ';
+        p = NULL;
+      }
+    }
+    if (!*t) y = 0;
+  }
 }
 return 0;
 }
@@ -42,7 +57,7 @@ static const char *rmodes[] = RMODENAMES;
 int Page::wait() {
 int i;
 char commit[16];
-switch (F(rmode)) {
+switch (CM) {
  case MOD_QUERY:  strcpy(commit,            "  Execute-Query");                      break;
  case MOD_UPDATE: strcpy(commit,            "    Enter-Query");                      break;
  case MOD_INSERT: strcpy(commit, F(dirty) ? "  Insert-Record" : "   Clear-Record" ); break;
@@ -55,7 +70,7 @@ writef(0, 16, 0, 8,  "%s",        username);
 writef(0, 25, 0, 8,  "%s",        CB.table);
 writef(0, 34, 0, 9,  "%s",        CF.name);
 writef(0, 44, 0, 9,  "%4d/%4d",   CB.currentrecord, CB.q->rows);
-writef(0, 54, COL_HEADER,6,"%s",  rmodes[F(rmode)]);
+writef(0, 54, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 61, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
 //ites(0, 67,                     "runform-");
 //itef(0, 70, 0, 4,  "%4d",       F(lastcmd));

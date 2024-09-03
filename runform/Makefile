@@ -37,9 +37,8 @@ crypt/libmd5.a:
 	cd crypt; make
 
 $(EXAMPLE):
-	cd ../generate; make test
+	cd ../generate; make clean test
 
 clean:
 	for D in colquery regex elk crypt; do ( cd $$D; make clean; ); done
-	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_*
-
+	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_* $(EXAMPLE)

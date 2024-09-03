@@ -179,21 +179,23 @@ switch(ch) {
 return ch;
 }
 
-int Screen::sedit(char *toe, int pos, ftype fty) {
+int Screen::sedit(char *toe, int pos, ftype fty, int len) {
 char *legal;
 char legalall[] = "";
 char legalint[] = "0123456789";
+char legalbool[] = "01";
 char legalfloat[] = "0123456789.";
 char legaldate[] = "0123456789./-";
 switch (fty) {
  case FTY_DATE:  legal = legaldate;  break;
  case FTY_INT:   legal = legalint;   break;
+ case FTY_BOOL:  legal = legalbool;  break;
  case FTY_FLOAT: legal = legalfloat; break;
  case FTY_CHAR:
  case FTY_ALL:
  default:        legal = legalall;
 }
-return F(p[0]).getst(0, 0, 80, EDITCOLOR, toe, pos, legal, SMLSIZE, NULL);
+return F(p[0]).getst(0, 0, 80, EDITCOLOR, toe, pos, legal, len, NULL);
 }
 
 /* Allows the user to edit a string with only certain characters allowed
@@ -324,7 +326,7 @@ while (!done) {              /* input loop */
         if (len < max || pos < len-1) {
           pos++;
           sx++;
-        }
+        } else {c = KEY_ENTER; done = TRUE;}
       } else beep();    /* no valid char  */
     } else done = TRUE;
   } /* switch */
