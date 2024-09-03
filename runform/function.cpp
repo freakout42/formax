@@ -39,6 +39,7 @@ switch(F(lastcmd)) {
   case KEF_NXTFLD:   LK = next_item();                                        break;
   case KEF_PREFLD:   LK = previous_item();                                    break;
   case KEF_NXTREC:   LK = next_record();                                      break;
+  case KEF_KEYHELP:  LK = keys_help();                                        break;
   case KEF_PREREC:   LK = previous_record();                                  break;
   case KEF_INSERT:
    switch(CM) {
@@ -95,6 +96,11 @@ F(curfield) = CB.blockfields[0];
 enter_query();
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
 notrunning = trigger(TRT_ENTERFORM); //"enter_the_form");
+return 0;
+}
+
+int Function::keys_help() {
+MSG(MSG_NOTYET);
 return 0;
 }
 

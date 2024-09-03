@@ -25,8 +25,8 @@ helpmap 'Down  Ctrl+n Next-Record      Update: Move to the record and field with
 helpmap 'Up    Ctrl+p Previous-Record          "Up/Down" and "Tab" and edit'
 helpmap 'Enter Ctrl+m Execute'
 helpmap 'F6    Ctrl+o Insert-Record    Insert: Press "Insert" or Ctrl-o'
-helpmap 'F7    Ctrl+k Delete-Record    Delete: Move to the record'
-helpmap 'F8    Ctrl+z Exit                     Press "Delete" or Ctrl-k'
+helpmap 'F7    Ctrl+d Delete-Record    Delete: Move to the record'
+helpmap 'F8    Ctrl+z Exit                     Press "Delete" or Ctrl-d'
 helpmap 'F9    Ctrl+y Quit'          
 helpmap 'F10   Ctrl+x Query            Query:  Edit conditions in each field'
 LINE=0

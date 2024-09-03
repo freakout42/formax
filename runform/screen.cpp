@@ -152,14 +152,14 @@ switch(ch) {
 /* KEF_HOME    */  case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
 /* KEF_LEFT    */  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char                  Left */
 /* KEF_COPY    */  case KEY_CTRL('C'):  return KEY_F(2);       /* Copy                           Copy */
-/* KEF_DELETE  */  case KEY_CTRL('D'):  return KEY_DC;         /* Delete (record)                DeleteCharacter DeleteRecord */
+/* KEF_DELETE  */  case KEY_CTRL('D'):  return KEY_F(7);       /* Delete (record)                DeleteCharacter DeleteRecord */
 /* KEF_END     */  case KEY_CTRL('E'):  return KEY_END;        /* End / Next block               EndOfLine NextBlock */
 /* KEF_RIGHT   */  case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char                      Right */
 /* KEF_PREFLD  */  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field                 PreviousField */
 /* KEF_BACKDEL */  case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace                      DeleteBackward */
 /* KEF_NXTFLD  */  case KEY_CTRL('I'):  return KEY_TAB;        /* Next field                     NextField */
 /* KEF_INSERT  */  case KEY_CTRL('J'):  return KEY_IC;         /* Insert toggle (record)         InsertReplace InsertRecord */
-/* KEF_DELETE  */  case KEY_CTRL('K'):  return KEY_F(7);       /* Delete record                  DeleteRecord */
+/* KEF_KEYHELP */  case KEY_CTRL('K'):  return KEY_F(11);      /* Keyboard help                  KeyHelp */
 /* KEF_REFRESH */  case KEY_CTRL('L'):  return KEY_F(0);       /* Refresh                        Refresh */
 /* KEF_COMMIT  */  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept                  Commit Select Execute */
 /* KEF_NXTREC  */  case KEY_CTRL('N'):  return KEY_DOWN;       /* Next record                    Down NextRecord */

@@ -17,6 +17,7 @@
 #define MSG_COUNT0   301
 #define MSG_CLEAN    401
 #define MSG_DIRTY    402
+#define MSG_NOTYET   403
 #ifndef BEGINSQL
 // error messages
 class rError: public Record {
@@ -50,4 +51,5 @@ INSERT INTO errors (num, severity, etext) VALUES (MSG_FLDFORM,  2, 'Field must b
 INSERT INTO errors (num, severity, etext) VALUES (MSG_COUNT0,   2, 'Query caused no records to be retrieved');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_CLEAN,    1, 'No changes to commit');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_DIRTY,    2, 'Abort changes?');
+INSERT INTO errors (num, severity, etext) VALUES (MSG_NOTYET,   1, 'Not yet implemented - sorry');
 #endif

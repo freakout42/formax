@@ -124,10 +124,11 @@ switch(ck) {                                  /* C */
   case KEY_F(4):       return KEF_LIST;       /* u      flist */
   case KEY_F(5):       return KEF_COPYREC;    /* t      fcopyrec */
   case KEY_F(6):       return KEF_INSERT;     /* o      create_record */
-  case KEY_F(7):       return KEF_DELETE;     /* k      delete_record */
+  case KEY_F(7):       return KEF_DELETE;     /* d      delete_record */
   case KEY_F(8):       return KEF_EXIT;       /* z      exit */
   case KEY_F(9):       return KEF_QUIT;       /* y      cancel/quit */
   case KEY_F(10):      return KEF_QUERY;      /* x      enter_query */
+  case KEY_F(11):      return KEF_KEYHELP;    /* k      keys_help */
   case KEY_ESC:        return KEF_CANCEL;     /* esc    cancel/quit */
   case KEY_CANCEL:     return KEF_CANCEL;     /* cancel cancel/quit */
   case KEY_IC:         return KEF_INSERT;     /* j      create_record */

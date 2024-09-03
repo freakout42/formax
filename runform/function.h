@@ -12,6 +12,7 @@ private:
   int changed;
   int trigger(int tid);
   int enter_the_form();
+  int keys_help();
   int switch_mode(fmode mod);
   int fmove(int bi, int fi);
   int fmover(int ri);
