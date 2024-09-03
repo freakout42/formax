@@ -163,24 +163,23 @@ runform myform.frm mydb.sq3
 
 Status
 ======
-Stable 1.1.0 is useable for single-block single-page forms.
+Stable 1.2.0 is useable for single-block single-page forms.
 Don't hesitate to create any issues when in trouble.
 
 Feature roadmap
 ---------------
- - full field functionality
+ - multiple databases
  - multi-record fields
  - in-field editing
  - editor
  - triggers
- - transaction processing
  - multiple blocks and master-detail
  - list of values - subforms
  - menue multiple forms
+ - transaction processing
  - cqy.y: 5 shift/reduce conflicts
  - sap-like batchinput
  - key macros
- - multiple databases
 
 License
 =======
