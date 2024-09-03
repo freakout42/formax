@@ -14,7 +14,6 @@ int Function::dispatch() {
 F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
-  case KEF_HELP:            /* fhelp() */
   case KEF_COPY:            /* fhelp() */
   case KEF_PASTE:           /* fpaste() */
   case KEF_LIST:            /* flist() */
@@ -39,6 +38,7 @@ switch(F(lastcmd)) {
   case KEF_NXTFLD:   LK = next_item();                                        break;
   case KEF_PREFLD:   LK = previous_item();                                    break;
   case KEF_NXTREC:   LK = next_record();                                      break;
+  case KEF_HELP:     LK = help_item();                                        break;
   case KEF_KEYHELP:  LK = keys_help();                                        break;
   case KEF_PREREC:   LK = previous_record();                                  break;
   case KEF_INSERT:
@@ -96,6 +96,11 @@ F(curfield) = CB.blockfields[0];
 enter_query();
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
 notrunning = trigger(TRT_ENTERFORM); //"enter_the_form");
+return 0;
+}
+
+int Function::help_item() {
+MSG1(MSG_HELP,CF.helptext);
 return 0;
 }
 

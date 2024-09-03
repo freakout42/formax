@@ -6,6 +6,7 @@ public:
   int sequencenum;
   char querywhere[MEDSIZE];
   int isprimarykey;
+  char helptext[SMLSIZE];
   int init(Qdata *fld, int rix);
   void clear();
   int toggle();
@@ -41,5 +42,4 @@ private:
   int lowvalue;
   int highvalue;
   char validreg[SMLSIZE];
-  char helptext[SMLSIZE];
 };
