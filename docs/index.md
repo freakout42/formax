@@ -107,10 +107,10 @@ action (SQL) can be logged in a central database.
 
 ### Status
 
-Current v1.1.0 is stable - the generator can only create a
+Current v1.2.0 is stable - the generator can create a
 single-block single-page form. You are able to create,
 retrieve, update and delete (CRUD) records in the table. No
-triggers, no transactions, no help. The designer-tool is
+triggers, no transactions, no help yet. The designer-tool is
 able to edit the page markup and to integrate the field
 positions and lengths into the form. There is also a form to
 maintain the field properties. The rest must be done by
