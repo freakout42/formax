@@ -21,85 +21,55 @@ sustainability are on top with C++ and open source.
 Terms
 =====
 
-+------------------+----------------------------------------+
 | Term             | Explanation                            |
-+==================+========================================+
+|------------------|----------------------------------------|
 | Application      | forms that satisfy a business function |
-+------------------+----------------------------------------+
 | Base table       | database table a block is based on     |
-+------------------+----------------------------------------+
-| Base table field | field that corresponds to a column in  |
+| Base table field | field that corresponds to a column in\ |
 |                  | the base table of the fields block     |
-+------------------+----------------------------------------+
 | Block            | logical collection of fields in a form |
 |                  | corresponds to table in the database   |
-+------------------+----------------------------------------+
 | Constant text    | text that appears in a running form    |
-+------------------+----------------------------------------+
 | Context          | concept that you can use to determine  |
 |                  | what parts of a form you can access    |
-+------------------+----------------------------------------+
 | Designer         | application developer or programmer    |
-+------------------+----------------------------------------+
 | Field            | area on a page that can display data   |
 |                  | and accept user input                  |
-+------------------+----------------------------------------+
 | Form             | collection of blocks, fields, triggers |
-+------------------+----------------------------------------+
 | Form database    | sqlite-database containing the form    |
-+------------------+----------------------------------------+
 | Multirecord block| block with more than one record        |
-+------------------+----------------------------------------+
 | Object           | group of data, such as a form, block,  |
 |                  | field or trigger                       |
-+------------------+----------------------------------------+
 | Operator         | administrator of an application        |
 |                  | responsible for a stable, performant   |
 |                  | and secure runtime environment         |
-+------------------+----------------------------------------+
 | Page             | collection of display information      |
-+------------------+----------------------------------------+
 | Pop-up window    | overlays an area of the current display|
 |                  | displays in response to user action    |
-+------------------+----------------------------------------+
 | Record           | data from one row in a database table  |
-+------------------+----------------------------------------+
 | Scope            | domain in which a trigger operates     |
 |                  | determined by the level (form, block,  |
 |                  | or field) of the trigger definition    |
-+------------------+----------------------------------------+
 | Trigger          | piece of logic executed at a form event|
-+------------------+----------------------------------------+
 | User             | end-user of a **formax** application   |
-+------------------+----------------------------------------+
 | Column           | "vertical" group of cells in a database|
-+------------------+----------------------------------------+
 | Constraint       | rule or restriction concerning a piece |
 |                  | of data that is enforced at data level,|
 |                  | rather than the application level      |
-+------------------+----------------------------------------+
 | Database         | collection of tables                   |
-+------------------+----------------------------------------+
 | Foreign key      | column that refers to a primary key    |
-+------------------+----------------------------------------+
 | Index            | optional structure of a table that is  |
 |                  | used by the database software to locate|
 |                  | rows quickly and optionally guarantee  |
 |                  | that every row is unique               |
-+------------------+----------------------------------------+
 | Lock             | restriction that assigns control of a  |
 |                  | resource to a user - can prevent other |
 |                  | users from changing data meanwhile     |
-+------------------+----------------------------------------+
 | Primary key      | information used to identify a row     |
-+------------------+----------------------------------------+
 | Row              | "horizontal" group of cells in database|
-+------------------+----------------------------------------+
 | Table            | basic unit of information in database  |
 |                  | 2 dimensional grid of rows and columns |
-+------------------+----------------------------------------+
 | Transaction      | logical unit of work                   |
-+------------------+----------------------------------------+
 
 Programs
 ========
