@@ -26,34 +26,24 @@ Terms
 | Application      | forms that satisfy a business function |
 | Base table       | database table a block is based on     |
 | Base table field | field that corresponds to a column in <br> the base table of the fields block     |
-| Block            | logical collection of fields in a form |
-|                  | corresponds to table in the database   |
+| Block            | logical collection of fields in a form <br> corresponds to table in the database   |
 | Constant text    | text that appears in a running form    |
-| Context          | concept that you can use to determine  |
-|                  | what parts of a form you can access    |
+| Context          | concept that you can use to determine <br> what parts of a form you can access    |
 | Designer         | application developer or programmer    |
-| Field            | area on a page that can display data   |
-|                  | and accept user input                  |
+| Field            | area on a page that can display data <br> and accept user input                  |
 | Form             | collection of blocks, fields, triggers |
 | Form database    | sqlite-database containing the form    |
 | Multirecord block| block with more than one record        |
-| Object           | group of data, such as a form, block,  |
-|                  | field or trigger                       |
-| Operator         | administrator of an application        |
-|                  | responsible for a stable, performant   |
-|                  | and secure runtime environment         |
+| Object           | group of data, such as a form, block, <br> field or trigger                       |
+| Operator         | administrator of an application <br> responsible for a stable, performant <br> and secure runtime environment         |
 | Page             | collection of display information      |
-| Pop-up window    | overlays an area of the current display|
-|                  | displays in response to user action    |
+| Pop-up window    | overlays an area of the current display <br> displays in response to user action    |
 | Record           | data from one row in a database table  |
-| Scope            | domain in which a trigger operates     |
-|                  | determined by the level (form, block,  |
-|                  | or field) of the trigger definition    |
+| Scope            | domain in which a trigger operates <br> determined by the level (form, block, <br> or field) of the trigger definition    |
 | Trigger          | piece of logic executed at a form event|
 | User             | end-user of a **formax** application   |
 | Column           | "vertical" group of cells in a database|
-| Constraint       | rule or restriction concerning a piece |
-|                  | of data that is enforced at data level,|
+| Constraint       | rule or restriction concerning a piece of data that is enforced at data level,|
 |                  | rather than the application level      |
 | Database         | collection of tables                   |
 | Foreign key      | column that refers to a primary key    |
