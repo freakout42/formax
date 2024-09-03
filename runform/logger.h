@@ -5,7 +5,7 @@ class Logger {
 public:
   void init(char *dsn);
   int setlogfile(char *lg3);
-  void logfmt(char *format, ...);
+  void logfmt(const char *format, ...);
   void logsql(char *sql, char *bnd[]);
   void lclose();
 private:

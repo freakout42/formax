@@ -36,9 +36,9 @@
 extern char     *cqop;
 extern char     *cqcolumn;
 extern int      cqcoltype;
-static char     *stomon();
-static char     *stoday();
-static char     *cqstr();
+static char     *stomon(char *c);
+static char     *stoday(char *c);
+static char     *cqstr(char *s);
 extern char     *cqbuf;
 extern int      cqbufree;
 char            tmp[1024];
@@ -46,9 +46,7 @@ char            tmp[1024];
 int cqdebug = 0;
 #endif
 
-static void cqtype(typ)
-        int typ;
-{
+static void cqtype(int typ) {
 if (cqcoltype == 0 || cqcoltype == typ) cqcoltype = typ;
 else cqcoltype = OR;
 }
@@ -236,25 +234,19 @@ const   : NUMBER
         ;
 %%
 extern int cqnonumbers;
-static char *stomon(c)
-        char *c;
-{
+static char *stomon(char *c) {
   static char t[256];
   if (cqnonumbers == 2) snprintf (t, (size_t)sizeof(t), "strftime('%%Y%%m', %s)+0", c);
   else                  snprintf (t, (size_t)sizeof(t), "{fn YEAR(%s)} * 100 + {fn MONTH(%s)}", c, c);
   return t;
 }
-static char *stoday(c)
-        char *c;
-{
+static char *stoday(char *c) {
   static char t[256];
   if (cqnonumbers == 2) snprintf (t, (size_t)sizeof(t), "strftime('%%Y%%m%%d', %s)+0", c);
   else                  snprintf (t, (size_t)sizeof(t), "{fn YEAR(%s)} * 10000 + {fn MONTH(%s)} * 100 + {fn DAYOFMONTH(%s)}", c, c, c);
   return t;
 }
-static char *cqstr (s)
-        char *s;
-{
+static char *cqstr (char *s) {
 char    *d;
 int     l;
 

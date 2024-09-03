@@ -52,7 +52,7 @@ for (i=0; i<NLINES; i++) free(map[i]);
 deletewindow();
 }
 
-static char *rmodes[] = RMODENAMES;
+static const char *rmodes[] = RMODENAMES;
 
 int Page::wait() {
 int i;
@@ -82,10 +82,10 @@ for (i=1; i<F(numpage);  i++) F(p[i]).refr();
 return LK ? LK : getkb();
 }
 
-int Page::message(int ern, char *pnt) {
+int Page::message(int ern, const char *pnt) {
 int i;
 static char empty[] = "";
-char *pntst;
+const char *pntst;
 if (F(y).ysiz > 0) { // can only display with open window
 if (pnt) pntst = pnt; else pntst = empty;
 if (strlen(pntst) > LINE0SIZE-12) i = strlen(pntst) - LINE0SIZE + 12; else 

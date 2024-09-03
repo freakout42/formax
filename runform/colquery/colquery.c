@@ -13,9 +13,7 @@ char *cqcolumn;
 char *cqbuf;
 int cqbufree;
 
-int colquery (i, o, c, n, t)
-	char *i, *o, *c; int n, t;
-{
+int colquery (char *i, char *o, char *c, int n, int t) {
 char buffer[BUFSIZE];
 
 cqcolumn = c;
@@ -27,4 +25,4 @@ cqbufree = BUFSIZE;
 return parse (i, o) ? 0 : (cqcoltype?cqcoltype:SQLNULL);
 }
 
-int cqwrap() { return 1; }
+int cqwrap(void) { return 1; }

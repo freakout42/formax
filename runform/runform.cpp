@@ -7,6 +7,12 @@
 #include <locale.h>
 #include "runform.h"
 
+char shiftedus[] = "/!@#$%^&*()";
+char shifteduk[] = "/!\"�$%^&*()";
+char shiftedde[] = "-!\"�$%&/()=";
+char shiftedfr[] = ":&�\"'(-�_��";
+char *shiftednum = shiftedus;
+
 char *lclocale;
 int  firststart  = 1;
 int  insertmode  = 1;
@@ -21,7 +27,6 @@ int  querycharm  = 1;             // -h
 int  autocommit  = 1;             // -a
 int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
-char *shiftednum = "`!@#$%^&*()"; // -n us
 char *ypassword  = NULL;
 char *username;
 Form f;
@@ -31,7 +36,7 @@ Function u;
 static char b64pwd[65];
 
 static void usage(int ecd) {
-char *est[] = {
+const char *est[] = {
   "command line options wrong",   //  1
   "command line arguments wrong", //  2
   "frm-file not found",           //  3
@@ -85,10 +90,11 @@ char totpresult[8];
 // search for the sqlite3 driver
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
-char *drvs[] = { "/opt/sqlite/lib/libsqlite3odbc.so",
-                 "/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so",
-                 "/usr/lib64/libsqlite3odbc.so"
-               };
+const char *drvs[] = {
+  "/opt/sqlite/lib/libsqlite3odbc.so",
+  "/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so",
+  "/usr/lib64/libsqlite3odbc.so"
+};
 for (i=0; i<3; i++) {
   if ((filesq3 = fopen(drvs[i], "r"))) {
     fclose(filesq3);
@@ -114,10 +120,10 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqt:Vxy:")) != -1) {
     case 'g': if (g.setlogfile(optarg)) usage(16); break;
     case 'l': let(drv, optarg); break;
     case 'n':
-      if (!strcmp(optarg, "us")) shiftednum = "`!@#$%^&*()";
-      if (!strcmp(optarg, "uk")) shiftednum = "\\!\"�$%^&*()";
-      if (!strcmp(optarg, "de")) shiftednum = "<!\"�$%&/()=";
-      if (!strcmp(optarg, "fr")) shiftednum = "<&�\"'(-�_��";
+      if (!strcmp(optarg, "us")) shiftednum = shiftedus;
+      if (!strcmp(optarg, "uk")) shiftednum = shifteduk;
+      if (!strcmp(optarg, "de")) shiftednum = shiftedde;
+      if (!strcmp(optarg, "fr")) shiftednum = shiftedfr;
       break;
     case '3': useodbcve3 = 1; break;
     case 'k': monochrome = 1; break;

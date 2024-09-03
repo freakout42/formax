@@ -42,4 +42,3 @@ $(EXAMPLE):
 clean:
 	for D in colquery regex elk crypt; do ( cd $$D; make clean; ); done
 	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_* $(EXAMPLE)
-
