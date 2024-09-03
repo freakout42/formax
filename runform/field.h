@@ -8,6 +8,8 @@ public:
   int isprimarykey;
   int init(Qdata *fld, int rix);
   void clear();
+  int toggle();
+  int increment(int ival);
   int edit(int pos);
   int noedit();
   void show(int cur);
@@ -19,6 +21,8 @@ private:
   int col;
   int blockindex;
   int pageindex;
+  int validate(char **c, char *buf);
+  ftype fldtype();
   ftype fieldtype;
   int fieldlen;
   int basetable;

@@ -50,6 +50,10 @@ switch(CM) {
 return 0;
 }
 
+ftype Field::fldtype() {
+return (fieldtype==FTY_INT && lowvalue==0 && highvalue==1) ? FTY_BOOL : fieldtype;
+}
+
 void Field::show(int cur) {
 int color;
 switch(CM) {
@@ -79,14 +83,89 @@ char **Field::valuep() {
 return F(b[blockindex].q->w)(CB.currentrecord, sequencenum);
 }
 
-int Field::edit(int pos) {
+int Field::toggle() {
+char **c;
+if (CM == MOD_UPDATE && fldtype() == FTY_BOOL) {
+  c = valuep();
+  if (*c && strlen(*c)==1) {
+    switch (**c) {
+     case '0': **c = '1'; return KEF_NXTFLD;
+     case '1': **c = '0'; return KEF_NXTFLD;
+    }
+  }
+}
+return 0;
+}
+
+int Field::increment(int ival) {
+char **c;
+int a;
+char buf2[SMLSIZE];
+if (CM == MOD_UPDATE && fieldtype == FTY_INT) {
+  c = valuep();
+  if (*c) {
+    a = atoi(*c) + ival;
+    letf(t(buf2), "%d", a);
+    if (validate(c, buf2) != KEF_CANCEL) return 0; // KEF_NXTFLD;
+  }
+}
+return 0;
+}
+
+int Field::validate(char **c, char *buf) {
+char *u;
+re_t re;
 int s;
+char buf2[SMLSIZE];
+if (*validreg) {
+  re = re_compile(validreg);
+  if (re_matchp(re, buf, &s) == -1) { // || s != (int)strlen(buf)
+    MSG1(MSG_NOMATCH, validreg);
+    return KEF_CANCEL;
+  }
+}
+switch (fieldtype) {
+ case FTY_DATE:
+  s = colquery(buf, buf2, "q", 0, 268);
+  if (*buf2 == '{' && (u = rindex(buf2, ' ')) && u == buf2+strlen(buf2)-9) {
+    strncpy(buf, u+1, 4);
+    *(buf+4) = '-';
+    strncpy(buf+5, u+5, 2);
+    *(buf+7) = '-';
+    strncpy(buf+8, u+7, 2);
+    *(buf+10) = '\0';
+  }
+  re = re_compile("^[12]\\d\\d\\d-[012]\\d-[0123]\\d$");
+  if (re_matchp(re, buf, &s) == -1) {
+    MSG1(MSG_NOMATCH, "YYYY-MM-DD");
+    return KEF_CANCEL;
+  }
+  break;
+ case FTY_INT:
+ case FTY_BOOL:
+  if (lowvalue + highvalue != 0 && (lowvalue > atoi(buf) || highvalue < atoi(buf))) {
+    letf(t(buf2), "%d - %d", lowvalue, highvalue);
+    MSG1(MSG_NORANGE, buf2);
+    return KEF_CANCEL;
+  }
+  break;
+ case FTY_FLOAT: break;
+ case FTY_CHAR: break;
+ case FTY_ALL: break;
+}
+if (*c==NULL && *buf) *c = strdup(buf);
+else {
+  if (strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);
+  if (strcmp(*c, buf)) strcpy(*c, buf);
+}
+return 0;
+}
+
+int Field::edit(int pos) {
 int pressed;
 char buf[SMLSIZE];
-char buf2[SMLSIZE];
-char *u;
 char **c;
-re_t re;
+int s;
 pressed = 0;
 switch(CM) {
  case MOD_UPDATE:
@@ -96,51 +175,12 @@ switch(CM) {
   if (F(b[blockindex].q->rows)) {
     c = valuep();
     if (*c) let(buf, *c); else *buf = '\0';
-    pressed = F(p[0].sedit)(buf, pos, fieldtype);
-    if (*validreg) {
-      re = re_compile(validreg);
-      if (re_matchp(re, buf, &s) == -1) { // || s != (int)strlen(buf)
-        MSG1(MSG_NOMATCH, validreg);
-        return KEF_CANCEL;
-      }
-    }
-    switch (fieldtype) {
-     case FTY_DATE:
-      s = colquery(buf, buf2, "q", 0, 268);
-      if (*buf2 == '{' && (u = rindex(buf2, ' ')) && u == buf2+strlen(buf2)-9) {
-        strncpy(buf, u+1, 4);
-        *(buf+4) = '-';
-        strncpy(buf+5, u+5, 2);
-        *(buf+7) = '-';
-        strncpy(buf+8, u+7, 2);
-        *(buf+10) = '\0';
-      }
-      re = re_compile("^[12]\\d\\d\\d-[012]\\d-[0123]\\d$");
-      if (re_matchp(re, buf, &s) == -1) {
-        MSG1(MSG_NOMATCH, "YYYY-MM-DD");
-        return KEF_CANCEL;
-      }
-      break;
-     case FTY_INT:
-      if (lowvalue + highvalue != 0 && (lowvalue > atoi(buf) || highvalue < atoi(buf))) {
-        letf(t(buf2), "%d - %d", lowvalue, highvalue);
-        MSG1(MSG_NORANGE, buf2);
-        return KEF_CANCEL;
-      }
-      break;
-     case FTY_FLOAT: break;
-     case FTY_CHAR: break;
-     case FTY_ALL: break;
-    }
-    if (*c==NULL && *buf) *c = strdup(buf);
-    else {
-      if (strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);
-      if (strcmp(*c, buf)) strcpy(*c, buf);
-    }
+    pressed = F(p[0].sedit)(buf, pos, fldtype(), fieldlen);
+    if (pressed != KEF_CANCEL && validate(c, buf) == KEF_CANCEL) pressed = KEF_CANCEL;
   }
   break;
  case MOD_QUERY:
-  pressed = F(p[0].sedit)(queryhuman, pos, FTY_ALL);
+  pressed = F(p[0].sedit)(queryhuman, pos, FTY_ALL, SMLSIZE);
   s = colquery(queryhuman, querywhere, name, querycharm, 0);
   break;
  case MOD_DELETE:

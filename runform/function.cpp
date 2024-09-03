@@ -76,6 +76,9 @@ switch(F(lastcmd)) {
    }                                                                          break;
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
+  case ' ':          LK = ftoggle();                                          break;
+  case '+':          LK = fincrement(1);                                      break;
+  case '-':          LK = fincrement(-1);                                     break;
   default:
    if (isprintable(LK))
                      LK = fedit(-1000 - LK);
@@ -163,8 +166,21 @@ switch_mode(MOD_UPDATE);
 return 0;
 }
 
+int Function::ftoggle() {
+changed = CF.toggle();
+if (changed == KEF_CANCEL) return 0;
+if (CB.update(CB.currentrecord, CF.sequencenum)) MSG1(MSG_SQL, CB.sqlcmd);
+return changed;
+}
+
+int Function::fincrement(int ival) {
+changed = CF.increment(ival);
+if (changed == KEF_CANCEL) return 0;
+if (CB.update(CB.currentrecord, CF.sequencenum)) MSG1(MSG_SQL, CB.sqlcmd);
+return changed;
+}
+
 int Function::fedit(int pos) {
-int changed;
 changed = 0;
 switch(CM) {
  case MOD_INSERT:
@@ -186,7 +202,7 @@ int Function::fexit() {
    switch(CM) {
     case MOD_QUERY:
     case MOD_UPDATE: /*MSG(MSG_CLEAN);*/                               break;
-    case MOD_INSERT: LK = create_record();                             break;
+    case MOD_INSERT: if (F(dirty)) create_record();                    break;
     case MOD_DELETE: LK = destroy_record();                            break;
    }
 notrunning = -1;
