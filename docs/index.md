@@ -49,13 +49,13 @@ enterprise applications that came after it. The terminal
 option was very popular and got lost in the late 1990s when
 Oracle decided not to patch SQL-Forms 3 for the Y2K-problem.
 The following versions neglected this feature and focused on
-client-server frontends, which were also abandoned later in
+client server frontends, which were also abandoned later in
 favour of web based as the only option. The result was a
 massive increase of complexity and bandwidth requirements in
 magnitudes of millions and leaving a big technology hole in
 the industry. **formax** wants to bring back this lean
-option to the market. And not only for Oracle-PL/SQL. With
-ODBC/JavaScript being open for everybody.
+option. And not only for Oracle and PL/SQL. With ODBC and
+JavaScript it is available for everybody.
 
 ### Goals
 
