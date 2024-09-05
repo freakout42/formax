@@ -6,10 +6,10 @@ class Page: public Screen {
 public:
   int page_id;
   int init(Qdata *pag, int rix);
-  void create(int force);
+  void create();
   void repaint();
   int showpopup();
-  void destroy(int force);
+  void destroy();
   char name[SMLSIZE];
   int maps(Qdata *rmap);
   int wait();
@@ -21,4 +21,5 @@ protected:
   int border;
 private:
   char *map[NLINES];
+  void refrnopop();
 };

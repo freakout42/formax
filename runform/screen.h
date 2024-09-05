@@ -24,6 +24,7 @@ public:
   int xsiz;
 protected:
   WINDOW *wndw;
+  void noutrefr();
 private:
   void setcolor(int pairi);
   void uncolor(int pairi);

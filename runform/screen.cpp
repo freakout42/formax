@@ -123,6 +123,7 @@ void Screen::wera() { werase(wndw); }
 void Screen::wbox() { box(wndw, 0, 0); }
 void Screen::wmov(int y, int x) { wmove(wndw, y, x); }
 void Screen::refr() { wrefresh(wndw); }
+void Screen::noutrefr() { wnoutrefresh(wndw); }
 void Screen::redraw() { redrawwin(wndw); }
 void Screen::closedisplay() { endwin(); tcsetattr (0, TCSANOW, &otermio); }
 

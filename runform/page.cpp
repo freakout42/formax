@@ -39,29 +39,30 @@ for (i = 1; i <= qma->rows; i++) {
 return 0;
 }
 
-void Page::create(int force) {
+void Page::create() {
 int i;
-if (!popup || force) {
 createwindow(ysiz, xsiz, vwpy0, vwpx0);
 if (border) wbox();
 for (i=0; i<NLINES; i++) if (map[i]) writes(i+(border?1:0), border?1:0, map[i]);
-} }
-
-void Page::repaint() { if (!popup) redraw(); }
-
-void Page::destroy(int force) {
-int i;
-for (i=0; i<NLINES; i++) free(map[i]);
-if (!popup || force) deletewindow();
 }
 
-int Page::showpopup() {
-create(1);
-wmov(5,5);
-refr();
-wera();
+void Page::destroy() {
+int i;
+for (i=0; i<NLINES; i++) free(map[i]);
 deletewindow();
-getkb();
+}
+
+void Page::repaint() { if (!popup) redraw(); }
+void Page::refrnopop() { if (!popup) refr(); }
+
+int Page::showpopup() {
+int i;
+redraw();
+refr();
+//wera();
+//deletewindow();
+i = getkb();
+F(p[1]).redraw();
 return 0;
 }
 
@@ -91,7 +92,7 @@ writef(0, 61, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
 writef(0, 65, COL_COMMIT,15,"%s", commit);
 refr();
 for (i=0; i<F(numfield); i++) F(l[i]).show(i == F(curfield));
-for (i=PGE_MAIN; i<F(numpage); i++) if (!popup) F(p[i]).refr();
+for (i=PGE_MAIN; i<F(numpage); i++) F(p[i]).refrnopop();
 return LK ? LK : getkb();
 }
 
