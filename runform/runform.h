@@ -2,6 +2,7 @@
 enum odrvr         { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_SQLSRVR, ODR_ADS, ODR_UNKNOWN };
 enum fmode         { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
 enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE, FTY_BOOL };
+enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EXTRA };
 #define RMODENAMES { "Insert",   "Query ",  "Update",   "Delete" }
 #include "../version.h"
 
@@ -18,6 +19,7 @@ enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE, FTY_BOOL }
 #define NPRIKEY 4
 #define NBINDPA NFIELD1
 
+#include <assert.h>
 #include <string.h>
 #include "regex/re.h"
 #include "elk/elk.h"
@@ -42,6 +44,7 @@ enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE, FTY_BOOL }
 #define min(x, y)	(((x) < (y)) ? (x) : (y))
 #define let(target,source) strncpy(target, source, sizeof(target)-1)
 #define t(target) target, sizeof(target)
+#define debugs(string) fprintf(stderr, ":%s:\n", string);
 
 #define F(method) f.method
 #define CM F(rmode)

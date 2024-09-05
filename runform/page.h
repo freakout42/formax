@@ -4,9 +4,12 @@
 #define LINE0SIZE 80
 class Page: public Screen {
 public:
+  int page_id;
   int init(Qdata *pag, int rix);
-  void create();
-  void destroy();
+  void create(int force);
+  void repaint();
+  int showpopup();
+  void destroy(int force);
   char name[SMLSIZE];
   int maps(Qdata *rmap);
   int wait();
@@ -14,8 +17,8 @@ public:
 protected:
   int vwpy0;
   int vwpx0;
+  int popup;
   int border;
 private:
-  int page_id;
   char *map[NLINES];
 };

@@ -63,8 +63,8 @@ switch(CM) {
  default:         color = COL_FIELD;
 }
 if (cur && CM != MOD_DELETE) color = COL_CURRENT;
-F(p[1].writef)(line, col, color, displaylen, "%.*s", displaylen, CM==MOD_QUERY ? queryhuman : *valuep());
-if (cur) F(p[1].wmov)(line, col);
+F(p[1]).writef(line, col, color, displaylen, "%.*s", displaylen, CM==MOD_QUERY ? queryhuman : *valuep());
+if (cur) F(p[1]).wmov(line, col);
 }
 
 void Field::clear() {
@@ -165,7 +165,6 @@ int Field::edit(int pos) {
 int pressed;
 char buf[SMLSIZE];
 char **c;
-int s;
 pressed = 0;
 switch(CM) {
  case MOD_UPDATE:
@@ -175,13 +174,13 @@ switch(CM) {
   if (F(b[blockindex].q->rows)) {
     c = valuep();
     if (*c) let(buf, *c); else *buf = '\0';
-    pressed = F(p[0].sedit)(buf, pos, fldtype(), fieldlen);
+    pressed = F(p[PGE_STATUS].sedit)(buf, pos, fldtype(), fieldlen);
     if (pressed != KEF_CANCEL && validate(c, buf) == KEF_CANCEL) pressed = KEF_CANCEL;
   }
   break;
  case MOD_QUERY:
-  pressed = F(p[0].sedit)(queryhuman, pos, FTY_ALL, SMLSIZE);
-  s = colquery(queryhuman, querywhere, name, querycharm, 0);
+  pressed = F(p[PGE_STATUS].sedit)(queryhuman, pos, FTY_ALL, SMLSIZE);
+  colquery(queryhuman, querywhere, name, querycharm, 0);
   break;
  case MOD_DELETE:
   break;
