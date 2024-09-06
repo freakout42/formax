@@ -52,18 +52,16 @@ for (i=0; i<NLINES; i++) free(map[i]);
 deletewindow();
 }
 
-void Page::repaint() { if (!popup) redraw(); }
+void Page::repaint()   { if (!popup) redraw(); }
 void Page::refrnopop() { if (!popup) refr(); }
 
 int Page::showpopup() {
 int i;
 redraw();
 refr();
-//wera();
-//deletewindow();
 i = getkb();
-F(p[1]).redraw();
-return 0;
+F(needredraw) = 1;
+return i==KEY_ENTER ? 0 : i;
 }
 
 static const char *rmodes[] = RMODENAMES;
@@ -92,7 +90,11 @@ writef(0, 61, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
 writef(0, 65, COL_COMMIT,15,"%s", commit);
 refr();
 for (i=0; i<F(numfield); i++) F(l[i]).show(i == F(curfield));
-for (i=PGE_MAIN; i<F(numpage); i++) F(p[i]).refrnopop();
+for (i=PGE_MAIN; i<F(numpage); i++) {
+  if (F(needredraw)) F(p[i]).repaint();
+                     F(p[i]).refrnopop();
+}
+F(needredraw) = 0;
 return LK ? LK : getkb();
 }
 

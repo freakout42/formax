@@ -14,7 +14,7 @@ int Function::dispatch() {
 F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
-  case KEF_COPY:            /* fhelp() */
+  case KEF_COPY:            /* fcopy() */
   case KEF_PASTE:           /* fpaste() */
   case KEF_LIST:            /* flist() */
   case KEF_COPYREC:         /* fcopyrec() */
@@ -100,8 +100,7 @@ return 0;
 }
 
 int Function::refresh_screen() {
-int i;
-for (i=0; i<F(numpage); i++) F(p[i]).repaint();
+F(needredraw) = 1;
 return 0;
 }
 

@@ -94,7 +94,7 @@ if (CM == MOD_UPDATE && fldtype() == FTY_BOOL) {
     }
   }
 }
-return 0;
+return KEF_CANCEL;
 }
 
 int Field::increment(int ival) {

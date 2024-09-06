@@ -37,6 +37,7 @@ if (q->rows != 1) return 7;
 let(id,    q->v(1, 1));
 let(name,  q->v(1, 2));
 let(title, q->v(1, 3));
+needredraw = 0;
 rclose();
 
 // triggers
