@@ -14,7 +14,7 @@ int Function::dispatch() {
 F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
-  case KEF_COPY:            /* fhelp() */
+  case KEF_COPY:            /* fcopy() */
   case KEF_PASTE:           /* fpaste() */
   case KEF_LIST:            /* flist() */
   case KEF_COPYREC:         /* fcopyrec() */
@@ -22,10 +22,10 @@ switch(F(lastcmd)) {
   case KEF_END:             /* fend() */
   case KEF_PRESETR:         /* fpresetr() */
   case KEF_NXTSETR:         /* fnxtsetr() */
-  case KEF_REFRESH:         /* frefresh() */
   case KEF_NAVI0:           /* fmenu() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
+  case KEF_REFRESH:  LK = refresh_screen();                                   break;
   case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                                break;
   case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                                break;
   case KEF_NAVI3:    LK = fmove(0, NFIELD1+3);                                break;
@@ -99,14 +99,18 @@ notrunning = trigger(TRT_ENTERFORM); //"enter_the_form");
 return 0;
 }
 
+int Function::refresh_screen() {
+F(needredraw) = 1;
+return 0;
+}
+
 int Function::help_item() {
 MSG1(MSG_HELP,CF.helptext);
 return 0;
 }
 
 int Function::keys_help() {
-MSG(MSG_NOTYET);
-return 0;
+return F(p[PGE_KEYHELP]).showpopup();
 }
 
 /* NAVIGATION */

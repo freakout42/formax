@@ -118,11 +118,12 @@ wattrset(wndw, A_NORMAL);
 wattron(wndw, COLOR_PAIR(0));
 }
 
-void Screen::deletewindow() { delwin(wndw); }
+void Screen::deletewindow() { wera(); delwin(wndw); }
 void Screen::wera() { werase(wndw); }
 void Screen::wbox() { box(wndw, 0, 0); }
 void Screen::wmov(int y, int x) { wmove(wndw, y, x); }
 void Screen::refr() { wrefresh(wndw); }
+void Screen::noutrefr() { wnoutrefresh(wndw); }
 void Screen::redraw() { redrawwin(wndw); }
 void Screen::closedisplay() { endwin(); tcsetattr (0, TCSANOW, &otermio); }
 
@@ -160,7 +161,7 @@ switch(ch) {
 /* KEF_NXTFLD  */  case KEY_CTRL('I'):  return KEY_TAB;        /* Next field                     NextField */
 /* KEF_INSERT  */  case KEY_CTRL('J'):  return KEY_IC;         /* Insert toggle (record)         InsertReplace InsertRecord */
 /* KEF_KEYHELP */  case KEY_CTRL('K'):  return KEY_F(11);      /* Keyboard help                  KeyHelp */
-/* KEF_REFRESH */  case KEY_CTRL('L'):  return KEY_F(0);       /* Refresh                        Refresh */
+/* KEF_REFRESH */  case KEY_CTRL('L'):  return KEY_F(12);      /* Refresh                        Refresh */
 /* KEF_COMMIT  */  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept                  Commit Select Execute */
 /* KEF_NXTREC  */  case KEY_CTRL('N'):  return KEY_DOWN;       /* Next record                    Down NextRecord */
 /* KEF_INSERT  */  case KEY_CTRL('O'):  return KEY_F(6);       /* Insert record                  InsertRecord */

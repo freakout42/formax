@@ -9,11 +9,11 @@ ysiz    = pag->n(rix, 3);
 xsiz    = pag->n(rix, 4);
 vwpy0   = pag->n(rix, 5);
 vwpx0   = pag->n(rix, 6);
-border  = pag->n(rix, 7);
+popup   = pag->n(rix, 7);
+border  = pag->n(rix, 8);
 return 0;
 }
 
-// must be rewritten for multiple pages
 int Page::maps(Qdata *qma) {
 int i, r, y;
 char *t, *p;
@@ -52,6 +52,18 @@ for (i=0; i<NLINES; i++) free(map[i]);
 deletewindow();
 }
 
+void Page::repaint()   { if (!popup) redraw(); }
+void Page::refrnopop() { if (!popup) refr(); }
+
+int Page::showpopup() {
+int i;
+redraw();
+refr();
+i = getkb();
+F(needredraw) = 1;
+return i==KEY_ENTER ? 0 : i;
+}
+
 static const char *rmodes[] = RMODENAMES;
 
 int Page::wait() {
@@ -78,7 +90,11 @@ writef(0, 61, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
 writef(0, 65, COL_COMMIT,15,"%s", commit);
 refr();
 for (i=0; i<F(numfield); i++) F(l[i]).show(i == F(curfield));
-for (i=1; i<F(numpage);  i++) F(p[i]).refr();
+for (i=PGE_MAIN; i<F(numpage); i++) {
+  if (F(needredraw)) F(p[i]).repaint();
+                     F(p[i]).refrnopop();
+}
+F(needredraw) = 0;
 return LK ? LK : getkb();
 }
 

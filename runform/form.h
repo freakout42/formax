@@ -8,6 +8,7 @@ public:
   char title[SMLSIZE];
   Qdata *e;
   Screen y;
+  int needredraw;
   Block   b[NBLOCKS];
   Field   l[NFIELDS];
   Page    p[NBLOCKS];

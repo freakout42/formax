@@ -18,9 +18,8 @@ cat <<EOF
 INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
 INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
 INSERT INTO blocks (id, form_id, name) VALUES (0, 1, 'dual');
-INSERT INTO pages  (form_id, name) VALUES (1, '$TABLE-0');
-INSERT INTO pages  (id, form_id, name, ysiz, vwpy0, border) VALUES (0, 1, 'formax', 1, 0, 0);
-INSERT INTO maps   (page_id, line, mtext) VALUES (1, 1, '         ');
+INSERT INTO pages  (form_id, seq, name) VALUES (0, 1, 'formax');
+INSERT INTO maps   (page_id, line, mtext) VALUES (3, 1, '         ');
 EOF
 LINE=0
 FLDN=0
@@ -29,6 +28,6 @@ for COLUMN; do
   FLDN=`expr $FLDN + 10`
   if [ $LINE = 1 ]; then KEY=1; else KEY=0; fi
   echo "INSERT INTO fields (seq, name, line, key) VALUES ($FLDN, '$COLUMN', $LINE+1, $KEY);"
-  printf "INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' [$LINE]%-14s \$${LINE}__________________');\\n" $COLUMN
+  printf "INSERT INTO maps (page_id, line, mtext) VALUES (3, $LINE+1, ' [$LINE]%-14s \$${LINE}__________________');\\n" $COLUMN
 done
 exit
