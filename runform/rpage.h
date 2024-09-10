@@ -15,8 +15,6 @@ CREATE TABLE pages
    title     TEXT    NOT NULL DEFAULT '',
    ysiz      INTEGER NOT NULL DEFAULT 23,   /* heigth of page */
    xsiz      INTEGER NOT NULL DEFAULT 80,   /* width of page */
-/* vwys      INTEGER NOT NULL DEFAULT 0,       height of view */
-/* vwxs      INTEGER NOT NULL DEFAULT 0,       width of view */
    vwpy0     INTEGER NOT NULL DEFAULT 1,    /* y coordinate of view position on page */
    vwpx0     INTEGER NOT NULL DEFAULT 0,    /* x coordinate of view position on page */
    popup     INTEGER NOT NULL DEFAULT 0,    /* if the page is a pop-up page */
@@ -25,4 +23,5 @@ CREATE TABLE pages
   );
 INSERT INTO pages  (form_id, seq, name, ysiz, vwpy0, border) VALUES (1, 0, 'status', 1, 0, 0);
 INSERT INTO pages  (form_id, seq, name, ysiz, xsiz, vwpy0, vwpx0, popup, border) VALUES (0, 2, 'keyhelp', 16, 41, 2, 30, 1, 1);
+INSERT INTO pages  (form_id, seq, name, ysiz, xsiz, vwpy0, vwpx0, popup, border) VALUES (0, 3, 'editor',  21, 62, 2, 17, 1, 1);
 #endif

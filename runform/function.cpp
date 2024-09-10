@@ -110,7 +110,8 @@ return 0;
 }
 
 int Function::keys_help() {
-return F(p[PGE_KEYHELP]).showpopup();
+//return F(p[PGE_KEYHELP]).showpopup();
+return F(p[PGE_EDITOR]).showpopup();
 }
 
 /* NAVIGATION */

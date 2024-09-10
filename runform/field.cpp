@@ -153,11 +153,10 @@ switch (fieldtype) {
  case FTY_CHAR: break;
  case FTY_ALL: break;
 }
-if (*c==NULL && *buf) *c = strdup(buf);
-else {
+if (*c) {
   if (strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);
   if (strcmp(*c, buf)) strcpy(*c, buf);
-}
+} else *c = strdup(buf);
 return 0;
 }
 
@@ -188,3 +187,14 @@ switch(CM) {
 pressed = pressed==KEY_ENTER ? KEF_NXTFLD : F(mapkey)(pressed);
 return pressed;
 }
+
+/*
+#0  0x04022368 in _vgr20070ZU_libcZdsoZa_strlen (str=0x0) at ../shared/vg_replace_strmem.c:505
+#1  0x0804bda4 in Field::validate (this=0x818cea4 <f+116260>, c=0x48d5f08, buf=0xfe94def0 "") at field.cpp:158
+#2  0x0804bf9d in Field::edit (this=0x818cea4 <f+116260>, pos=-1049) at field.cpp:178
+#3  0x0804ddd5 in Function::fedit (this=0x844bb24 <u>, pos=-1049) at function.cpp:204
+#4  0x0804d5eb in Function::dispatch (this=0x844bb24 <u>) at function.cpp:85
+#5  0x0804cb6d in Form::run (this=0x8170880 <f>) at form.cpp:113
+#6  0x08051306 in main (argc=4, argv=0xfe94fc14) at runform.cpp:180
+ */
+
