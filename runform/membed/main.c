@@ -1591,8 +1591,6 @@ quit(f, n)
 #endif
 		else {
       bclear(curbp);
-      free(curbp->b_linep);
-/*      free(curbp);*/
       free(curwp);
       longjmp(loop1, 1);
     }
