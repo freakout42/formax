@@ -418,9 +418,7 @@ void usage()
 
 void mainloop(char *buf, WINDOW *scr) {
 	int	c=0;
-	int	f;
-	int	n;
-	int	r;
+	int	f, n, r;
 	int	negarg;
 	int	state;
 
@@ -431,6 +429,8 @@ void mainloop(char *buf, WINDOW *scr) {
   if (buf) {
     edinit("main");
     fileindex = 0;
+    addline(buf, curbp);
+    curwp->w_flag |= WFMOVE|WFHARD|WFFORCE;
   }
 
 	kbdm[0] = CTLX|')';			/* Empty macro		*/
@@ -591,11 +591,11 @@ int main(argc, argv)
 	int	gline = 1;
 	int	visitmode = FALSE;
 	char	*cp;
-  BUFFER b;
+  char *b = "hhh123";
 
 if (argc==2 && !strcmp(argv[1], "-e")) {
 	vtinit();
-	mainloop(&b, windw1);
+	mainloop(b, windw1);
 	vttidy();
 	return 0;
 } else {
