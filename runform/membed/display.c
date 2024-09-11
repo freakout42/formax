@@ -15,6 +15,10 @@
 
 #define WFDEBUG 0			/* Window flag debug.		*/
 
+#if VT100 && !W32
+extern int escseq();
+#endif
+
 typedef struct  VIDEO {
 	int	v_col;			/* mb: line len / scrn offset	*/
 	int	v_flag;			/* Flags			*/
@@ -58,20 +62,36 @@ void vtinit()
 	(*term.t_open)();
 	vscreen = (VIDEO **) malloc(term.t_nrow*sizeof(VIDEO *));
 	if (vscreen == NULL)
+#if BFILES
+		_exit(1);
+#else
 		exit(1);
+#endif
 	pscreen = (VIDEO **) malloc(term.t_nrow*sizeof(VIDEO *));
 	if (pscreen == NULL)
+#if BFILES
+		_exit(1);
+#else
 		exit(1);
+#endif
 	for (i=0; i<term.t_nrow; ++i) {
 		vp = (VIDEO *) malloc(VIDEOSIZE+NLINE);
 		if (vp == NULL)
+#if BFILES
+			_exit(1);
+#else
 			exit(1);
+#endif
 		vscreen[i] = vp;
 		vp->v_flag = 0;
 		vp->v_col = 0;		/* mb: line length */
 		vp = (VIDEO *) malloc(VIDEOSIZE+term.t_ncol);
 		if (vp == NULL)
+#if BFILES
+			_exit(1);
+#else
 			exit(1);
+#endif
 		pscreen[i] = vp;
 		vp->v_flag = 0;
 		vp->v_col = 0;		/* mb: screen offset */
@@ -106,6 +126,9 @@ void movecursor(row, col)
 int vttidy()
 {
 	movecursor(term.t_nrow, 0);
+#ifndef MSDOS
+/*	(*term.t_putchar)('\n');	/ * mb: scroll! */
+#endif
 	return (*term.t_close)();
 }
 
@@ -327,13 +350,12 @@ int r;
  * Called by "update" any time a window is dirty.
  */
 void modeline(wp)
-  WINDOW *wp;
+register WINDOW *wp;
 {
-	char	*cp;
-	int	n;
-	BUFFER *bp;
+	register char	*cp;
+	register int	n;
+	register BUFFER *bp;
 	int verbose = TRUE;
-
 start:
 	n = wp->w_toprow+wp->w_ntrows;		/* Location.		*/
 	vscreen[n]->v_flag |= VFCHG | VFMOD;	/* Redraw next time.	*/
@@ -354,7 +376,27 @@ start:
 	vtputc(' ');
 	n = 3;
 	if (verbose) {
+#if AtST
+		cp = "MEX -- Buffer: ";	/* mb: AtST has 'Help' key */
+#endif
+#if (MSDOS | W32)
+#if HELP
+		cp = "MEX -- F1 for help -- ";
+#else
+		cp = "MEX -- Buffer: ";
+#endif
+#endif
+#if (V7 | VMS | CPM)
+#if HELP
+#if CURSES
 		cp = "MEX - F1 Help - ";
+#else
+		cp = "MEX -- ESC-? for help -- ";
+#endif
+#else
+		cp = "MEX -- Buffer: ";
+#endif
+#endif
 		n = modeput (cp, n);
 	}
 	n = modeput (bp->b_bname, n);		/* Buffer name */
@@ -363,6 +405,15 @@ start:
 		n = modeput ("File: ", n);
 		n = modeput (bp->b_fname, n);
 	}
+#if  WFDEBUG
+	vtputc('-');
+	vtputc((wp->w_flag&WFMODE)!=0  ? 'M' : '-');
+	vtputc((wp->w_flag&WFHARD)!=0  ? 'H' : '-');
+	vtputc((wp->w_flag&WFEDIT)!=0  ? 'E' : '-');
+	vtputc((wp->w_flag&WFMOVE)!=0  ? 'V' : '-');
+	vtputc((wp->w_flag&WFFORCE)!=0 ? 'F' : '-');
+	n += 6;
+#endif
 	vtputc(' ');
 	++n;
 	if (verbose && n > term.t_ncol) {	/* long pathname */

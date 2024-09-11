@@ -10,46 +10,141 @@
  */
 #define VERSION "6.0"
 
-#if (__FreeBSD__ | __APPLE__)
-#define BSD     1
-#else
-#define BSD     0
+#if (VT100)
+#define V7      1			/* V7 UN*X or Coherent          */
+#define SYS_V   1			/* System V UN*X                */
+#define BSD     0			/* BSD xBSD MacOS               */
+#define W32     0			/* Windows 32                   */
+#define ANSI    1			/* Ansi terminal                */
+#define VT52    0			/* VT52 terminal                */
+#define TERMCAP 0			/* Use TERMCAP                  */
+#define VT100   1			/* Handle VT100 style keypad.   */
+#define CURSES	0			/* Use CURSES                   */
 #endif
 
+#if (_WIN32 | _WIN64)
+#define V7      0
+#define SYS_V   0
+#define BSD     0
+#define W32     1
+#define ANSI    1
+#define VT52    0
+#define TERMCAP 0
+#define VT100   1
+#define CURSES	0
+#endif
+
+#if (HP700)
 #define V7      1
 #define SYS_V   1
+#define BSD     0
+#define W32     0
+#define ANSI    0
+#define VT52    0
+#define TERMCAP 0
+#define HP700   1
+#define CURSES	0
+#endif
+
+#if (__FreeBSD__ | __APPLE__)
+#define V7      1
+#define SYS_V   1
+#define BSD     1
 #define W32     0
 #define ANSI    0
 #define VT52    0
 #define TERMCAP 0
 #define VT100   0
 #define CURSES	1
+#else
+#if (hpux | COHERENT | unix | _HPUX_SOURCE | __DARWIN_UNIX03) && !defined(VT100) && !defined(HP700) && !defined(_WIN32)
+#define V7      1
+#define SYS_V   1
+#define BSD     0
+#define W32     0
+#define ANSI    0
+#define VT52    0
+#define TERMCAP 0
+#define VT100   0
+#define CURSES	1
+#endif
+#endif
+
+#if (__BEOS__)
+#define V7      1
+#define SYS_V   1
+#define BSD     0
+#define W32     0
+#define ANSI    0
+#define VT52    0
+#define TERMCAP 1
+#define VT100   1
+#define CURSES	0
+#endif
+
+#if (MSDOS)				/* MS-DOS			*/
+					/*   (Turbo C compiler)		*/
+					/*   (Compact memory model)	*/
+#define TCCONIO 1			/* Turbo C direct console I/O	*/
+#endif
 #define VMS     0			/* VAX/VMS			*/
 #define CPM     0			/* CP/M-86			*/
 #define AtST    0			/* Atari 520ST or 1040ST	*/
-#define ST_DA	  0
+					/*   (Megamax C compiler )	*/
+#if AtST
+#define ST_DA	1			/* 1 if desk accessory, else 0	*/
+#else
+#define ST_DA	0
+#endif
 
+#if (AtST | MSDOS)
+#define	NROW	25
+#else
 #define	NROW	24			/* Default screen size		*/
+#endif
 #define	NCOL	80			/* Edit if you want to.		*/
 
 #define WSHIFT	2	/* mb: how much to shift screen	sideways at once.
 				2 means by one half, 3 by 1/3, etc.	*/
 
-#define CANLOG	0			/* mb: compile in logfile stuff	*/
+#if ST_DA
+#define CANLOG	0
+#else
+#define CANLOG	1			/* mb: compile in logfile stuff	*/
+#endif
 
 #define	LOGIT	  0			/* mb: default: no log		*/
 #define LOGFLUSH  256			/* mb: how often flush log file	*/
 #define	LOGFILE	  "mex.log"		/* mb: name of log file		*/
+#if V7
+#undef	LOGIT
+#define	LOGIT	1			/* mb: log keystrokes in a file	*/
+#undef	LOGFILE
+#define	LOGFILE	".mexlog"		/* mb: UN*X name of log file	*/
+#endif
+#if VMS
+#undef	LOGIT
+#define	LOGIT	1
+#endif
 
+#if ST_DA
+#define HELP    0
+#define EXTRA   0
+#else
 #define HELP    1			/* mb: compile built-in help	*/
 #define EXTRA   1			/* mb: compile less-used stuff	*/
+#endif					/*	(together they add ~8K)	*/
 #define CVMVAS  1			/* C-V, M-V arg. in screens.	*/
 #define CMODE	1			/* mb: Fancy C-lang features	*/
 #define GDEBUG  1			/* mb: General debugging flag	*/
 
 #define BFILES  0			/* mb: Read files in blocks	*/
 
+#if ST_DA
+#define FBLOCK  4608	/* (DA should try and use less RAM) */
+#else
 #define FBLOCK  4096	/* For BFILES: 2 SS tracks. Edit for your system. */
+#endif
 
 /* mb: on some UNIX systems need to delay on entry & exit, make this >=1: */
 #define SLEEP	0
@@ -61,6 +156,13 @@
 #define INWORDW "*.,+-?!()[]\'\""	/* additional, for word wrap */
 			/* (in addition to letters and numbers) */
 
+/* mb: for overflow checks, etc: you may want to edit for your system!	*/
+#if (MSDOS)				/* MS-DOS			*/
+#define MAXSH	0x7F			/* max pos short	*/
+#define MAXUS	0xFF			/* max unsigned short	*/
+#define MAXINT	0x7FFF			/* max pos int		*/
+#define MAXUI	0XFFFF			/* max unsigned int	*/
+#else
 #include <limits.h>
 #define MAXSH	SHRT_MAX		/* max pos short	*/
 #define MAXUS	USHRT_MAX		/* max unsigned short	*/
@@ -68,17 +170,36 @@
 #define MAXINT	INT_MAX			/* max pos int		*/
 #endif
 #define MAXUI	UINT_MAX		/* max unsigned int	*/
+#endif
 
 #define NFILES	32			/* # of file names to store	*/
 #define NFILEN	128			/* # of bytes, file name	*/
 #define NBUFN	128			/* # of bytes, buffer name	*/
 #define KBLOCK	256			/* # of bytes, kbuf allocation	*/
+#if (AtST | MSDOS)
+#define NLINE	1024			/* # of bytes, max line	reading	*/
+#else
 #define NLINE	32768			/* # of bytes, max line	reading	*/
+#endif
 #define NKBDM	256			/* # of strokes, keyboard macro */
 #define NPAT	128			/* # of bytes, pattern		*/
 #define HUGE	1000			/* Huge number			*/
 
+#if ST_DA				/* mb: use our own malloc scheme */
+#define NBLOCK  (6 + 3*sizeof(unsigned int))
+		/* we want sizeof(LINE)+NBLOCK+sizeof(unsigned)
+		   to be a multiple of sizeof(MYLHEADER), so:
+			assume sizeof(pointer)=4, then:
+			sizeof(LINE) == 10 (excluding the text),
+			sizeof(MYLHEADER) == 4 + sizeof(unsigned),
+			10+6+(3+1)*sizeof(unsigned) == 4*sizeof(MYLHEADER),
+		   (i.e. the smallest line will cost 24 or 32 bytes!) */
+#define DASIZE 90
+			/* default total space (in K) for mylloc-ing	*/
+			/* maximum: sizeof(MYLHEADER)*MAXUI/1024 = 383	*/
+#else
 #define NBLOCK  18			/* # of bytes, line allocation	*/
+#endif
 
 #define HISTORY 16			/* mb: shell commands stored	*/
 
@@ -307,6 +428,11 @@ extern  WINDOW	*wpopup();		/* Pop up window creation	*/
 extern  LINE	*lalloc();		/* Allocate a line		*/
 extern  int	fbwdel();  /* forward word delete */
 
+#if ST_DA				/* mb: use our own malloc scheme */
+#define malloc	mylloc
+#define free	myfree
+#endif
+
 #if SYS_V | W32
 #include <stdlib.h>
 #endif
@@ -319,6 +445,15 @@ extern	char *malloc();
 void	mlwrite(char *fmt, ...);
 #else
 void mlwrite();
+#endif
+
+#if AtST
+#include <osbind.h>
+#include <strings.h>
+#endif
+
+#if MSDOS
+#include <string.h>
 #endif
 
 void makename(char *bname, char *fname);

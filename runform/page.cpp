@@ -57,10 +57,10 @@ void Page::refrnopop() { if (!popup) refr(); }
 
 int Page::showpopup() {
 int i;
-char *buf = "hello\n";
+char *buf = "hello";
 redraw();
 refr();
-i = getkb();
+//i = getkb();
 mainloop(buf, wndw);
 F(needredraw) = 1;
 return i==KEY_ENTER ? 0 : i;

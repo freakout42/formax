@@ -1,4 +1,5 @@
-/* Original code written by Dave G. Conroy,
+/* main.c
+ * Original code written by Dave G. Conroy,
  * substantially modified by Moshe Braner, July-December 1986.
  * Further substantial modifications by MB: January and April, 1988.
  *
@@ -16,8 +17,9 @@
 
 /*
  * This file contains the
- * driving routine, and some
- * keyboard processing code
+ * main driving routine, and some
+ * keyboard processing code, for the
+ * MicroEMACS screen editor.
  */
 #include	<setjmp.h>
 #include	<stdio.h>
@@ -25,7 +27,25 @@
 #include	"ed.h"
 void edmore(char fname[]);
 
+#if CURSES
 #include	"curkeys.h"
+#endif
+
+#if ST_DA
+#include	 <obdefs.h>
+#include	 <gemdefs.h>
+#endif
+
+#if (MSDOS | W32)
+#include	<fcntl.h>
+#include	<conio.h>
+#endif
+
+#if	VMS
+#include	<ssdef.h>
+#define GOOD	(SS$_NORMAL)
+#endif
+
 #ifndef GOOD
 #define GOOD	0
 #endif
@@ -72,6 +92,25 @@ int	kbdm[NKBDM];			/* Macro			*/
 int	*kbdmip;			/* Input  for above		*/
 int	*kbdmop;			/* Output for above		*/
 char	pat[NPAT] = {'\0'};		/* Pattern			*/
+
+#if AtST
+int	vidrev	= FALSE;		/* may be changed by cmd line	*/
+#endif
+#if (MSDOS)
+int	origvidmode;			/* save on entry		*/
+int	nrmlvidattr;			/* normal in our vidmode	*/
+int	curvidattr;			/* update all along		*/
+int	vidrev	  = FALSE;		/* may be changed by cmd line	*/
+int	vidmode   = LASTMODE;		/* may be changed by cmd line	*/
+#endif
+
+#if ST_DA
+extern int	gl_apid;
+int	menu_id, event, ret;
+int	xdesk, ydesk, hdesk, wdesk;
+int	msgbuff[8];
+char	menusave[1520];
+#endif
 
 typedef struct  {
 	int	k_code;			/* Key code			*/
@@ -131,7 +170,7 @@ extern  int	backword();		/* Backup by words		*/
 extern  int	forwword();		/* Advance by words		*/
 extern  int	forwdel();		/* Forward delete		*/
 extern  int	backdel();		/* Backward delete		*/
-extern  int	killtxt();		/* Kill forward                 */
+extern  int     killtxt();              /* Kill forward                 */
 extern  int	yank();			/* Yank back from killbuffer.	*/
 extern  int	unyank();		/* mb: added			*/
 extern  int	upperword();		/* Upper case word		*/
@@ -190,9 +229,17 @@ KEYTAB  keytab[] = {
 	CNTL|'F',		forwchar,
 	CNTL|'G',		undo,
      ED|CNTL|'H',		backdel,
+#if (MSDOS | W32)
+     ED|CNTL|0x3F,		bkill,		/* mb: ^BS */
+#else
      ED|CNTL|0x3F,		fbdel,		/* mb: DELETE key */
+#endif
      ED|CNTL|'I',		tab,
+#if defined(VT100) || defined(HP700)
+     ED|CNTL|'J',		tnewline,
+#else
      ED|CNTL|'J',		indent,
+#endif
      ED|CNTL|'K',               killtxt,
 	CNTL|'L',		refresh,
      ED|CNTL|'M',		tnewline,
@@ -213,6 +260,11 @@ KEYTAB  keytab[] = {
 	CTLX|CNTL|'E',		editog,		/* mb: added */
 	CTLX|CNTL|'F',		filename,
 	CTLX|CNTL|'R',		fileread,
+#if V7
+	/* skip */
+#else
+     ED|CTLX|CNTL|'S',		filesave,
+#endif
 	CTLX|CNTL|'V',		filevisit,
      ED|CTLX|CNTL|'W',		filewrite,
 	CTLX|CNTL|'X',		swapmark,
@@ -221,6 +273,9 @@ KEYTAB  keytab[] = {
 	CTLX|CNTL|0x3F,		togdeldir,	/* DELETE key dir */
 	CTLX|'?',		listbuffers,
 	CTLX|'!',		spawn,
+#if CANLOG
+	CTLX|'&',		doplay,
+#endif
 	CTLX|'=',		showcpos,
 	CTLX|'(',		ctlxlp,
 	CTLX|')',		ctlxrp,
@@ -243,8 +298,12 @@ KEYTAB  keytab[] = {
 	CTLX|'V',		page_nextw,	/* mb: added */
 	CTLX|'Z',		back_nextw,	/* mb: added */
 	META|'!',		reposition,
+#if	VT100
+	/* skip this - it clashes with function key codes */
+#else
 	META|']',		forw_brace,	/* mb: added */
 	META|'[',		back_brace,	/* mb: added */
+#endif
 	META|')',		forw_brace,	/* mb: added */
 	META|'}',		forw_brace,	/* mb: added */
 	META|'{',		back_brace,	/* mb: added */
@@ -280,6 +339,216 @@ KEYTAB  keytab[] = {
 	META|'P',		backparag,	/* mb: added */
 #endif
 
+#if	(AtST | MSDOS | W32)
+	CTLX|CNTL|'H',		hardcopy,	/* mb: added */
+#endif
+
+#if	AtST					/* mb: added */
+
+	FUNC|0x4B,		backchar,	/* <-- */
+	FUNC|SHFT|0x4B,		backword,
+	FUNC|SHFT|0x73,		backword,
+	FUNC|META|0x4B,		gotobol,
+	FUNC|0x4D,		forwchar,	/* --> */
+	FUNC|SHFT|0x4D,		forwword,
+	FUNC|SHFT|0x74,		forwword,
+	FUNC|META|0x4D,		gotoeol,
+	FUNC|0x50,		forwline,
+	FUNC|0x48,		backline,
+#if	EXTRA
+	FUNC|SHFT|0x50,		mvdnwind,
+	FUNC|SHFT|0x48,		mvupwind,
+	FUNC|META|0x50,		forwparag,
+	FUNC|META|0x48,		backparag,
+#endif
+	FUNC|0x61,		undo,   	/* Undo */
+	FUNC|SHFT|0x61,		flush_kbuf,
+     ED|FUNC|0x53,		fbdel,		/* Del */
+     ED|FUNC|SHFT|0x53,         killtxt,
+	CTLX|FUNC|0x53,		togdeldir,
+     ED|FUNC|0x0E,		backdel,	/* Backspace */
+     ED|FUNC|SHFT|0x0E,		bkill,
+     ED|FUNC|META|0x53,		fbwdel,		/* Delete */
+     ED|FUNC|META|0x0E,		delbword,	/* Backspace */
+	FUNC|0x47,		reposition,	/* Clr/Home  */
+	FUNC|SHFT|0x47,		negrepos,	/* w/shift   */
+	FUNC|META|0x47,		gotobob,	/* Esc-Home  */
+	FUNC|SHFT|0x77,		gotoeob,	/* Ctrl-Home */
+     ED|FUNC|0x52,		openline,	/* Insert */
+#if EXTRA
+     ED|FUNC|SHFT|0x52,		deblank,
+#endif
+	FUNC|0x3B,		ctlxe,		/* F1  */
+	FUNC|SHFT|0x3B,		defmacro,
+	FUNC|0x3C,		usebuffer,	/* F2  */
+	FUNC|SHFT|0x3C,		filevisit,
+	FUNC|0x3D,		fileread,	/* F3  */
+	FUNC|SHFT|0x3D,		filewrite,
+     ED|FUNC|0x3E,              killtxt,        /* F4  */
+     ED|FUNC|SHFT|0x3E,		killregion,
+     ED|FUNC|0x3F,		yank,		/* F5  */
+	FUNC|SHFT|0x3F,		copyregion,
+	FUNC|0x40,		backsearch,	/* F6  */
+	FUNC|SHFT|0x40,		back_brace,
+	FUNC|0x41,		forwsearch,	/* F7  */
+	FUNC|SHFT|0x41,		forw_brace,
+	FUNC|0x42,		backpage,	/* F8  */
+	FUNC|SHFT|0x42,		back_nextw,
+	FUNC|0x43,		forwpage,	/* F9  */
+	FUNC|SHFT|0x43,		page_nextw,
+	FUNC|0x44,		setmark,	/* F10 */
+	FUNC|SHFT|0x44,		swapmark,
+#if	HELP
+	FUNC|0x62,		help,		/* Help */
+#else
+	FUNC|0x62,		listbuffers,
+#endif
+	FUNC|SHFT|0x62,		listbuffers,
+    /* Alt to act as Ctrl-X-Ctrl: */
+	FUNC|SHFT|0x12,		editog,		/* Alt-E */
+     ED|FUNC|SHFT|0x14,		ltwiddle,	/* Alt-T */
+	FUNC|SHFT|0x2D,		swapmark,	/* Alt-X */
+    /* Alt to act as Ctrl-X: */
+	FUNC|SHFT|0x83,		showcpos,
+	FUNC|SHFT|0x78,		onlywind,
+	FUNC|SHFT|0x79,		splitwind,
+	FUNC|SHFT|0x30,		usebuffer,
+     ED|FUNC|SHFT|0x21,		reformat,
+	FUNC|SHFT|0x25,		killbuffer,
+     ED|FUNC|SHFT|0x26,		setlmargin,
+	FUNC|SHFT|0x32,		defmacro,
+	FUNC|SHFT|0x31,		nextwind,
+	FUNC|SHFT|0x19,		prevwind,
+     ED|FUNC|SHFT|0x13,		setfillcol,
+	FUNC|SHFT|0x10,		visitog,
+     ED|FUNC|SHFT|0x1F,		filesave,
+	FUNC|SHFT|0x2F,		filevisit,
+    /* Other Alt- functions: */
+	FUNC|SHFT|0x2E,		casestog,	/* Alt-C */
+	FUNC|SHFT|0x20,		spawncli,	/* Alt-D */
+	FUNC|SHFT|0x22,		gotolinum,	/* Alt-G */
+     ED|FUNC|SHFT|0x17,		instog,		/* Alt-I */
+     ED|FUNC|SHFT|0x18,		openline,	/* Alt-O */
+     ED|FUNC|SHFT|0x11,		copyregion,	/* Alt-W */
+     ED|FUNC|SHFT|0x15,		yank,		/* Alt-Y */
+	FUNC|SHFT|0x80,		back_brace,	/* Alt-( */
+	FUNC|SHFT|0x81,		forw_brace,	/* Alt-) */
+#if CANLOG
+	FUNC|SHFT|0x7E,		doplay,		/* Alt-7 */
+#endif
+#if	EXTRA
+	FUNC|SHFT|0x7D,		enlargewind,	/* Alt-^ */
+#endif
+    /* Still available:
+	FUNC|SHFT|0x23,		Alt-H
+	FUNC|SHFT|0x24,		Alt-J
+	FUNC|SHFT|0x16,		Alt-U
+	FUNC|SHFT|0x2C,		Alt-Z
+	FUNC|SHFT|0x7A,		Alt-3
+	FUNC|SHFT|0x7B,		Alt-4
+	FUNC|SHFT|0x7C,		Alt-5
+	FUNC|SHFT|0x7F,		Alt-8
+	FUNC|SHFT|0x82,		Alt '-'
+
+	FUNC|SHFT|0x??,		spawn,		Alt-?
+     */
+#endif
+
+#if	(MSDOS | W32)
+	FUNC|0x4B,		backchar,	/* <-- */
+	FUNC|0x73,		backword,	/* ^<- */
+	FUNC|META|0x4B,		gotobol,
+	FUNC|0x4D,		forwchar,	/* --> */
+	FUNC|0x74,		forwword,	/* ^-> */
+	FUNC|META|0x4D,		gotoeol,
+	FUNC|0x50,		forwline,
+	FUNC|0x48,		backline,
+     ED|FUNC|0x53,		fbdel,		/* Del */
+	CTLX|FUNC|0x53,		togdeldir,
+     ED|FUNC|META|0x53,		fbwdel,		/* Esc-Del */
+	FUNC|0x49,		backpage,	/* PgUp  */
+	FUNC|0x84,		back_nextw,	/* ^PgUp */
+	FUNC|0x51,		forwpage,	/* PgDn  */
+	FUNC|0x76,		page_nextw,	/* ^PgDn */
+	FUNC|0x47,		gotobol,	/* Home  */
+	FUNC|0x4F,		gotoeol,	/* End   */
+	FUNC|0x77,		gotobob,	/* ^Home    */
+	FUNC|0x75,		gotoeob,	/* ^End     */
+	FUNC|META|0x47,		reposition,	/* Esc-Home */
+	FUNC|META|0x4F,		negrepos,	/* Esc-End  */
+     ED|FUNC|0x52,		instog,		/* Insert */
+#if	HELP
+	FUNC|0x3B,		help,		/* F1  */
+#else
+	FUNC|0x3B,		listbuffers,
+#endif
+	FUNC|0x54,		listbuffers,	/* shift-F1 */
+	FUNC|0x3C,		splitwind,   	/* F2 */
+	FUNC|0x55,		flush_kbuf,
+	FUNC|0x3D,		filevisit,	/* F3  */
+	FUNC|0x56,		fileread,
+	FUNC|0x3E,		onlywind,	/* F4  */
+	FUNC|0x57,		filewrite,
+	FUNC|0x3F,              forwsearch,     /* F5  */
+     ED|FUNC|0x58,		killregion,
+	FUNC|0x40,		backsearch,	/* F6  */
+     ED|FUNC|0x59,		yank,
+	FUNC|0x41,		back_brace,	/* F7  */
+	FUNC|0x5A,		forw_brace,
+	FUNC|0x42,		quickexit,	/* F8  */
+	FUNC|0x5B,		quit,
+	FUNC|0x43,		setmark,	/* F9 */
+	FUNC|0x5C,		swapmark,
+	FUNC|0x44,		ctlxe,		/* F10 */
+	FUNC|0x5D,		defmacro,
+    /* Alt to act as Ctrl-X-Ctrl: */
+	FUNC|0x12,		editog,		/* Alt-E */
+     ED|FUNC|0x14,		ltwiddle,	/* Alt-T */
+	FUNC|0x2D,		swapmark,	/* Alt-X */
+    /* Alt to act as Ctrl-X: */
+	FUNC|0x83,		showcpos,
+	FUNC|0x78,		onlywind,
+	FUNC|0x79,		splitwind,
+	FUNC|0x30,		usebuffer,
+     ED|FUNC|0x21,		reformat,
+	FUNC|0x25,		killbuffer,
+     ED|FUNC|0x26,		setlmargin,
+	FUNC|0x32,		defmacro,
+	FUNC|0x31,		nextwind,
+	FUNC|0x19,		prevwind,
+     ED|FUNC|0x13,		setfillcol,
+	FUNC|0x10,		visitog,
+     ED|FUNC|0x1F,		filesave,
+	FUNC|0x2F,		filevisit,
+    /* Other Alt- functions: */
+	FUNC|0x2E,		casestog,	/* Alt-C */
+	FUNC|0x20,		spawncli,	/* Alt-D */
+	FUNC|0x22,		gotolinum,	/* Alt-G */
+     ED|FUNC|0x17,		instog,		/* Alt-I */
+     ED|FUNC|0x18,		openline,	/* Alt-O */
+     ED|FUNC|0x11,		copyregion,	/* Alt-W */
+     ED|FUNC|0x15,		yank,		/* Alt-Y */
+	FUNC|0x2C,		spawn,		/* Alt-Z */
+	FUNC|0x80,		back_brace,	/* Alt-( */
+	FUNC|0x81,		forw_brace,	/* Alt-) */
+#if CANLOG
+	FUNC|0x7E,		doplay,		/* Alt-7 */
+#endif
+#if	EXTRA
+	FUNC|0x7D,		enlargewind,	/* Alt-^ */
+#endif
+    /* Still available:
+	FUNC|0x23,		Alt-H
+	FUNC|0x24,		Alt-J
+	FUNC|0x16,		Alt-U
+	FUNC|0x7A,		Alt-3
+	FUNC|0x7B,		Alt-4
+	FUNC|0x7C,		Alt-5
+	FUNC|0x7F,		Alt-8
+	FUNC|0x82,		Alt '-'
+     */
+#endif
+
 #if	HELP					/* mb: added */
 	META|'?',		help,
 	META|CNTL|'[',		help,
@@ -303,17 +572,21 @@ KEYTAB  keytab[] = {
 void edinit(fname)
 	char	fname[];
 {
-	BUFFER *bp;
-	WINDOW *wp;
+	register BUFFER *bp;
+	register WINDOW *wp;
 	char	bname[NBUFN];
 
-	strncpy(bname, fname, sizeof(bname));
+	makename(bname, fname);
 	bp = bfind(bname, TRUE, BFEDIT);	/* First buffer		*/
 	blistp = bfind("[List]", TRUE, BFTEMP); /* Buffer list buffer	*/
 	bhelpp = bfind("[Help]", TRUE, BFTEMP); /* Help screens buffer	*/
 	wp = (WINDOW *) malloc(sizeof(WINDOW)); /* First window		*/
 	if (bp==NULL || wp==NULL || blistp==NULL || bhelpp==NULL)
+#if BFILES
+		_exit(1);
+#else
 		exit(1);
+#endif
 	curbp  = bp;				/* Make this current	*/
 	wheadp = wp;
 	curwp  = wp;
@@ -368,12 +641,20 @@ execute(c, f, n)
 		++ktp;
 	}
 	if (c != d) {
+#if GDEBUG
+		mlwrite("No such command (code 0x%x)", c);
+#else
 		mlwrite("No such command");
+#endif
 		return (FALSE);
 	} /* else fall thru to "view-only" message */
 ascii:
 	if (! (curbp->b_flag & BFEDIT)) {
+#if (AtST | MSDOS | W32)
+		mlwrite("View-only mode - Alt-E to edit");
+#else
 		mlwrite("View-only mode - ^X^E to edit");
+#endif
 		lastflag = 0;			/* Fake last flags.	*/
 		return(FALSE);
 	}
@@ -401,8 +682,59 @@ ascii:
 	return (status);
 }
 
+#if (ST_DA == 0)
 void usage()
 {
+#if AtST
+	Cconws("\r\nMEX version " VERSION "\r\n");
+	Cconws("\r\nUsage: mex [options] [file(s)]\r\n");
+	Cconws("\r\nOptions:\r\n");
+	Cconws("\t-c #\t# columns\r\n");
+	Cconws("\t-f #\tfill column = #\r\n");
+	Cconws("\t-f #-#\tleft & right margins\r\n");
+	Cconws("\t-g #\tgoto line #\r\n");
+	Cconws("\t-i\tinverse video\r\n");
+#if CANLOG
+#if LOGIT
+	Cconws("\t-l\tdon't log keystrokes\r\n");
+#else
+	Cconws("\t-l\tlog keystrokes\r\n");
+#endif
+	Cconws("\t-p\tplay back log file\r\n");
+#endif
+	Cconws("\t-r #\t# rows\r\n");
+	Cconws("\t-t #\ttabsize = #\r\n");
+	Cconws("\t-v\tview-only mode\r\n\n");
+	Cconws("\tPress any key ");
+	Cnecin();
+	_exit(0);
+#endif
+#if (MSDOS)
+	cputs("\r\nMEX version " VERSION "\r\n");
+	cputs("\r\nUsage: mex [options] [file(s)]\r\n");
+	cputs("\r\nOptions:\r\n");
+	cputs("-c #    # columns\r\n");
+	cputs("-d      BIOS, rather than direct, screen output\r\n");
+	cputs("-f #    fill column = #\r\n");
+	cputs("-f #-#  left & right margins\r\n");
+	cputs("-g #    goto line #\r\n");
+	cputs("-i      inverse video\r\n");
+#if CANLOG
+#if LOGIT
+	cputs("-l      don't log keystrokes\r\n");
+#else
+	cputs("-l      log keystrokes\r\n");
+#endif
+	cputs("-m #    text mode #\r\n");
+	cputs("        (0=BW40, 1=C40, 2=BW80, 3=C80, 7=MONO)\r\n");
+	cputs("-p      play back log file\r\n");
+#endif
+	cputs("-r #    # rows\r\n");
+	cputs("-t #    tabsize = #\r\n");
+	cputs("-v      view-only mode\r\n\n");
+	_exit(0);
+#endif
+#if (V7 | VMS | CPM | W32)
 	puts("\nMEX version " VERSION);
 	puts("\nUsage: mex [options] [file(s)]");
 	puts("Options:");
@@ -410,11 +742,72 @@ void usage()
 	puts("\t-f #\tfill column = #");
 	puts("\t-f #-#\tleft & right margins");
 	puts("\t-g #\tgoto line #");
+#if CANLOG
+#if LOGIT
+	puts("\t-l\tdon't log keystrokes");
+#else
+	puts("\t-l\tlog keystrokes");
+#endif
+	puts("\t-p\tplay back log file");
+#endif
 	puts("\t-r #\t# rows");
 	puts("\t-t #\ttabsize = #");
 	puts("\t-v\tview-only mode");
+#if V7
+#if CANLOG
+	puts("\nSuggested: setenv MEXLOG $HOME/.mexlog");
+#endif
+#endif
 	exit(0);
+#endif
 }
+#endif
+
+#if ST_DA
+#define register		/* avoid that in main()! */
+#endif
+
+#if VT100 && !W32
+int
+escseq(c)
+	register int c;
+{ 
+	if (c=='[' || c=='O') {		/* Arrows and extras.	*/
+		c = getkey();
+		if (c == 'A')
+			return (CNTL | 'P');
+		if (c == 'B')
+			return (CNTL | 'N');
+		if (c == 'C')
+			return (CNTL | 'F');
+		if (c == 'D')
+			return (CNTL | 'B');
+
+		if (c == 'L')
+			return (META | 'I');
+		if (c == 'H')
+			return (CNTL | 'A');
+		if (c == 'F')
+			return (CNTL | 'E');
+		if (c == 'I')
+			return (META | 'V');
+		if (c == 'G')
+			return (CNTL | 'V');
+
+		if (c == 'P')	/* PF1 */
+			return (META | 'B');
+		if (c == 'Q')	/* PF2 */
+			return (META | 'F');
+		if (c == 'R')	/* PF3 */
+			return (META | '.');
+		if (c == 'S')	/* PF4 */
+			return (CTLX | 'E');
+		/* else */
+			return (0);
+	}
+	return (0);
+}
+#endif
 
 void mainloop(char *buf, WINDOW *scr) {
 	int	c=0;
@@ -438,13 +831,20 @@ void mainloop(char *buf, WINDOW *scr) {
 	f = FALSE;
 	n = 1;
 	negarg = FALSE;
+#if ST_DA
+	state = DASTART;
+	c = ~NOKEY;
+#else
 	update(TRUE);
 	c = getkey();
+#if (V7 | VMS)
 	while (c==(CNTL|'Q') || c==(CNTL|'S'))
 		c = getkey();			/* mb: dump handshakes	*/
+#endif
 	if (c != NOKEY)
 		mlerase();
 	state = BASE;
+#endif
 
   r = setjmp(loop1);
 	if (r == 0) for(;;) {				/* main loop */
@@ -469,9 +869,24 @@ void mainloop(char *buf, WINDOW *scr) {
 			state = ESC;
 			break;
 		}
+#if W32
+		if (c == 0xE0) {
+			c = getkey();
+			state = ESC;
+			break;
+		}
+#endif
 		if (c == (CNTL|'X')) {
 			c = getkey();
+#if AtST
+			if (c==(FUNC|0x61) || c==(CNTL|'G')) { /* Undo */
+#endif
+#if (MSDOS | W32)
+			if (c==(FUNC|0x3C) || c==(CNTL|'G')) { /* F2 */
+#endif
+#if (V7 | VMS | CPM)
 			if (c == (CNTL|'G')) {
+#endif
 				c = getkey();
 				break;
 			}
@@ -494,7 +909,110 @@ void mainloop(char *buf, WINDOW *scr) {
 			state = ARG;
 			break;
 		}
+#if VT100 && !W32
+		if (c=='[' || c=='O') {
+			state = EXEC;
+			c = escseq(c);
+			if (! c) {
+				c = getkey();
+				state = BASE;
+			}
+			break;
+		}
+#endif
+#if (HP700)
+		if (c == 'A') {
+			c = (CNTL | 'P');
+			state = BASE;
+			break;
+			}
+		if (c == 'B') {
+			c = (CNTL | 'N');
+			state = BASE;
+			break;
+			}
+		if (c == 'C') {
+			c = (CNTL | 'F');
+			state = BASE;
+			break;
+			}
+		if (c == 'D') {
+			c = (CNTL | 'B');
+			state = BASE;
+			break;
+			}
+		if (c == 'S') {
+			c = (META | 'R');
+			state = BASE;
+			break;
+			}
+		if (c == 'T') {
+			c = (META | 'S');
+			state = BASE;
+			break;
+			}
+#endif
+#if (W32)
+		if (c == 'H') {
+			c = (CNTL | 'P');
+			state = BASE;
+			break;
+			}
+		if (c == 'P') {
+			c = (CNTL | 'N');
+			state = BASE;
+			break;
+			}
+		if (c == 'K') {
+			c = (CNTL | 'B');
+			state = BASE;
+			break;
+			}
+		if (c == 'M') {
+			c = (CNTL | 'F');
+			state = BASE;
+			break;
+			}
+		if (c == 'Q') {
+			c = (CNTL | 'V');
+			state = BASE;
+			break;
+			}
+		if (c == 'I') {
+			c = (META | 'V');
+			state = BASE;
+			break;
+			}
+		if (c == 'G') {
+			c = (CNTL | 'A');
+			state = BASE;
+			break;
+			}
+		if (c == 'O') {
+			c = (CNTL | 'E');
+			state = BASE;
+			break;
+			}
+		if (c == 'S') {
+			c = (CNTL | 'D');
+			state = BASE;
+			break;
+			}
+		if (c == 'R') {
+			c = (ED | FUNC | 0x52);
+			state = BASE;
+			break;
+			}
+#endif
+#if AtST
+		if (c==(FUNC|0x61) || c==(CNTL|'G')) {	/* Undo */
+#endif
+#if (MSDOS | W32)
+		if (c==(FUNC|0x3C) || c==(CNTL|'G')) {  /* F2 */
+#endif
+#if (V7 | VMS | CPM)
 		if (c == (CNTL|'G')) {
+#endif
 			c = getkey();
 			state = BASE;
 			break;
@@ -512,12 +1030,24 @@ void mainloop(char *buf, WINDOW *scr) {
 			negarg = TRUE;
 			n = (-1);
 		} else if  (c==(CNTL|'H')  || c==(CNTL|0x3F)
+#if AtST
+			 || c==(FUNC|0x0E) || c==(FUNC|0x53)
+#endif
+#if MSDOS
+			 || c==(FUNC|0x53)
+#endif
 							) {
 			n /= 10;
 			if (n == 0)
 				negarg = FALSE;
 
 		} else if (c == (CNTL|'G') || c==(CNTL|'C')
+#if AtST
+			|| c==(FUNC|0x61)	/* Undo */
+#endif
+#if MSDOS
+			|| c==(FUNC|0x3C)	/* F2 */
+#endif
 								) {
 			f = FALSE;
 			n = 1;
@@ -543,12 +1073,21 @@ void mainloop(char *buf, WINDOW *scr) {
 		break;
 
 	case EXEC:
+#if V7
 		if (c == (META|'Q')) {
 			c = getkey();
 			if (c & CNTL)
 				c ^= 0x40;
 			c &= 0xFF;
 		}
+#else
+		if (c == (CNTL|'Q') || c == (META|'Q')) {
+			c = getkey();
+			if (c & CNTL)
+				c ^= 0x40;
+			c &= 0xFF;
+		}
+#endif
 		if (kbdmip != NULL) {		/* Save macro strokes.  */
 			if (c!=(CTLX|')') && kbdmip>&kbdm[NKBDM-6]) {
 				ctrlg();
@@ -562,7 +1101,17 @@ void mainloop(char *buf, WINDOW *scr) {
 			}
 			*kbdmip++ = c;
 		}
+#if (VT100 || HP700)
+		if (c==127) c = CNTL|'D';
+		if (c==(CNTL|0x3F)) c = CNTL|'H';
+#endif
 		f = execute(c, f, n);		/* Do it, finally */
+#if ST_DA
+		if (f == DACLOSE) {		/* cmd was quit() */
+			state = DACLOSE;
+			break;
+		}
+#endif
 		f = FALSE;
 		n = 1;
 		negarg = FALSE;
@@ -574,6 +1123,47 @@ void mainloop(char *buf, WINDOW *scr) {
 		state = BASE;
 		break;
 
+#if ST_DA
+
+	case DASTART:
+
+		Cconws ("\033f");	/* disable vt52 cursor	*/
+		appl_init();
+		menu_id = menu_register (gl_apid,"  MEX");
+		wind_get (0, WF_WORKXYWH, &xdesk, &ydesk, &wdesk, &hdesk);
+daloop:
+		evnt_mesag (msgbuff);
+		if ( msgbuff[0] != AC_OPEN
+		  || msgbuff[4] != menu_id )
+				goto daloop;
+		wind_update(TRUE);
+		graf_mouse(M_OFF,0x0L);
+		cp = (char *) Physbase();
+		for (c=0; c<1520; c++)
+			menusave[c] = *cp++;
+		form_dial (FMD_START,
+				xdesk, ydesk, wdesk, hdesk,
+				xdesk, ydesk, wdesk, hdesk);
+		(*term.t_open)();
+		sgarbf = TRUE;
+		c = NOKEY;
+		state = BASE;
+		break;
+
+	case DACLOSE:
+
+		(*term.t_close)();
+		form_dial (FMD_FINISH,
+				xdesk, ydesk, wdesk, hdesk,
+				xdesk, ydesk, wdesk, hdesk);
+		cp = (char *) Physbase();
+		for (c=0; c<1520; c++)
+			*cp++ = menusave[c];
+		graf_mouse(M_ON,0x0L);
+		wind_update (FALSE);
+		goto daloop;
+#endif
+
 	}					/* end of switch */
 
 	}					/* end of for()  */
@@ -581,13 +1171,17 @@ void mainloop(char *buf, WINDOW *scr) {
 }						/* end of mainloop() */
 
 #ifndef EMBEDDED
+#if MSDOS
+int _main(argc, argv)
+#else
 int main(argc, argv)
+#endif
 	int	argc;
 	char	*argv[];
 {
-	int	c=0;
-	int	f;
-	int	n;
+	register int	c=0;
+	register int	f;
+	register int	n;
 	int	gline = 1;
 	int	visitmode = FALSE;
 	char	*cp;
@@ -599,10 +1193,21 @@ if (argc==2 && !strcmp(argv[1], "-e")) {
 	vttidy();
 	return 0;
 } else {
+#if MSDOS
+	directvideo = TRUE;
+	_fmode = O_BINARY;
+#endif
 	nfiles = 0;
+#if ST_DA
+	maxnfiles = NFILES;
+#else
 	maxnfiles = argc + NFILES;
 	if ((clfn = (char **) malloc (maxnfiles * sizeof(char *))) == NULL)
+#if BFILES
+		_exit (1);
+#else
 		exit (1);
+#endif
 	while(--argc > 0 && ++argv != NULL) {
 		cp = *argv;
 		if(*cp == '-') {	/* cmd line parameter */
@@ -636,8 +1241,28 @@ if (argc==2 && !strcmp(argv[1], "-e")) {
 				if (lmargin + tabsize > fillcol)
 					lmargin = fillcol = 0;
 			}
+#if MSDOS
+			else if (f == 'D')
+				directvideo = FALSE;
+#endif
 			else if (f == 'G')
 				gline = n;
+#if (AtST | MSDOS)
+			else if (f == 'I')
+				vidrev = TRUE;
+#endif
+#if CANLOG
+			else if (f == 'L')
+				logit = (!logit);
+			else if (f == 'P')
+				playback = TRUE;
+#endif
+#if MSDOS
+			else if (f == 'M') {
+				if ((n>=0 && n<=3) || n==7)
+					vidmode = n;
+			}
+#endif
 			else if (f == 'R')
 				term.t_nrow = n-1;
 			else if (f == 'T')
@@ -648,8 +1273,24 @@ if (argc==2 && !strcmp(argv[1], "-e")) {
 				usage();
 		} else {			/* a filename	*/
 			clfn[nfiles++] = cp;
+#if (AtST | MSDOS | CPM | W32)
+			cpyfname (cp, cp);	/* tolower	*/
+#endif
 		}
 	}
+#endif
+#if AtST
+	if (Getrez() == 0) {
+		if (term.t_ncol > 40)
+			term.t_ncol = 40;
+	}
+#endif
+#if MSDOS
+	if (vidmode==0 || vidmode==1) {
+		if (term.t_ncol > 40)
+			term.t_ncol = 40;
+	}
+#endif
 	vtinit();
 	if (nfiles) {
 		cp = clfn[0];
@@ -676,8 +1317,13 @@ return 0;
 }
 #endif
 
-/* mb: Display another file in another window.
- *     Called only if a second filename appears in command line.
+#ifdef register
+#undef register
+#endif
+
+/*
+ *  mb: Display another file in another window.
+ *      Called only if a second filename appears in command line.
  */
 void
 edmore(fname)
@@ -711,7 +1357,44 @@ edmore(fname)
  */
 int
 getkey() {
-	int c;
+	register int c;
+
+#if CANLOG
+	register int ub, lb=0;
+
+	if (playback == TRUE) {
+		if (ropenlog() == ABORT) {
+			playback = ABORT;
+			(*term.t_beep)();
+			mlwrite("Unable to open log file");
+			return (NOKEY);
+		}
+		ub = getlog();
+		if (ub != EOF)
+			lb = getlog();
+		if (ub==EOF || lb==EOF) {
+			closelogf();
+			playback = ABORT;
+			mlwrite("[playback done]");
+			return (NOKEY);
+		}
+		c = lb & 0xFF;
+		c |= (ub & 0xFF) << 8;
+		return (c);
+	}
+
+	if (!logit || playback==ABORT)
+		goto logok;		/* don't log after playback */
+
+	if (wopenlog() == ABORT) {
+		playback = ABORT;
+		(*term.t_beep)();
+		mlwrite("Unable to open log file");
+		return (NOKEY);
+	}
+
+logok:
+#endif
 
 	c = (*term.t_getchar)();
 #ifdef CNTLCH
@@ -722,6 +1405,19 @@ getkey() {
 		c |= CNTL;
 	}
 #endif
+#if AtST
+	if (c == (FUNC|SHFT|0x1E)) {		/* Alt-A */
+		c = (*term.t_getchar)() & 0xFF;
+		c |= 0x80;		/* set MSB: alternate char set */
+	}
+#endif
+#if MSDOS
+	if (c == (FUNC|0x1E)) {			/* Alt-A */
+		c = (*term.t_getchar)() & 0xFF;
+		c |= 0x80;		/* set MSB: alternate char set */
+	}
+#endif
+#if CURSES
 	switch (c)
 		{
 		case KEY_BACKSPACE:		/* backspace */
@@ -772,10 +1468,28 @@ getkey() {
 		case KEY_F(10):			/* F10 save/exit */
 					c = (CNTL | 'Z');		break;
 		}
-
+#endif
 	/* control -> CNTL */
 	if ((!(FUNC&c)) && (c<0x20 || c==0x7F))
 		c = CNTL | (c ^ 0x40);
+#if CANLOG
+	if (!logit || playback==ABORT)
+		goto nolog;		/* don't log after playback */
+
+	lb = c & 0xFF;
+	ub = (c>>8) & 0xFF;
+	ub = putlog (ub);
+	lb = putlog (lb);
+	if (ub==EOF || lb==EOF) {
+		closelogf();
+		playback = ABORT;
+		(*term.t_beep)();
+		mlwrite("Error writing log file");
+		return (NOKEY);
+	}
+	flushlog(FALSE);		/* flushes only when full */
+nolog:
+#endif
 	return (c);
 }
 
@@ -833,13 +1547,37 @@ int
 quit(f, n)
 	int f, n;
 {
-	int	s;
+	register int	s;
+#if ST_DA
+	char	*msg = "Suspend unsaved buffer(s)";
+#else
 	char	*msg = "Discard changes";
+#endif
+#if CANLOG
+	if (playback == TRUE)
+		return (FALSE);
+#endif
 	if (anycb() == FALSE			/* All buffers clean.	*/
 	|| (s=mlyesno(msg)) == TRUE) {		/* User says OK.	*/
-		if (vttidy()) exit(GOOD); else longjmp(loop1, 1);
+#if CANLOG
+		if (logit == TRUE) {
+			flushlog(TRUE);
+			closelogf();
+		}
+#endif
+		if (vttidy())
+#if ST_DA
+		return (DACLOSE);
+#else
+#if BFILES
+		_exit(GOOD);
+#else
+		exit(GOOD);
+#endif
+#endif
+		else longjmp(loop1, 1);
 	}
-  mlwrite("[aborted]");
+	mlwrite("[aborted]");
 	return (s);
 }
 
