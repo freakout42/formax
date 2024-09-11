@@ -67,7 +67,7 @@ extern "C" {
 int genxorkey(char *frm, const char *key);
 char *xdecrypt(char *toe, int rev);
 int res4key(char *key);
-void mainloop(char *buf, WINDOW *scr);
+int mainloop(char *buf, WINDOW *scr);
 }
 
 extern int   useodbcve3;

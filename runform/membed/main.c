@@ -59,6 +59,7 @@ void edmore(char fname[]);
 
 char	*rcsid = "$Id: main.c,v 1.41 2024/05/22 17:56:04 axel Exp $";
 jmp_buf loop1;
+int changedandstored;
 int	logit = LOGIT;			/* mb: log keystrokes		*/
 int	playback = FALSE;		/* mb: playback from log file	*/
 #if ST_DA
@@ -809,21 +810,30 @@ escseq(c)
 }
 #endif
 
-void mainloop(char *buf, WINDOW *scr) {
+int mainloop(char *fil, WINDOW *scr) {
 	int	c=0;
 	int	f, n, r;
 	int	negarg;
 	int	state;
 
+  changedandstored = 0;
   if (scr) {
     windw1 = scr;
     vtinit();
   }
-  if (buf) {
+  if (fil) {
     edinit("main");
-    fileindex = 0;
-    addline(buf, curbp);
-    curwp->w_flag |= WFMOVE|WFHARD|WFFORCE;
+		cpyfname (curbp->b_fname, fil);
+		update(TRUE);
+		if (readin(fil) == FIOFNF) {
+      free(curbp);
+      free(curwp);
+      vttidy();
+      return 0;
+    }
+    fileindex = 1;
+//    addline(fil, curbp);
+//    curwp->w_flag |= WFMOVE|WFHARD|WFFORCE;
   }
 
 	kbdm[0] = CTLX|')';			/* Empty macro		*/
@@ -1167,7 +1177,7 @@ daloop:
 	}					/* end of switch */
 
 	}					/* end of for()  */
-
+return changedandstored;
 }						/* end of mainloop() */
 
 #ifndef EMBEDDED
@@ -1185,11 +1195,13 @@ int main(argc, argv)
 	int	gline = 1;
 	int	visitmode = FALSE;
 	char	*cp;
-  char *b = "hhh123";
 
-if (argc==2 && !strcmp(argv[1], "-e")) {
+if (argc==3 && !strcmp(argv[1], "-e")) {
+#if CANLOG
+	logit = FALSE;
+#endif
 	vtinit();
-	mainloop(b, windw1);
+	mainloop(argv[2], windw1);
 	vttidy();
 	return 0;
 } else {
@@ -1531,9 +1543,11 @@ quickexit(f,n)
 	int f, n;
 {
 	if ((curbp->b_flag&BFCHG) != 0		/* Changed.		*/
-	&& (curbp->b_flag&BFTEMP) == 0)		/* Real.		*/
+	&& (curbp->b_flag&BFTEMP) == 0)	{ /* Real.		*/
 		if (filesave(f, n) != TRUE)
 			return (FALSE);
+    else changedandstored = 1;
+  }
 	return (quit(f, n));			/* conditionally quit	*/
 }
 
@@ -1575,7 +1589,13 @@ quit(f, n)
 		exit(GOOD);
 #endif
 #endif
-		else longjmp(loop1, 1);
+		else {
+      bclear(curbp);
+      free(curbp->b_linep);
+/*      free(curbp);*/
+      free(curwp);
+      longjmp(loop1, 1);
+    }
 	}
 	mlwrite("[aborted]");
 	return (s);

@@ -57,13 +57,21 @@ void Page::refrnopop() { if (!popup) refr(); }
 
 int Page::showpopup() {
 int i;
-char *buf = "hello";
 redraw();
 refr();
-//i = getkb();
-mainloop(buf, wndw);
+i = getkb();
 F(needredraw) = 1;
 return i==KEY_ENTER ? 0 : i;
+}
+
+int Page::editmap(int pid) {
+char *tmpf;
+redraw();
+refr();
+tmpf = F(rmap).extract(pid);
+F(rmap).slurp(mainloop(tmpf, wndw) ? pid : 0, tmpf);
+F(needredraw) = 1;
+return 0;
 }
 
 static const char *rmodes[] = RMODENAMES;

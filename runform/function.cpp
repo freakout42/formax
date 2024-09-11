@@ -17,7 +17,6 @@ switch(F(lastcmd)) {
   case KEF_COPY:            /* fcopy() */
   case KEF_PASTE:           /* fpaste() */
   case KEF_LIST:            /* flist() */
-  case KEF_COPYREC:         /* fcopyrec() */
   case KEF_HOME:            /* fhome() */
   case KEF_END:             /* fend() */
   case KEF_PRESETR:         /* fpresetr() */
@@ -40,6 +39,7 @@ switch(F(lastcmd)) {
   case KEF_NXTREC:   LK = next_record();                                      break;
   case KEF_HELP:     LK = help_item();                                        break;
   case KEF_KEYHELP:  LK = keys_help();                                        break;
+  case KEF_COPYREC:  LK = edit_map();                                         break;
   case KEF_PREREC:   LK = previous_record();                                  break;
   case KEF_INSERT:
    switch(CM) {
@@ -110,8 +110,11 @@ return 0;
 }
 
 int Function::keys_help() {
-//return F(p[PGE_KEYHELP]).showpopup();
-return F(p[PGE_EDITOR]).showpopup();
+return F(p[PGE_KEYHELP]).showpopup();
+}
+
+int Function::edit_map() {
+return F(p[PGE_EDITOR]).editmap(2);
 }
 
 /* NAVIGATION */

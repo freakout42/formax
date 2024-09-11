@@ -9,6 +9,7 @@ public:
   void create();
   void repaint();
   int showpopup();
+  int editmap(int pid);
   void destroy();
   char name[SMLSIZE];
   int maps(Qdata *rmap);
