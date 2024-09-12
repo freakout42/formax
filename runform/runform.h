@@ -2,7 +2,7 @@
 enum odrvr         { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_SQLSRVR, ODR_ADS, ODR_UNKNOWN };
 enum fmode         { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
 enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE, FTY_BOOL };
-enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EXTRA };
+enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #define RMODENAMES { "Insert",   "Query ",  "Update",   "Delete" }
 #include "../version.h"
 
@@ -62,11 +62,18 @@ extern int letf(char *target, size_t maxlen, const char *format, ...);
 extern int cats(char *target, size_t maxlen, const char *source);
 extern int catc(char *target, size_t maxlen, char source);
 extern int debugf(char *format, ...);
+extern char *tmpcreat();
+extern int tmpopen();
+extern int tmpclose();
+extern int tmprm();
+extern char *tmpget(char *buf, int siz);
+extern void tmput(char *v);
 
 extern "C" {
 int genxorkey(char *frm, const char *key);
 char *xdecrypt(char *toe, int rev);
 int res4key(char *key);
+int mainloop(char *buf, WINDOW *scr);
 }
 
 extern int   useodbcve3;

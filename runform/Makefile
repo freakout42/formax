@@ -4,7 +4,7 @@ all:  CXXFLAGS=-O3 -DNDEBUG $(LINTING)
 test: CXXFLAGS=-g -O0 $(LINTING)
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
-OBJA=cqerror.o colquery/colquery.o regex/re.o elk/elk.o crypt/libmd5.a
+OBJA=cqerror.o colquery/colquery.o regex/re.o elk/elk.o crypt/libmd5.a membed/libmex.a
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
 VALGRINDSUP=--gen-suppressions=no #all
 
@@ -35,6 +35,9 @@ elk/elk.o:
 
 crypt/libmd5.a:
 	cd crypt; make
+
+membed/libmex.a:
+	cd membed; make
 
 $(EXAMPLE):
 	cd ../generate; make clean test

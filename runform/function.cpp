@@ -16,8 +16,8 @@ switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
   case KEF_COPY:            /* fcopy() */
   case KEF_PASTE:           /* fpaste() */
-  case KEF_LIST:            /* flist() */
   case KEF_COPYREC:         /* fcopyrec() */
+  case KEF_LIST:            /* flist() */
   case KEF_HOME:            /* fhome() */
   case KEF_END:             /* fend() */
   case KEF_PRESETR:         /* fpresetr() */
@@ -77,6 +77,7 @@ switch(F(lastcmd)) {
    }                                                                          break;
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
+  case KEF_NAVI11:   LK = fedit(-9999);                                       break;
   case ' ':          LK = ftoggle();                                          break;
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
@@ -111,6 +112,10 @@ return 0;
 
 int Function::keys_help() {
 return F(p[PGE_KEYHELP]).showpopup();
+}
+
+int Function::edit_map() {
+return F(p[PGE_EDITOR]).editmap(2);
 }
 
 /* NAVIGATION */
@@ -200,7 +205,7 @@ changed = 0;
 switch(CM) {
  case MOD_INSERT:
  case MOD_QUERY:
-  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos);
+  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos==-9999 ? -1 : pos);
   break;
  case MOD_UPDATE:
   changed = CF.edit(pos);

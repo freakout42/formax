@@ -153,17 +153,16 @@ switch (fieldtype) {
  case FTY_CHAR: break;
  case FTY_ALL: break;
 }
-if (*c==NULL && *buf) *c = strdup(buf);
-else {
+if (*c) {
   if (strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);
   if (strcmp(*c, buf)) strcpy(*c, buf);
-}
+} else *c = strdup(buf);
 return 0;
 }
 
 int Field::edit(int pos) {
 int pressed;
-char buf[SMLSIZE];
+char buf[BIGSIZE];
 char **c;
 pressed = 0;
 switch(CM) {
@@ -174,7 +173,8 @@ switch(CM) {
   if (F(b[blockindex].q->rows)) {
     c = valuep();
     if (*c) let(buf, *c); else *buf = '\0';
-    pressed = F(p[PGE_STATUS].sedit)(buf, pos, fldtype(), fieldlen);
+    if (pos == -9999) pressed = F(p[PGE_EDITOR]).editbuf(buf);
+    else              pressed = F(p[PGE_STATUS]).sedit(buf, pos, fldtype(), fieldlen);
     if (pressed != KEF_CANCEL && validate(c, buf) == KEF_CANCEL) pressed = KEF_CANCEL;
   }
   break;
@@ -188,3 +188,4 @@ switch(CM) {
 pressed = pressed==KEY_ENTER ? KEF_NXTFLD : F(mapkey)(pressed);
 return pressed;
 }
+

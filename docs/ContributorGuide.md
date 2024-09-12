@@ -1,5 +1,6 @@
 Development
 ===========
+
 **formax** is implemented in pure C++. Interface to the user
 is solely done with curses-lib. Interface to the database is
 solely through ODBC. Both libraries are not used directly
@@ -12,7 +13,9 @@ change the default behaviour.
 Structure
 ---------
 runform.cpp holds main() and has the only OS-interfaces for
-running and checking the command line. record.cpp calls ODBC
+running and checking the command line. Exceptions are the
+logging module which uses sqlite3 dirctly and the screen
+editor which uses a temporary file. record.cpp calls ODBC
 and provides an interface in an ORM style like rails
 active-record. screen.cpp calls curses. All the other
 sources are pure C++ without any external library calls. For
@@ -50,14 +53,14 @@ Coding Style
 Sourcecode lines are grouped into blocks of maximum 40 lines.
 These groups have a top comment which explains the purpose.
 Other commenting is only on special cases. Code should be
-short and self explaining by variable names.
+short and self explaining by good variable names.
 
 2 spaces indenting is used and the top level of functions is
 not indented. Use 1 space between keyword and opening
 bracket. Do not use space between function name and opening
 bracket. Opening curly bracket is always at the same line as
 keyword (for, while, do, switch, if, ...). Bool is not
-compared - no if (ispresent == NULL) or (isempty[0] == '\0')
+compared : on if (ispresent == NULL) or (isempty[0] == '\0')
 just use !ispresent or *isempty. Omit curly brackets after
 compound statements when possible.
 
@@ -66,23 +69,30 @@ Components
 
 colquery
 --------
+
 Parser for a natural query language. Translats human
 properties to SQL where clauses.
 
 regex
 -----
+
 Regular expression engine for validating user entered data.\
 See: github.com/kokke/tiny-regex-c
 
 elk
 ---
+
 Javascript engine for 3GL triggers.\
 See: github.com/cesanta/elk
 
-mex
----
+membed
+------
+
 Microemacs editor for editing.\
 See: github.com/freakout42/microemacs
 
-md5b64
-------
+crypt
+-----
+
+A collection of small crypto tools like md5
+

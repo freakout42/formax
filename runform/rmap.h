@@ -3,6 +3,8 @@
 class rMap: public Record {
 public:
   int init(int page_id);
+  char *extract(int page_id);
+  void slurp(int pid, char *tmpf);
 };
 #else
 CREATE TABLE maps

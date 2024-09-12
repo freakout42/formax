@@ -64,6 +64,37 @@ F(needredraw) = 1;
 return i==KEY_ENTER ? 0 : i;
 }
 
+int Page::editbuf(char *buf) {
+char cr[2] = "\n";
+char *tmpf;
+char *eol;
+int s;
+redraw();
+refr();
+F(needredraw) = 1;
+tmpf = tmpcreat();
+tmput(buf);
+if (!strchr(buf, '\n')) tmput(cr);
+tmpclose();
+s = mainloop(tmpf, wndw);
+tmpopen();
+tmpget(buf, BIGSIZE);
+if ((eol = strchr(buf, '\n')) && *(eol+1) == '\0') *eol = '\0';
+tmpclose();
+tmprm();
+return s ? KEF_NXTFLD : KEF_CANCEL;
+}
+
+int Page::editmap(int pid) {
+char *tmpf;
+redraw();
+refr();
+tmpf = F(rmap).extract(pid);
+F(rmap).slurp(mainloop(tmpf, wndw) ? pid : 0, tmpf);
+F(needredraw) = 1;
+return 0;
+}
+
 static const char *rmodes[] = RMODENAMES;
 
 int Page::wait() {

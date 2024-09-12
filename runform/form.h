@@ -12,6 +12,7 @@ public:
   Block   b[NBLOCKS];
   Field   l[NFIELDS];
   Page    p[NBLOCKS];
+  rMap    rmap;
   Trigger r[NTRIGGERS];
   int numblock;
   int numfield;
@@ -34,7 +35,6 @@ private:
   rField rfield;
   rPage rpage;
   rTrigger rtrigger;
-  rMap rmap;
 };
 #else
 CREATE TABLE forms

@@ -1,5 +1,7 @@
 #include <cstdarg>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "runform.h"
 
 // avoid include <stdio.h> need
@@ -11,6 +13,25 @@ n = vsnprintf (target, maxlen, format, args);
 va_end (args);
 return n;
 }
+
+static char tfp[14];
+static FILE *tf;
+
+char *tmpcreat() {
+strcpy(tfp, "/tmp/fmXXXXXX");
+tf = fdopen(mkstemp(tfp), "w");
+return tfp;
+}
+
+int tmpopen() {
+tf = fopen(tfp, "r");
+return tf != NULL;
+}
+
+int tmpclose() { return fclose(tf); }
+int tmprm() { return unlink(tfp); }
+char *tmpget(char *buf, int siz) { return fgets(buf, siz, tf); }
+void tmput(char *v) { if (*v) { if (v[1] == '\0') fputc(*v, tf); else fputs(v, tf); } }
 
 int isprintable(int c) {
 if ((c >= 32 && c <= 126) || (c >= 160 && c <= 255)) return c;

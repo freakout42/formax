@@ -15,6 +15,7 @@ private:
   int refresh_screen();
   int help_item();
   int keys_help();
+  int edit_map();
   int switch_mode(fmode mod);
   int fmove(int bi, int fi);
   int fmover(int ri);
