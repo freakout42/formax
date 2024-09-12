@@ -62,6 +62,12 @@ extern int letf(char *target, size_t maxlen, const char *format, ...);
 extern int cats(char *target, size_t maxlen, const char *source);
 extern int catc(char *target, size_t maxlen, char source);
 extern int debugf(char *format, ...);
+extern char *tmpcreat();
+extern int tmpopen();
+extern int tmpclose();
+extern int tmprm();
+extern char *tmpget(char *buf, int siz);
+extern void tmput(char *v);
 
 extern "C" {
 int genxorkey(char *frm, const char *key);

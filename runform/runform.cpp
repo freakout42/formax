@@ -7,10 +7,10 @@
 #include <locale.h>
 #include "runform.h"
 
-char shiftedus[] = "/!@#$%^&*()";
-char shifteduk[] = "/!\"пїЅ$%^&*()";
-char shiftedde[] = "-!\"пїЅ$%&/()=";
-char shiftedfr[] = ":&пїЅ\"'(-пїЅ_пїЅпїЅ";
+char shiftedus[] = "/!@#$%^&*().";
+char shifteduk[] = "/!\"Ј$%^&*().";
+char shiftedde[] = "-!\"§$%&/()=.";
+char shiftedfr[] = "!&й\"'(-и_зб;";
 char *shiftednum = shiftedus;
 
 char *lclocale;

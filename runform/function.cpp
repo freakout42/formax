@@ -16,6 +16,7 @@ switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
   case KEF_COPY:            /* fcopy() */
   case KEF_PASTE:           /* fpaste() */
+  case KEF_COPYREC:         /* fcopyrec() */
   case KEF_LIST:            /* flist() */
   case KEF_HOME:            /* fhome() */
   case KEF_END:             /* fend() */
@@ -39,7 +40,6 @@ switch(F(lastcmd)) {
   case KEF_NXTREC:   LK = next_record();                                      break;
   case KEF_HELP:     LK = help_item();                                        break;
   case KEF_KEYHELP:  LK = keys_help();                                        break;
-  case KEF_COPYREC:  LK = edit_map();                                         break;
   case KEF_PREREC:   LK = previous_record();                                  break;
   case KEF_INSERT:
    switch(CM) {
@@ -77,6 +77,7 @@ switch(F(lastcmd)) {
    }                                                                          break;
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
+  case KEF_NAVI11:   LK = fedit(-9999);                                       break;
   case ' ':          LK = ftoggle();                                          break;
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
@@ -204,7 +205,7 @@ changed = 0;
 switch(CM) {
  case MOD_INSERT:
  case MOD_QUERY:
-  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos);
+  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos==-9999 ? -1 : pos);
   break;
  case MOD_UPDATE:
   changed = CF.edit(pos);

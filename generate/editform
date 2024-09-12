@@ -16,13 +16,13 @@ if ! cp -v $FORM.frm $FORM.frm.bac; then
   exit 2
 fi
 SQL="sqlite3 -batch $FORM.frm"
-$SQL "select mtext from maps order by line" >$FORM.map
+$SQL "select mtext from maps where page_id = 4 order by line" >$FORM.map
 ${EDITOR:-vi} $FORM.map
-$SQL "delete from maps"
+$SQL "delete from maps where page_id = 4"
 LINE=0
 IFS=% sed "s/^/'/;s/\$/'/" $FORM.map | while read TEXT; do
   LINE=`expr $LINE + 1`
-  $SQL "insert into maps (line, mtext) values ($LINE, $TEXT)"
+  $SQL "insert into maps (page_id, line, mtext) values (4, $LINE, $TEXT)"
 done
 $ADJFIELD <$FORM.map | $SQL
 rm $FORM.map

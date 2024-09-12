@@ -162,7 +162,7 @@ return 0;
 
 int Field::edit(int pos) {
 int pressed;
-char buf[SMLSIZE];
+char buf[BIGSIZE];
 char **c;
 pressed = 0;
 switch(CM) {
@@ -173,7 +173,8 @@ switch(CM) {
   if (F(b[blockindex].q->rows)) {
     c = valuep();
     if (*c) let(buf, *c); else *buf = '\0';
-    pressed = F(p[PGE_STATUS].sedit)(buf, pos, fldtype(), fieldlen);
+    if (pos == -9999) pressed = F(p[PGE_EDITOR]).editbuf(buf);
+    else              pressed = F(p[PGE_STATUS]).sedit(buf, pos, fldtype(), fieldlen);
     if (pressed != KEF_CANCEL && validate(c, buf) == KEF_CANCEL) pressed = KEF_CANCEL;
   }
   break;
@@ -187,14 +188,4 @@ switch(CM) {
 pressed = pressed==KEY_ENTER ? KEF_NXTFLD : F(mapkey)(pressed);
 return pressed;
 }
-
-/*
-#0  0x04022368 in _vgr20070ZU_libcZdsoZa_strlen (str=0x0) at ../shared/vg_replace_strmem.c:505
-#1  0x0804bda4 in Field::validate (this=0x818cea4 <f+116260>, c=0x48d5f08, buf=0xfe94def0 "") at field.cpp:158
-#2  0x0804bf9d in Field::edit (this=0x818cea4 <f+116260>, pos=-1049) at field.cpp:178
-#3  0x0804ddd5 in Function::fedit (this=0x844bb24 <u>, pos=-1049) at function.cpp:204
-#4  0x0804d5eb in Function::dispatch (this=0x844bb24 <u>) at function.cpp:85
-#5  0x0804cb6d in Form::run (this=0x8170880 <f>) at form.cpp:113
-#6  0x08051306 in main (argc=4, argv=0xfe94fc14) at runform.cpp:180
- */
 

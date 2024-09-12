@@ -89,8 +89,8 @@ categories:
     of the shifted [1-9] keys which act as speed navigation
     in non Edit-Mode for the respective fields. And the
     [Space] key which toggles true/false for boolean fields.
-    And the [+] and [-] keys which increment or decrement
-    integer fields.
+    The [+] and [-] keys increment or decrement integers.
+    [.] calls the screen editor for multi line fields.
 
  - Navigation = [Left] [Right] [Up] [Down] [PageUp] [PageDn]
                 [Home] [End] [Tab] [Backtab]

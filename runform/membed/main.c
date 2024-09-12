@@ -223,7 +223,11 @@ KEYTAB  keytab[] = {
 	CNTL|'@',		setmark,
 	CNTL|'A',		gotobol,
 	CNTL|'B',		backchar,
+#ifndef EMBEDDED
 	CNTL|'C',		quit,		/* mb: was C-X C-C */
+#else
+	CNTL|'Y',		quit,		/* mb: was C-X C-C */
+#endif
 	0x163,			quit,		/* CentOS5.2 */
      ED|CNTL|'D',		forwdel,
 	CNTL|'E',		gotoeol,
@@ -252,9 +256,14 @@ KEYTAB  keytab[] = {
      ED|CNTL|'T',		twiddle,
 	CNTL|'V',		forwpage,
      ED|CNTL|'W',		killregion,
+#ifndef EMBEDDED
      ED|CNTL|'Y',		yank,
+#else
+     ED|CNTL|'C',		yank,
+#endif
 	CNTL|'Z',		quickexit,	/* quick save and exit  */
 	0x197,			quickexit,	/* CentOS5.2 */
+#ifndef EMBEDDED
 	CTLX|CNTL|'B',		renambuf,	/* mb: added */
 	CTLX|CNTL|'C',		spawncli,	/* Run CLI in subjob.	*/
 	CTLX|CNTL|'D',		fortog,		/* ar: added */
@@ -268,14 +277,17 @@ KEYTAB  keytab[] = {
 #endif
 	CTLX|CNTL|'V',		filevisit,
      ED|CTLX|CNTL|'W',		filewrite,
+#endif
 	CTLX|CNTL|'X',		swapmark,
      ED|CTLX|CNTL|'Y',		unyank,		/* mb: added */
 	CTLX|CNTL|'Z',		emacs_quit,
+#ifndef EMBEDDED
 	CTLX|CNTL|0x3F,		togdeldir,	/* DELETE key dir */
 	CTLX|'?',		listbuffers,
 	CTLX|'!',		spawn,
 #if CANLOG
 	CTLX|'&',		doplay,
+#endif
 #endif
 	CTLX|'=',		showcpos,
 	CTLX|'(',		ctlxlp,
@@ -294,7 +306,9 @@ KEYTAB  keytab[] = {
 	CTLX|'P',		prevwind,
 	CTLX|'Q',		visitog,	/* mb: added */
      ED|CTLX|'R',		setfillcol,
+#ifndef EMBEDDED
      ED|CTLX|'S',		filesave,	/* mb: instead of ^X^S  */
+#endif
      ED|CTLX|'T',		ltwiddle,	/* mb: added */
 	CTLX|'V',		page_nextw,	/* mb: added */
 	CTLX|'Z',		back_nextw,	/* mb: added */
@@ -1470,7 +1484,7 @@ logok:
 		case KEY_F(5):			/* F5 search forward */
 					c = (CNTL | 'S');		break;
 		case KEY_F(6):			/* F6 search backward */
-					c = (CNTL | 'R');		break;
+					c = (META | 'R');		break;
 		case KEY_F(7):			/* F7 search bracket */
 					c = (META | '{'); 		break;
 		case KEY_F(8):			/* F8 save/exit */
