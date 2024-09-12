@@ -1,5 +1,4 @@
-PRAGMA foreign_keys=OFF;
-BEGIN TRANSACTION;
+#PRAGMA encoding="ISO-8859-15";
 CREATE TABLE forms
   (id INTEGER PRIMARY KEY NOT NULL,
    name TEXT NOT NULL DEFAULT 'form0',
@@ -7,32 +6,32 @@ CREATE TABLE forms
    mnunam TEXT NOT NULL DEFAULT '',
    mnugrp TEXT NOT NULL DEFAULT ''
   );
-INSERT INTO forms VALUES(1,'formax','Fields','','');
 CREATE TABLE errors
   (id INTEGER PRIMARY KEY NOT NULL,
    num INTEGER NOT NULL DEFAULT 1,
    severity INTEGER NOT NULL DEFAULT 0,
    etext TEXT NOT NULL DEFAULT ''
   );
-INSERT INTO errors VALUES(1,24,3,'Out of memory');
-INSERT INTO errors VALUES(2,26,3,'Error opening key script file');
-INSERT INTO errors VALUES(3,51,3,'');
-INSERT INTO errors VALUES(4,50,3,'SQL');
-INSERT INTO errors VALUES(5,100,1,'At first record');
-INSERT INTO errors VALUES(6,101,2,'Can''t edit a key field');
-INSERT INTO errors VALUES(7,102,2,'Record must be entered or deleted first');
-INSERT INTO errors VALUES(8,103,1,'At last record');
-INSERT INTO errors VALUES(9,104,2,'No record');
-INSERT INTO errors VALUES(10,105,1,'Really delete this record?');
-INSERT INTO errors VALUES(11,200,2,'Field is protected against update');
-INSERT INTO errors VALUES(12,201,2,'Field is not matching re');
-INSERT INTO errors VALUES(13,207,2,'Must be in range');
-INSERT INTO errors VALUES(14,208,2,'Form running in query-only mode. No changes');
-INSERT INTO errors VALUES(15,106,2,'Form running in query mode. No insert');
-INSERT INTO errors VALUES(16,209,2,'Field must be in the form');
-INSERT INTO errors VALUES(17,301,2,'Query caused no records to be retrieved');
-INSERT INTO errors VALUES(18,401,1,'No changes to commit');
-INSERT INTO errors VALUES(19,402,2,'Abort changes?');
+INSERT INTO errors (num, severity, etext) VALUES (24, 3, 'Out of memory');
+INSERT INTO errors (num, severity, etext) VALUES (26, 3, 'Error opening key script file');
+INSERT INTO errors (num, severity, etext) VALUES (51, 3, '');
+INSERT INTO errors (num, severity, etext) VALUES (50, 3, 'SQL');
+INSERT INTO errors (num, severity, etext) VALUES (100, 1, 'At first record');
+INSERT INTO errors (num, severity, etext) VALUES (101, 2, 'Can''t edit a key field');
+INSERT INTO errors (num, severity, etext) VALUES (102, 2, 'Record must be entered or deleted first');
+INSERT INTO errors (num, severity, etext) VALUES (103, 1, 'At last record');
+INSERT INTO errors (num, severity, etext) VALUES (104, 2, 'No record');
+INSERT INTO errors (num, severity, etext) VALUES (105, 1, 'Really delete this record?');
+INSERT INTO errors (num, severity, etext) VALUES (200, 2, 'Field is protected against update');
+INSERT INTO errors (num, severity, etext) VALUES (201, 2, 'Field is not matching re');
+INSERT INTO errors (num, severity, etext) VALUES (207, 2, 'Must be in range');
+INSERT INTO errors (num, severity, etext) VALUES (208, 2, 'Form running in query-only mode. No changes');
+INSERT INTO errors (num, severity, etext) VALUES (106, 2, 'Form running in query mode. No insert');
+INSERT INTO errors (num, severity, etext) VALUES (209, 2, 'Field must be in the form');
+INSERT INTO errors (num, severity, etext) VALUES (301, 2, 'Query caused no records to be retrieved');
+INSERT INTO errors (num, severity, etext) VALUES (401, 1, 'No changes to commit');
+INSERT INTO errors (num, severity, etext) VALUES (402, 2, 'Abort changes?');
+INSERT INTO errors (num, severity, etext) VALUES (403, 1, 'Not yet implemented - sorry');
 CREATE TABLE blocks
   (id INTEGER PRIMARY KEY NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -43,8 +42,6 @@ CREATE TABLE blocks
    whereand TEXT NOT NULL DEFAULT '',
    orderby TEXT NOT NULL DEFAULT ''
   );
-INSERT INTO blocks VALUES(0,1,'dual',1,1,'id','','');
-INSERT INTO blocks VALUES(1,1,'fields',1,1,'id','','');
 CREATE TABLE fields
   (id INTEGER PRIMARY KEY NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -74,60 +71,26 @@ CREATE TABLE fields
    valpatn TEXT NOT NULL DEFAULT '',
    help TEXT NOT NULL DEFAULT ''
   );
-INSERT INTO fields VALUES(1,1,1,1,'id',10,0,30,2,1,1,'',1,5,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(2,1,1,1,'form_id',20,0,30,2,1,0,'',1,10,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(3,1,1,1,'blcn',30,0,30,2,1,0,'',1,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(4,1,1,1,'pgen',40,0,30,2,1,0,'',1,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(5,1,1,1,'name',50,0,30,24,1,0,'',1,29,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(6,1,1,1,'seq',60,0,30,3,1,0,'',5,7,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(7,1,1,1,'ftype',70,0,30,2,1,0,'',5,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(8,1,1,1,'len',80,0,30,2,1,0,'',6,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(9,1,1,1,'dlen',68,0,30,3,1,0,'',8,7,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(10,1,1,1,'btab',100,0,30,1,1,0,'',7,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(11,1,1,1,'key',110,0,30,1,1,0,'',7,31,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(12,1,1,1,'dflt',120,0,30,20,1,0,'',8,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(13,1,1,1,'line',65,0,30,3,1,0,'',6,7,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(14,1,1,1,'col',66,0,30,3,1,0,'',7,7,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(15,1,1,1,'enter',150,0,30,1,1,0,'',11,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(16,1,1,1,'query',160,0,30,1,1,0,'',12,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(17,1,1,1,'upd',170,0,30,1,1,0,'',13,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(18,1,1,1,'updnul',180,0,30,1,1,0,'',14,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(19,1,1,1,'mand',190,0,30,1,1,0,'',15,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(20,1,1,1,'upper',200,0,30,1,1,0,'',16,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(21,1,1,1,'lovtit',210,0,30,20,1,0,'',17,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(22,1,1,1,'lov_id',220,0,30,3,1,0,'',17,36,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(23,1,1,1,'lovi_id',230,0,30,3,1,0,'',17,42,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(24,1,1,1,'low',240,0,30,11,1,0,'',20,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(25,1,1,1,'high',250,0,30,11,1,0,'',20,30,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(26,1,1,1,'valpatn',260,0,30,34,1,0,'',21,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(27,1,1,1,'help',55,0,30,40,1,0,'',2,13,1,1,1,1,0,0,'',0,0,0,0,'','');
 CREATE TABLE maps
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    page_id INTEGER NOT NULL DEFAULT 1,
    line INTEGER NOT NULL DEFAULT 1,
    mtext TEXT NOT NULL DEFAULT ''
   );
-INSERT INTO maps VALUES(401,1,1,' Id $1 / $2 $3 blkn $4 pagn $5______________________');
-INSERT INTO maps VALUES(402,1,2,' Help       $27_____________________________________');
-INSERT INTO maps VALUES(403,1,3,'');
-INSERT INTO maps VALUES(404,1,4,' Layout     Database');
-INSERT INTO maps VALUES(405,1,5,' Seq  $6_   Type    $7  0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE');
-INSERT INTO maps VALUES(406,1,6,' Line $13   Length  $8');
-INSERT INTO maps VALUES(407,1,7,' Col  $14   Table   $10. Pkey $11. ');
-INSERT INTO maps VALUES(408,1,8,' Dlen $9_   Default $12_________________');
-INSERT INTO maps VALUES(409,1,9,'');
-INSERT INTO maps VALUES(410,1,10,' Action');
-INSERT INTO maps VALUES(411,1,11,' Enter      $15. edit in Insert-Mode');
-INSERT INTO maps VALUES(412,1,12,' Query      $16. edit in Query-Mode');
-INSERT INTO maps VALUES(413,1,13,' Update     $17. edit in Update-Mode');
-INSERT INTO maps VALUES(414,1,14,' UpdateNul  $18. edit in Update-Mode if NULL');
-INSERT INTO maps VALUES(415,1,15,' Mandatory  $19. must in Insert-Mode');
-INSERT INTO maps VALUES(416,1,16,' Uppercase  $20. convert uppercase Blk   Id');
-INSERT INTO maps VALUES(417,1,17,' ListOfVal  $21_________________ / $22 / $23');
-INSERT INTO maps VALUES(418,1,18,'');
-INSERT INTO maps VALUES(419,1,19,' Validation');
-INSERT INTO maps VALUES(420,1,20,' Low        $24________ High $25________');
-INSERT INTO maps VALUES(421,1,21,' Pattern    $26_______________________________');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 1, 'KEY C FUNCTION     KEY   C FUNCTION');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 2, 'Tab i NextField    ^Tab  g PrevField');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 3, 'F1  @ Field Help   Esc   y Cancel');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 4, 'F2  c Copy         >     f Right');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 5, 'F3  v Paste        <     b Left');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 6, 'F4  t Duplicate    Up    p PreviousRec');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 7, 'F5  u ListOfVal    Down  n NextRecord');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 8, 'F6  o Insert       Ins   j Insert');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 9, 'F7  d Delete       Del   d Delete');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 10, 'F8  z Exit         <--   h DeleteLast');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 11, 'F9  y Cancel       PgUp  r PrevSetRec');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 12, 'F10 x Query        PgDn  w NextSetRec');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 13, 'F11 k Key Help     Home  a PrevBlock');
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 14, 'F12 l Refresh      End   e NextBlock');
 CREATE TABLE pages
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -136,28 +99,73 @@ CREATE TABLE pages
    title TEXT NOT NULL DEFAULT '',
    ysiz INTEGER NOT NULL DEFAULT 23,
    xsiz INTEGER NOT NULL DEFAULT 80,
-
-
    vwpy0 INTEGER NOT NULL DEFAULT 1,
    vwpx0 INTEGER NOT NULL DEFAULT 0,
    popup INTEGER NOT NULL DEFAULT 0,
    border INTEGER NOT NULL DEFAULT 1,
    dislv INTEGER NOT NULL DEFAULT 0
   );
-INSERT INTO pages VALUES(0,1,'formax',1,'',1,80,0,0,0,0,0);
-INSERT INTO pages VALUES(1,1,'fields-0',1,'',23,80,1,0,0,1,0);
+INSERT INTO pages (form_id, seq, name, ysiz, vwpy0, border) VALUES (1, 0, 'status', 1, 0, 0);
+INSERT INTO pages (form_id, seq, name, ysiz, xsiz, vwpy0, vwpx0, popup, border) VALUES (0, 2, 'keyhelp', 16, 41, 2, 30, 1, 1);
+INSERT INTO pages (form_id, seq, name, ysiz, xsiz, vwpy0, vwpx0, popup, border) VALUES (0, 3, 'editor', 21, 65, 2, 14, 1, 1);
 CREATE TABLE triggers
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
    name TEXT NOT NULL DEFAULT '',
-   trgblk INTEGER NOT NULL DEFAULT 0,
    trgfld INTEGER NOT NULL DEFAULT 0,
    trgtyp INTEGER NOT NULL DEFAULT 0,
    body TEXT NOT NULL DEFAULT '0'
   );
-INSERT INTO triggers VALUES(1,1,'enter_the_form',0,0,0,'0');
-DELETE FROM sqlite_sequence;
-INSERT INTO sqlite_sequence VALUES('triggers',1);
-INSERT INTO sqlite_sequence VALUES('pages',1);
-INSERT INTO sqlite_sequence VALUES('maps',421);
-COMMIT;
+INSERT INTO triggers (name) VALUES ('enter_the_form');
+INSERT INTO blocks (id, form_id, name) VALUES (0, 1, 'dual');
+INSERT INTO forms VALUES(1,'formax','Fields','','');
+INSERT INTO blocks VALUES (null,1,'fields',1,1,'id','','');
+INSERT INTO pages VALUES (null,1,'fields-0',1,'',23,80,1,0,0,1,0);
+INSERT INTO fields VALUES (null,1,1,1,'id',10,0,30,2,1,1,'',1,5,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'form_id',20,0,30,2,1,0,'',1,10,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'blcn',30,0,30,2,1,0,'',1,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'pgen',40,0,30,2,1,0,'',1,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'name',50,0,30,24,1,0,'',1,29,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'seq',60,0,30,3,1,0,'',5,7,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'ftype',70,0,30,2,1,0,'',5,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'len',80,0,30,2,1,0,'',6,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'dlen',68,0,30,3,1,0,'',8,7,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'btab',100,0,30,1,1,0,'',7,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'key',110,0,30,1,1,0,'',7,31,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'dflt',120,0,30,20,1,0,'',8,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'line',65,0,30,3,1,0,'',6,7,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'col',66,0,30,3,1,0,'',7,7,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'enter',150,0,30,1,1,0,'',11,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'query',160,0,30,1,1,0,'',12,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'upd',170,0,30,1,1,0,'',13,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'updnul',180,0,30,1,1,0,'',14,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'mand',190,0,30,1,1,0,'',15,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'upper',200,0,30,1,1,0,'',16,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'lovtit',210,0,30,20,1,0,'',17,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'lov_id',220,0,30,3,1,0,'',17,36,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'lovi_id',230,0,30,3,1,0,'',17,42,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'low',240,0,30,11,1,0,'',20,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'high',250,0,30,11,1,0,'',20,30,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'valpatn',260,0,30,34,1,0,'',21,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,1,1,'help',55,0,30,40,1,0,'',2,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO maps VALUES (null,4,1,' Id $1 / $2 $3 blkn $4 pagn $5______________________');
+INSERT INTO maps VALUES (null,4,2,' Help       $27_____________________________________');
+INSERT INTO maps VALUES (null,4,3,'');
+INSERT INTO maps VALUES (null,4,4,' Layout     Database');
+INSERT INTO maps VALUES (null,4,5,' Seq  $6_   Type    $7  0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE');
+INSERT INTO maps VALUES (null,4,6,' Line $13   Length  $8');
+INSERT INTO maps VALUES (null,4,7,' Col  $14   Table   $10. Pkey $11. ');
+INSERT INTO maps VALUES (null,4,8,' Dlen $9_   Default $12_________________');
+INSERT INTO maps VALUES (null,4,9,'');
+INSERT INTO maps VALUES (null,4,10,' Action');
+INSERT INTO maps VALUES (null,4,11,' Enter      $15. edit in Insert-Mode');
+INSERT INTO maps VALUES (null,4,12,' Query      $16. edit in Query-Mode');
+INSERT INTO maps VALUES (null,4,13,' Update     $17. edit in Update-Mode');
+INSERT INTO maps VALUES (null,4,14,' UpdateNul  $18. edit in Update-Mode if NULL');
+INSERT INTO maps VALUES (null,4,15,' Mandatory  $19. must in Insert-Mode');
+INSERT INTO maps VALUES (null,4,16,' Uppercase  $20. convert uppercase Blk   Id');
+INSERT INTO maps VALUES (null,4,17,' ListOfVal  $21_________________ / $22 / $23');
+INSERT INTO maps VALUES (null,4,18,'');
+INSERT INTO maps VALUES (null,4,19,' Validation');
+INSERT INTO maps VALUES (null,4,20,' Low        $24________ High $25________');
+INSERT INTO maps VALUES (null,4,21,' Pattern    $26_______________________________');

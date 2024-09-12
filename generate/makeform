@@ -1,11 +1,13 @@
 #!/bin/sh
-USAGE="makeform name title table cols... >name.inp"
-if [ ! "$4" ]; then echo $USAGE >&2; exit 2; fi
 PATH=`dirname $0`:$PATH
+USAGE="makeform name [title table cols...] >name.inp"
 FORM=$1
+if [ ! -f "$FORM.frm" ]; then
+if [ ! "$4" ]; then echo $USAGE >&2; exit 2; fi
 TITLE=$2
 TABLE=$3
 shift 3
+fi
 cat <<EOF
 #PRAGMA encoding="ISO-8859-15";
 `extractsql $ARX/runform/form.h`
@@ -15,11 +17,14 @@ cat <<EOF
 `extractsql $ARX/runform/rmap.h`
 `extractsql $ARX/runform/rpage.h`
 `extractsql $ARX/runform/rtrigger.h`
-INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
-INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
 INSERT INTO blocks (id, form_id, name) VALUES (0, 1, 'dual');
+EOF
+if [ "$TABLE" ]; then
+cat <<EOF
 INSERT INTO pages  (form_id, seq, name) VALUES (0, 1, 'formax');
 INSERT INTO maps   (page_id, line, mtext) VALUES (4, 1, '         ');
+INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
+INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
 EOF
 LINE=0
 FLDN=0
@@ -30,4 +35,11 @@ for COLUMN; do
   echo "INSERT INTO fields (seq, name, line, key) VALUES ($FLDN, '$COLUMN', $LINE+1, $KEY);"
   printf "INSERT INTO maps (page_id, line, mtext) VALUES (4, $LINE+1, ' [$LINE]%-14s \$${LINE}__________________');\\n" $COLUMN
 done
+else
+sqlite3 $FORM.frm ".dump forms"  | sed -n '/INSERT/p'
+sqlite3 $FORM.frm ".dump blocks" | sed -n '/INSERT/s/([0-9]*/ (null/p' | grep -v dual
+sqlite3 $FORM.frm ".dump pages"  | sed -n '/INSERT/s/([0-9]*/ (null/p' | grep -v formax
+sqlite3 $FORM.frm ".dump fields" | sed -n '/INSERT/s/([0-9]*/ (null/p'
+sqlite3 $FORM.frm ".dump maps"   | sed -n '/INSERT/s/([0-9]*,4/ (null,4/p'
+fi
 exit
