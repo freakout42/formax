@@ -64,8 +64,8 @@ extern int catc(char *target, size_t maxlen, char source);
 extern int debugf(char *format, ...);
 extern char *tmpcreat();
 extern int tmpopen();
-extern int tmpclose();
-extern int tmprm();
+extern void tmpclose(int rm);
+extern int tmpread(char *buf, int siz);
 extern char *tmpget(char *buf, int siz);
 extern void tmput(char *v);
 

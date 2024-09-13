@@ -360,10 +360,12 @@ writef(y, x, 0, strlen(str), str);
 void Screen::writef(int y, int x, int colcode, int width, const char *format, ...) {
 va_list args;
 char s[MEDSIZE];
+char *crp;
 int oldy, oldx;
 va_start (args, format);
 vsnprintf (s, sizeof(s), format, args);
 va_end (args);
+if ((crp = strchr(s, '\n'))) strncpy(crp, "...", sizeof(s) - (crp - s));
 setcode(colcode);
 getyx(wndw, oldy, oldx);
 mvwprintw(wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);

@@ -27,7 +27,7 @@ for (i = 1; i <= q->rows; i++) {
   tmput(q->v(i, 2));
   tmput(cr);
 }
-tmpclose();
+tmpclose(0);
 rclose();
 return tmpath;
 }
@@ -53,7 +53,6 @@ for(m=1; tmpget(l, MEDSIZE); m++) {
   }
 }
 rclose();
-tmpclose();
-tmprm();
+tmpclose(1);
 }
 

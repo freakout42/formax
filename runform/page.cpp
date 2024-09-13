@@ -68,6 +68,7 @@ int Page::editbuf(char *buf) {
 char cr[2] = "\n";
 char *tmpf;
 char *eol;
+int i;
 int s;
 redraw();
 refr();
@@ -75,13 +76,13 @@ F(needredraw) = 1;
 tmpf = tmpcreat();
 tmput(buf);
 if (!strchr(buf, '\n')) tmput(cr);
-tmpclose();
+tmpclose(0);
 s = mainloop(tmpf, wndw);
 tmpopen();
-tmpget(buf, BIGSIZE);
+i = tmpread(buf, BIGSIZE);
+buf[i] = '\0';
 if ((eol = strchr(buf, '\n')) && *(eol+1) == '\0') *eol = '\0';
-tmpclose();
-tmprm();
+tmpclose(1);
 return s ? KEF_NXTFLD : KEF_CANCEL;
 }
 

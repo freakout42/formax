@@ -28,8 +28,15 @@ tf = fopen(tfp, "r");
 return tf != NULL;
 }
 
-int tmpclose() { return fclose(tf); }
-int tmprm() { return unlink(tfp); }
+void tmpclose(int rm) {
+fclose(tf);
+if (rm) unlink(tfp);
+}
+
+int tmpread(char *buf, int siz) {
+return fread(buf, 1, siz, tf);
+}
+
 char *tmpget(char *buf, int siz) { return fgets(buf, siz, tf); }
 void tmput(char *v) { if (*v) { if (v[1] == '\0') fputc(*v, tf); else fputs(v, tf); } }
 
