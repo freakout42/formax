@@ -165,7 +165,7 @@ runform myform.frm mydb.sq3
 ~~~
 
 Read the developer guide from the docs section for more
-information how to use the form. Have fun and profit.
+information how to modify the form. Have fun and profit.
 
 Status
 ======
