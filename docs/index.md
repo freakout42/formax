@@ -18,16 +18,17 @@ use-cases for which it can have massive advantages
 ~~~
 The basic concepts of Oracle SQL-Forms 3.0 (1988) are
 combined with modern standards and current database best
-practices and technologies. Using ODBC for universal database
-access and JavaScript as the trigger language opens this
-concept universally. The best ideas for a powerful user
+practices and technologies. Using ODBC for universal
+database access and JavaScript as the trigger language opens
+this concept universally. The best ideas for a powerful user
 interface came from Emacs, Clipper, SAP, Lightroom and
 Lotus/1-2-3. The result is the most effective solution
 possible for the end-user. By eleminating all proprietary
 dependencies und being opensource with a permissive license
-the system is totally futureproof. The minimal costs to
-build a **formax** application makes adapting this
-technology a no-brainer for any enterprise.
+the system is totally futureproof. By forking the repos you
+will never loose the support for your investments any more.
+The minimal costs to build a **formax** application makes
+adapting this technology a no-brainer for any enterprise.
 
 In every system of decent size is the need for something
 like **formax**. The system-adminstrator needs to change a
@@ -107,7 +108,7 @@ action (SQL) can be logged in a central database.
 
 ### Status
 
-Current v1.2.0 is stable - the generator can create a
+Current v1.5.0 is stable - the generator can create a
 single-block single-page form. You are able to create,
 retrieve, update and delete (CRUD) records in the table. No
 triggers, no transactions, no help yet. The designer-tool is

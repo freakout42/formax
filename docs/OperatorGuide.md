@@ -50,11 +50,13 @@ requirements are fundamental for the application:
 
  - Sustainability
 
-    Open source and all dependencies also open source with
-    a permissive license makes the system totally future
-    proof. The database independence of ODBC tops this
-    nature further more. Ask old SQL-Forms guys about the
-    importance of this topic.
+    Being open source with all dependencies with a
+    permissive license makes the system totally future
+    proof. By forking the repos you will never loose the
+    support for your investments. The database independence
+    of ODBC and JavaScript tops this nature further more.
+    Ask old SQL-Forms guys about the importance of this
+    topic.
 
 Install
 =======
