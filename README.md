@@ -15,8 +15,8 @@ Click on the image for a non-technical description:
 
 Introduction
 ============
-**formax** forms access the database and generate a screen
-that presents the data. The source form (.inp in practice a
+**formax** accesses the database and generate a screen that
+presents the data. The source form (.inp in practice a
 sql-script to create a sqlite3 database) is compiled into a
 binary (.frm in practice a sqlite3 database), that is run by
 the runtime component. The form is used to view and edit
