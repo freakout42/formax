@@ -170,9 +170,12 @@ Read the developer guide from the docs section for more
 information how to modify the form. Have fun and profit.
 
 Guides
-======
+------
 
 [User Guide](https://formax.freakout.de/UserGuide.html "User Guide")
+[Developer Guide](https://formax.freakout.de/DeveloperGuide.html "Developer Guide")
+[Operator Guide](https://formax.freakout.de/OperatorGuide.html "Operator Guide")
+[Contributor Guide](https://formax.freakout.de/ContributorGuide.html "Contributor Guide")
 
 License
 =======
