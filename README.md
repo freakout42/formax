@@ -151,8 +151,8 @@ runform myform.frm mydb.sq3
 You will be in `Insert-Mode` and can enter data for new
 records. Press Enter without new data will get you into
 `Query-Mode`. Quit from the form after playing around with
-Ctrl-Y. Read the user guide from the docs section for more
-information how to use the form.
+Ctrl-Y. Read the user guide for more information how to use
+the form.
 
 Change the form layout and the default behaviour of the form
 with the `editform` utility. This will bring up your editor
@@ -166,16 +166,17 @@ editform myform
 runform myform.frm mydb.sq3
 ~~~
 
-Read the developer guide from the docs section for more
-information how to modify the form. Have fun and profit.
+Read the developer guide for more information how to modify
+the form.
 
-Guides
-------
+Documentation
+-------------
 
 [User Guide](https://formax.freakout.de/UserGuide.html "User Guide")
 [Developer Guide](https://formax.freakout.de/DeveloperGuide.html "Developer Guide")
 [Operator Guide](https://formax.freakout.de/OperatorGuide.html "Operator Guide")
 [Contributor Guide](https://formax.freakout.de/ContributorGuide.html "Contributor Guide")
+Have fun and profit.
 
 License
 =======
