@@ -172,7 +172,7 @@ information how to modify the form. Have fun and profit.
 Guides
 ======
 
-    [User Guide](https://formax.freakout.de/UserGuide.html "User Guide")
+[User Guide](https://formax.freakout.de/UserGuide.html "User Guide")
 
 License
 =======
