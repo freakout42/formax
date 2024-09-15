@@ -169,6 +169,11 @@ runform myform.frm mydb.sq3
 Read the developer guide from the docs section for more
 information how to modify the form. Have fun and profit.
 
+Guides
+======
+
+    [User Guide](https://formax.freakout.de/UserGuide.html "User Guide")
+
 License
 =======
 GNU General Public License _Version 3, 29 June 2007_  
