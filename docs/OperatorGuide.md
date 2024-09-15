@@ -114,6 +114,33 @@ should have mode 2751:
 
     -rwxr-s--x 1 axel devel 266152 Aug 10 16:05 runform
 
+Client
+======
+
+Standard client is PuTTY on Windows. Easy to install -
+opensource - secure - matured for decades. You must set for
+the session:
+
+    Window->Translation->Remote character set = ISO-8859-15
+    Connection->Data->Terminal-type string = putty
+
+For maximum convenience you can add the following to your
+registry. Then you will find a loadable session which you
+can open in PuTTY or start with "putty -load formax" from
+the command line.
+
+~~~
+REGEDIT4
+
+[HKEY_CURRENT_USER\SOFTWARE\SimonTatham\PuTTY\Sessions\formax]
+"Present"=dword:00000001
+"HostName"="formax.toarx.de"
+"TerminalType"="putty"
+"UserName"="scott"
+"LineCodePage"="ISO-8859-15:1999 (Latin-9, \"euro\")"
+
+~~~
+
 Forms
 =====
 

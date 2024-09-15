@@ -50,6 +50,25 @@ technologies including all required enterprise-features:
  - no operating system exits in the form-engine
  - 3FA security can be setup easily
 
+Status
+======
+Stable 1.5.0 is useable for single-block single-page forms.
+Don't hesitate to create any issues when in trouble.
+
+Feature roadmap
+---------------
+ - 2.0 triggers
+ - 2.2 multiple databases
+ - 2.5 in-field editing
+ - 3.0 multi-record fields
+ - 3.1 multiple blocks and master-detail
+ - 3.5 list of values - subforms
+ - 4.0 menue multiple forms
+ - 4.5 transaction processing
+ - cqy.y: 5 shift/reduce conflicts
+ - sap-like batchinput
+ - key macros
+
 Playground
 ----------
 You can play with an example form simply by connecting ssh
@@ -58,23 +77,6 @@ If you are using PuTTY you must set for the session:
 
     Window->Translation->Remote character set = ISO-8859-15
     Connection->Data->Terminal-type string = putty
-
-For maximum convenience you can add the following to your
-registry. Then you will find a loadable session which you
-can open in PuTTY or start with "putty -load formax" from
-the command line.
-
-~~~
-REGEDIT4
-
-[HKEY_CURRENT_USER\SOFTWARE\SimonTatham\PuTTY\Sessions\formax]
-"Present"=dword:00000001
-"HostName"="formax.toarx.de"
-"TerminalType"="putty"
-"UserName"="scott"
-"LineCodePage"="ISO-8859-15:1999 (Latin-9, \"euro\")"
-
-~~~
 
 Install
 =======
@@ -166,25 +168,6 @@ runform myform.frm mydb.sq3
 
 Read the developer guide from the docs section for more
 information how to modify the form. Have fun and profit.
-
-Status
-======
-Stable 1.5.0 is useable for single-block single-page forms.
-Don't hesitate to create any issues when in trouble.
-
-Feature roadmap
----------------
- - 2.0 triggers
- - 2.2 multiple databases
- - 2.5 in-field editing
- - 3.0 multi-record fields
- - 3.1 multiple blocks and master-detail
- - 3.5 list of values - subforms
- - 4.0 menue multiple forms
- - 4.5 transaction processing
- - cqy.y: 5 shift/reduce conflicts
- - sap-like batchinput
- - key macros
 
 License
 =======
