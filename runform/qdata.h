@@ -1,4 +1,8 @@
-// storage class for query results
+/* storage class for query results
+ * simple malloc'd **char array (d)
+ * of malloc'd strings or NULL when empty/null
+ * preallocation in 10 fold intervals
+ */
 class Qdata {
 public:
   int rows;

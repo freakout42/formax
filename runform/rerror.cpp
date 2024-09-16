@@ -1,3 +1,7 @@
+/* error messages table errors belongs to form zero
+ * all forms use the same data
+ * to use different language translate rerror.h
+ */
 #include "runform.h"
 
 int rError::init() {
