@@ -47,6 +47,7 @@ setdrv(dbmsname);
 #define AUTOCOMMIT (SQLPOINTER)(autocommit ? SQL_AUTOCOMMIT_ON : SQL_AUTOCOMMIT_OFF)
 ret = SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT, AUTOCOMMIT, SQL_IS_UINTEGER);                FAILEDQ(SQL_HANDLE_DBC);
 ret = SQLGetFunctions(dbc, SQL_API_SQLMORERESULTS, &moreresults );                             FAILEDQ(SQL_HANDLE_DBC);
+stmt = NULL;
 return ret;
 }
 
@@ -55,6 +56,7 @@ int Record::connect(Record r) {
 dbc = r.dbc;
 drv = r.drv;
 moreresults = r.moreresults;
+stmt = NULL;
 return 0;
 }
 

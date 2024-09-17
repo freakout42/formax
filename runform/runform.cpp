@@ -31,7 +31,7 @@ int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
 char *ypassword  = NULL;
 char *username;
-Form f;
+Form *f;
 Logger g;
 Function u;
 
@@ -165,6 +165,8 @@ switch(argc - optind) {
  case 4:
  default: usage(2);
 }
+
+f = new(Form);
 if (F(b[0]).connect(dsn)) usage(8);
 memset(dsn, 'y', MEDSIZE);
 genxorkey(NULL, NULL);
@@ -189,6 +191,7 @@ while(s) {
 // cleanup end exit
 F(disconnect)();
 F(b[0]).disconnect();
+delete(f);
 g.lclose();
 exit(-s);
 }
