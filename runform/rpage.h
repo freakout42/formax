@@ -1,5 +1,5 @@
 #ifndef BEGINSQL
-// page configuration
+/* page configuration */
 class rPage: public Record {
 public:
   int init(int form_id);

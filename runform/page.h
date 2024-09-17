@@ -1,5 +1,7 @@
-/* Pages are collections of display information, such as constant text.
- * All fields are displayed on some page.
+/* Pages are collections of display information, such as constant text
+ * All fields are displayed on some page
+ * page_id==0 these pages are present in all forms - 3 pages
+ * array index ==3 is the first user page
  */
 #define LINE0SIZE 80
 class Page: public Screen {

@@ -1,3 +1,4 @@
+/* trigger data body should be in map */
 enum ttyp { TRT_ENTERFORM, TRT_NEXTITEM=100 };
 class Trigger {
 public:

@@ -19,7 +19,7 @@
 #define MSG_DIRTY    402
 #define MSG_NOTYET   403
 #ifndef BEGINSQL
-// error messages
+/* error messages */
 class rError: public Record {
 public:
   int init();

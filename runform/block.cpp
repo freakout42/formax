@@ -27,6 +27,7 @@ columni = fieldcount;
 return fieldcount;
 }
 
+/* orm retrieve respects the colquery conditions */
 int Block::select() {
 int i;
 char wall[MEDSIZE-2];
@@ -46,35 +47,45 @@ let(where, wall);
 return query();
 }
 
+/* block field name */
 char *Block::cn(int c) {
 return F(l[blockfields[c]]).name;
 }
 
+/* orm update by bind variables - disable usebindvar=FALSE completely */
 int Block::update(int r, int c) {
+#ifdef USEBINDVARFALSEENABLED
 if (usebindvar) {
+#endif
 letf((char*)querystr, sizeof(querystr), "update %s set %s = ? where %s = ?", table, cn(c-1), F(l[primarykeys[0]]).name);
 bindv[0] = q->v(r, c);
 bindv[1] = q->v(r, F(l[primarykeys[0]]).sequencenum);
 bindv[2] = NULL;
+#ifdef USEBINDVARFALSEENABLED
 } else {
 letf((char*)querystr, sizeof(querystr), "update %s set %s = '%s' where %s = '%s'", table, cn(c-1), q->v(r, c),
                                            F(l[primarykeys[0]]).name, q->v(r, F(l[primarykeys[0]]).sequencenum));
 bindv[0] = NULL;
 }
+#endif
 if ((ret = execute(querystr, bindv))) return ret;
 return complete();
 }
 
 int Block::destroy(int r) {
+#ifdef USEBINDVARFALSEENABLED
 if (usebindvar) {
+#endif
 letf((char*)querystr, sizeof(querystr), "delete from %s where %s = ?", table, F(l[primarykeys[0]]).name);
 bindv[0] = q->v(r, F(l[primarykeys[0]]).sequencenum);
 bindv[1] = NULL;
+#ifdef USEBINDVARFALSEENABLED
 } else {
 letf((char*)querystr, sizeof(querystr),
   "delete from %s where %s = '%s'", table, F(l[primarykeys[0]]).name, q->v(r, F(l[primarykeys[0]]).sequencenum));
 bindv[0] = NULL;
 }
+#endif
 if ((ret = execute(querystr, bindv))) return ret;
 return complete();
 }
@@ -93,12 +104,16 @@ for (i=0; i<fieldcount; i++) {
     catc(t(columnslist), sep);
     cats(t(columnslist), F(l[blockfields[i]]).name);
     catc(t(valueslist),  sep);
+#ifdef USEBINDVARFALSEENABLED
 if (usebindvar) {
+#endif
     cats(t(valueslist),  "?");
     bindv[j++] = q->v(r, i+1);
+#ifdef USEBINDVARFALSEENABLED
 } else {
     letf(t(valueslist),  "'%s'", q->v(r, i+1));
 }
+#endif
     sep = ',';
   }
 }

@@ -1,5 +1,5 @@
 #ifndef BEGINSQL
-// form configuration
+/* form configuration */
 class Form: public Record {
 public:
   Form();

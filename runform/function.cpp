@@ -134,12 +134,14 @@ int Function::previous_item()   { return fmove(0, -1); }
 int Function::next_record()     { return fmover(1);    }
 int Function::previous_record() { return fmover(-1);   }
 
+/* export functions to javascript */
 #define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
 JSEXA(next_item)
 JSEXA(previous_item)
 JSEXA(next_record)
 JSEXA(previous_record)
 
+/* move from field to field */
 int Function::fmove(int bi, int fi) {
 //F(curblock) = (F(curblock) + F(numblock) + bi) % F(numblock);
 if (fi < NFIELD1) F(curfield) = CB.blockfields[ (CF.sequencenum-1 + CB.fieldcount + fi) % CB.fieldcount ];
@@ -148,6 +150,7 @@ if (CF.noedit()) fmove(0, fi<0 ? -1 : 1);
 return 0;
 }
 
+/* move from record to record */
 int Function::fmover(int ri) {
 switch (CM) {
  case MOD_QUERY:  return 0;                                                         break;

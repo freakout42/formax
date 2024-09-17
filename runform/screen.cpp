@@ -1,3 +1,4 @@
+/* curses screen handling interface */
 #include <assert.h>
 #include <cstdarg>
 #include <stdlib.h>
@@ -10,6 +11,7 @@ Screen::Screen() {
 ysiz = 0;
 }
 
+/* curses attributes configuration array */
 static attrel attrels[] = {
 
   { COL_DEFAULT,         A_NORMAL,              -1,            -1 },            /* default */
@@ -46,20 +48,24 @@ static attrel attrels[] = {
   { COL_UNDEF, 0, 0, 0 }
 };
 
+/* symbolic color codes map to curses attribute */
 static int mcode2att(int colcode) {
 return attrels[colcode].cattr;
 }
 
+/* curses set attribute */
 void Screen::setcolor(int pairi) {
 if (!monochrome && (attrels[pairi].foreg || attrels[pairi].backg))
   wattron(wndw, COLOR_PAIR(pairi));
 }
 
+/* curses unset attribute */
 void Screen::uncolor(int pairi) {
 if (!monochrome && (attrels[pairi].foreg || attrels[pairi].backg))
   wattroff(wndw, COLOR_PAIR(pairi));
 }
 
+/* high level colcode to curses setting */
 void Screen::setcode(int colcode) {
 static int runningcolcode;
 int color;
@@ -77,8 +83,20 @@ if (colcode == -1) {
   setcolor(colcode & TYPEM);
 } }
 
-static struct termios otermio;
+int Screen::setattributs(int attrib) {
+if (attrib & A_REVERSE) {
+  if (enter_reverse_mode == NULL) /* terminal has no reverse mode */
+    attrib |= A_STANDOUT;         /* use standout instead */
+}
+if (attrib & A_BLINK) {
+  if (enter_blink_mode == NULL)   /* terminal has no blink mode */
+    attrib |= A_STANDOUT;         /* use standout instead */
+}
+return wattrset(wndw, attrib);
+}
 
+/* curses init and various terminal setup magic */
+static struct termios otermio;
 int Screen::init() {
 struct termios termio;
 int i;
@@ -112,12 +130,12 @@ getmaxyx(stdscr, ysiz, xsiz);
 return 0;
 }
 
+/* wrapper for curses functions */
 void Screen::createwindow(int y, int x, int py, int px) {
 wndw = newwin(y, x, py, px);
 wattrset(wndw, A_NORMAL);
 wattron(wndw, COLOR_PAIR(0));
 }
-
 void Screen::deletewindow() { wera(); delwin(wndw); }
 void Screen::wera() { werase(wndw); }
 void Screen::wbox() { box(wndw, 0, 0); }
@@ -127,6 +145,7 @@ void Screen::noutrefr() { wnoutrefresh(wndw); }
 void Screen::redraw() { redrawwin(wndw); }
 void Screen::closedisplay() { endwin(); tcsetattr (0, TCSANOW, &otermio); }
 
+/* toggle overwrite/insert mode cursor shape not possible? */
 void Screen::toggle() {
 insertmode = !insertmode;
 //if (insertmode) fputs(A_LINECURSOR,  stdout);
@@ -134,12 +153,14 @@ insertmode = !insertmode;
 //fflush(stdout);
 }
 
+/* get error message */
 char *Screen::msg(int num) {
 int i;
 for (i=1; i<F(e)->rows; i++) if (F(e)->m(i,1) == num) break;
 return F(e)->v(i,3);
 }
 
+/* get key pressed */
 int Screen::wgetc() {
 return wgetch(stdscr); // wgetch(wndw); getch();
 }
@@ -180,6 +201,7 @@ switch(ch) {
 return ch;
 }
 
+/* edit a string on the screen */
 int Screen::sedit(char *toe, int pos, ftype fty, int len) {
 char *legal;
 char legalall[] = "";
@@ -340,23 +362,12 @@ if (chg) *chg = changed;
 return(c);
 }
 
-int Screen::setattributs(int attrib) {
-if (attrib & A_REVERSE) {
-  if (enter_reverse_mode == NULL) /* terminal has no reverse mode */
-    attrib |= A_STANDOUT;         /* use standout instead */
-}
-if (attrib & A_BLINK) {
-  if (enter_blink_mode == NULL)   /* terminal has no blink mode */
-    attrib |= A_STANDOUT;         /* use standout instead */
-}
-return wattrset(wndw, attrib);
-}
-
+/* prints a string at a selected location */
 void Screen::writes(int y, int x, char *str) {
 writef(y, x, 0, strlen(str), str);
 }
 
-/* Prints a string in video memory at a selected location in a color */
+/* prints a formatted string at a selected location in a color */
 void Screen::writef(int y, int x, int colcode, int width, const char *format, ...) {
 va_list args;
 char s[MEDSIZE];

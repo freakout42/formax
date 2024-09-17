@@ -1,5 +1,5 @@
-/* query data handling
- * should implement a Cell object to replace the simple char*
+/* query data handling storage class
+ * TODO: should implement a Cell object to replace the simple char*
  */
 #include <stdlib.h>
 #include "runform.h"
@@ -7,7 +7,7 @@
 Qdata::Qdata() { allocatedrows = 0; }
 Qdata::~Qdata() { freed(); }
 
-/* factorize by 10 for performance */
+/* allocate the pointer array for 2 rows */
 int Qdata::alloc(int coln) {
 if (allocatedrows) freed();
 rows = 0;
@@ -37,6 +37,7 @@ if (rown >= 0) {
 }
 }
 
+/* free the pointer array and all data pointer to */
 void Qdata::freed() {
 int i;
 if (allocatedrows) {
@@ -45,7 +46,9 @@ free(d);
 allocatedrows = 0;
 } }
 
-/* return a valid pointer for new query-column data */
+/* return a valid pointer for new query-column data
+ * reallocation factorize allocatedrows by 10 for performance
+ */
 char **Qdata::w(int row, int col) {
 int i;
 if (row > allocatedrows) {

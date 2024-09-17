@@ -40,6 +40,7 @@ sequencenum = F(b[blockindex].addattribute)(rix-1);
 return 0;
 }
 
+/* check whether field is editable in current mode */
 int Field::noedit() {
 switch(CM) {
  case MOD_UPDATE: if (isprimarykey || !(updateable || (updnulable && *valuep()==NULL))) return 1; break;
@@ -50,10 +51,12 @@ switch(CM) {
 return 0;
 }
 
+/* high level field type adds boolean for special treatment */
 ftype Field::fldtype() {
 return (fieldtype==FTY_INT && lowvalue==0 && highvalue==1) ? FTY_BOOL : fieldtype;
 }
 
+/* display the field according to mode */
 void Field::show(int cur) {
 int color;
 switch(CM) {
@@ -67,6 +70,7 @@ F(p[1]).writef(line, col, color, displaylen, "%.*s", displaylen, CM==MOD_QUERY ?
 if (cur) F(p[1]).wmov(line, col);
 }
 
+/* clear field content */
 void Field::clear() {
 char **v;
 if (CM == MOD_QUERY) {
@@ -83,6 +87,7 @@ char **Field::valuep() {
 return F(b[blockindex].q->w)(CB.currentrecord, sequencenum);
 }
 
+/* toggle boolean field value between 0 and 1 */
 int Field::toggle() {
 char **c;
 if (CM == MOD_UPDATE && fldtype() == FTY_BOOL) {
@@ -97,6 +102,7 @@ if (CM == MOD_UPDATE && fldtype() == FTY_BOOL) {
 return KEF_CANCEL;
 }
 
+/* increment/decrement integer field value */
 int Field::increment(int ival) {
 char **c;
 int a;
@@ -112,6 +118,7 @@ if (CM == MOD_UPDATE && fieldtype == FTY_INT) {
 return 0;
 }
 
+/* checks new field value with validation rules */
 int Field::validate(char **c, char *buf) {
 char *u;
 re_t re;
@@ -160,6 +167,10 @@ if (*c) {
 return 0;
 }
 
+/* call the field editor depending on pos and current mode
+ * when changed validate the new content and return next key
+ * return KEF_CANCEL on cancel | no changes | validation fail
+ */
 int Field::edit(int pos) {
 int pressed;
 char buf[BIGSIZE];

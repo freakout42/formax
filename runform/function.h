@@ -1,4 +1,4 @@
-// event functions - the workhorse
+/* event functions - the workhorse */
 class Function {
 public:
   int dispatch();

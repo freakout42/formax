@@ -1,5 +1,5 @@
 #ifndef BEGINSQL
-// block configuration
+/* block configuration */
 class rBlock: public Record {
 public:
   int init(int form_id);

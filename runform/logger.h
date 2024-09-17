@@ -1,3 +1,4 @@
+/* logging sql engine via sqlite3 lib - not odbc */
 #ifndef SQLITE3_H
 typedef struct sqlite3 sqlite3;
 #endif
