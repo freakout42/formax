@@ -1,6 +1,4 @@
-/* Called by cqparse on error
- * does nothing
- */
+/* Called by cqparse on error - does nothing */
 void cqerror(char *s)
 { ; }
 

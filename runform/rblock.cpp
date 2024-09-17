@@ -1,3 +1,4 @@
+/* block configuration */
 #include "runform.h"
 
 int rBlock::init(int form_id) {

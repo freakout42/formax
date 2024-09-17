@@ -1,5 +1,8 @@
 /* triggers are sets of processing commands associated with event points,
  * such as when a particular function key is pressed by the operator
+ * or when specific events occur within functions
+ * should always return a status int =1 success =0 failure
+ * which cause the event to commit or cancel respectively
  */
 #include <stdlib.h>
 #include "runform.h"
@@ -7,6 +10,7 @@
 static char engine[HUGSIZE];
 static struct js *javascript = NULL;
 
+/* init the engine and read from config body should be in map */
 #define JSEXE(func) js_set(javascript, js_glob(javascript), #func, js_mkfun(j_ ## func))
 int Trigger::init(Qdata *trg, int rix) {
 if (!javascript) {

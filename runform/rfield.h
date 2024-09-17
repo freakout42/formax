@@ -1,5 +1,5 @@
 #ifndef BEGINSQL
-// field configuration
+/* field configuration */
 class rField: public Record {
 public:
   int init(int form_id);

@@ -1,3 +1,5 @@
+/* runform.cpp main and os interfaces except curses and odbc */
+
 #define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpqx] [-n lg]\n" \
   "  [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...\n"
 
@@ -58,6 +60,9 @@ fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
 }
 
+/* disassemble the username:password@dsn connection string
+ * and do the decryption when appropriate
+ */
 static void parsedsn(char *dsn, char *drv, char *dsn0) {
 char *pwd;
 char *dsn1;

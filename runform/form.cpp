@@ -15,6 +15,7 @@ let(order,  "id");
 columni = 3;
 }
 
+/* connect all configuration tables to the form database */
 void Form::rconnect() {
 rerror.connect(*this);
 rblock.connect(*this);
@@ -24,11 +25,11 @@ rmap.connect(*this);
 rtrigger.connect(*this);
 }
 
-// fill objects with configuation
+/* fill objects with configuation */
 int Form::fill(int fid) {
 int i, s;
 
-// the form itself
+/* the form configuration itself */
 stmt = NULL;
 if ((s = ropen())) return s;
 letf(t(where), "id = %d", fid);
@@ -40,7 +41,7 @@ let(title, q->v(1, 3));
 needredraw = 0;
 rclose();
 
-// triggers
+/* triggers */
 if (rtrigger.init(fid)) return 9;
 if ((s = rtrigger.query())) return s;
 numtrigger = rtrigger.q->rows;
@@ -50,9 +51,16 @@ for (i=0; i<numtrigger; i++) {
 }
 rtrigger.rclose();
 
-// pages - page [0]/1.0  is status/edit/message window
-//              [1]/3.1  is working window
-//              [2]/2.2  is key help popup
+/*               i  id seq desc
+ * pages - page [0] 1  0   status/edit/message window
+ *              [1] 4  1   working window
+ *              [2] 2  2   key help popup
+ *              [3] 3  3   editor
+ * INSERT INTO pages VALUES(1,1,'status',0,'',1,80,0,0,0,0,0);
+ * INSERT INTO pages VALUES(2,0,'keyhelp',2,'',16,41,2,30,1,1,0);
+ * INSERT INTO pages VALUES(3,0,'editor',3,'',21,65,2,14,1,1,0);
+ * INSERT INTO pages VALUES(4,0,'formax',1,'',23,80,1,0,0,1,0);
+ */
 if (rpage.init(fid)) return 9;
 if ((s = rpage.query())) return s;
 numpage = rpage.q->rows;
@@ -66,14 +74,14 @@ for (i=0; i<numpage; i++) {
 }
 rpage.rclose();
 
-// error messages
+/* error messages */
 if (rerror.init()) return 9;
 if ((s = rerror.query())) return s;
 e = rerror.q;
 rerror.q = new(Qdata);
 rerror.rclose();
 
-// blocks - block 0 is for free queries/sql statements
+/* blocks - block 0 is for free queries/sql statements */
 if (rblock.init(fid)) return 9;
 if ((s = rblock.query())) return s;
 numblock = rblock.q->rows;
@@ -84,7 +92,7 @@ for (i=0; i<numblock; i++) {
 }
 rblock.rclose();
 
-// fields
+/* fields */
 if (rfield.init(fid)) return 9;
 if ((s = rfield.query())) return s;
 numfield = rfield.q->rows;
@@ -97,6 +105,7 @@ rfield.rclose();
 return 0;
 }
 
+/* cleanup the form with all blocks and pages */
 void Form::clear() {
 int i;
 e->freed();
@@ -104,7 +113,7 @@ for (i=0; i<numblock; i++) b[i].rclose();
 for (i=0; i<numpage;  i++) p[i].destroy();
 }
 
-// set-up screen and pages and execute through the event dispatcher
+/* set-up screen and pages and execute through the event dispatcher */
 int Form::run() {
 int i, s;
 if (y.init()) return 6;
@@ -117,6 +126,7 @@ y.closedisplay();
 return s==-1 ? 0 : s;
 }
 
+/* application key mapping physical to function */
 int Form::mapkey(int ckey) {
 int ck;
 ck = ispunctation(ckey);
@@ -152,3 +162,4 @@ switch(ck) {                                  /* C */
   default:             return ck;
  }
 }
+

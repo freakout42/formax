@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include "runform.h"
 
-// avoid include <stdio.h> need
+/* avoid include <stdio.h> need */
 int letf(char *target, size_t maxlen, const char *format, ...) {
 va_list args;
 int n;
@@ -14,6 +14,7 @@ va_end (args);
 return n;
 }
 
+/* temporary file handling */
 static char tfp[14];
 static FILE *tf;
 
@@ -22,21 +23,17 @@ strcpy(tfp, "/tmp/fmXXXXXX");
 tf = fdopen(mkstemp(tfp), "w");
 return tfp;
 }
-
 int tmpopen() {
 tf = fopen(tfp, "r");
 return tf != NULL;
 }
-
 void tmpclose(int rm) {
 fclose(tf);
 if (rm) unlink(tfp);
 }
-
 int tmpread(char *buf, int siz) {
 return fread(buf, 1, siz, tf);
 }
-
 char *tmpget(char *buf, int siz) { return fgets(buf, siz, tf); }
 void tmput(char *v) { if (*v) { if (v[1] == '\0') fputc(*v, tf); else fputs(v, tf); } }
 
@@ -51,6 +48,7 @@ if (c && (pc = strchr(shiftednum, c))) return KEF_NAVI(pc - shiftednum);
 return c;
 }
 
+/* international yes/no */
 int yesno(int chr) {
 switch(chr) {
  case KEY_ENTER:
@@ -79,6 +77,7 @@ target[i+1] = '\0';
 return 0;
 }
 
+/* not online
 int debugf(char *format, ...) {
 va_list args;
 int n;
@@ -88,4 +87,5 @@ fputc('\n', stderr);
 va_end (args);
 return n+1;
 }
+ */
 

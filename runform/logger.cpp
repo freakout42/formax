@@ -1,3 +1,4 @@
+/* logging sql engine via sqlite3 lib - not odbc */
 #include <cstdarg>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,13 +26,13 @@ static int session = -1;
 static char message[MEDSIZE];
 static char sqlquery[MEDSIZE*2];
 
+/* the only read is for the session id from the returning clause of _INSERTLOGIN */
 static int callback(void *NotUsed, int argc, char **argv, char **azColName){
 if (session == 0 && argc == 1) session = atoi(argv[0]);
 return 0;
 }
-// for (i=0; i<argc; i++) {
-//   fprintf(stderr, "%s", argv[i] ? argv[i] : "NULL");
 
+/* create the tables when not existing */
 void Logger::init(char *dsn) {
 int rc;
 char na[4];
@@ -80,6 +81,9 @@ sqlite3_exec(db, sqlquery, callback, 0, NULL);
 va_end (args);
 } }
 
+/* must escape apostrophes and interpolate the bind variables
+ * so that the queries can be executed by cut and paste
+ */
 void Logger::logsql(char *sql, char *bnd[]) {
 int i, j, k, l, m;
 char *r;

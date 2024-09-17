@@ -1,5 +1,5 @@
 #ifndef BEGINSQL
-// trigger configuration
+/* trigger configuration */
 class rTrigger: public Record {
 public:
   int init(int form_id);

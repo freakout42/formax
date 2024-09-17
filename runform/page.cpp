@@ -1,3 +1,4 @@
+/* page configuration */
 #include <stdlib.h>
 #include "runform.h"
 
@@ -14,6 +15,7 @@ border  = pag->n(rix, 8);
 return 0;
 }
 
+/* read the boilerplate from map and clean the field placeholders */
 int Page::maps(Qdata *qma) {
 int i, r, y;
 char *t, *p;
@@ -39,6 +41,7 @@ for (i = 1; i <= qma->rows; i++) {
 return 0;
 }
 
+/* associate the page with a curses window and write the boilerplate */
 void Page::create() {
 int i;
 createwindow(ysiz, xsiz, vwpy0, vwpx0);
@@ -55,6 +58,7 @@ deletewindow();
 void Page::repaint()   { if (!popup) redraw(); }
 void Page::refrnopop() { if (!popup) refr(); }
 
+/* display popup page and close after key pressed */
 int Page::showpopup() {
 int i;
 redraw();
@@ -64,6 +68,9 @@ F(needredraw) = 1;
 return i==KEY_ENTER ? 0 : i;
 }
 
+/* edit a multiline buffer with the full screen editor
+ * truncate carriage return from single line content
+ */
 int Page::editbuf(char *buf) {
 char cr[2] = "\n";
 char *tmpf;
@@ -86,6 +93,7 @@ tmpclose(1);
 return s ? KEF_NXTFLD : KEF_CANCEL;
 }
 
+/* edit a map with the full screen editor */
 int Page::editmap(int pid) {
 char *tmpf;
 redraw();
@@ -96,8 +104,10 @@ F(needredraw) = 1;
 return 0;
 }
 
+/* update the status line and the fields content
+ * clear closed popups and refresh the screen
+ */
 static const char *rmodes[] = RMODENAMES;
-
 int Page::wait() {
 int i;
 char commit[16];
@@ -130,6 +140,7 @@ F(needredraw) = 0;
 return LK ? LK : getkb();
 }
 
+/* display message in status line and wait for key pressed */
 int Page::message(int ern, const char *pnt) {
 int i;
 static char empty[] = "";

@@ -1,3 +1,4 @@
+/* field configuration */
 #include "runform.h"
 
 int rField::init(int form_id) {

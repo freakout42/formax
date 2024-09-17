@@ -1,5 +1,5 @@
 /* record.cpp calls ODBC and
- * provides an interface in an ORM style like rails active-record.
+ * provides an interface in an ORM style like rails active-record
  */
 #include <stdlib.h>
 #include <sql.h>
@@ -10,6 +10,7 @@
 
 static char buf[HUGSIZE];
 
+/* driver / database provider info */
 void Record::setdrv(char *dbmsname) {
                                                drv = ODR_UNKNOWN;
 if (!strcmp(dbmsname, "SQLite"))               drv = ODR_SQLITE;
@@ -21,11 +22,17 @@ if (!strcmp(dbmsname, "Advantage"))            drv = ODR_ADS;
 g.logfmt("SQL_DBMS_NAME: %s -> %d", dbmsname, drv);
 }
 
+/* connect to odbc dsn with mode 2 or 3
+ * the connection can be shared with other instances
+ * runform needs minimum 2 connections / dsns
+ * one for the form itself (always sqlite3)
+ * up to four for the actual data to manipulate
+ */
 int Record::connect(char *dsn) {
 SQLSMALLINT len;
 char dbmsname[SMLSIZE];
 if (useodbcve3) {
-ret = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env); FAILEDQ(SQL_HANDLE_ENV);
+ret = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env);                                   FAILEDQ(SQL_HANDLE_ENV);
 ret = SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, (void *) SQL_OV_ODBC3, 0);                     FAILEDQ(SQL_HANDLE_ENV);
 ret = SQLAllocHandle(SQL_HANDLE_DBC, env, &dbc);                                               FAILEDQ(SQL_HANDLE_DBC);
 ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT); FAILEDQ(SQL_HANDLE_DBC);
@@ -43,6 +50,7 @@ ret = SQLGetFunctions(dbc, SQL_API_SQLMORERESULTS, &moreresults );              
 return ret;
 }
 
+/* share the connection with another instance */
 int Record::connect(Record r) {
 dbc = r.dbc;
 drv = r.drv;
@@ -60,6 +68,9 @@ ret = SQLEndTran(SQL_HANDLE_ENV, env, SQL_ROLLBACK);                            
 return 0;
 }
 
+/* open the table by setup a statement handle and allocating storage
+ * the statement handle stmt works as the flag for an open table
+ */
 int Record::ropen() {
 if (stmt == NULL) {
   q = new(Qdata);
@@ -70,6 +81,7 @@ if (stmt == NULL) {
 return ret;
 }
 
+/* close the table by deallocating storage and handle */
 void Record::rclose() {
 delete(q);
 if (stmt) {
@@ -77,6 +89,9 @@ if (stmt) {
   stmt = NULL;
 } }
 
+/* free the connection resources
+ * only the last instance should do that
+ */
 void Record::disconnect() {
 if (dbc) {
   SQLDisconnect(dbc);
@@ -85,11 +100,13 @@ if (dbc) {
   dbc = NULL;
 } }
 
+/* direct sql without orm support */
 int Record::execdirect(SQLCHAR *sql) {
 ret = SQLExecDirect(stmt, sql, strlen((char*)sql));                                            FAILEDQ(SQL_HANDLE_STMT);
 return ret;
 }
 
+/* direct sql with bind support from variable array */
 int Record::execute(SQLCHAR *sql, char *b[]) {
 SQLLEN len;
 int i;
@@ -106,11 +123,13 @@ ret = SQLNumResultCols(stmt, &querycols);                                       
 return ret;
 }
 
+/* cleanup the query data storage und allocate empty for 2 records */
 int Record::clear() {
 if (q->alloc(columni)) return 13;
 return 0;
 }
 
+/* orm select with where / order support */
 int Record::query() {
 int j;
 if (clear()) return 13;
@@ -127,6 +146,9 @@ do {
 return complete();
 }
 
+/* cleanup select handle after execution and fetch
+ * oracle must free and alloc the handle new
+ */
 int Record::complete() {
 ret = SQLFreeStmt(stmt, SQL_CLOSE);                                                           FAILEDQ(SQL_HANDLE_STMT);
 if (drv == ODR_ORACLE) {
@@ -136,6 +158,7 @@ if (drv == ODR_ORACLE) {
 return ret;
 }
 
+/* orm fetch query data */
 int Record::fetch(int row) {
 SQLRETURN s;
 SQLSMALLINT i;
@@ -166,6 +189,7 @@ int Record::succeeded(SQLRETURN s) {
 return !SQL_SUCCEEDED(s);
 }
 
+/* handle failed calls and log them with additional info */
 int Record::failed(SQLSMALLINT hty) {
 SQLHANDLE handle;
 SQLCHAR szError[SMLSIZE];

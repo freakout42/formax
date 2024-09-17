@@ -18,7 +18,7 @@ run: runform $(EXAMPLE)
 # ./runform ../generate/formax.frm ../generate/formax.frm 2>$@
 
 test: runform $(EXAMPLE)
-	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
+	/opt/valgrind/bin/valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
     ./runform -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
 

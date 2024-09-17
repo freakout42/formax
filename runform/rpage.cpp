@@ -1,3 +1,4 @@
+/* page configuration */
 #include "runform.h"
 
 int rPage::init(int form_id) {

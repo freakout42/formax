@@ -1,3 +1,6 @@
+/* multiline text maps
+ * page boilerplates and trigger text (not yet)
+ */
 #include <stdlib.h>
 #include "runform.h"
 
@@ -14,6 +17,7 @@ columni = 2;
 return 0;
 }
 
+/* extract and write to temp file */
 char *rMap::extract(int page_id) {
 char *tmpath;
 int i, m;
@@ -32,6 +36,7 @@ rclose();
 return tmpath;
 }
 
+/* read from temp file and insert into map table */
 void rMap::slurp(int page_id, char *tmpf) {
 int i, m;
 char r[SMLSIZE];

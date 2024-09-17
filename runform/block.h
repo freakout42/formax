@@ -1,4 +1,6 @@
-// the block
+/* dynamic table setup from config data
+ * or free access without sql-hassle
+ */
 class Block: public Record {
 public:
   int init(Qdata *blk, int rix);

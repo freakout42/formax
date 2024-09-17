@@ -1,4 +1,4 @@
-// constants macros and central procedures
+/* constants macros and central procedures */
 enum odrvr         { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_SQLSRVR, ODR_ADS, ODR_UNKNOWN };
 enum fmode         { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
 enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE, FTY_BOOL };
@@ -6,6 +6,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #define RMODENAMES { "Insert",   "Query ",  "Update",   "Delete" }
 #include "../version.h"
 
+/* global resource configuration */
 #define STATUSL 0
 #define SMLSIZE 256
 #define MEDSIZE 1024
@@ -40,12 +41,16 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #include "form.h"
 #include "function.h"
 
+/* misc helper macros */
 #define max(x, y)	(((x) < (y)) ? (y) : (x))
 #define min(x, y)	(((x) < (y)) ? (x) : (y))
 #define let(target,source) strncpy(target, source, sizeof(target)-1)
 #define t(target) target, sizeof(target)
 #define debugs(string) fprintf(stderr, ":%s:\n", string);
 
+/* access to the current running form mode block field */
+extern Form f;
+extern Logger g;
 #define F(method) f.method
 #define CM F(rmode)
 #define CB F(b)[F(curblock)]
@@ -54,6 +59,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #define MSG(n) F(p)[0].message(n, NULL)
 #define MSG1(n,c) F(p)[0].message(n, c)
 
+/* helpers from version.cpp */
 extern Function u;
 extern int yesno(int c);
 extern int isprintable(int c);
@@ -69,6 +75,7 @@ extern int tmpread(char *buf, int siz);
 extern char *tmpget(char *buf, int siz);
 extern void tmput(char *v);
 
+/* extern components */
 extern "C" {
 int genxorkey(char *frm, const char *key);
 char *xdecrypt(char *toe, int rev);
@@ -76,6 +83,7 @@ int res4key(char *key);
 int mainloop(char *buf, WINDOW *scr);
 }
 
+/* global varibles mostly command line options */
 extern int   useodbcve3;
 extern int   monochrome;
 extern int   usedefault;
@@ -91,5 +99,3 @@ extern int   deleprompt;
 extern int   queryonlym;
 extern char  *shiftednum;
 extern char  *username;
-extern Form f;
-extern Logger g;

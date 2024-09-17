@@ -1,4 +1,4 @@
-// the field
+/* the field */
 class Field {
 public:
   int field_id;
