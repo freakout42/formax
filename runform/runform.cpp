@@ -190,7 +190,7 @@ while(s) {
 
 // cleanup end exit
 F(disconnect)();
-F(b[0]).disconnect();
+for (i=0; i<4; i++) F(b[i]).disconnect();
 delete(f);
 g.lclose();
 exit(-s);
