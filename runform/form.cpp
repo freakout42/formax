@@ -90,7 +90,6 @@ if (numblock > NBLOCKS) return 7;
 for (i=0; i<numblock; i++) {
   blk = &b[i];
   if (blk->init(rblock.q, i+1)) return 9;
-//  if (i >= 4) blk->connect(b[blk->sequence % 10]);
   if (i < 4) blk->connect(dbconn[i+1]);
   else       blk->connect(dbconn[(blk->sequence % 10)+1]);
   if (blk->ropen()) return 9;

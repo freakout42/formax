@@ -164,7 +164,6 @@ g.init(argv[optind+1]);
 // open the form database - sqlite3 file named .frm
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
 if (dbconn[0].connect(dsn)) usage(4);
-//if (F(connect)(dsn)) usage(4);
 
 /* check and open the database connections
  * if simple rw-filepath use sqlite
@@ -192,11 +191,10 @@ while(s) {
     if ((form_id = F(run)()) < 0) usage(6);
   F(clear)();
 }
-//F(disconnect)();
 delete(f);
 
-//for (i=0; i<5; i++) F(b[i]).disconnect();
 for (i=0; i<5; i++) dbconn[i].disconnect();
 g.lclose();
+
 exit(-s);
 }
