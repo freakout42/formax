@@ -1,7 +1,7 @@
 /* runform.cpp main and os interfaces except curses and odbc */
 
 #define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpqx] [-n lg]\n" \
-  "  [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...\n"
+  " [-f formid ] [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]{1,4}\n"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -111,8 +111,10 @@ username = getenv("USER");
 setenv("LC_ALL", CHARSET, 1);
 lclocale = setlocale(LC_ALL, CHARSET);
 
+form_id = 1;
+
 // command-line arguments and options check and process
-while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqt:Vxy:")) != -1) {
+while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
     case 'y': ypassword = optarg; break;
@@ -122,6 +124,7 @@ while ((i = getopt(argc, argv, "3abcdg:hikl:n:pqt:Vxy:")) != -1) {
       snprintf(totpresult, 8, "%06d\n", res4key(optarg));
       if (strcmp(totpdigest, totpresult)) usage(1);
       break;
+    case 'f': form_id = atoi(optarg); break;
     case 'g': if (g.setlogfile(optarg)) usage(16); break;
     case 'l': let(drv, optarg); break;
     case 'n':
@@ -158,7 +161,9 @@ if (ypassword) {
 g.init(argv[optind+1]);
 f = new(Form);
 
-// check and open the database connection - if simple rw-filepath use sqlite
+/* check and open the database connections 1..4
+ * if simple rw-filepath use sqlite
+ */
 j = argc - optind;
 if (j < 2 || j > 5) usage(2);
 for (i=0; i<4; i++) {
@@ -171,19 +176,17 @@ for (i=0; i<4; i++) {
   }
 }
 if (F(b[0]).drv == ODR_SQLITE) querycharm = 2;
-memset(dsn, 'y', MEDSIZE);
+memset(dsn, 'y', MEDSIZE); // remove key from ram
 genxorkey(NULL, NULL);
 
 // open and read the form - sqlite3 file named .frm
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
 if (F(connect)(dsn)) usage(4);
-F(rconnect)();
 
 // load and run the form
-form_id = 1;
 s = 1;
 while(s) {
-  if ((s = F(fill)(form_id))) usage(s); //5
+  if ((s = F(fill)(form_id))) usage(5);
     if ((form_id = F(run)()) < 0) usage(6);
   F(clear)();
 }

@@ -16,20 +16,18 @@ let(order,  "id");
 columni = 3;
 }
 
+/* fill objects with configuation */
+int Form::fill(int fid) {
+int i, s;
+Block *blk;
+
 /* connect all configuration tables to the form database */
-void Form::rconnect() {
 rerror.connect(*this);
 rblock.connect(*this);
 rfield.connect(*this);
 rpage.connect(*this);
 rmap.connect(*this);
 rtrigger.connect(*this);
-}
-
-/* fill objects with configuation */
-int Form::fill(int fid) {
-int i, s;
-Block *blk;
 
 /* the form configuration itself */
 stmt = NULL;
