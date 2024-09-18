@@ -7,9 +7,9 @@ stmt = NULL;
 if ((s = ropen())) return s;
 let(table,     "blocks");
 let(prikey,    "id");
-let(attrs,     "name,norec,prikey,whereand,orderby");
-letf(t(where), "form_id = %d", form_id);
+let(attrs,     "name,seq,norec,prikey,whereand,orderby");
+letf(t(where), "form_id in (0, %d)", form_id);
 let(order,     "seq");
-columni = 5;
+columni = 6;
 return 0;
 }

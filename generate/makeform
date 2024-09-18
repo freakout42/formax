@@ -17,14 +17,13 @@ cat <<EOF
 `extractsql $ARX/runform/rmap.h`
 `extractsql $ARX/runform/rpage.h`
 `extractsql $ARX/runform/rtrigger.h`
-INSERT INTO blocks (id, form_id, name) VALUES (0, 1, 'dual');
 EOF
 if [ "$TABLE" ]; then
 cat <<EOF
 INSERT INTO pages  (form_id, seq, name) VALUES (0, 1, 'formax');
 INSERT INTO maps   (page_id, line, mtext) VALUES (4, 1, '         ');
 INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
-INSERT INTO blocks (form_id, name) VALUES (1, '$TABLE');
+INSERT INTO blocks (form_id, name, seq) VALUES (1, '$TABLE', 50);
 EOF
 LINE=0
 FLDN=0

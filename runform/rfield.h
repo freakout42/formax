@@ -10,7 +10,7 @@ private:
 CREATE TABLE fields
   (id        INTEGER PRIMARY KEY NOT NULL,
    form_id   INTEGER NOT NULL DEFAULT 1,
-   blcn      INTEGER NOT NULL DEFAULT 1,
+   blcn      INTEGER NOT NULL DEFAULT 4,
    pgen      INTEGER NOT NULL DEFAULT 1,
    name      TEXT    NOT NULL DEFAULT 'field0',
    seq       INTEGER NOT NULL DEFAULT 1,

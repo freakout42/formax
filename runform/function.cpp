@@ -93,7 +93,7 @@ return notrunning;
 
 /* GENERAL */
 int Function::enter_the_form() {
-F(curblock) = 1;
+F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
@@ -245,7 +245,7 @@ return 0;
 }
 
 int Function::enter_query() {
-F(b[1]).clear();
+CB.clear();
 CB.currentrecord = 0;
 F(dirty) = 0;
 switch_mode(MOD_QUERY);
@@ -253,7 +253,7 @@ return 0;
 }
 
 int Function::execute_query() {
-if (F(b[1]).select()) MSG1(MSG_SQL, CB.sqlcmd); else {
+if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
   if (CB.q->rows > 0) {
     CB.currentrecord = 1;
     switch_mode(MOD_UPDATE);
@@ -274,7 +274,7 @@ int s;
 s = KEY_ENTER;
 if (deleprompt) s = MSG(MSG_DELASK);
 if (yesno(s)) {
-  F(b[1]).destroy(CB.currentrecord);
+  CB.destroy(CB.currentrecord);
   clear_record();
 } else switch_mode(MOD_UPDATE);
 return 0;

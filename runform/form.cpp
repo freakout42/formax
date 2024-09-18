@@ -1,4 +1,5 @@
 /* The primary object of a formax application is the form.
+#include <stdio.h>
  * A form is made up of additional objects.
  * These objects link the form to database elements,
  * such as columns and tables,
@@ -28,6 +29,7 @@ rtrigger.connect(*this);
 /* fill objects with configuation */
 int Form::fill(int fid) {
 int i, s;
+Block *blk;
 
 /* the form configuration itself */
 stmt = NULL;
@@ -81,14 +83,16 @@ e = rerror.q;
 rerror.q = new(Qdata);
 rerror.rclose();
 
-/* blocks - block 0 is for free queries/sql statements */
+/* blocks 0-3 is for free queries/sql statements */
 if (rblock.init(fid)) return 9;
 if ((s = rblock.query())) return s;
 numblock = rblock.q->rows;
 if (numblock > NBLOCKS) return 7;
 for (i=0; i<numblock; i++) {
-  if (b[i].ropen()) return 9;
-  if (b[i].init(rblock.q, i+1)) return 9;
+  blk = &b[i];
+  if (blk->ropen()) return 9;
+  if (blk->init(rblock.q, i+1)) return 9;
+//  if (i >= 4) blk->connect(b[blk->sequence % 10]);
 }
 rblock.rclose();
 

@@ -86,7 +86,7 @@ if (strchr(dsn0, ';') == NULL && (filesq3 = fopen(dsn0, "r+"))) {
 }
 
 int main(int argc, char *argv[]) { //, char **envp
-int i, s;
+int i, j, s, form_id;
 char dsn0[SMLSIZE];
 char dsn[MEDSIZE];
 char totpdigest[8];
@@ -155,24 +155,26 @@ if (ypassword) {
   exit(99);
 }
 
-// check and open the database connection - if simple rw-filepath use sqlite
-switch(argc - optind) {
- case 2:
-  let(dsn0, argv[optind+1]);
-  parsedsn(dsn, drv, dsn0);
-  break;
- case 3:
- case 4:
- default: usage(2);
-}
-
+g.init(argv[optind+1]);
 f = new(Form);
-if (F(b[0]).connect(dsn)) usage(8);
+
+// check and open the database connection - if simple rw-filepath use sqlite
+j = argc - optind;
+if (j < 2 || j > 5) usage(2);
+for (i=0; i<4; i++) {
+  if (j > i + 1) {
+    let(dsn0, argv[optind+i+1]);
+    parsedsn(dsn, drv, dsn0);
+    if (F(b[i]).connect(dsn)) usage(8);
+  } else {
+    if (F(b[i]).connect(NULL));
+  }
+}
+if (F(b[0]).drv == ODR_SQLITE) querycharm = 2;
+// if (F(b[0]).connect(dsn)) usage(8);
+// remove the key from ram
 memset(dsn, 'y', MEDSIZE);
 genxorkey(NULL, NULL);
-
-g.init(argv[optind+1]);
-if (F(b[0]).drv == ODR_SQLITE) querycharm = 2;
 for (i=1; i<NBLOCKS; i++) F(b[i]).connect(F(b[0]));
 
 // open and read the form - sqlite3 file named .frm
@@ -181,10 +183,11 @@ if (F(connect)(dsn)) usage(4);
 F(rconnect)();
 
 // load and run the form
+form_id = 1;
 s = 1;
 while(s) {
-  if ((F(fill)(s))) usage(5);
-    if ((s = F(run)()) < 0) usage(6);
+  if ((s = F(fill)(form_id))) usage(s); //5
+    if ((form_id = F(run)()) < 0) usage(6);
   F(clear)();
 }
 

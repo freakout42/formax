@@ -8,8 +8,6 @@
 
 #define FAILEDQ(hty) if (failed(hty)) return ret
 
-static char buf[HUGSIZE];
-
 /* driver / database provider info */
 void Record::setdrv(char *dbmsname) {
                                                drv = ODR_UNKNOWN;
@@ -31,6 +29,11 @@ g.logfmt("SQL_DBMS_NAME: %s -> %d", dbmsname, drv);
 int Record::connect(char *dsn) {
 SQLSMALLINT len;
 char dbmsname[SMLSIZE];
+if (!dsn) {
+  dbc = NULL;
+  stmt = NULL;
+  return 0;
+}
 if (useodbcve3) {
 ret = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env);                                   FAILEDQ(SQL_HANDLE_ENV);
 ret = SQLSetEnvAttr(env, SQL_ATTR_ODBC_VERSION, (void *) SQL_OV_ODBC3, 0);                     FAILEDQ(SQL_HANDLE_ENV);
@@ -74,7 +77,7 @@ return 0;
  * the statement handle stmt works as the flag for an open table
  */
 int Record::ropen() {
-if (stmt == NULL) {
+if (dbc && stmt == NULL) {
   q = new(Qdata);
   ret = SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);                                           FAILEDQ(SQL_HANDLE_STMT);
 } else {
@@ -85,11 +88,12 @@ return ret;
 
 /* close the table by deallocating storage and handle */
 void Record::rclose() {
-delete(q);
-if (stmt) {
+if (dbc) {
+ delete(q);
+ if (stmt) {
   SQLFreeHandle(SQL_HANDLE_STMT, stmt);
   stmt = NULL;
-} }
+} } }
 
 /* free the connection resources
  * only the last instance should do that
@@ -167,6 +171,8 @@ SQLSMALLINT i;
 SQLLEN indicator;
 char *decimal;
 char **qp;
+char buf[HUGSIZE];
+
 //if (row) s = SQLMoreResults(stmt);
 if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
   if (!row) row = q->rows++ + 1;

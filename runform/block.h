@@ -17,5 +17,6 @@ public:
   char *cn(int c);
   int currentrecord;
   int bdirty;
+  int sequence;
 private:
 };
