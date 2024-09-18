@@ -1,10 +1,10 @@
 /* The primary object of a formax application is the form.
-#include <stdio.h>
  * A form is made up of additional objects.
  * These objects link the form to database elements,
  * such as columns and tables,
  * and provide control over the flow of execution.
  * should be a pointer and not static
+#include <stdio.h>
  */
 #include "runform.h"
 
@@ -90,9 +90,9 @@ numblock = rblock.q->rows;
 if (numblock > NBLOCKS) return 7;
 for (i=0; i<numblock; i++) {
   blk = &b[i];
-  if (blk->ropen()) return 9;
   if (blk->init(rblock.q, i+1)) return 9;
-//  if (i >= 4) blk->connect(b[blk->sequence % 10]);
+  if (i >= 4) blk->connect(b[blk->sequence % 10]);
+  if (blk->ropen()) return 9;
 }
 rblock.rclose();
 

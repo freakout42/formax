@@ -171,11 +171,8 @@ for (i=0; i<4; i++) {
   }
 }
 if (F(b[0]).drv == ODR_SQLITE) querycharm = 2;
-// if (F(b[0]).connect(dsn)) usage(8);
-// remove the key from ram
 memset(dsn, 'y', MEDSIZE);
 genxorkey(NULL, NULL);
-for (i=1; i<NBLOCKS; i++) F(b[i]).connect(F(b[0]));
 
 // open and read the form - sqlite3 file named .frm
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
