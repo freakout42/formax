@@ -31,8 +31,9 @@ int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
 char *ypassword  = NULL;
 char *username;
-Form *f;
 Logger g;
+Record dbconn[5];
+Form *f;
 Function u;
 
 static char b64pwd[65];
@@ -159,9 +160,13 @@ if (ypassword) {
 }
 
 g.init(argv[optind+1]);
-f = new(Form);
 
-/* check and open the database connections 1..4
+// open the form database - sqlite3 file named .frm
+snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
+if (dbconn[0].connect(dsn)) usage(4);
+//if (F(connect)(dsn)) usage(4);
+
+/* check and open the database connections
  * if simple rw-filepath use sqlite
  */
 j = argc - optind;
@@ -170,31 +175,28 @@ for (i=0; i<4; i++) {
   if (j > i + 1) {
     let(dsn0, argv[optind+i+1]);
     parsedsn(dsn, drv, dsn0);
-    if (F(b[i]).connect(dsn)) usage(8);
+    if (dbconn[i+1].connect(dsn)) usage(8);
   } else {
-    if (F(b[i]).connect(NULL));
+    dbconn[i+1].connect(NULL);
   }
 }
-if (F(b[0]).drv == ODR_SQLITE) querycharm = 2;
+if (dbconn[1].drv == ODR_SQLITE) querycharm = 2;
 memset(dsn, 'y', MEDSIZE); // remove key from ram
 genxorkey(NULL, NULL);
 
-// open and read the form - sqlite3 file named .frm
-snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
-if (F(connect)(dsn)) usage(4);
-
 // load and run the form
+f = new(Form);
 s = 1;
 while(s) {
   if ((s = F(fill)(form_id))) usage(5);
     if ((form_id = F(run)()) < 0) usage(6);
   F(clear)();
 }
-
-// cleanup end exit
-F(disconnect)();
-for (i=0; i<4; i++) F(b[i]).disconnect();
+//F(disconnect)();
 delete(f);
+
+//for (i=0; i<5; i++) F(b[i]).disconnect();
+for (i=0; i<5; i++) dbconn[i].disconnect();
 g.lclose();
 exit(-s);
 }

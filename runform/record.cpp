@@ -77,12 +77,12 @@ return 0;
  * the statement handle stmt works as the flag for an open table
  */
 int Record::ropen() {
-if (dbc && stmt == NULL) {
+ret = 0;
+if (dbc)
+ if (stmt == NULL) {
   q = new(Qdata);
   ret = SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);                                           FAILEDQ(SQL_HANDLE_STMT);
-} else {
-  ret = 0;
-}
+ }
 return ret;
 }
 

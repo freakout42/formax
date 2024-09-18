@@ -49,8 +49,9 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #define debugs(string) fprintf(stderr, ":%s:\n", string);
 
 /* access to the current running form mode block field */
-extern Form *f;
 extern Logger g;
+extern Form *f;
+extern Record dbconn[5];
 #define F(method) f->method
 #define CM F(rmode)
 #define CB F(b)[F(curblock)]

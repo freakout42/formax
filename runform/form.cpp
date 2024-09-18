@@ -22,12 +22,13 @@ int i, s;
 Block *blk;
 
 /* connect all configuration tables to the form database */
-rerror.connect(*this);
-rblock.connect(*this);
-rfield.connect(*this);
-rpage.connect(*this);
-rmap.connect(*this);
-rtrigger.connect(*this);
+       connect(dbconn[0]);
+rerror.connect(dbconn[0]);
+rblock.connect(dbconn[0]);
+rfield.connect(dbconn[0]);
+rpage.connect(dbconn[0]);
+rmap.connect(dbconn[0]);
+rtrigger.connect(dbconn[0]);
 
 /* the form configuration itself */
 stmt = NULL;
@@ -89,7 +90,9 @@ if (numblock > NBLOCKS) return 7;
 for (i=0; i<numblock; i++) {
   blk = &b[i];
   if (blk->init(rblock.q, i+1)) return 9;
-  if (i >= 4) blk->connect(b[blk->sequence % 10]);
+//  if (i >= 4) blk->connect(b[blk->sequence % 10]);
+  if (i < 4) blk->connect(dbconn[i+1]);
+  else       blk->connect(dbconn[(blk->sequence % 10)+1]);
   if (blk->ropen()) return 9;
 }
 rblock.rclose();
