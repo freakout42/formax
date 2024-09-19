@@ -13,7 +13,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #define BIGSIZE 65536
 #define HUGSIZE 1024*1024
 #define NLINES  100
-#define NBLOCKS 8
+#define NBLOCKS 12
 #define NFIELD1 40
 #define NFIELDS NBLOCKS*NFIELD1
 #define NTRIGGERS 80
@@ -48,10 +48,10 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #define t(target) target, sizeof(target)
 #define debugs(string) fprintf(stderr, ":%s:\n", string);
 
-/* access to the current running form mode block field */
+/* access to the current running dbs form mode blocks fields */
 extern Logger g;
-extern Form *f;
 extern Record dbconn[5];
+extern Form *f;
 #define F(method) f->method
 #define CM F(rmode)
 #define CB F(b)[F(curblock)]

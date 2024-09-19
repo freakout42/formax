@@ -1,14 +1,15 @@
 formax: enterprise-applications on terminals
 ============================================
-**formax** is a tool for developing and executing
-user-friedly character-based database applications with
-extreme efficiency. The concept of Oracle Forms is combined
-with curses as the terminal interface, ODBC for universal
+
+**formax** is a tool for developing and executing user
+friedly character based database applications with extreme
+efficiency. The concept of Oracle Forms is combined with
+curses as the terminal interface, ODBC for universal
 database access and JavaScript for the trigger language. The
 result is the most efficient solution possible for the
-end-user. The applications can also be build with minimal
-effort using a nocode approach. Click on the image for a
-non-technical description:
+end-user. The applications can be build with minimal effort
+using a nocode approach. Click on the image for a non
+technical description:
 
 [![formax](https://formax.freakout.de/assets/logo.jpg "formax")](https://formax.freakout.de/ "formax")
 
@@ -19,14 +20,14 @@ presents the data. The source form (.inp in practice a
 sql-script to create a sqlite3 database) is compiled into a
 binary (.frm in practice a sqlite3 database), that is run by
 the runtime component. The form is used to view and edit
-data in a database-driven manner. The environment supplies
-built-in record creation, query, delete and update modes,
+data in a database driven manner. The environment supplies
+builtin record creation, query, delete and update modes,
 each with its own default data manipulations. This minimizes
 the need for program code. **formax** can be seen as a
-"No-code RAD" (Rapid Application Development).
+"Nocode RAD" (Rapid Application Development).
 
 The running form has an event driven interface and
-implements event-handling functions called triggers which
+implements event handling functions called triggers which
 are automatically invoked at critical steps in the
 processing of records and the receipt of keyboard strokes.
 Different triggers may be called before, during, and after
@@ -38,27 +39,27 @@ necessary.
 
 **formax** encorporates the concept of Oracle Forms with
 modern standards and current database best practices and
-technologies including all required enterprise-features:
- - single-column autoincrement primary key field
+technologies including all required enterprise features:
+ - single column autoincrement primary key field
  - database integrity enforced through database
  - JavaScript for client scripting
  - regular expressions for validation
  - freedom to choose the database provider
  - multiple differnt databases simultaneously accessible
  - full logging of all queries in a single place
- - no free SQL for the end-user
+ - no free SQL for the enduser
  - no operating system exits in the form-engine
  - 3FA security can be setup easily
 
 Status
 ======
-Stable 1.5.0 is useable for single-block single-page forms.
+Stable 1.5.0 is useable for single block single page forms.
 Don't hesitate to create any issues when in trouble.
 
 Feature roadmap
 ---------------
+ - 1.6 multiple databases
  - 2.0 triggers
- - 2.2 multiple databases
  - 2.5 in-field editing
  - 3.0 multi-record fields
  - 3.1 multiple blocks and master-detail
@@ -140,7 +141,7 @@ insert into depts values (40, 'OPERATIONS', 'BOSTON');
 .quit
 ~~~
 
-You should now have a sqlite-database in `mydb.sq3`. Create
+You should now have a sqlite database in `mydb.sq3`. Create
 a default form for the table `depts` and execute it:
 
 ~~~
