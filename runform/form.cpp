@@ -4,7 +4,6 @@
  * such as columns and tables,
  * and provide control over the flow of execution.
  * should be a pointer and not static
-#include <stdio.h>
  */
 #include "runform.h"
 
@@ -79,7 +78,7 @@ rpage.rclose();
 if (rerror.init()) return 9;
 if ((s = rerror.query())) return s;
 e = rerror.q;
-rerror.q = new(Qdata);
+rerror.q = new Qdata();
 rerror.rclose();
 
 /* blocks 0-3 is for free queries/sql statements */
@@ -121,13 +120,11 @@ for (i=0; i<numpage;  i++) p[i].destroy();
 /* set-up screen and pages and execute through the event dispatcher */
 int Form::run() {
 int i, s;
-if (y.init()) return 6;
   for (i=0; i<numpage; i++) p[i].create();
   lastkey = -1;
   while (!(s = u.dispatch())) {
     lastkey = F(p[PGE_STATUS]).wait();
   }
-y.closedisplay();
 return s==-1 ? 0 : s;
 }
 

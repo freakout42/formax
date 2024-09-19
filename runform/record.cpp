@@ -80,7 +80,7 @@ int Record::ropen() {
 ret = 0;
 if (dbc)
  if (stmt == NULL) {
-  q = new(Qdata);
+  q = new Qdata();
   ret = SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);                                           FAILEDQ(SQL_HANDLE_STMT);
  }
 return ret;

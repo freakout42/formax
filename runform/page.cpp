@@ -145,11 +145,11 @@ int Page::message(int ern, const char *pnt) {
 int i;
 static char empty[] = "";
 const char *pntst;
-if (F(y).ysiz > 0) { // can only display with open window
+if (y.ysiz > 0) { // can only display with open window
 if (pnt) pntst = pnt; else pntst = empty;
 if (strlen(pntst) > LINE0SIZE-12) i = strlen(pntst) - LINE0SIZE + 12; else 
 i = 0;
-writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, F(y).msg(ern), pntst+i);
+writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, y.msg(ern), pntst+i);
 //writef(0, 76, 0, 4, "%04d", F(lastcmd));
 wmov(0,0);
 refr();

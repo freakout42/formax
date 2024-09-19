@@ -51,6 +51,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 /* access to the current running dbs form mode blocks fields */
 extern Logger g;
 extern Record dbconn[5];
+extern Screen y;
 extern Form *f;
 #define F(method) f->method
 #define CM F(rmode)

@@ -33,6 +33,7 @@ char *ypassword  = NULL;
 char *username;
 Logger g;
 Record dbconn[5];
+Screen y;
 Form *f;
 Function u;
 
@@ -92,6 +93,7 @@ char dsn0[SMLSIZE];
 char dsn[MEDSIZE];
 char totpdigest[8];
 char totpresult[8];
+Form *rootform;
 
 // search for the sqlite3 driver
 char drv[SMLSIZE] = "libsqlite3odbc.so";
@@ -182,17 +184,18 @@ for (i=0; i<4; i++) {
 if (dbconn[1].drv == ODR_SQLITE) querycharm = 2;
 memset(dsn, 'y', MEDSIZE); // remove key from ram
 genxorkey(NULL, NULL);
+if (y.init()) return 6;
 
-// load and run the form
-f = new(Form);
-s = 1;
-while(s) {
-  if ((s = F(fill)(form_id))) usage(5);
-    if ((form_id = F(run)()) < 0) usage(6);
-  F(clear)();
-}
+// create load run and destroy the form
+rootform = new Form();
+f = rootform;
+if (f->fill(form_id)) usage(5);
+if ((s = f->run()) < 0) usage(6);
+f->clear();
 delete(f);
 
+// cleanup screen db connections and logger
+y.closedisplay();
 for (i=0; i<5; i++) dbconn[i].disconnect();
 g.lclose();
 

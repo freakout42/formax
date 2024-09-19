@@ -46,7 +46,7 @@ switch(F(lastcmd)) {
     case MOD_UPDATE:
     case MOD_QUERY:  LK = insert_record();                             break;
     case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
-    default:         LK = 0; F(y).toggle();                            break;
+    default:         LK = 0; y.toggle();                               break;
    }                                                                          break;
   case KEF_BACKDEL:         /* fbackdel() */
   case KEF_DELETE:
