@@ -4,7 +4,7 @@
 class Block: public Record {
 public:
   int init(Qdata *blk, int rix);
-  int addattribute(int att);
+  int addattribute(int att, void *fld);
   int select();
   int update(int row, int col);
   int insert(int row);

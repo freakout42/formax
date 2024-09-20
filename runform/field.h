@@ -7,7 +7,7 @@ public:
   char querywhere[MEDSIZE];
   int isprimarykey;
   char helptext[SMLSIZE];
-  int init(Qdata *fld, int rix);
+  int init(Qdata *fld, int rix, Block *bs);
   void clear();
   int toggle();
   int increment(int ival);

@@ -201,3 +201,24 @@ g.lclose();
 
 exit(-s);
 }
+
+/*
+--- a/runform/runform.cpp
++++ b/runform/runform.cpp
+@@ -188,11 +188,10 @@ if (y.init()) return 6;
+
+ // create load run and destroy the form
+ rootform = new Form();
+-f = rootform;
+-if (f->fill(form_id)) usage(5);
+-if ((s = f->run()) < 0) usage(6);
+-f->clear();
+-delete(f);
++if (rootform->fill(form_id)) usage(5);
++if ((s = rootform->run()) < 0) usage(6);
++rootform->clear();
++delete(rootform);
+
+ // cleanup screen db connections and logger
+ y.closedisplay();
+*/

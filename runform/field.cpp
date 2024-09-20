@@ -8,7 +8,7 @@
 #include "runform.h"
 #include "colquery/colquery.h"
 
-int Field::init(Qdata *fld, int rix) {
+int Field::init(Qdata *fld, int rix, Block *bs) {
 let(name,       fld->v(rix, 1));
 blockindex    = fld->n(rix, 2);
 pageindex     = fld->n(rix, 3);
@@ -36,7 +36,7 @@ let(helptext,   fld->v(rix,24));
 field_id      = fld->n(rix,25);
 let(queryhuman, "");
 let(querywhere, "");
-sequencenum = F(b[blockindex].addattribute)(rix-1);
+sequencenum = bs[blockindex].addattribute(rix-1, this);
 return 0;
 }
 

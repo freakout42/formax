@@ -101,7 +101,7 @@ if ((s = rfield.query())) return s;
 numfield = rfield.q->rows;
 if (numfield > NFIELDS) return 7;
 for (i=0; i<numfield; i++) {
-  if (l[i].init(rfield.q, i+1)) return 9;
+  if (l[i].init(rfield.q, i+1, b)) return 9;
 }
 rfield.rclose();
 

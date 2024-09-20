@@ -19,11 +19,13 @@ return 0;
 }
 
 /* the fields correspond to the columns of the table */
-int Block::addattribute(int att) {
+int Block::addattribute(int att, void *fld) {
+Field *l;
+l = (Field*)fld;
 if (*attrs) cats(t(attrs), ","); /* build the column list for query */
-cats(t(attrs), F(l[att]).name);
+cats(t(attrs), l->name);
 blockfields[fieldcount++] = att;
-if (F(l[att]).isprimarykey) primarykeys[prikeycnt++] = att;
+if (l->isprimarykey) primarykeys[prikeycnt++] = att;
 columni = fieldcount;
 return fieldcount;
 }
