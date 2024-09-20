@@ -120,6 +120,7 @@ for (i=0; i<numpage;  i++) p[i].destroy();
 /* set-up screen and pages and execute through the event dispatcher */
 int Form::run() {
 int i, s;
+ f = this;
   for (i=0; i<numpage; i++) p[i].create();
   lastkey = -1;
   while (!(s = u.dispatch())) {
