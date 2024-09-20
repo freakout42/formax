@@ -57,6 +57,7 @@ const char *est[] = {
   "SQL getdata error",            // 14
   "SQL bind error",               // 15
   "logging failed",               // 16
+  "screen setup failed",          // 17
 };
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
@@ -184,7 +185,9 @@ for (i=0; i<4; i++) {
 if (dbconn[1].drv == ODR_SQLITE) querycharm = 2;
 memset(dsn, 'y', MEDSIZE); // remove key from ram
 genxorkey(NULL, NULL);
-if (y.init()) return 6;
+
+// open the screen
+if (y.init()) usage(17);
 
 // create load run and destroy the form
 rootform = new Form();
@@ -193,32 +196,10 @@ if ((s = rootform->run()) < 0) usage(6);
 rootform->clear();
 delete(rootform);
 
-
 // cleanup screen db connections and logger
 y.closedisplay();
 for (i=0; i<5; i++) dbconn[i].disconnect();
 g.lclose();
 
-exit(-s);
+exit(s<0 ? -s : 0);
 }
-
-/*
---- a/runform/runform.cpp
-+++ b/runform/runform.cpp
-@@ -188,11 +188,10 @@ if (y.init()) return 6;
-
- // create load run and destroy the form
- rootform = new Form();
--f = rootform;
--if (f->fill(form_id)) usage(5);
--if ((s = f->run()) < 0) usage(6);
--f->clear();
--delete(f);
-+if (rootform->fill(form_id)) usage(5);
-+if ((s = rootform->run()) < 0) usage(6);
-+rootform->clear();
-+delete(rootform);
-
- // cleanup screen db connections and logger
- y.closedisplay();
-*/
