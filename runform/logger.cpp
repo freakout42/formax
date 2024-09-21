@@ -112,7 +112,7 @@ while (sql[i] && k < m) {
     r = sql+(i++);
   }
   message[k++] = *r;
-  for (n=0; n < (j==-1 ? 1 : 3); n++)
+  for (n=0; n < (j>0 ? 3 : 1); n++)
   if (*r == apostrophe) message[k++] = apostrophe;
 }
 message[k++] = '\0';
