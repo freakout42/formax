@@ -112,8 +112,7 @@ while (sql[i] && k < m) {
     r = sql+(i++);
   }
   message[k++] = *r;
-  for (n=0; n < (j>0 ? 3 : 1); n++)
-  if (*r == apostrophe) message[k++] = apostrophe;
+  if (*r == apostrophe) for (n=0; n < (j>0 ? 3 : 1); n++) message[k++] = apostrophe;
 }
 message[k++] = '\0';
 snprintf (t(sqlquery), INSERTLOG, session, message);
