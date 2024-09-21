@@ -85,7 +85,7 @@ va_end (args);
  * so that the queries can be executed by cut and paste
  */
 void Logger::logsql(char *sql, char *bnd[]) {
-int i, j, k, l, m;
+int i, j, k, l, m, n;
 char *r;
 char apostrophe = '\'';
 if (*logpath) {
@@ -112,6 +112,7 @@ while (sql[i] && k < m) {
     r = sql+(i++);
   }
   message[k++] = *r;
+  for (n=0; n < (j==-1 ? 1 : 3); n++)
   if (*r == apostrophe) message[k++] = apostrophe;
 }
 message[k++] = '\0';
