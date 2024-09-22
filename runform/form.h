@@ -11,8 +11,8 @@ public:
   Block   b[NBLOCKS];
   Field   l[NFIELDS];
   Page    p[NBLOCKS];
-  rMap    rmap;
   Trigger r[NTRIGGERS];
+  rMap    rmap;
   int numblock;
   int numfield;
   int numpage;

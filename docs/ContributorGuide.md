@@ -35,7 +35,7 @@ used for some fundamental values:
   | d | query result data      | Variable | qdata.h        |
   | e | error messages array   | Type     | rerror.h       |
   | f | current Form object    | Variable | runform.h      |
-  | i | loop integer           | Variable |                |
+  | i | loop integer j,k       | Variable |                |
   | g | logger                 | Variable | logger.h       |
   | l | fields array           | Variable | form.h         |
   | n | query result to_int    | Type     | qdata.h        |

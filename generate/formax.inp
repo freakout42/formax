@@ -35,17 +35,21 @@ INSERT INTO errors (num, severity, etext) VALUES (403, 1, 'Not yet implemented -
 CREATE TABLE blocks
   (id INTEGER PRIMARY KEY NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
-   name TEXT NOT NULL DEFAULT 'block0',
+   name TEXT NOT NULL DEFAULT 'dual',
    seq INTEGER NOT NULL DEFAULT 1,
    norec INTEGER NOT NULL DEFAULT 1,
    prikey TEXT NOT NULL DEFAULT 'id',
    whereand TEXT NOT NULL DEFAULT '',
    orderby TEXT NOT NULL DEFAULT ''
   );
+INSERT INTO blocks (form_id, name, seq) VALUES (0, 'dual', 1);
+INSERT INTO blocks (form_id, name, seq) VALUES (0, 'dual2', 2);
+INSERT INTO blocks (form_id, name, seq) VALUES (0, 'dual3', 3);
+INSERT INTO blocks (form_id, name, seq) VALUES (0, 'dual4', 4);
 CREATE TABLE fields
   (id INTEGER PRIMARY KEY NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
-   blcn INTEGER NOT NULL DEFAULT 1,
+   blcn INTEGER NOT NULL DEFAULT 4,
    pgen INTEGER NOT NULL DEFAULT 1,
    name TEXT NOT NULL DEFAULT 'field0',
    seq INTEGER NOT NULL DEFAULT 1,
@@ -117,37 +121,36 @@ CREATE TABLE triggers
    body TEXT NOT NULL DEFAULT '0'
   );
 INSERT INTO triggers (name) VALUES ('enter_the_form');
-INSERT INTO blocks (id, form_id, name) VALUES (0, 1, 'dual');
 INSERT INTO forms VALUES(1,'formax','Fields','','');
-INSERT INTO blocks VALUES (null,1,'fields',1,1,'id','','');
+INSERT INTO blocks VALUES (null,1,'fields',50,1,'id','','');
 INSERT INTO pages VALUES (null,1,'fields-0',1,'',23,80,1,0,0,1,0);
-INSERT INTO fields VALUES (null,1,1,1,'id',10,0,30,2,1,1,'',1,5,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'form_id',20,0,30,2,1,0,'',1,10,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'blcn',30,0,30,2,1,0,'',1,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'pgen',40,0,30,2,1,0,'',1,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'name',50,0,30,24,1,0,'',1,29,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'seq',60,0,30,3,1,0,'',5,7,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'ftype',70,0,30,2,1,0,'',5,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'len',80,0,30,2,1,0,'',6,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'dlen',68,0,30,3,1,0,'',8,7,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'btab',100,0,30,1,1,0,'',7,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'key',110,0,30,1,1,0,'',7,31,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'dflt',120,0,30,20,1,0,'',8,21,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'line',65,0,30,3,1,0,'',6,7,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'col',66,0,30,3,1,0,'',7,7,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'enter',150,0,30,1,1,0,'',11,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'query',160,0,30,1,1,0,'',12,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'upd',170,0,30,1,1,0,'',13,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'updnul',180,0,30,1,1,0,'',14,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'mand',190,0,30,1,1,0,'',15,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'upper',200,0,30,1,1,0,'',16,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'lovtit',210,0,30,20,1,0,'',17,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'lov_id',220,0,30,3,1,0,'',17,36,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'lovi_id',230,0,30,3,1,0,'',17,42,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'low',240,0,30,11,1,0,'',20,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'high',250,0,30,11,1,0,'',20,30,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'valpatn',260,0,30,34,1,0,'',21,13,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,1,1,'help',55,0,30,40,1,0,'',2,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'id',10,0,30,2,1,1,'',1,5,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'form_id',20,0,30,2,1,0,'',1,10,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'blcn',30,0,30,2,1,0,'',1,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'pgen',40,0,30,2,1,0,'',1,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'name',50,0,30,24,1,0,'',1,29,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'seq',60,0,30,3,1,0,'',5,7,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'ftype',70,0,30,2,1,0,'',5,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'len',80,0,30,2,1,0,'',6,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'dlen',68,0,30,3,1,0,'',8,7,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'btab',100,0,30,1,1,0,'',7,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'key',110,0,30,1,1,0,'',7,31,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'dflt',120,0,30,20,1,0,'',8,21,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'line',65,0,30,3,1,0,'',6,7,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'col',66,0,30,3,1,0,'',7,7,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'enter',150,0,30,1,1,0,'',11,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'query',160,0,30,1,1,0,'',12,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'upd',170,0,30,1,1,0,'',13,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'updnul',180,0,30,1,1,0,'',14,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'mand',190,0,30,1,1,0,'',15,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'upper',200,0,30,1,1,0,'',16,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'lovtit',210,0,30,20,1,0,'',17,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'lov_id',220,0,30,3,1,0,'',17,36,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'lovi_id',230,0,30,3,1,0,'',17,42,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'low',240,0,30,11,1,0,'',20,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'high',250,0,30,11,1,0,'',20,30,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'valpatn',260,0,30,34,1,0,'',21,13,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,4,1,'help',55,0,30,40,1,0,'',2,13,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO maps VALUES (null,4,1,' Id $1 / $2 $3 blkn $4 pagn $5______________________');
 INSERT INTO maps VALUES (null,4,2,' Help       $27_____________________________________');
 INSERT INTO maps VALUES (null,4,3,'');

@@ -82,37 +82,39 @@ va_end (args);
 } }
 
 /* must escape apostrophes and interpolate the bind variables
+ * apostrophies in bind strings have to be quad repeated
  * so that the queries can be executed by cut and paste
  */
 void Logger::logsql(char *sql, char *bnd[]) {
-int i, j, k, l, m, n;
-char *r;
+int i, j, k;
+int l1, m1, n1;
+char *r1;
 char apostrophe = '\'';
 if (*logpath) {
-//let(message, sql);
-m = (int)sizeof(message) - 8;
-i = k = l = 0;
+//let(message, sql); /* no handling of apos not acceptable */
+m1 = (int)sizeof(message) - 8;
+i = k = l1 = 0;
 j = -1;
-while (sql[i] && k < m) {
+while (sql[i] && k < m1) {
   switch (sql[i]) {
    case '?':
     if (j == -1) {
       j = 0;
-      r = &apostrophe;
-    } else if (bnd[l][j]) {
-      r = bnd[l]+(j++);
+      r1 = &apostrophe;
+    } else if (bnd[l1][j]) {
+      r1 = bnd[l1]+(j++);
     } else {
       j = -1;
-      l++;
+      l1++;
       i++;
-      r = &apostrophe;
+      r1 = &apostrophe;
     }
     break;
    default:
-    r = sql+(i++);
+    r1 = sql+(i++);
   }
-  message[k++] = *r;
-  if (*r == apostrophe) for (n=0; n < (j>0 ? 3 : 1); n++) message[k++] = apostrophe;
+  message[k++] = *r1;
+  if (*r1 == apostrophe) for (n1=0; n1 < (j>0 ? 3 : 1); n1++) message[k++] = apostrophe;
 }
 message[k++] = '\0';
 snprintf (t(sqlquery), INSERTLOG, session, message);
