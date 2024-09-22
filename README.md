@@ -53,19 +53,18 @@ technologies including all required enterprise features:
 
 Status
 ======
-Stable 1.5.0 is useable for single block single page forms.
+Edge 1.5.0 is useable for single block single page forms.
 Don't hesitate to create any issues when in trouble.
 
 Feature roadmap
 ---------------
- - 1.6 multiple databases
- - 2.0 triggers
- - 2.5 in-field editing
- - 3.0 multi-record fields
- - 3.1 multiple blocks and master-detail
- - 3.5 list of values - subforms
- - 4.0 menue multiple forms
- - 4.5 transaction processing
+ - 1.8 triggers
+ - 1.9 in-field editing
+ - 2.0 multi-record fields
+ - 2.1 multiple blocks and master-detail
+ - 2.5 list of values - subforms
+ - 3.0 menue multiple forms
+ - 3.5 transaction processing
  - cqy.y: 5 shift/reduce conflicts
  - sap-like batchinput
  - key macros
