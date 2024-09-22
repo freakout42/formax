@@ -10,9 +10,10 @@ public:
 CREATE TABLE maps
   (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    page_id   INTEGER NOT NULL DEFAULT 1,
-   line      INTEGER NOT NULL DEFAULT 1,
+   line      INTEGER NOT NULL DEFAULT 1, /* =0 name */
    mtext     TEXT    NOT NULL DEFAULT ''
   );
+INSERT INTO maps (page_id, line, mtext) VALUES (2,  0, 'key_help_page');
 INSERT INTO maps (page_id, line, mtext) VALUES (2,  1, 'KEY C FUNCTION     KEY   C FUNCTION');
 INSERT INTO maps (page_id, line, mtext) VALUES (2,  2, 'Tab i NextField    ^Tab  g PrevField');
 INSERT INTO maps (page_id, line, mtext) VALUES (2,  3, 'F1  @ Field Help   Esc   y Cancel');

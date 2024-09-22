@@ -7,7 +7,7 @@ stmt = NULL;
 if ((s = ropen())) return s;
 let(table,     "triggers");
 let(prikey,    "id");
-let(attrs,     "name,trgfld,trgtyp,body");
+let(attrs,     "name,trgfld,trgtyp,page_id");
 letf(t(where), "form_id = %d", form_id);
 let(order,     "");
 columni = 4;

@@ -12,7 +12,7 @@ CREATE TABLE triggers
    name      TEXT    NOT NULL DEFAULT '',
    trgfld    INTEGER NOT NULL DEFAULT 0,
    trgtyp    INTEGER NOT NULL DEFAULT 0,
-   body      TEXT    NOT NULL DEFAULT '0'
+   page_id   INTEGER NOT NULL DEFAULT 0
   );
 INSERT INTO triggers (name) VALUES ('enter_the_form');
 #endif

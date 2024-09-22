@@ -24,7 +24,8 @@ if (!javascript) {
 let(name,trg->v(rix, 1));
 trgfld = trg->n(rix, 2);
 trgtyp = trg->n(rix, 3);
-let(body,trg->v(rix, 4));
+//let(body,trg->v(rix, 4));
+let(body,"0");
 return 0;
 }
 

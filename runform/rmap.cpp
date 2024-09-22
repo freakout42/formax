@@ -11,7 +11,7 @@ if ((s = ropen())) return s;
 let(table,     "maps");
 let(prikey,    "id");
 let(attrs,     "line,mtext");
-letf(t(where), "page_id = %d", page_id);
+letf(t(where), "page_id = %d and line>0", page_id);
 let(order,     "line");
 columni = 2;
 return 0;
