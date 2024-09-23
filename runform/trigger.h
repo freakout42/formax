@@ -1,5 +1,4 @@
-/* trigger data body should be in map */
-enum ttyp { TRT_ENTERFORM, TRT_NEXTITEM=100 };
+/* trigger data body in map page_id > 10000 */
 class Trigger {
 public:
   int init(Qdata *trg, int rix);
@@ -10,4 +9,5 @@ private:
   int trgtyp;
   char name[SMLSIZE];
   char body[MEDSIZE];
+  int fillbody(int qid);
 };

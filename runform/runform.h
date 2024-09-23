@@ -44,7 +44,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 /* misc helper macros */
 #define max(x, y)	(((x) < (y)) ? (y) : (x))
 #define min(x, y)	(((x) < (y)) ? (x) : (y))
-#define let(target,source) strncpy(target, source, sizeof(target)-1)
+#define let(target,source) letstrncpy(target, source, sizeof(target)-1)
 #define t(target) target, sizeof(target)
 #define debugs(string) fprintf(stderr, ":%s:\n", string);
 
@@ -63,6 +63,7 @@ extern Form *f;
 
 /* helpers from version.cpp */
 extern Function u;
+extern char *letstrncpy(char *dest, const char *src, size_t n);
 extern int yesno(int c);
 extern int isprintable(int c);
 extern int ispunctation(int c);
