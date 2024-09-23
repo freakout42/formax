@@ -7,15 +7,20 @@ done
 test "$1" = "clean" && exit
 cat >Makefile <<EOF
 ARX=/opt/arx
-all: runform/runform generate/adjfield
+all: bin
 	@echo 'you can now run "sudo make install"'
-install: all \$(DESTDIR)\$(ARX)/bin
-	@cp -vp generate/makeform generate/editform generate/adjfield generate/extractsql runform/runform \$(DESTDIR)\$(ARX)/bin
-	@cp -vp generate/arx.sh generate/formax.frm \$(DESTDIR)\$(ARX)/lib
-	@cp -rp runform \$(DESTDIR)\$(ARX)
-	@if [ -d \$(DESTDIR)/etc/profile.d ]; then cp -vp generate/arx.sh \$(DESTDIR)/etc/profile.d; else true; fi
+bin: runform/runform generate/adjfield
+install: bin \$(DESTDIR)\$(ARX)/bin
+	@chmod u=rwx,g=rx,o=rx generate/makeform generate/editform generate/adjfield generate/extractsql
+	@chmod 2751            runform/runform
+	@chmod u=rw,g=r,o=r    generate/formax.frm
+	@cp -p generate/makeform generate/editform generate/adjfield generate/extractsql runform/runform \$(DESTDIR)\$(ARX)/bin
+	@cp -p generate/formax.frm \$(DESTDIR)\$(ARX)/lib
+	@cp -r runform \$(DESTDIR)\$(ARX)
+	@chmod -R u=rwX,g=rX,o=rX \$(DESTDIR)\$(ARX)/runform
+	@if [ -d \$(DESTDIR)/etc/profile.d ]; then cp generate/arx.sh \$(DESTDIR)/etc/profile.d; chmod 755 \$(DESTDIR)/etc/profile.d; else true; fi
 \$(DESTDIR)\$(ARX)/bin:
-	@for D in bin lib; do mkdir -p \$(DESTDIR)\$(ARX)/\$\$D; done
+	@for D in bin lib; do mkdir -m755 -p \$(DESTDIR)\$(ARX)/\$\$D; done
 generate/adjfield:
 	cd generate; make
 runform/runform:
