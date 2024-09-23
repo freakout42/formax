@@ -16,5 +16,5 @@ CREATE TABLE triggers
    trgtyp    INTEGER NOT NULL DEFAULT 0,
    page_id   INTEGER NOT NULL DEFAULT 0
   );
-INSERT INTO triggers (name, trgtyp) VALUES ('enter_the_form', TRT_ENTERFORM);
+INSERT INTO triggers (name, trgtyp, page_id) VALUES ('enter_the_form', TRT_ENTERFORM, 1001);
 #endif

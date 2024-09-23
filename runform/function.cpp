@@ -292,13 +292,12 @@ static int injstrigger = 0;
 int i, s;
 s = 0;
 if (injstrigger) return 0;
-if (tid >= 100) tid += CF.field_id * 1000;
-/*for (i=0; i<F(numtrigger); i++) if (F(r[i]).triggerid() == tid) {*/
-i = 0;
+//if (tid >= 100) tid += CF.field_id * 1000;
+for (i=0; i<F(numtrigger); i++) if (F(r[i]).triggerid() == tid) {
   injstrigger = 1;
     s = F(r[i]).jsexec();
   injstrigger = 0;
-/*}*/
+}
 return s;
 }
 

@@ -47,7 +47,7 @@ if ((s = rtrigger.query())) return s;
 numtrigger = rtrigger.q->rows;
 if (numtrigger > NTRIGGERS) return 7;
 for (i=0; i<numtrigger; i++) {
-  if (r[i].init(rtrigger.q, i+1)) return 9;
+  if (r[i].init(rtrigger.q, i+1, &rmap)) return 9;
 }
 rtrigger.rclose();
 

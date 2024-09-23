@@ -12,7 +12,7 @@ static struct js *javascript = NULL;
 
 /* init the engine and read from config bodys are in map */
 #define JSEXE(func) js_set(javascript, js_glob(javascript), #func, js_mkfun(j_ ## func))
-int Trigger::init(Qdata *trg, int rix) {
+int Trigger::init(Qdata *trg, int rix, rMap *map) {
 if (!javascript) {
   javascript = js_create(engine, HUGSIZE);
 //  js_set(javascript, js_glob(javascript), "next_item", js_mkfun(j_next_item));
@@ -24,50 +24,43 @@ if (!javascript) {
 let(name,trg->v(rix, 1));
 trgfld = trg->n(rix, 2);
 trgtyp = trg->n(rix, 3);
-return fillbody(trg->n(rix, 4));
+return fillbody(trg->n(rix, 4), map);
 }
+/*
+CREATE TABLE triggers
+  (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   form_id INTEGER NOT NULL DEFAULT 1,
+   name TEXT NOT NULL DEFAULT '',
+   trgfld INTEGER NOT NULL DEFAULT 0,
+   trgtyp INTEGER NOT NULL DEFAULT 0,
+   page_id INTEGER NOT NULL DEFAULT 0
+  );
+INSERT INTO triggers VALUES(1,1,'enter_the_form',0,10001,0);
+ */
 
 /* read the body from map */
-int Trigger::fillbody(int qid) {
-let(body,"0;");
-/*
-  if (p[i].init(rpage.q, i+1)) return 9;
-  if (rmap.init(p[i].page_id)) return 9;
-  if ((s = rmap.query())) return s;
-  if (p[i].maps(rmap.q)) return 9;
-  rmap.rclose();
-int i, r, y;
-char *t, *p;
-for (i = 1; i <= qma->rows; i++) {
-  r = qma->n(i, 1) - 1;
-  if (r > NLINES) return 1;
-  map[r] = qma->c(i, 2);
-  y = 1;
-  p = NULL;
-  // white the $nn_ pos markers
-  for (t=map[r]; y; t++) {
-    if (*t == '$') {
-      p = t;
-    } else {
-      if (p && (!(*t == '_' || *t == '.' || (*t >= '0' && *t <= '9')))) {
-        if (t - p > 1) while (p < t) *p++ = ' ';
-        p = NULL;
-      }
-    }
-    if (!*t) y = 0;
-  }
+int Trigger::fillbody(int qid, rMap *map) {
+
+int i, s;
+
+//let(body,"next_item()");
+if (map->init(qid)) return 9;
+if ((s = map->query())) return s;
+
+for (i = 1; i <= map->q->rows; i++) {
+  let(body, map->q->c(i, 2));
 }
- */
+map->rclose();
 return 0;
 }
 
 int Trigger::triggerid() {
-return (trgtyp<100 ? 0 : trgfld) * 1000 + trgtyp;
+//(trgtyp<100 ? 0 : trgfld) * 1000 + trgtyp;
+return trgtyp;
 }
 
 int Trigger::jsexec() {
 jsval_t v;
-//v = js_eval(javascript, "next_item()", ~0);
 v = js_eval(javascript, body, ~0);
 return atoi(js_str(javascript, v));
 }
