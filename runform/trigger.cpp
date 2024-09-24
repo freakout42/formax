@@ -24,34 +24,8 @@ if (!javascript) {
 let(name,trg->v(rix, 1));
 trgfld = trg->n(rix, 2);
 trgtyp = trg->n(rix, 3);
-return fillbody(trg->n(rix, 4), map);
-}
-/*
-CREATE TABLE triggers
-  (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-   form_id INTEGER NOT NULL DEFAULT 1,
-   name TEXT NOT NULL DEFAULT '',
-   trgfld INTEGER NOT NULL DEFAULT 0,
-   trgtyp INTEGER NOT NULL DEFAULT 0,
-   page_id INTEGER NOT NULL DEFAULT 0
-  );
-INSERT INTO triggers VALUES(1,1,'enter_the_form',0,10001,0);
- */
-
-/* read the body from map */
-int Trigger::fillbody(int qid, rMap *map) {
-
-int i, s;
-
-//let(body,"next_item()");
-if (map->init(qid)) return 9;
-if ((s = map->query())) return s;
-
-for (i = 1; i <= map->q->rows; i++) {
-  let(body, map->q->c(i, 2));
-}
-map->rclose();
-return 0;
+map_id = trg->n(rix, 4);
+return map->getbody(map_id, body, sizeof(body));
 }
 
 int Trigger::triggerid() {

@@ -17,6 +17,25 @@ columni = 2;
 return 0;
 }
 
+/* extract and write to buffer */
+int rMap::getbody(int page_id, char *buf, int n) {
+int i, m;
+init(page_id);
+query();
+for (i = 1; i <= q->rows; i++) {
+  m = strlen(q->v(i, 2));
+  n -= m + 3; /* cr and nil and reserve */
+  if (n > 0) {
+    strcpy(buf, q->v(i, 2));
+    buf += m;
+    *buf++ = '\n';
+    *buf++ = '\0';
+  }
+}
+rclose();
+return n < 0;
+}
+
 /* extract and write to temp file */
 char *rMap::extract(int page_id) {
 char *tmpath;

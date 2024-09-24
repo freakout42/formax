@@ -4,6 +4,7 @@
 class rMap: public Record {
 public:
   int init(int page_id);
+  int getbody(int page_id, char *buf, int n);
   char *extract(int page_id);
   void slurp(int pid, char *tmpf);
 };
@@ -29,7 +30,6 @@ INSERT INTO maps (page_id, line, mtext) VALUES (2, 11, 'F9  y Cancel       PgUp 
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 12, 'F10 x Query        PgDn  w NextSetRec');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 13, 'F11 k Key Help     Home  a PrevBlock');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 14, 'F12 l Refresh      End   e NextBlock');
-
 INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  0, 'successwith0');
-INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  1, 'next_item();');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  1, '0;'); /* 'next_item();'); */
 #endif

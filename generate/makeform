@@ -24,6 +24,7 @@ INSERT INTO pages  (form_id, seq, name) VALUES (0, 1, 'formax');
 INSERT INTO maps   (page_id, line, mtext) VALUES (4, 1, '         ');
 INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
 INSERT INTO blocks (form_id, name, seq) VALUES (1, '$TABLE', 50);
+INSERT INTO triggers (form_id) VALUES (1);
 EOF
 LINE=0
 FLDN=0
