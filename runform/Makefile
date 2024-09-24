@@ -44,5 +44,5 @@ $(EXAMPLE):
 	cd ../generate; make clean test
 
 clean:
-	for D in colquery regex elk crypt membed; do ( cd $$D; make clean; ); done
+	for D in colquery regex elk crypt membed ../generate; do ( cd $$D; make clean; ); done
 	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_* $(EXAMPLE)

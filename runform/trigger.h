@@ -5,9 +5,7 @@ public:
   char body[MEDSIZE];
   int init(Qdata *trg, int rix, rMap *map);
   int jsexec();
-  int triggerid();
-private:
   int trgfld;
   int trgtyp;
-  char name[SMLSIZE];
+private:
 };

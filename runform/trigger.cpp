@@ -21,15 +21,10 @@ if (!javascript) {
   JSEXE(next_record);
   JSEXE(previous_record);
 }
-let(name,trg->v(rix, 1));
-trgfld = trg->n(rix, 2);
-trgtyp = trg->n(rix, 3);
-map_id = trg->n(rix, 4);
+trgfld = trg->n(rix, 1);
+trgtyp = trg->n(rix, 2);
+map_id = trg->n(rix, 3);
 return map->getbody(map_id, body, sizeof(body));
-}
-
-int Trigger::triggerid() {
-return trgfld * 100000 + trgtyp;
 }
 
 int Trigger::jsexec() {
