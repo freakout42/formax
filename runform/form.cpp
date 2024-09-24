@@ -123,10 +123,10 @@ int i, s;
  f = this;
   for (i=0; i<numpage; i++) p[i].create();
   lastkey = -1;
-  while (!(s = u.dispatch())) {
+  while (!(s = u.dispatch())) { /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
     lastkey = F(p[PGE_STATUS]).wait();
   }
-return s==-1 ? 0 : s;
+return s;
 }
 
 /* application key mapping physical to function */

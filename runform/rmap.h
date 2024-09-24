@@ -1,4 +1,5 @@
 #define TRG_SUCCESS0  1001
+#define TRG_FAILURE1  1002
 #ifndef BEGINSQL
 /* map configuration */
 class rMap: public Record {
@@ -32,4 +33,5 @@ INSERT INTO maps (page_id, line, mtext) VALUES (2, 13, 'F11 k Key Help     Home 
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 14, 'F12 l Refresh      End   e NextBlock');
 INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  0, 'successwith0');
 INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  1, '0;'); /* 'next_item();'); */
+INSERT INTO maps (page_id, line, mtext) VALUES (TRG_FAILURE1,  1, '2;');
 #endif

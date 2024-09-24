@@ -192,7 +192,7 @@ if (y.init()) usage(17);
 // create load run and destroy the form
 rootform = new Form();
 if (rootform->fill(form_id)) usage(5);
-if ((s = rootform->run()) < 0) usage(6);
+if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
 rootform->clear();
 delete(rootform);
 
@@ -201,5 +201,5 @@ y.closedisplay();
 for (i=0; i<5; i++) dbconn[i].disconnect();
 g.lclose();
 
-exit(s<0 ? -s : 0);
+exit(s==-1 ? 0 : abs(s));
 }

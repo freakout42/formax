@@ -10,7 +10,7 @@
  */
 #include "runform.h"
 
-int Function::dispatch() {
+int Function::dispatch() { /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
 F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
@@ -97,7 +97,7 @@ F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
-notrunning = trigger(TRT_ENTERFORM); //"enter_the_form");
+notrunning = trigger(TRT_ENTERFORM);
 return 0;
 }
 
