@@ -32,6 +32,7 @@ INSERT INTO maps (page_id, line, mtext) VALUES (2, 12, 'F10 x Query        PgDn 
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 13, 'F11 k Key Help     Home  a PrevBlock');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 14, 'F12 l Refresh      End   e NextBlock');
 INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  0, 'successwith0');
-INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  1, '0;'); /* 'next_item();'); */
+INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  1, 'next_item();');
+/*INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  1, '0;');  * 'next_item();'); */
 INSERT INTO maps (page_id, line, mtext) VALUES (TRG_FAILURE1,  1, '2;');
 #endif

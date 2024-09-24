@@ -29,8 +29,7 @@ return map->getbody(map_id, body, sizeof(body));
 }
 
 int Trigger::triggerid() {
-//(trgtyp<100 ? 0 : trgfld) * 1000 + trgtyp;
-return trgtyp;
+return trgfld * 100000 + trgtyp;
 }
 
 int Trigger::jsexec() {
