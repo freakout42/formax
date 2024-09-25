@@ -9,6 +9,15 @@
 static char engine[HUGSIZE];
 static struct js *javascript = NULL;
 
+/* char *js_getstr(struct js *js, jsval_t value, size_t *len) */
+jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
+/*return js_mknum(js_getnum(args[0]));*/
+return js_mkstr(js, js_getstr(js, args[0], NULL), SMLSIZE);
+}
+
+#define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
+JSEXT(snub)
+
 /* init the engine and read from config bodys are in map */
 int Trigger::init(Qdata *trg, int rix, rMap *map) {
 if (!javascript) {

@@ -36,5 +36,5 @@ INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  1, 'next_item();'
 /*INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  1, '0;');  * 'next_item();'); */
 INSERT INTO maps (page_id, line, mtext) VALUES (TRG_FAILURE1,  1, '2;');
 /*INSERT INTO maps (page_id, line, mtext) VALUES (1100, 1, '"trg1100";');*/
-INSERT INTO maps (page_id, line, mtext) VALUES (1100, 1, '$(4711);');
+INSERT INTO maps (page_id, line, mtext) VALUES (1100, 1, '$("hu");');
 #endif

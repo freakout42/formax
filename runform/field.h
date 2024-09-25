@@ -14,8 +14,8 @@ public:
   int edit(int pos);
   int noedit();
   void show(int cur);
-private:
   char **valuep();
+private:
 //  int blkn;
 //  int pgen;
   int line;

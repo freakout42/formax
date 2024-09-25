@@ -289,10 +289,6 @@ JSEXA(previous_item)
 JSEXA(next_record)
 JSEXA(previous_record)
 
-jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
-return js_mknum(js_getnum(args[0]));
-}
-
 char *Function::trigger(int tid) {
 static int injstrigger = 0;
 int i;
