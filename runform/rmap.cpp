@@ -1,7 +1,6 @@
 /* multiline text maps
  * page boilerplates and trigger text (not yet)
  */
-#include <stdlib.h>
 #include "runform.h"
 
 int rMap::init(int page_id) {

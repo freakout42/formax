@@ -4,15 +4,14 @@
   " [-f formid ] [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]{1,4}\n"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <locale.h>
 #include "runform.h"
 
-char shiftedus[] = "/!@#$%^&*().";
-char shifteduk[] = "/!\"£$%^&*().";
-char shiftedde[] = "-!\"§$%&/()=.";
-char shiftedfr[] = "!&é\"'(-è_çá;";
+char shiftedus[] = "/!@#$%^&*().,";
+char shifteduk[] = "/!\"£$%^&*().,";
+char shiftedde[] = "-!\"§$%&/()=.,";
+char shiftedfr[] = "!&é\"'(-è_çá;,";
 char *shiftednum = shiftedus;
 
 char *lclocale;
@@ -30,6 +29,7 @@ int  autocommit  = 1;             // -a
 int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
 char *ypassword  = NULL;
+char *nullstring = "0";
 char *username;
 Logger g;
 Record dbconn[5];
@@ -132,10 +132,11 @@ while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
     case 'g': if (g.setlogfile(optarg)) usage(16); break;
     case 'l': let(drv, optarg); break;
     case 'n':
-      if (!strcmp(optarg, "us")) shiftednum = shiftedus;
-      if (!strcmp(optarg, "uk")) shiftednum = shifteduk;
-      if (!strcmp(optarg, "de")) shiftednum = shiftedde;
-      if (!strcmp(optarg, "fr")) shiftednum = shiftedfr;
+#define shiftedlang(lang) if (!strcmp(optarg, #lang)) shiftednum = shifted ## lang
+      shiftedlang(us);
+      shiftedlang(uk);
+      shiftedlang(de);
+      shiftedlang(fr);
       break;
     case '3': useodbcve3 = 1; break;
     case 'k': monochrome = 1; break;

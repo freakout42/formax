@@ -4,7 +4,6 @@
  * should always return a status int =1 success =0 failure
  * which cause the event to commit or cancel respectively
  */
-#include <stdlib.h>
 #include "runform.h"
 
 static char engine[HUGSIZE];
@@ -27,9 +26,9 @@ map_id = trg->n(rix, 3);
 return map->getbody(map_id, body, sizeof(body));
 }
 
-int Trigger::jsexec() {
+char *Trigger::jsexec() {
 jsval_t v;
 v = js_eval(javascript, body, ~0);
-return atoi(js_str(javascript, v));
+return (char*)js_str(javascript, v);
 }
 

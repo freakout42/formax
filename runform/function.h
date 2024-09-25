@@ -10,7 +10,8 @@ protected:
 private:
   int notrunning;
   int changed;
-  int trigger(int tid);
+  char *trigger(int tid);
+  int triggern(int tid);
   int enter_the_form();
   int refresh_screen();
   int help_item();

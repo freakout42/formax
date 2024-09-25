@@ -1,7 +1,6 @@
 /* curses screen handling interface */
 #include <assert.h>
 #include <cstdarg>
-#include <stdlib.h>
 #include <termios.h>
 #include <term.h>
 #include <curses.h>

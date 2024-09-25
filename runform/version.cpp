@@ -56,7 +56,7 @@ return 0;
 
 int ispunctation(int c) {
 char *pc;
-if (c && (pc = strchr(shiftednum, c))) return KEF_NAVI(pc - shiftednum);
+if (c && (pc = strchr(shiftednum, c))) return KEF_NAVI(pc-shiftednum);
 return c;
 }
 

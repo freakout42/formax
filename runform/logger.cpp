@@ -1,7 +1,6 @@
 /* logging sql engine via sqlite3 lib - not odbc */
 #include <cstdarg>
 #include <stdio.h>
-#include <stdlib.h>
 #include <sqlite3.h>
 #include "runform.h"
 

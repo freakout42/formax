@@ -77,7 +77,8 @@ switch(F(lastcmd)) {
    }                                                                          break;
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
-  case KEF_NAVI11:   LK = fedit(-9999);                                       break;
+  case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
+  case KEF_NAVI12:   LK = fedit(FED_TRIGGER);                                 break;
   case '=':          LK = edit_map();                                         break;
   case ' ':          LK = ftoggle();                                          break;
   case '+':          LK = fincrement(1);                                      break;
@@ -97,7 +98,7 @@ F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
-notrunning = trigger(TRT_ENTERFORM);
+notrunning = triggern(TRT_ENTERFORM);
 return 0;
 }
 
@@ -127,7 +128,7 @@ return 0;
 }
 
 int Function::next_item() {
-  if (!trigger(TRT_NEXTITEM)) fmove(0, 1);
+  if (!triggern(TRT_NEXTITEM)) fmove(0, 1);
   return 0;
 }
 int Function::previous_item()   { return fmove(0, -1); }
@@ -209,7 +210,7 @@ changed = 0;
 switch(CM) {
  case MOD_INSERT:
  case MOD_QUERY:
-  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos==-9999 ? -1 : pos);
+  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos<FED_SPECIAL ? -1 : pos);
   break;
  case MOD_UPDATE:
   changed = CF.edit(pos);
@@ -287,11 +288,25 @@ if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query();
 return 0;
 }
 
-int Function::trigger(int tid) {
+/*
+int Page::editbuf(char *buf) {
+tmpclose(0);
+s = mainloop(tmpf, wndw);
+tmpopen();
+i = tmpread(buf, BIGSIZE);
+buf[i] = '\0';
+if ((eol = strchr(buf, '\n')) && *(eol+1) == '\0') *eol = '\0';
+tmpclose(1);
+return s ? KEF_NXTFLD : KEF_CANCEL;
+}
+*/
+
+char *Function::trigger(int tid) {
 static int injstrigger = 0;
-int i, s;
-s = 0;
-if (injstrigger) return 0;
+int i;
+char *s;
+s = nullstring;
+if (injstrigger) return s;
 for (i=0; i<F(numtrigger); i++) if ((F(r[i]).trgfld == 0 || F(r[i]).trgfld == CF.field_id) && F(r[i]).trgtyp == tid) {
   injstrigger = 1;
     s = F(r[i]).jsexec();
@@ -300,3 +315,4 @@ for (i=0; i<F(numtrigger); i++) if ((F(r[i]).trgfld == 0 || F(r[i]).trgfld == CF
 return s;
 }
 
+int Function::triggern(int tid) { return atoi(trigger(tid)); }

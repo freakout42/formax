@@ -3,8 +3,6 @@
  * how the data should be displayed and validated
  * and how an operator should interact with the data while it is entered
  */
-#include <stdlib.h>
-#include <string.h>
 #include "runform.h"
 #include "colquery/colquery.h"
 
@@ -185,13 +183,16 @@ switch(CM) {
   if (F(b[blockindex].q->rows)) {
     c = valuep();
     if (*c) let(buf, *c); else *buf = '\0';
-    if (pos == -9999) pressed = F(p[PGE_EDITOR]).editbuf(buf);
-    else              pressed = F(p[PGE_STATUS]).sedit(buf, pos, fldtype(), fieldlen);
+    switch(pos) {
+     case FED_FEDITOR: pressed = F(p[PGE_EDITOR]).editbuf(buf);                         break;
+     case FED_TRIGGER: pressed = KEF_CANCEL; break; //F(p[PGE_STATUS]).edittrg(buf);           break;
+     default:          pressed = F(p[PGE_STATUS]).sedit(buf, pos, fldtype(), fieldlen);
+    }
     if (pressed != KEF_CANCEL && validate(c, buf) == KEF_CANCEL) pressed = KEF_CANCEL;
   }
   break;
  case MOD_QUERY:
-  pressed = F(p[PGE_STATUS].sedit)(queryhuman, pos, FTY_ALL, SMLSIZE);
+  pressed = F(p[PGE_STATUS].sedit)(queryhuman, pos<FED_SPECIAL ? -1 : pos, FTY_ALL, SMLSIZE);
   colquery(queryhuman, querywhere, name, querycharm, 0);
   break;
  case MOD_DELETE:

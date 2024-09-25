@@ -1,9 +1,19 @@
-/* constants macros and central procedures */
+/* runform.h - constants macros and central procedures */
+/* odbc driver provider database type */
 enum odrvr         { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_SQLSRVR, ODR_ADS, ODR_UNKNOWN };
+/* runform modes */
 enum fmode         { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
+/* field types */
 enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE, FTY_BOOL };
+/* pages array index */
 enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
+/* field edit variants for pos parameter */
+#define FED_FEDITOR -9999 /* full screen editor */
+#define FED_TRIGGER -9998 /* trigger "editor" */
+#define FED_SPECIAL -9000 /* barrior for non-standard editors */
+/* runform modes display names */
 #define RMODENAMES { "Insert",   "Query ",  "Update",   "Delete" }
+
 #include "../version.h"
 
 /* global resource configuration */
@@ -22,6 +32,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 
 #include <assert.h>
 #include <string.h>
+#include <stdlib.h>
 #include "regex/re.h"
 #include "elk/elk.h"
 #include "logger.h"
@@ -102,3 +113,4 @@ extern int   deleprompt;
 extern int   queryonlym;
 extern char  *shiftednum;
 extern char  *username;
+extern char  *nullstring;

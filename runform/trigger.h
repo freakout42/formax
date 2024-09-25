@@ -4,7 +4,7 @@ public:
   int map_id;
   char body[MEDSIZE];
   int init(Qdata *trg, int rix, rMap *map);
-  int jsexec();
+  char *jsexec();
   int trgfld;
   int trgtyp;
 private:

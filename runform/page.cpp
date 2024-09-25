@@ -1,5 +1,4 @@
 /* page configuration */
-#include <stdlib.h>
 #include "runform.h"
 
 int Page::init(Qdata *pag, int rix) {
@@ -126,10 +125,15 @@ writef(0, 34, 0, 9,  "%s",        CF.name);
 writef(0, 44, 0, 9,  "%4d/%4d",   CB.currentrecord, CB.q->rows);
 writef(0, 54, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 61, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
-//ites(0, 67,                     "runform-");
-//itef(0, 70, 0, 4,  "%4d",       F(lastcmd));
-//ites(0, 75,                     (char*)VERSION);
+#define SHOWKEYINSTATUS
+#if defined(SHOWKEYINSTATUS)
+writef(0, 70, 0, 4,  "%4d",       F(lastcmd));
+#elif defined(SHOWVERSIONINSTATUS)
+writes(0, 67,                     "runform-");
+writes(0, 75,                     (char*)VERSION);
+#else
 writef(0, 65, COL_COMMIT,15,"%s", commit);
+#endif
 refr();
 for (i=0; i<F(numfield); i++) F(l[i]).show(i == F(curfield));
 for (i=PGE_MAIN; i<F(numpage); i++) {
