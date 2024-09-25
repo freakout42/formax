@@ -1,6 +1,7 @@
 #define TRG_SUCCESS0  1001
 #define TRT_ENTERFORM 10001
 #define TRT_NEXTITEM  10002
+#define TRT_EDITFIELD 10003
 #ifndef BEGINSQL
 /* trigger configuration */
 class rTrigger: public Record {
@@ -17,4 +18,5 @@ CREATE TABLE triggers
    page_id   INTEGER NOT NULL DEFAULT TRG_SUCCESS0
   );
 INSERT INTO triggers (form_id) VALUES (1);
+INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,8,TRT_EDITFIELD,1100);
 #endif

@@ -2,6 +2,7 @@
 #define MSG_OPENKEY  26
 #define MSG_SQL      50
 #define MSG_HELP     51
+#define MSG_JS       52
 #define MSG_FIRST    100
 #define MSG_EDITKEY  101
 #define MSG_RECDIRTY 102
@@ -36,6 +37,7 @@ INSERT INTO errors (num, severity, etext) VALUES (MSG_ALLOC,    3, 'Out of memor
 INSERT INTO errors (num, severity, etext) VALUES (MSG_OPENKEY,  3, 'Error opening key script file');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_HELP,     3, '');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_SQL,      3, 'SQL');
+INSERT INTO errors (num, severity, etext) VALUES (MSG_JS,       3, 'JS');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_FIRST,    1, 'At first record');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_EDITKEY,  2, 'Can''t edit a key field');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_RECDIRTY, 2, 'Record must be entered or deleted first');

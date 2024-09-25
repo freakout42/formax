@@ -288,24 +288,12 @@ if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query();
 return 0;
 }
 
-/*
-int Page::editbuf(char *buf) {
-tmpclose(0);
-s = mainloop(tmpf, wndw);
-tmpopen();
-i = tmpread(buf, BIGSIZE);
-buf[i] = '\0';
-if ((eol = strchr(buf, '\n')) && *(eol+1) == '\0') *eol = '\0';
-tmpclose(1);
-return s ? KEF_NXTFLD : KEF_CANCEL;
-}
-*/
-
+/* TRIGGER */
 char *Function::trigger(int tid) {
 static int injstrigger = 0;
 int i;
 char *s;
-s = nullstring;
+s = NULL;
 if (injstrigger) return s;
 for (i=0; i<F(numtrigger); i++) if ((F(r[i]).trgfld == 0 || F(r[i]).trgfld == CF.field_id) && F(r[i]).trgtyp == tid) {
   injstrigger = 1;
@@ -315,4 +303,28 @@ for (i=0; i<F(numtrigger); i++) if ((F(r[i]).trgfld == 0 || F(r[i]).trgfld == CF
 return s;
 }
 
-int Function::triggern(int tid) { return atoi(trigger(tid)); }
+int Function::triggern(int tid) {
+char *jsresult;
+jsresult = trigger(tid);
+return jsresult ? atoi(jsresult) : 0;
+}
+
+/* edit field with trigger */
+int Function::edittrg(char *buf) {
+int i;
+char *jsresult; /* BIGSIZE never overflows with elk's output */
+jsresult = trigger(TRT_EDITFIELD);
+if (!jsresult) ;             /* check for trigger */
+else if (*jsresult == '"') { /* check for output is js string */
+  strcpy(buf, jsresult+1);
+  i = strlen(buf) - 1;
+  assert(*(buf+i) == '\"');
+  *(buf+i) = '\0';
+  return KEF_NXTFLD;
+} else {
+  g.logfmt("[%d]%s", TRT_EDITFIELD, jsresult);
+  MSG1(MSG_JS, jsresult);
+}
+return KEF_CANCEL;
+}
+

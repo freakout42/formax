@@ -214,7 +214,7 @@ if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) {
   rec = 1;
   while (SQLGetDiagRec(hty, handle, rec++, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS) {
     if (szError[strlen((char*)szError)-1] == '\n') szError[strlen((char*)szError)-1] = '\0';
-    g.logfmt("[%s]%s", szSqlState, szError );
+    g.logfmt("[%s]%s", szSqlState, szError);
   }
 } else ret = 0;
 return ret;

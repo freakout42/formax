@@ -6,6 +6,7 @@ public:
   int previous_item();
   int next_record();
   int previous_record();
+  int edittrg(char *buf);
 protected:
 private:
   int notrunning;
