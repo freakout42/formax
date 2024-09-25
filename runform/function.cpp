@@ -135,13 +135,6 @@ int Function::previous_item()   { return fmove(0, -1); }
 int Function::next_record()     { return fmover(1);    }
 int Function::previous_record() { return fmover(-1);   }
 
-/* export functions to javascript */
-#define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
-JSEXA(next_item)
-JSEXA(previous_item)
-JSEXA(next_record)
-JSEXA(previous_record)
-
 /* move from field to field */
 int Function::fmove(int bi, int fi) {
 //F(curblock) = (F(curblock) + F(numblock) + bi) % F(numblock);
@@ -289,6 +282,17 @@ return 0;
 }
 
 /* TRIGGER */
+/* export functions to javascript */
+#define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
+JSEXA(next_item)
+JSEXA(previous_item)
+JSEXA(next_record)
+JSEXA(previous_record)
+
+jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
+return js_mknum(js_getnum(args[0]));
+}
+
 char *Function::trigger(int tid) {
 static int injstrigger = 0;
 int i;
@@ -314,12 +318,15 @@ int Function::edittrg(char *buf) {
 int i;
 char *jsresult; /* BIGSIZE never overflows with elk's output */
 jsresult = trigger(TRT_EDITFIELD);
-if (!jsresult) ;             /* check for trigger */
-else if (*jsresult == '"') { /* check for output is js string */
+if (!jsresult) { ;             /* check for trigger */
+} else if (*jsresult == '"') { /* check for output is js string */
   strcpy(buf, jsresult+1);
   i = strlen(buf) - 1;
   assert(*(buf+i) == '\"');
   *(buf+i) = '\0';
+  return KEF_NXTFLD;
+} else if (isdigit(*jsresult)) { /* check for output is js int */
+  strcpy(buf, jsresult);
   return KEF_NXTFLD;
 } else {
   g.logfmt("[%d]%s", TRT_EDITFIELD, jsresult);
