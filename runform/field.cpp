@@ -172,7 +172,6 @@ return 0;
  */
 int Field::edit(int pos) {
 int pressed;
-char buf[BIGSIZE];
 char **c;
 pressed = 0;
 switch(CM) {
@@ -182,13 +181,13 @@ switch(CM) {
   if (noedit()) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
   if (F(b[blockindex].q->rows)) {
     c = valuep();
-    if (*c) let(buf, *c); else *buf = '\0';
+    if (*c) let(a, *c); else *a = '\0';
     switch(pos) {
-     case FED_FEDITOR: pressed = F(p[PGE_EDITOR]).editbuf(buf);                         break;
-     case FED_TRIGGER: pressed = u.edittrg(buf);                                        break;
-     default:          pressed = F(p[PGE_STATUS]).sedit(buf, pos, fldtype(), fieldlen);
+     case FED_FEDITOR: pressed = F(p[PGE_EDITOR]).editbuf(a); break;
+     case FED_TRIGGER: pressed = u.edittrg(a);                break;
+     default:          pressed = F(p[PGE_STATUS]).sedit(a, pos, fldtype(), fieldlen);
     }
-    if (pressed != KEF_CANCEL && validate(c, buf) == KEF_CANCEL) pressed = KEF_CANCEL;
+    if (pressed != KEF_CANCEL && validate(c, a) == KEF_CANCEL) pressed = KEF_CANCEL;
   }
   break;
  case MOD_QUERY:

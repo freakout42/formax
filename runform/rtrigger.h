@@ -18,5 +18,4 @@ CREATE TABLE triggers
    page_id   INTEGER NOT NULL DEFAULT TRG_SUCCESS0
   );
 INSERT INTO triggers (form_id) VALUES (1);
-INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,8,TRT_EDITFIELD,1100);
 #endif

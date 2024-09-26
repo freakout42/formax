@@ -36,6 +36,7 @@ Record dbconn[5];
 Screen y;
 Form *f;
 Function u;
+char a[BIGSIZE];
 
 static char b64pwd[65];
 

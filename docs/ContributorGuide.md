@@ -30,6 +30,7 @@ used for some fundamental values:
 
   | V | Description            | Type     | Source         |
   | - | ---------------------- | -------- | -------------- |
+  | a | global buffer BIGSIZE  | Variable | runform.h      |
   | b | blocks array           | Variable | form.h         |
   | c | query result transfer  | Type     | qdata.h        |
   | d | query result data      | Variable | qdata.h        |

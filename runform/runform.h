@@ -74,7 +74,6 @@ extern Form *f;
 #define MSG1(n,c) F(p)[0].message(n, c)
 
 /* helpers from version.cpp */
-extern Function u;
 extern char *letstrncpy(char *dest, const char *src, size_t n);
 extern int yesno(int c);
 extern int isprintable(int c);
@@ -115,3 +114,5 @@ extern int   queryonlym;
 extern char  *shiftednum;
 extern char  *username;
 extern char  *nullstring;
+extern Function u;
+extern char a[BIGSIZE];

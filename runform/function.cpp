@@ -25,6 +25,7 @@ switch(F(lastcmd)) {
   case KEF_NAVI0:           /* fmenu() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
+  case KEF_NOOP:     LK = 0;                                                  break;
   case KEF_REFRESH:  LK = refresh_screen();                                   break;
   case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                                break;
   case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                                break;
@@ -78,9 +79,9 @@ switch(F(lastcmd)) {
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
-  case KEF_NAVI12:   LK = fedit(FED_TRIGGER);                                 break;
+  case ' ':          LK = fedit(FED_TRIGGER);                                 break;
   case '=':          LK = edit_map();                                         break;
-  case ' ':          LK = ftoggle();                                          break;
+  case '~':          LK = ftoggle();                                          break;
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
   default:
@@ -98,7 +99,7 @@ F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
-notrunning = triggern(TRT_ENTERFORM);
+notrunning = triggern(TRT_ENTERFORM) != KEF_CANCEL;
 return 0;
 }
 
@@ -128,8 +129,9 @@ return 0;
 }
 
 int Function::next_item() {
-  if (!triggern(TRT_NEXTITEM)) fmove(0, 1);
-  return 0;
+int i;
+if ((i = triggern(TRT_NEXTITEM)) == KEF_CANCEL) return fmove(0, 1);
+return i;
 }
 int Function::previous_item()   { return fmove(0, -1); }
 int Function::next_record()     { return fmover(1);    }
@@ -293,7 +295,7 @@ char *Function::trigger(int tid) {
 static int injstrigger = 0;
 int i;
 char *s;
-s = NULL;
+s = nullstring;
 if (injstrigger) return s;
 for (i=0; i<F(numtrigger); i++) if ((F(r[i]).trgfld == 0 || F(r[i]).trgfld == CF.field_id) && F(r[i]).trgtyp == tid) {
   injstrigger = 1;
@@ -304,9 +306,18 @@ return s;
 }
 
 int Function::triggern(int tid) {
+int i;
 char *jsresult;
 jsresult = trigger(tid);
-return jsresult ? atoi(jsresult) : 0;
+i = jsresult ? atoi(jsresult) : -1;
+switch(i) {
+ case -1: notrunning = -1; return KEF_CANCEL; /* js error quit */
+ case 0:                   return KEF_CANCEL; /* cancel no action */
+ case 1:                   return KEF_NOOP;   /* ok without new key */
+ case 2:                   return KEF_NOOP;   /* no without new key */
+ case 3:                   return KEF_NXTFLD; /* ok with next item */
+ default:                  return i;          /* ok with key */
+}
 }
 
 /* edit field with trigger */
