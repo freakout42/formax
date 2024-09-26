@@ -184,7 +184,11 @@ for (i=0; i<4; i++) {
     dbconn[i+1].connect(NULL);
   }
 }
-if (dbconn[1].drv == ODR_SQLITE) querycharm = 2;
+switch(dbconn[1].drv) {
+ case ODR_SQLITE: querycharm = 2; break;
+ case ODR_ADS:    querycharm = 0; break;
+ default: ;
+}
 memset(dsn, 'y', MEDSIZE); // remove key from ram
 genxorkey(NULL, NULL);
 
