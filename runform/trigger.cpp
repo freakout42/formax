@@ -11,8 +11,13 @@ static struct js *javascript = NULL;
 
 /* char *js_getstr(struct js *js, jsval_t value, size_t *len) */
 jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
+char fieldindex[6];
+char *selector;
+selector = js_getstr(js, args[0], NULL);
+letf(t(fieldindex), "%5d", F(qfield)(selector));
 /*return js_mknum(js_getnum(args[0]));*/
-return js_mkstr(js, js_getstr(js, args[0], NULL), SMLSIZE);
+/*return js_mkstr(js, js_getstr(js, args[0], NULL), SMLSIZE);*/
+return js_mkstr(js, fieldindex, sizeof(fieldindex));
 }
 
 #define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);

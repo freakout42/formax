@@ -4,6 +4,7 @@ public:
   int field_id;
   char name[SMLSIZE];
   int sequencenum;
+  int blockindex;
   char querywhere[MEDSIZE];
   int isprimarykey;
   char helptext[SMLSIZE];
@@ -20,7 +21,6 @@ private:
 //  int pgen;
   int line;
   int col;
-  int blockindex;
   int pageindex;
   int validate(char **c, char *buf);
   ftype fldtype();

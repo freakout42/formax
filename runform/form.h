@@ -24,6 +24,7 @@ public:
   fmode rmode;
   int dirty;
   int fill(int id);
+  int qfield(char *sel);
   void clear();
   int run();
   int mapkey(int ckey);
