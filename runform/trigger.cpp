@@ -7,7 +7,7 @@
 #include "runform.h"
 
 static char engine[HUGSIZE];
-static struct js *javascript = NULL;
+static struct js *js = NULL;
 
 /* char *js_getstr(struct js *js, jsval_t value, size_t *len); */
 /* jsval_t js_mkstr(struct js *, const void *, size_t); */
@@ -27,14 +27,14 @@ JSEXT(snub)
 
 /* init the engine and read from config bodys are in map */
 int Trigger::init(Qdata *trg, int rix, rMap *map) {
-if (!javascript) {
-  javascript = js_create(engine, HUGSIZE);
-#define JSEXE(func) js_set(javascript, js_glob(javascript), #func, js_mkfun(j_ ## func))
+if (!js) {
+  js = js_create(engine, HUGSIZE);
+#define JSEXE(func) js_set(js, js_glob(js), #func, js_mkfun(j_ ## func))
   JSEXE(next_item);
   JSEXE(previous_item);
   JSEXE(next_record);
   JSEXE(previous_record);
-  js_set(javascript, js_glob(javascript), "$", js_mkfun(j_snub));
+  js_set(js, js_glob(js), "$", js_mkfun(j_snub));
 }
 trgfld = trg->n(rix, 1);
 trgtyp = trg->n(rix, 2);
@@ -44,8 +44,8 @@ return map->getbody(map_id, body, sizeof(body));
 
 char *Trigger::jsexec() {
 jsval_t v;
-v = js_eval(javascript, body, ~0);
-return (char*)js_str(javascript, v);
+v = js_eval(js, body, ~0);
+return (char*)js_str(js, v);
 }
 
 #ifdef EXAMPLE
