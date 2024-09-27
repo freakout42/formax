@@ -1,7 +1,10 @@
-#define TRG_SUCCESS0  1001
-#define TRT_ENTERFORM 10001
-#define TRT_NEXTITEM  10002
-#define TRT_EDITFIELD 10003
+#define TRG_SUCCESS0   1001
+#define TRT_ENTERFORM  10001
+#define TRT_NEXTITEM   10002
+#define TRT_EDITFIELD  10003
+#define TRT_PREVITEM   10004
+#define TRT_NEXTRECORD 10005
+#define TRT_PREVRECORD 10006
 #ifndef BEGINSQL
 /* trigger configuration */
 class rTrigger: public Record {

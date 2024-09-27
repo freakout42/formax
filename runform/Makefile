@@ -19,7 +19,7 @@ run: runform $(EXAMPLE)
 
 test: runform $(EXAMPLE)
 	/opt/valgrind/bin/valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
-    ./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
+    ./runform -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
 
 curkeys.h: curkeys

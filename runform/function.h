@@ -20,7 +20,7 @@ private:
   int edit_map();
   int switch_mode(fmode mod);
   int fmove(int bi, int fi);
-  int fmover(int ri);
+  int fmover(int bi, int ri);
   int ftoggle();
   int fincrement(int ival);
   int fedit(int pos);

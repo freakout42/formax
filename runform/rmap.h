@@ -1,5 +1,5 @@
-#define TRG_SUCCESS0  1001
-#define TRG_FAILURE1  1002
+#define TRG_SUCCESS1  1001
+#define TRG_FAILURE2  1002
 #ifndef BEGINSQL
 /* map configuration */
 class rMap: public Record {
@@ -31,7 +31,6 @@ INSERT INTO maps (page_id, line, mtext) VALUES (2, 11, 'F9  y Cancel       PgUp 
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 12, 'F10 x Query        PgDn  w NextSetRec');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 13, 'F11 k Key Help     Home  a PrevBlock');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 14, 'F12 l Refresh      End   e NextBlock');
-INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  0, 'successwith0');
-INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS0,  1, '0;');
-INSERT INTO maps (page_id, line, mtext) VALUES (TRG_FAILURE1,  1, '2;');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRG_SUCCESS1,  1, '1;');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRG_FAILURE2,  1, '2;');
 #endif

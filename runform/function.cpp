@@ -25,7 +25,8 @@ switch(F(lastcmd)) {
   case KEF_NAVI0:           /* fmenu() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
-  case KEF_NOOP:     LK = 0;                                                  break;
+  case KEF_NOOP:
+  case KEF_NOOP2:    LK = 0;                                                  break;
   case KEF_REFRESH:  LK = refresh_screen();                                   break;
   case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                                break;
   case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                                break;
@@ -99,7 +100,7 @@ F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
-notrunning = triggern(TRT_ENTERFORM) != KEF_CANCEL;
+notrunning = triggern(TRT_ENTERFORM) != KEF_NOOP;
 return 0;
 }
 
@@ -128,6 +129,12 @@ if (CF.noedit()) fmove(0, 0);
 return 0;
 }
 
+#define MOVER(func,trgr,move,row,fld) int Function::func() {int i; if ((i = triggern(TRT_ ## trgr)) == KEF_CANCEL) return move(row, fld); return i;}
+MOVER(next_item,NEXTITEM,fmove,0,1)
+MOVER(previous_item,PREVITEM,fmove,0,-1)
+MOVER(next_record,NEXTRECORD,fmover,0,1)
+MOVER(previous_record,PREVRECORD,fmover,0,-1)
+#ifndef MOVER
 int Function::next_item() {
 int i;
 if ((i = triggern(TRT_NEXTITEM)) == KEF_CANCEL) return fmove(0, 1);
@@ -136,6 +143,7 @@ return i;
 int Function::previous_item()   { return fmove(0, -1); }
 int Function::next_record()     { return fmover(1);    }
 int Function::previous_record() { return fmover(-1);   }
+#endif
 
 /* move from field to field */
 int Function::fmove(int bi, int fi) {
@@ -147,7 +155,7 @@ return 0;
 }
 
 /* move from record to record */
-int Function::fmover(int ri) {
+int Function::fmover(int bi, int ri) {
 switch (CM) {
  case MOD_QUERY:  return 0;                                                         break;
  case MOD_UPDATE:                                                                   break;
@@ -291,15 +299,23 @@ JSEXA(previous_item)
 JSEXA(next_record)
 JSEXA(previous_record)
 
+/* raw trigger call NULL..notfound "..string [0-9]..number [^"0-9]..error
+ * javascript should always return number see below
+ */
 char *Function::trigger(int tid) {
 static int injstrigger = 0;
 int i;
 char *s;
-s = nullstring;
+s = NULL;
 if (injstrigger) return s;
 for (i=0; i<F(numtrigger); i++) if ((F(r[i]).trgfld == 0 || F(r[i]).trgfld == CF.field_id) && F(r[i]).trgtyp == tid) {
   injstrigger = 1;
     s = F(r[i]).jsexec();
+    if (*s != '"' && !isdigit(*s)) {
+      g.logfmt("[%d]%s", tid, s);
+      MSG1(MSG_JS, s);
+      s = "-1";
+    }
   injstrigger = 0;
 }
 return s;
@@ -309,12 +325,12 @@ int Function::triggern(int tid) {
 int i;
 char *jsresult;
 jsresult = trigger(tid);
-i = jsresult ? atoi(jsresult) : -1;
+i = jsresult ? atoi(jsresult) : 0;
 switch(i) {
  case -1: notrunning = -1; return KEF_CANCEL; /* js error quit */
- case 0:                   return KEF_CANCEL; /* cancel no action */
+ case 0:                   return KEF_CANCEL; /* cancel no action or no trigger */
  case 1:                   return KEF_NOOP;   /* ok without new key */
- case 2:                   return KEF_NOOP;   /* no without new key */
+ case 2:                   return KEF_NOOP2;  /* no without new key */
  case 3:                   return KEF_NXTFLD; /* ok with next item */
  default:                  return i;          /* ok with key */
 }
@@ -335,9 +351,6 @@ if (!jsresult) { ;             /* check for trigger */
 } else if (isdigit(*jsresult)) { /* check for output is js int */
   strcpy(buf, jsresult);
   return KEF_NXTFLD;
-} else {
-  g.logfmt("[%d]%s", TRT_EDITFIELD, jsresult);
-  MSG1(MSG_JS, jsresult);
 }
 return KEF_CANCEL;
 }
