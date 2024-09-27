@@ -14,13 +14,16 @@ static struct js *javascript = NULL;
 
 jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
 char *fldvaluep;
-jsval_t fieldvalue;
+//jsval_t fieldvalue;
 char *selector;
 selector = js_getstr(js, args[0], NULL);
 fldvaluep = *F(l)[F(qfield)(selector)].valuep();
 if (fldvaluep) let(a, fldvaluep); else *a = '\0';
-fieldvalue = js_mkstr(js, a, BIGSIZE);
-return fieldvalue;
+//fieldvalue = js_mkstr(js, a, strlen(a)+1);
+//let(a, "corrupt");
+//fieldvalue = fldvaluep ? js_mkstr(js, fldvaluep, strlen(fldvaluep)+1) : js_mkstr(js, "", 1); // dirty
+//return fieldvalue;
+return js_mkstr(js, a, strlen(a)+1);
 //return args[0];
 }
 
