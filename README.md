@@ -15,6 +15,7 @@ Click on the image for a non technical description:
 
 Introduction
 ============
+
 **formax** accesses the database and generate a screen that
 presents the data. The source form (.inp in practice a
 sql-script to create a sqlite3 database) is compiled into a
@@ -23,8 +24,7 @@ the runtime component. The form is used to view and edit
 data in a database driven manner. The environment supplies
 builtin record creation, query, delete and update modes,
 each with its own default data manipulations. This minimizes
-the need for program code. **formax** can be seen as a
-"Nocode RAD" (Rapid Application Development).
+the need for program code. **formax** is a "Nocode RAD".
 
 The running form has an event driven interface and
 implements event handling functions called triggers which
@@ -54,7 +54,8 @@ technologies including all required enterprise features:
 Status
 ======
 Edge 1.5.0 is useable for single block single page forms.
-Don't hesitate to create any issues when in trouble.
+Don't hesitate to create an issue when in trouble or missing
+a feature.
 
 Feature roadmap
 ---------------
