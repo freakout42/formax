@@ -1,6 +1,5 @@
 formax: enterprise-applications on terminals
 ============================================
-
 **formax** is a tool for developing and executing user
 friedly character based database applications with extreme
 efficiency. The concept of Oracle Forms is combined with
@@ -15,7 +14,6 @@ Click on the image for a non technical description:
 
 Introduction
 ============
-
 **formax** accesses the database and generate a screen that
 presents the data. The source form (.inp in practice a
 sql-script to create a sqlite3 database) is compiled into a
@@ -55,7 +53,7 @@ Status
 ======
 Edge 1.5.0 is useable for single block single page forms.
 Don't hesitate to create an issue when in trouble or missing
-a feature.
+a feature or have found a bug or security problem.
 
 Feature roadmap
 ---------------
