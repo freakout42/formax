@@ -13,13 +13,15 @@ static struct js *javascript = NULL;
 /* jsval_t js_mkstr(struct js *, const void *, size_t); */
 
 jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
-char *fieldvalue;
+char *fldvaluep;
+jsval_t fieldvalue;
 char *selector;
 selector = js_getstr(js, args[0], NULL);
-fieldvalue = *F(l)[F(qfield)(selector)].valuep();
-//return js_mknum(js_getnum(args[0]));
-return js_mkstr(js, js_getstr(js, args[0], NULL), SMLSIZE);
-//return js_mkstr(js, fieldvalue, SMLSIZE);
+fldvaluep = *F(l)[F(qfield)(selector)].valuep();
+if (fldvaluep) let(a, fldvaluep); else *a = '\0';
+fieldvalue = js_mkstr(js, a, BIGSIZE);
+return fieldvalue;
+//return args[0];
 }
 
 #define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
@@ -49,20 +51,11 @@ return (char*)js_str(javascript, v);
 }
 
 #ifdef EXAMPLE
-jsval_t myDelay(struct js *js, jsval_t *args, int nargs) {
-  delay(js_getnum(args[0]));
-  return js_mknum(0);
-}
 jsval_t myWrite(struct js *js, jsval_t *args, int nargs) {
   digitalWrite(js_getnum(args[0]), js_getnum(args[1]));
   return js_mknum(0);
 }
-jsval_t myMode(struct js *js, jsval_t *args, int nargs) {
-  pinMode(js_getnum(args[0]), js_getnum(args[1]));
-  return js_mknum(0);
-}
 
-char buf[300];  // Runtime JS memory
 void setup() {
   struct js *js = js_create(buf, sizeof(buf));
   jsval_t global = js_glob(js), gpio = js_mkobj(js);  // Equivalent to:
