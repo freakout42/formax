@@ -7,7 +7,7 @@
 #include "runform.h"
 
 static char engine[HUGSIZE];
-static struct js *js = NULL;
+static struct js *javascript = NULL;
 
 /* char *js_getstr(struct js *js, jsval_t value, size_t *len); */
 /* jsval_t js_mkstr(struct js *, const void *, size_t); */
@@ -17,9 +17,9 @@ char *fieldvalue;
 char *selector;
 selector = js_getstr(js, args[0], NULL);
 fieldvalue = *F(l)[F(qfield)(selector)].valuep();
-/*return js_mknum(js_getnum(args[0]));*/
-/*return js_mkstr(js, js_getstr(js, args[0], NULL), SMLSIZE);*/
-return js_mkstr(js, fieldvalue, SMLSIZE);
+//return js_mknum(js_getnum(args[0]));
+return js_mkstr(js, js_getstr(js, args[0], NULL), SMLSIZE);
+//return js_mkstr(js, fieldvalue, SMLSIZE);
 }
 
 #define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
@@ -27,14 +27,14 @@ JSEXT(snub)
 
 /* init the engine and read from config bodys are in map */
 int Trigger::init(Qdata *trg, int rix, rMap *map) {
-if (!js) {
-  js = js_create(engine, HUGSIZE);
-#define JSEXE(func) js_set(js, js_glob(js), #func, js_mkfun(j_ ## func))
+if (!javascript) {
+  javascript = js_create(engine, HUGSIZE);
+#define JSEXE(func) js_set(javascript, js_glob(javascript), #func, js_mkfun(j_ ## func))
   JSEXE(next_item);
   JSEXE(previous_item);
   JSEXE(next_record);
   JSEXE(previous_record);
-  js_set(js, js_glob(js), "$", js_mkfun(j_snub));
+  js_set(javascript, js_glob(javascript), "$", js_mkfun(j_snub));
 }
 trgfld = trg->n(rix, 1);
 trgtyp = trg->n(rix, 2);
@@ -44,8 +44,8 @@ return map->getbody(map_id, body, sizeof(body));
 
 char *Trigger::jsexec() {
 jsval_t v;
-v = js_eval(js, body, ~0);
-return (char*)js_str(js, v);
+v = js_eval(javascript, body, ~0);
+return (char*)js_str(javascript, v);
 }
 
 #ifdef EXAMPLE
