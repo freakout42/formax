@@ -81,7 +81,7 @@ switch(F(lastcmd)) {
   case KEF_LEFT:     LK = fedit(-1);                                          break;
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
   case ' ':          LK = fedit(FED_TRIGGER);                                 break;
-  case '=':          LK = edit_map();                                         break;
+  case '=':          LK = editrigger(TRT_EDITFIELD);                          break;
   case '~':          LK = ftoggle();                                          break;
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
@@ -134,16 +134,6 @@ MOVER(next_item,NEXTITEM,fmove,0,1)
 MOVER(previous_item,PREVITEM,fmove,0,-1)
 MOVER(next_record,NEXTRECORD,fmover,0,1)
 MOVER(previous_record,PREVRECORD,fmover,0,-1)
-#ifndef MOVER
-int Function::next_item() {
-int i;
-if ((i = triggern(TRT_NEXTITEM)) == KEF_CANCEL) return fmove(0, 1);
-return i;
-}
-int Function::previous_item()   { return fmove(0, -1); }
-int Function::next_record()     { return fmover(1);    }
-int Function::previous_record() { return fmover(-1);   }
-#endif
 
 /* move from field to field */
 int Function::fmove(int bi, int fi) {
@@ -292,12 +282,28 @@ return 0;
 }
 
 /* TRIGGER */
+int Function::editrigger(int tid) {
+int i;
+int j;
+j = 0;
+if ((i = qtrigger(tid)) > -1) j = F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
+return j;
+}
+
 /* export functions to javascript */
 #define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
 JSEXA(next_item)
 JSEXA(previous_item)
 JSEXA(next_record)
 JSEXA(previous_record)
+
+int Function::qtrigger(int tid) {
+int i;
+for (i=0; i<F(numtrigger); i++)
+  if ((F(r)[i].trgfld == 0 || F(r)[i].trgfld == CF.field_id) && F(r)[i].trgtyp == tid)
+    return i;
+return -1;
+}
 
 /* raw trigger call NULL..notfound "..string [0-9]..number [^"0-9]..error
  * javascript should always return number see below
@@ -308,9 +314,9 @@ int i;
 char *s;
 s = NULL;
 if (injstrigger) return s;
-for (i=0; i<F(numtrigger); i++) if ((F(r[i]).trgfld == 0 || F(r[i]).trgfld == CF.field_id) && F(r[i]).trgtyp == tid) {
+if ((i = qtrigger(tid)) > -1) {
   injstrigger = 1;
-    s = F(r[i]).jsexec();
+    s = F(r)[i].jsexec();
     if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);

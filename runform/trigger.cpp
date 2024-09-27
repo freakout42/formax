@@ -14,17 +14,11 @@ static struct js *javascript = NULL;
 
 jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
 char *fldvaluep;
-//jsval_t fieldvalue;
 char *selector;
 selector = js_getstr(js, args[0], NULL);
 fldvaluep = *F(l)[F(qfield)(selector)].valuep();
 if (fldvaluep) let(a, fldvaluep); else *a = '\0';
-//fieldvalue = js_mkstr(js, a, strlen(a)+1);
-//let(a, "corrupt");
-//fieldvalue = fldvaluep ? js_mkstr(js, fldvaluep, strlen(fldvaluep)+1) : js_mkstr(js, "", 1); // dirty
-//return fieldvalue;
 return js_mkstr(js, a, strlen(a)+1);
-//return args[0];
 }
 
 #define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
@@ -47,13 +41,33 @@ map_id = trg->n(rix, 3);
 return map->getbody(map_id, body, sizeof(body));
 }
 
-char *Trigger::jsexec() {
+char *Trigger::jsexecdirect(char *prog) {
 jsval_t v;
-v = js_eval(javascript, body, ~0);
+v = js_eval(javascript, prog, ~0);
 return (char*)js_str(javascript, v);
 }
 
+char *Trigger::jsexec() {
+return jsexecdirect(body);
+}
+
 #ifdef EXAMPLE
+
+jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
+char *fldvaluep;
+//jsval_t fieldvalue;
+char *selector;
+selector = js_getstr(js, args[0], NULL);
+fldvaluep = *F(l)[F(qfield)(selector)].valuep();
+if (fldvaluep) let(a, fldvaluep); else *a = '\0';
+//fieldvalue = js_mkstr(js, a, strlen(a)+1);
+//let(a, "corrupt");
+//fieldvalue = fldvaluep ? js_mkstr(js, fldvaluep, strlen(fldvaluep)+1) : js_mkstr(js, "", 1); // dirty
+//return fieldvalue;
+return js_mkstr(js, a, strlen(a)+1);
+//return args[0];
+}
+
 jsval_t myWrite(struct js *js, jsval_t *args, int nargs) {
   digitalWrite(js_getnum(args[0]), js_getnum(args[1]));
   return js_mknum(0);

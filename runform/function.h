@@ -11,6 +11,8 @@ protected:
 private:
   int notrunning;
   int changed;
+  int editrigger(int tid);
+  int qtrigger(int tid);
   char *trigger(int tid);
   int triggern(int tid);
   int enter_the_form();

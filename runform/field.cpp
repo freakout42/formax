@@ -188,9 +188,9 @@ switch(CM) {
     c = valuep();
     if (*c) let(a, *c); else *a = '\0';
     switch(pos) {
-     case FED_FEDITOR: pressed = F(p[PGE_EDITOR]).editbuf(a); break;
+     case FED_FEDITOR: pressed = F(p)[PGE_EDITOR].editbuf(a); break;
      case FED_TRIGGER: pressed = u.edittrg(a);                break;
-     default:          pressed = F(p[PGE_STATUS]).sedit(a, pos, fldtype(), fieldlen);
+     default:          pressed = F(p)[PGE_STATUS].sedit(a, pos, fldtype(), fieldlen);
     }
     if (pressed != KEF_CANCEL && validate(c, a) == KEF_CANCEL) pressed = KEF_CANCEL;
   }
