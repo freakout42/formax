@@ -100,7 +100,7 @@ F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
-notrunning = triggern(TRT_ENTERFORM) != KEF_NOOP;
+notrunning = triggern(TRT_ENTERFORM) != KEF_CANCEL;
 return 0;
 }
 

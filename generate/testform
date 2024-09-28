@@ -14,12 +14,10 @@ UPDATE fields set ftype = 2, dlen = 4, len = 4, low = 7000, high = 8999, valpatn
 UPDATE fields set ftype = 4 where id=5;
 UPDATE fields set upd = 0 where id=6;
 UPDATE fields set ftype = 2, dlen = 1, len = 1, low = 0, high = 1 where id=7;
-UPDATE maps set mtext = 'let val1;next_item();1;' where page_id = 1001 and line = 1; /* #define TRG_SUCCESS1  1001 */
-/*INSERT INTO maps (page_id, line, mtext) VALUES (1100, 1, '\$(".emps.sal");');*/
-INSERT INTO maps (page_id, line, mtext) VALUES (1100, 1, 'cb + cf;');
+INSERT INTO maps (page_id, line, mtext) VALUES (1100, 1, 'cb + cf + String(cr);');
 INSERT INTO maps (page_id, line, mtext) VALUES (1101, 1, 'previous_item();1;');
-INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,8,10003,1100); /* #define TRT_EDITFIELD 10003 */
 INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,7,10002,1101); /* #define TRT_NEXTITEM  10002 */
+INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,8,10003,1100); /* #define TRT_EDITFIELD 10003 */
 EOF
 LINE=9
 LINE=`expr $LINE + 1`

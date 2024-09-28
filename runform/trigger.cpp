@@ -12,9 +12,9 @@ static struct js *javascript = NULL;
 /* char *js_getstr(struct js *js, jsval_t value, size_t *len); */
 /* jsval_t js_mkstr(struct js *, const void *, size_t); */
 
-/* jquery like acces to a "dom"
- * .block.field    => current row fields value
- * .block.field, n => row n fields value
+/* jquery like access to a "dom"
+ * $(.block.field)    => current row fields value
+ * $(.block.field, n) => row n fields value
  */
 jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
 char *fldvaluep;
@@ -25,8 +25,17 @@ if (fldvaluep) let(a, fldvaluep); else *a = '\0';
 return js_mkstr(js, a, strlen(a)+1);
 }
 
+/* String() */
+jsval_t j_tostring(struct js *js, jsval_t *args, int nargs) {
+double number;
+number = js_getnum(args[0]);
+letf(t(a), "%.0f", number);
+return js_mkstr(js, a, strlen(a)+1);
+}
+
 #define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
 JSEXT(snub)
+JSEXT(tostring)
 
 /* init the engine and read from config bodys are in map */
 int Trigger::init(Qdata *trg, int rix, rMap *map) {
@@ -38,6 +47,7 @@ if (!javascript) {
   JSEXE(next_record);
   JSEXE(previous_record);
   js_set(javascript, js_glob(javascript), "$", js_mkfun(j_snub));
+  js_set(javascript, js_glob(javascript), "String", js_mkfun(j_tostring));
   jsexecdirect("let cb; let cf; let cr;");
 }
 trgfld = trg->n(rix, 1);
