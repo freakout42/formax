@@ -69,6 +69,7 @@ extern Form *f;
 #define CM F(rmode)
 #define CB F(b)[F(curblock)]
 #define CF F(l)[F(curfield)]
+#define CR CB.q->rows
 #define LK F(lastkey)
 #define MSG(n) F(p)[0].message(n, NULL)
 #define MSG1(n,c) F(p)[0].message(n, c)

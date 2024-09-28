@@ -12,6 +12,10 @@ static struct js *javascript = NULL;
 /* char *js_getstr(struct js *js, jsval_t value, size_t *len); */
 /* jsval_t js_mkstr(struct js *, const void *, size_t); */
 
+/* jquery like acces to a "dom"
+ * .block.field    => current row fields value
+ * .block.field, n => row n fields value
+ */
 jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
 char *fldvaluep;
 char *selector;
@@ -34,6 +38,7 @@ if (!javascript) {
   JSEXE(next_record);
   JSEXE(previous_record);
   js_set(javascript, js_glob(javascript), "$", js_mkfun(j_snub));
+  jsexecdirect("let cb; let cf; let cr;");
 }
 trgfld = trg->n(rix, 1);
 trgtyp = trg->n(rix, 2);
@@ -48,7 +53,10 @@ return (char*)js_str(javascript, v);
 }
 
 char *Trigger::jsexec() {
-return jsexecdirect(body);
+char prog[BIGSIZE];
+letf(t(prog), "cb = '%s'; cf = '%s'; cr = %d;\n", CB.table, CF.name, CR);
+cats(t(prog), body);
+return jsexecdirect(prog);
 }
 
 #ifdef EXAMPLE
