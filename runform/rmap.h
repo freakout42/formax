@@ -29,4 +29,6 @@ INSERT INTO maps (page_id, line, mtext) VALUES (2, 11, 'F9  y Cancel       PgUp 
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 12, 'F10 x Query        PgDn  w NextSetRec');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 13, 'F11 k Key Help     Home  a PrevBlock');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 14, 'F12 l Refresh      End   e NextBlock');
+INSERT INTO maps (page_id, line, mtext) VALUES (1100, 0, 'copy_record');
+INSERT INTO maps (page_id, line, mtext) VALUES (1100, 1, '$(cb + "." + cf, cr - 1);');
 #endif

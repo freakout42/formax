@@ -11,6 +11,7 @@ protected:
 private:
   int notrunning;
   int changed;
+  int edittrgtyp;
   int editrigger(int tid);
   int qtrigger(int tid);
   char *trigger(int tid);
@@ -21,6 +22,7 @@ private:
   int keys_help();
   int edit_map();
   int switch_mode(fmode mod);
+  int fcopyrec();
   int fmove(int bi, int fi);
   int fmover(int bi, int ri);
   int ftoggle();

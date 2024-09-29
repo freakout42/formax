@@ -15,6 +15,7 @@
 #define MSG_NORANGE  207
 #define MSG_RDONLY   208
 #define MSG_FLDFORM  209
+#define MSG_NOREC2   210
 #define MSG_COUNT0   301
 #define MSG_CLEAN    401
 #define MSG_DIRTY    402
@@ -50,6 +51,7 @@ INSERT INTO errors (num, severity, etext) VALUES (MSG_NORANGE,  2, 'Must be in r
 INSERT INTO errors (num, severity, etext) VALUES (MSG_RDONLY,   2, 'Form running in query-only mode. No changes');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_QUERYM,   2, 'Form running in query mode. No insert');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_FLDFORM,  2, 'Field must be in the form');
+INSERT INTO errors (num, severity, etext) VALUES (MSG_NOREC2,   2, 'Cannot copy field to first record');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_COUNT0,   2, 'Query caused no records to be retrieved');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_CLEAN,    1, 'No changes to commit');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_DIRTY,    2, 'Abort changes?');

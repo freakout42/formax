@@ -16,7 +16,6 @@ switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
   case KEF_COPY:            /* fcopy() */
   case KEF_PASTE:           /* fpaste() */
-  case KEF_COPYREC:         /* fcopyrec() */
   case KEF_LIST:            /* flist() */
   case KEF_HOME:            /* fhome() */
   case KEF_END:             /* fend() */
@@ -43,6 +42,7 @@ switch(F(lastcmd)) {
   case KEF_HELP:     LK = help_item();                                        break;
   case KEF_KEYHELP:  LK = keys_help();                                        break;
   case KEF_PREREC:   LK = previous_record();                                  break;
+  case KEF_COPYREC:  LK = fcopyrec();                                         break;
   case KEF_INSERT:
    switch(CM) {
     case MOD_UPDATE:
@@ -167,6 +167,7 @@ return 0;
 }
 
 /* EDITING */
+
 int Function::insert_record() {
 if (CM == MOD_UPDATE || CM == MOD_QUERY) {
   CB.q->splice(CB.currentrecord++);
@@ -183,9 +184,23 @@ switch_mode(MOD_UPDATE);
 return 0;
 }
 
+/* double pressed should copy record */
+int Function::fcopyrec() {
+if (CM != MOD_UPDATE) return 0;
+if (CR > 1) {
+  edittrgtyp = TRT_COPYREC;
+  changed = fedit(FED_TRIGGER);
+  return changed==KEF_CANCEL ? 0 : changed;
+} else {
+  MSG(MSG_NOREC2);
+  return 0;
+}
+}
+
 int Function::ftoggle() {
 int editmode;
-editmode = qtrigger(TRT_EDITFIELD) > -1 ? FED_TRIGGER : FED_TOGGLE;
+edittrgtyp = TRT_EDITFIELD;
+editmode = qtrigger(edittrgtyp) > -1 ? FED_TRIGGER : FED_TOGGLE;
 changed = fedit(editmode);
 return changed==KEF_CANCEL ? 0 : changed;
 }
@@ -329,7 +344,7 @@ return jsresult ? atoi(jsresult) : 0;
 int Function::edittrg(char *buf) {
 int i;
 char *jsresult; /* BIGSIZE never overflows with elk's output */
-jsresult = trigger(TRT_EDITFIELD);
+jsresult = trigger(edittrgtyp);
 if (!jsresult) { ;             /* check for trigger */
 } else if (*jsresult == '"') { /* check for output is js string */
   strcpy(buf, jsresult+1);
