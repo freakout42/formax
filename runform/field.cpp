@@ -93,14 +93,12 @@ return F(b)[blockindex].q->w(row, sequencenum);
 }
 
 /* toggle boolean field value between 0 and 1 */
-int Field::toggle() {
-char **c;
+int Field::toggle(char *val) {
 if (CM == MOD_UPDATE && fldtype() == FTY_BOOL) {
-  c = valuep();
-  if (*c && strlen(*c)==1) {
-    switch (**c) {
-     case '0': **c = '1'; return KEF_NXTFLD;
-     case '1': **c = '0'; return KEF_NXTFLD;
+  if (strlen(val)==1) {
+    switch (*val) {
+     case '0': *val = '1'; return KEF_NXTFLD;
+     case '1': *val = '0'; return KEF_NXTFLD;
     }
   }
 }
@@ -108,19 +106,16 @@ return KEF_CANCEL;
 }
 
 /* increment/decrement integer field value */
-int Field::increment(int ival) {
-char **c;
-int a;
-char buf2[SMLSIZE];
+int Field::increment(char *val, int ival) {
+int letvalue;
 if (CM == MOD_UPDATE && fieldtype == FTY_INT) {
-  c = valuep();
-  if (*c) {
-    a = atoi(*c) + ival;
-    letf(t(buf2), "%d", a);
-    if (validate(c, buf2) != KEF_CANCEL) return 0; // KEF_NXTFLD;
+  if (isdigit(*val) || *val == '-') {
+    letvalue = atoi(val) + ival;
+    letf(val, SMLSIZE, "%d", letvalue);
+    return 0; // KEF_NXTFLD;
   }
 }
-return 0;
+return KEF_CANCEL;
 }
 
 /* checks new field value with validation rules */
@@ -191,6 +186,9 @@ switch(CM) {
     switch(pos) {
      case FED_FEDITOR: pressed = F(p)[PGE_EDITOR].editbuf(a); break;
      case FED_TRIGGER: pressed = u.edittrg(a);                break;
+     case FED_TOGGLE:  pressed = toggle(a);                   break;
+     case FED_INCR:    pressed = increment(a, 1);             break;
+     case FED_DECR:    pressed = increment(a, -1);            break;
      default:          pressed = F(p)[PGE_STATUS].sedit(a, pos, fldtype(), fieldlen);
     }
     if (pressed != KEF_CANCEL && validate(c, a) == KEF_CANCEL) pressed = KEF_CANCEL;

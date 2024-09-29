@@ -10,6 +10,9 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 /* field edit variants for pos parameter */
 #define FED_FEDITOR -9999 /* full screen editor */
 #define FED_TRIGGER -9998 /* trigger "editor" */
+#define FED_TOGGLE  -9997 /* binary toggle */
+#define FED_INCR    -9996 /* increment */
+#define FED_DECR    -9995 /* decrement */
 #define FED_SPECIAL -9000 /* barrior for non-standard editors */
 /* runform modes display names */
 #define RMODENAMES { "Insert",   "Query ",  "Update",   "Delete" }

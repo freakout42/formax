@@ -80,9 +80,8 @@ switch(F(lastcmd)) {
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
-  case ' ':          LK = fedit(FED_TRIGGER);                                 break;
-  case '=':          LK = editrigger(TRT_EDITFIELD);                          break;
-  case '~':          LK = ftoggle();                                          break;
+  case '~':          LK = editrigger(TRT_EDITFIELD);                          break;
+  case ' ':          LK = ftoggle();                                          break;
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
   default:
@@ -185,17 +184,17 @@ return 0;
 }
 
 int Function::ftoggle() {
-changed = CF.toggle();
-if (changed == KEF_CANCEL) return 0;
-if (CB.update(CB.currentrecord, CF.sequencenum)) MSG1(MSG_SQL, CB.sqlcmd);
-return changed;
+int editmode;
+editmode = qtrigger(TRT_EDITFIELD) > -1 ? FED_TRIGGER : FED_TOGGLE;
+changed = fedit(editmode);
+return changed==KEF_CANCEL ? 0 : changed;
 }
 
 int Function::fincrement(int ival) {
-changed = CF.increment(ival);
-if (changed == KEF_CANCEL) return 0;
-if (CB.update(CB.currentrecord, CF.sequencenum)) MSG1(MSG_SQL, CB.sqlcmd);
-return changed;
+int editmode;
+editmode = ival > 0 ? FED_INCR : FED_DECR;
+changed = fedit(editmode);
+return changed==KEF_CANCEL ? 0 : changed;
 }
 
 int Function::fedit(int pos) {
