@@ -40,9 +40,17 @@ letf(t(a), "%.0f", number);
 return js_mkstr(js, a, strlen(a)+1);
 }
 
+/* Message() */
+static jsval_t j_message(struct js *js, jsval_t *args, int nargs) {
+char *msgtext;
+msgtext = js_getstr(js, args[0], NULL);
+return js_mknum(MSG1(MSG_JS, msgtext));
+}
+
 #define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
 JSEXT(snub)
 JSEXT(tostring)
+JSEXT(message)
 JSEXT(next_item)
 JSEXT(previous_item)
 JSEXT(next_record)
@@ -58,13 +66,14 @@ JSEXA(previous_record)
 int Trigger::init(Qdata *trg, int rix, rMap *map) {
 if (!javascript) {
   javascript = js_create(engine, HUGSIZE);
-#define JSEXE(func) js_set(javascript, js_glob(javascript), #func, js_mkfun(j_ ## func))
-  JSEXE(next_item);
-  JSEXE(previous_item);
-  JSEXE(next_record);
-  JSEXE(previous_record);
-  js_set(javascript, js_glob(javascript), "$", js_mkfun(j_snub));
-  js_set(javascript, js_glob(javascript), "String", js_mkfun(j_tostring));
+#define JSEXE(jsfn,func) js_set(javascript, js_glob(javascript), #jsfn, js_mkfun(j_ ## func))
+  JSEXE(next_item,next_item);
+  JSEXE(previous_item,previous_item);
+  JSEXE(next_record,next_record);
+  JSEXE(previous_record,previous_record);
+  JSEXE($,snub);
+  JSEXE(String,tostring);
+  JSEXE(Message,message);
   letf(t(a), "let cb;let cf;let cr;let nav0 = %d;let v0;let v1;let v2;let v3;", KEF_NAVI0);
   jsexecdirect(a);
 }
