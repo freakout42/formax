@@ -125,6 +125,7 @@ writef(0, 33, 0, 8,  "%s",        CF.name);
 writef(0, 42, 0, 9,  "%6d/%6d",   CB.currentrecord, CB.q->rows);
 writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
+#define SHOWKEYINSTATUSd
 #if defined(SHOWKEYINSTATUS)
 writef(0, 70, 0, 4,  "%4d",       F(lastcmd));
 #elif defined(SHOWVERSIONINSTATUS)

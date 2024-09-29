@@ -100,7 +100,7 @@ F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
-notrunning = triggern(TRT_ENTERFORM) != KEF_CANCEL;
+notrunning = triggern(TRT_ENTERFORM);
 return 0;
 }
 
@@ -129,11 +129,11 @@ if (CF.noedit()) fmove(0, 0);
 return 0;
 }
 
-#define MOVER(func,trgr,move,row,fld) int Function::func() {int i; if ((i = triggern(TRT_ ## trgr)) == KEF_CANCEL) return move(row, fld); return i;}
-MOVER(next_item,NEXTITEM,fmove,0,1)
-MOVER(previous_item,PREVITEM,fmove,0,-1)
-MOVER(next_record,NEXTRECORD,fmover,0,1)
-MOVER(previous_record,PREVRECORD,fmover,0,-1)
+#define TRIGGRD(func,trgr,move,row,fld) int Function::func() {int i; return (i = triggern(TRT_ ## trgr)) ? i : move(row, fld); }
+TRIGGRD(next_item,NEXTITEM,fmove,0,1)
+TRIGGRD(previous_item,PREVITEM,fmove,0,-1)
+TRIGGRD(next_record,NEXTRECORD,fmover,0,1)
+TRIGGRD(previous_record,PREVRECORD,fmover,0,-1)
 
 /* move from field to field */
 int Function::fmove(int bi, int fi) {
@@ -283,8 +283,7 @@ return 0;
 
 /* TRIGGER */
 int Function::editrigger(int tid) {
-int i;
-int j;
+int i, j;
 j = 0;
 if ((i = qtrigger(tid)) > -1) j = F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
 return j;
@@ -314,6 +313,7 @@ if ((i = qtrigger(tid)) > -1) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
       s = "-1";
+      notrunning = -1;
     }
   injstrigger = 0;
 }
@@ -321,18 +321,9 @@ return s;
 }
 
 int Function::triggern(int tid) {
-int i;
 char *jsresult;
 jsresult = trigger(tid);
-i = jsresult ? atoi(jsresult) : 0;
-switch(i) {
- case -1: notrunning = -1; return KEF_CANCEL; /* js error quit */
- case 0:                   return KEF_CANCEL; /* cancel no action or no trigger */
- case 1:                   return KEF_NOOP;   /* ok without new key */
- case 2:                   return KEF_NOOP2;  /* no without new key */
- case 3:                   return KEF_NXTFLD; /* ok with next item */
- default:                  return i;          /* ok with key */
-}
+return jsresult ? atoi(jsresult) : 0;
 }
 
 /* edit field with trigger */

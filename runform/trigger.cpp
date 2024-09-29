@@ -59,7 +59,8 @@ if (!javascript) {
   JSEXE(previous_record);
   js_set(javascript, js_glob(javascript), "$", js_mkfun(j_snub));
   js_set(javascript, js_glob(javascript), "String", js_mkfun(j_tostring));
-  jsexecdirect("let cb; let cf; let cr;");
+  letf(t(a), "let cb;let cf;let cr;let nav0 = %d;let v0;let v1;let v2;let v3;", KEF_NAVI0);
+  jsexecdirect(a);
 }
 trgfld = trg->n(rix, 1);
 trgtyp = trg->n(rix, 2);
