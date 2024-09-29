@@ -290,13 +290,6 @@ if ((i = qtrigger(tid)) > -1) j = F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
 return j;
 }
 
-/* export functions to javascript */
-#define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
-JSEXA(next_item)
-JSEXA(previous_item)
-JSEXA(next_record)
-JSEXA(previous_record)
-
 int Function::qtrigger(int tid) {
 int i;
 for (i=0; i<F(numtrigger); i++)

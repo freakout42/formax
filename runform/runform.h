@@ -34,8 +34,6 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "regex/re.h"
-#include "elk/elk.h"
 #include "logger.h"
 #include "qdata.h"
 #include "record.h"

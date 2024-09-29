@@ -5,6 +5,7 @@
  * which cause the event to commit or cancel respectively
  */
 #include "runform.h"
+#include "elk/elk.h"
 
 static char engine[HUGSIZE];
 static struct js *javascript = NULL;
@@ -16,7 +17,7 @@ static struct js *javascript = NULL;
  * $(.block.field)    => current row fields value
  * $(.block.field, n) => row n fields value
  */
-jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
+static jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
 char *fldvaluep;
 char *selector;
 selector = js_getstr(js, args[0], NULL);
@@ -26,7 +27,7 @@ return js_mkstr(js, a, strlen(a)+1);
 }
 
 /* String() */
-jsval_t j_tostring(struct js *js, jsval_t *args, int nargs) {
+static jsval_t j_tostring(struct js *js, jsval_t *args, int nargs) {
 double number;
 number = js_getnum(args[0]);
 letf(t(a), "%.0f", number);
@@ -36,6 +37,16 @@ return js_mkstr(js, a, strlen(a)+1);
 #define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
 JSEXT(snub)
 JSEXT(tostring)
+JSEXT(next_item)
+JSEXT(previous_item)
+JSEXT(next_record)
+JSEXT(previous_record)
+
+#define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
+JSEXA(next_item)
+JSEXA(previous_item)
+JSEXA(next_record)
+JSEXA(previous_record)
 
 /* init the engine and read from config bodys are in map */
 int Trigger::init(Qdata *trg, int rix, rMap *map) {

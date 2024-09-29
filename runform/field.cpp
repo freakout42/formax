@@ -4,6 +4,7 @@
  * and how an operator should interact with the data while it is entered
  */
 #include "runform.h"
+#include "regex/re.h"
 #include "colquery/colquery.h"
 
 int Field::init(Qdata *fld, int rix, Block *bs) {

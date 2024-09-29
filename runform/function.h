@@ -36,8 +36,3 @@ private:
   int destroy_record();
   int clear_record();
 };
-#define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
-JSEXT(next_item)
-JSEXT(previous_item)
-JSEXT(next_record)
-JSEXT(previous_record)
