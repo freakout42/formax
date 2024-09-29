@@ -134,7 +134,7 @@ int Form::qfield(char *sel) {
 int i;
 char selector[SMLSIZE];
 for (i=0; i<numfield; i++) {
-  letf(t(selector), ".%s.%s", b[l[i].blockindex].table, l[i].name);
+  letf(t(selector), "%s.%s", b[l[i].blockindex].table, l[i].name);
   if (!strcmp(sel, selector)) break;
 }
 return i<numfield ? i : -1;

@@ -286,7 +286,7 @@ int Function::editrigger(int tid) {
 int i, j;
 j = 0;
 if ((i = qtrigger(tid)) > -1) j = F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
-return j;
+return 0;
 }
 
 int Function::qtrigger(int tid) {

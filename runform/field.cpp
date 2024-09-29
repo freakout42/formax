@@ -84,14 +84,14 @@ if (CM == MOD_QUERY) {
 
 /* the current field value */
 char **Field::valuep() {
-return F(b)[blockindex].q->w(CB.currentrecord, sequencenum);
+return valuepr(CB.currentrecord);
 }
 
-/* field value
-char **Field::valuep() {
-return F(b)[blockindex].q->w(CB.currentrecord, sequencenum);
+/* field value any row */
+char **Field::valuepr(int row) {
+return F(b)[blockindex].q->w(row, sequencenum);
 }
- */
+
 /* toggle boolean field value between 0 and 1 */
 int Field::toggle() {
 char **c;

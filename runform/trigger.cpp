@@ -14,14 +14,20 @@ static struct js *javascript = NULL;
 /* jsval_t js_mkstr(struct js *, const void *, size_t); */
 
 /* jquery like access to a "dom"
- * $(.block.field)    => current row fields value
- * $(.block.field, n) => row n fields value
+ * $(block.field)    => current row fields value
+ * $(block.field, n) => row n fields value
  */
 static jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
 char *fldvaluep;
 char *selector;
+double rownumber;
 selector = js_getstr(js, args[0], NULL);
-fldvaluep = *F(l)[F(qfield)(selector)].valuep();
+if (nargs == 2) {
+  rownumber = js_getnum(args[1]);
+  fldvaluep = *F(l)[F(qfield)(selector)].valuepr((int)rownumber);
+} else {
+  fldvaluep = *F(l)[F(qfield)(selector)].valuep();
+}
 if (fldvaluep) let(a, fldvaluep); else *a = '\0';
 return js_mkstr(js, a, strlen(a)+1);
 }

@@ -16,6 +16,7 @@ public:
   int noedit();
   void show(int cur);
   char **valuep();
+  char **valuepr(int row);
 private:
 //  int blkn;
 //  int pgen;
