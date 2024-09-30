@@ -106,9 +106,18 @@ if (dbc) {
 } }
 
 /* direct sql without orm support */
-int Record::execdirect(SQLCHAR *sql) {
-ret = SQLExecDirect(stmt, sql, strlen((char*)sql));                                            FAILEDQ(SQL_HANDLE_STMT);
-return ret;
+int Record::execdirect(char *sql) {
+int j;
+ret = SQLExecDirect(stmt, (SQLCHAR*)sql, strlen(sql));                                         FAILEDQ(SQL_HANDLE_STMT);
+ret = SQLNumResultCols(stmt, &querycols);                                                      FAILEDQ(SQL_HANDLE_STMT);
+columni = querycols;
+if (clear()) return 13;
+g.logfmt("SQL: '%s' [%d]", sql, querycols);
+do {
+  j = fetch(0);
+  if (j > 0) return j;
+} while (!j);
+return complete();
 }
 
 /* direct sql with bind support from variable array */
@@ -175,6 +184,7 @@ char buf[HUGSIZE];
 //if (row) s = SQLMoreResults(stmt);
 if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
   if (!row) row = q->rows++ + 1;
+g.logfmt("fetch: %d -> %d", row, q->rows);
   for (i = 1; i <= columni; i++) {
     ret = SQLGetData(stmt, i, SQL_C_CHAR, buf, sizeof(buf), &indicator);
     if (SQL_SUCCEEDED(ret)) {
@@ -184,6 +194,7 @@ if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
         decimal = buf + strspn(buf, "0123456789"); // cut trailing .00
         if (*decimal == '.' && strspn(decimal, "0.") == strlen(decimal)) *decimal = '\0';
         if (!(*qp = strdup(buf))) return 13;
+g.logfmt("fetch: (%d,%d) -> '%s'", row, i, *qp);
       }
     }
   }

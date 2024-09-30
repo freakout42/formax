@@ -47,14 +47,14 @@ msgtext = js_getstr(js, args[0], NULL);
 return js_mknum(MSG1(MSG_JS, msgtext));
 }
 
-#define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
-JSEXT(snub)
-JSEXT(tostring)
-JSEXT(message)
-JSEXT(next_item)
-JSEXT(previous_item)
-JSEXT(next_record)
-JSEXT(previous_record)
+/* SQL() */
+static jsval_t j_sql(struct js *js, jsval_t *args, int nargs) {
+char *query;
+query = js_getstr(js, args[0], NULL);
+dbconn[1].execdirect(query);
+letf(t(a), "SQL: %s", dbconn[1].q->v(1,1));
+return js_mkstr(js, a, strlen(a)+1);
+}
 
 #define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
 JSEXA(next_item)
@@ -74,6 +74,7 @@ if (!javascript) {
   JSEXE($,snub);
   JSEXE(String,tostring);
   JSEXE(Message,message);
+  JSEXE(SQL,sql);
   letf(t(a), "let cb;let cf;let cr;let nav0 = %d;let v0;let v1;let v2;let v3;", KEF_NAVI0);
   jsexecdirect(a);
 }
@@ -97,6 +98,9 @@ return jsexecdirect(prog);
 }
 
 #ifdef EXAMPLE
+
+#define JSEXT(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs);
+JSEXT(next_item)
 
 jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
 char *fldvaluep;

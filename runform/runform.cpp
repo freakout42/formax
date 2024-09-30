@@ -180,6 +180,7 @@ for (i=0; i<4; i++) {
     let(dsn0, argv[optind+i+1]);
     parsedsn(dsn, drv, dsn0);
     if (dbconn[i+1].connect(dsn)) usage(8);
+        dbconn[i+1].ropen();
   } else {
     dbconn[i+1].connect(NULL);
   }
@@ -204,7 +205,10 @@ delete(rootform);
 
 // cleanup screen db connections and logger
 y.closedisplay();
-for (i=0; i<5; i++) dbconn[i].disconnect();
+for (i=0; i<5; i++) {
+  dbconn[i].rclose();
+  dbconn[i].disconnect();
+}
 g.lclose();
 
 exit(s==-1 ? 0 : abs(s));
