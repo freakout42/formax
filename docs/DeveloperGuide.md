@@ -278,3 +278,38 @@ as follows:
 At the end `editform` brings up the editor with the .inp
 file loaded. Look into the source code and into the table
 schemas for informations to alter the forms behaviour.
+
+Trigger programming
+===================
+
+Elk is a tiny embeddable JavaScript engine that implements a
+small but usable subset of ES6.
+
+## Supported features
+
+- Operations: all standard JS operations except:
+   - `!=`, `==`. Use strict comparison `!==`, `===`
+   - No computed member access `a[b]`
+   - No exponentiation operation `a ** b`
+- Typeof: `typeof('a') === 'string'`
+- For loop: `for (...;...;...)  ...`
+- Conditional: `if (...) ... else ...`
+- Ternary operator `a ? b : c`
+- Simple types: `let a, b, c = 12.3, d = 'a', e = null, f = true, g = false;`
+- Functions: `let f = function(x, y) { return x + y; };`
+- Objects: `let obj = {f: function(x) { return x * 2}}; obj.f(3);`
+- Every statement must end with a semicolon `;`
+- Strings are binary data chunks, not Unicode strings: `'Київ'.length === 8`
+
+## Not supported features
+
+- No `var`, no `const`. Use `let` (strict mode only)
+- No `do`, `switch`, `while`. Use `for`
+- No `=>` functions. Use `let f = function(...) {...};`
+- No arrays, closures, prototypes, `this`, `new`, `delete`
+- No standard library: no `Date`, `Regexp`, `Function`, `String`, `Number`
+
+Note: Elk uses `snprintf()` standard function to format numbers (double).
+On some architectures, for example AVR Arduino, that standard function does
+not support float formatting - therefore printing numbers may output nothing
+or `?` symbols.

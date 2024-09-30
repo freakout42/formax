@@ -45,7 +45,6 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #include "rfield.h"
 #include "rpage.h"
 #include "rmap.h"
-#include "rtrigger.h"
 #include "block.h"
 #include "field.h"
 #include "screen.h"

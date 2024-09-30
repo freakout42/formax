@@ -16,7 +16,6 @@ cat <<EOF
 `extractsql $ARX/runform/rfield.h`
 `extractsql $ARX/runform/rmap.h`
 `extractsql $ARX/runform/rpage.h`
-`extractsql $ARX/runform/rtrigger.h`
 EOF
 if [ "$TABLE" ]; then
 cat <<EOF
