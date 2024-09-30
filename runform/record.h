@@ -50,5 +50,6 @@ private:
   void setdrv(char *dbmsname);
   int failed(SQLSMALLINT hty);
   int succeeded(SQLRETURN s);
+  int fetchall();
 };
 

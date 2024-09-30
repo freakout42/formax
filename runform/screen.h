@@ -100,8 +100,10 @@ enum { KEF_NOOP = 1, KEF_NOOP2, KEF_DEL = 127, KEF_HELP = 512,
        KEF_HOME, KEF_LEFT, KEF_DELETE, KEF_INSERT, KEF_END, KEF_RIGHT,   KEF_PREFLD, KEF_BACKDEL, KEF_NXTFLD,
 //     Home 521  Left 522  Del    523  Ins    524  End 525  Right 526    Btab   527  Backspace    Tab    529
        KEF_REFRESH, KEF_COMMIT, KEF_NXTREC, KEF_PREREC, KEF_PRESETR, KEF_NXTSETR, KEF_MENU, KEF_KEYHELP,
-//             530         531         532         534
+//             530         531         532         534          535          536       537          538
        KEF_NAVI0, KEF_NAVI1, KEF_NAVI2, KEF_NAVI3, KEF_NAVI4, KEF_NAVI5, KEF_NAVI6, KEF_NAVI7, KEF_NAVI8, KEF_NAVI9,
+//           539        540        541        542        543        544        545        546        547        548
        KEF_NAVI10, KEF_NAVI11, KEF_NAVI12
+//            549         550         551
 };
 #define KEF_NAVI(n) (KEF_NAVI0+(n))

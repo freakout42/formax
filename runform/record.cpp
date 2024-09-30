@@ -107,17 +107,12 @@ if (dbc) {
 
 /* direct sql without orm support */
 int Record::execdirect(char *sql) {
-int j;
 ret = SQLExecDirect(stmt, (SQLCHAR*)sql, strlen(sql));                                         FAILEDQ(SQL_HANDLE_STMT);
 ret = SQLNumResultCols(stmt, &querycols);                                                      FAILEDQ(SQL_HANDLE_STMT);
 columni = querycols;
 if (clear()) return 13;
 g.logfmt("SQL: '%s' [%d]", sql, querycols);
-do {
-  j = fetch(0);
-  if (j > 0) return j;
-} while (!j);
-return complete();
+return fetchall();
 }
 
 /* direct sql with bind support from variable array */
@@ -153,11 +148,7 @@ if (*order) letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
 letf((char*)querystr, sizeof(querystr), "select %s from %s%s", attrs, table, whereorder);
 bindv[0] = NULL;
 if ((ret = execute(querystr, bindv))) return ret;
-do {
-  j = fetch(0);
-  if (j > 0) return j;
-} while (!j);
-return complete();
+return fetchall();
 }
 
 /* cleanup select handle after execution and fetch
@@ -172,6 +163,16 @@ if (drv == ODR_ORACLE) {
 return ret;
 }
 
+/* fetch all rows */
+int Record::fetchall() {
+int j;
+do {
+  j = fetch(0);
+  if (j > 0) return j;
+} while (!j);
+return complete();
+}
+
 /* orm fetch query data */
 int Record::fetch(int row) {
 SQLRETURN s;
@@ -184,7 +185,6 @@ char buf[HUGSIZE];
 //if (row) s = SQLMoreResults(stmt);
 if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
   if (!row) row = q->rows++ + 1;
-g.logfmt("fetch: %d -> %d", row, q->rows);
   for (i = 1; i <= columni; i++) {
     ret = SQLGetData(stmt, i, SQL_C_CHAR, buf, sizeof(buf), &indicator);
     if (SQL_SUCCEEDED(ret)) {
@@ -194,7 +194,6 @@ g.logfmt("fetch: %d -> %d", row, q->rows);
         decimal = buf + strspn(buf, "0123456789"); // cut trailing .00
         if (*decimal == '.' && strspn(decimal, "0.") == strlen(decimal)) *decimal = '\0';
         if (!(*qp = strdup(buf))) return 13;
-g.logfmt("fetch: (%d,%d) -> '%s'", row, i, *qp);
       }
     }
   }

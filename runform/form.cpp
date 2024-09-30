@@ -73,6 +73,7 @@ for (i=0; i<numpage; i++) {
   rmap.rclose();
 }
 rpage.rclose();
+rmap.connect(dbconn[1]);
 
 /* error messages */
 if (rerror.init()) return 9;
