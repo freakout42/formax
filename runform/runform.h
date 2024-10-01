@@ -70,6 +70,7 @@ extern Form *f;
 #define CB F(b)[F(curblock)]
 #define CF F(l)[F(curfield)]
 #define CR CB.currentrecord
+#define CV *CF.valuep()
 #define LK F(lastkey)
 #define MSG(n) F(p)[0].message(n, NULL)
 #define MSG1(n,c) F(p)[0].message(n, c)

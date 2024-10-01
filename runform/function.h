@@ -5,6 +5,8 @@ public:
   int next_item();
   int previous_item();
   int next_record();
+  int previous_setrecords();
+  int next_setrecords();
   int previous_record();
   int edittrg(char *buf);
 protected:
@@ -23,6 +25,8 @@ private:
   int edit_map();
   int switch_mode(fmode mod);
   int fcopyrec();
+  int fcopy();
+  int fpaste();
   int fmove(int bi, int fi);
   int fmover(int bi, int ri);
   int ftoggle();

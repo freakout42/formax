@@ -3,8 +3,12 @@
 #define TRT_PREVITEM   1002
 #define TRT_NEXTRECORD 1003
 #define TRT_PREVRECORD 1004
-#define TRT_EDITFIELD  1005
-#define TRT_COPYREC    1006
+#define TRT_NEXTSETREC 1005
+#define TRT_PREVSETREC 1006
+#define TRT_EDITFIELD  1007
+#define TRT_COPYREC    1008
+#define TRT_COPY       1009
+#define TRT_PASTE      1010
 #ifndef BEGINSQL
 /* trigger configuration */
 class rTrigger: public Record {
@@ -21,4 +25,6 @@ CREATE TABLE triggers
    page_id   INTEGER NOT NULL DEFAULT 0
   );
 INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (0,0,TRT_COPYREC,TRT_COPYREC);
+INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (0,0,TRT_COPY,TRT_COPY);
+INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (0,0,TRT_PASTE,TRT_PASTE);
 #endif

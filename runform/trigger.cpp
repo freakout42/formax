@@ -75,7 +75,7 @@ if (!javascript) {
   JSEXE(String,tostring);
   JSEXE(Message,message);
   JSEXE(SQL,sql);
-  letf(t(a), "let cb;let cf;let cr;let nav0 = %d;let v0;let v1;let v2;let v3;", KEF_NAVI0);
+  letf(t(a), "let cb;let cf;let cr;let cv;let nav0 = %d;let v0;let v1;let v2;let v3;let clip = '0';", KEF_NAVI0);
   jsexecdirect(a);
 }
 trgfld = trg->n(rix, 1);
@@ -92,7 +92,16 @@ return (char*)js_str(javascript, v);
 
 char *Trigger::jsexec() {
 char prog[BIGSIZE];
-letf(t(prog), "cb = '%s'; cf = '%s'; cr = %d;\n", CB.table, CF.name, CR);
+char *fvalue;
+char *escaped;
+fvalue = CV;
+for (escaped=a; *fvalue; fvalue++) {
+  if (*fvalue == '\'')
+    *escaped++ = '\\';
+    *escaped++ = *fvalue;
+}
+    *escaped++ = '\0';
+letf(t(prog), "cb = '%s'; cf = '%s'; cr = %d; cv = '%s';\n", CB.table, CF.name, CR, a);
 cats(t(prog), body);
 return jsexecdirect(prog);
 }

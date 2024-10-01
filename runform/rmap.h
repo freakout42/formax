@@ -32,4 +32,8 @@ INSERT INTO maps (page_id, line, mtext) VALUES (2, 13, 'F11 k Key Help     Home 
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 14, 'F12 l Refresh      End   e NextBlock');
 INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPYREC, 0, 'copy_record');
 INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPYREC, 1, '$(cb + "." + cf, cr - 1);');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPY,    0, 'copy');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPY,    1, 'clip = cv;529;');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_PASTE,   0, 'paste');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_PASTE,   1, 'clip;');
 #endif

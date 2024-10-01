@@ -14,13 +14,9 @@ int Function::dispatch() { /* returns notrunning 0..goon -1..quit <-1..error >0.
 F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
-  case KEF_COPY:            /* fcopy() */
-  case KEF_PASTE:           /* fpaste() */
   case KEF_LIST:            /* flist() */
   case KEF_HOME:            /* fhome() */
   case KEF_END:             /* fend() */
-  case KEF_PRESETR:         /* fpresetr() */
-  case KEF_NXTSETR:         /* fnxtsetr() */
   case KEF_NAVI0:           /* fmenu() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
@@ -39,10 +35,14 @@ switch(F(lastcmd)) {
   case KEF_NXTFLD:   LK = next_item();                                        break;
   case KEF_PREFLD:   LK = previous_item();                                    break;
   case KEF_NXTREC:   LK = next_record();                                      break;
+  case KEF_NXTSETR:  LK = next_setrecords();                                  break;
+  case KEF_PRESETR:  LK = previous_setrecords();                              break;
   case KEF_HELP:     LK = help_item();                                        break;
   case KEF_KEYHELP:  LK = keys_help();                                        break;
   case KEF_PREREC:   LK = previous_record();                                  break;
   case KEF_COPYREC:  LK = fcopyrec();                                         break;
+  case KEF_COPY:     LK = fcopy();                                            break;
+  case KEF_PASTE:    LK = fpaste();                                           break;
   case KEF_INSERT:
    switch(CM) {
     case MOD_UPDATE:
@@ -134,6 +134,8 @@ TRIGGRD(next_item,NEXTITEM,fmove,0,1)
 TRIGGRD(previous_item,PREVITEM,fmove,0,-1)
 TRIGGRD(next_record,NEXTRECORD,fmover,0,1)
 TRIGGRD(previous_record,PREVRECORD,fmover,0,-1)
+TRIGGRD(next_setrecords,NEXTSETREC,fmover,0,CB.norec)
+TRIGGRD(previous_setrecords,PREVSETREC,fmover,0,-CB.norec)
 
 /* move from field to field */
 int Function::fmove(int bi, int fi) {
@@ -196,6 +198,15 @@ if (CR > 1) {
   MSG(MSG_NOREC2);
   return 0;
 }
+}
+
+int Function::fcopy() {int i; return (i = triggern(TRT_COPY)) ? i : 0; }
+
+int Function::fpaste() {
+if (CM != MOD_UPDATE) return 0;
+  edittrgtyp = TRT_PASTE;
+  changed = fedit(FED_TRIGGER);
+  return changed==KEF_CANCEL ? 0 : changed;
 }
 
 int Function::ftoggle() {
