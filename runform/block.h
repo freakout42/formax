@@ -17,6 +17,6 @@ public:
   char *cn(int c);
   int currentrecord;
   int bdirty;
-  int sequence;
+  int sequence; // % 10 is blockindex for connection
 private:
 };

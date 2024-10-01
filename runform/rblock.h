@@ -4,7 +4,6 @@ class rBlock: public Record {
 public:
   int init(int form_id);
 private:
-  int sequence; // % 10 is blockindex for connection
 };
 #else
 CREATE TABLE blocks

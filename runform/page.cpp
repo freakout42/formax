@@ -137,8 +137,8 @@ writef(0, 67, COL_COMMIT,13,"%s", commit);
 refr();
 for (i=0; i<F(numfield); i++) F(l[i]).show(i == F(curfield));
 for (i=PGE_MAIN; i<F(numpage); i++) {
-  if (F(needredraw)) F(p[i]).repaint();
-                     F(p[i]).refrnopop();
+  if (F(needredraw)) F(p)[i].repaint();
+  F(p)[i].refrnopop();
 }
 F(needredraw) = 0;
 return LK ? LK : getkb();
