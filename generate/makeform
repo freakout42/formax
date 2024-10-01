@@ -38,8 +38,14 @@ done
 else
 sqlite3 $FORM.frm ".dump forms"  | sed -n '/INSERT/p'
 sqlite3 $FORM.frm ".dump blocks" | sed -n '/INSERT/s/([0-9]*/ (null/p' | grep -v dual
-sqlite3 $FORM.frm ".dump pages"  | sed -n '/INSERT/s/([0-9]*/ (null/p' | grep -e-0
+sqlite3 $FORM.frm ".dump pages"  | sed -n '/INSERT/s/([0-9]*/ (null/p' | grep -e"',1,'"
 sqlite3 $FORM.frm ".dump fields" | sed -n '/INSERT/s/([0-9]*/ (null/p'
 sqlite3 $FORM.frm ".dump maps"   | sed -n '/INSERT/s/([0-9]*,4/ (null,4/p'
+sqlite3 $FORM.frm "update fields set blcn = 4 where blcn = 1;"
+sqlite3 $FORM.frm "update blocks set seq = 50 where form_id = 1;"
+cat <<EOF
+UPDATE fields SET blcn = 4 WHERE blcn = 1;
+UPDATE blocks SET seq = 50 WHERE form_id = 1;
+EOF
 fi
 exit
