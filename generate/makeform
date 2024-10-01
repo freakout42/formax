@@ -2,7 +2,9 @@
 PATH=`dirname $0`:$PATH
 USAGE="makeform name [title table cols...] >name.inp"
 FORM=$1
-if [ ! -f "$FORM.frm" ]; then
+if [ -f "$FORM.frm" ]; then
+if [ "$2" ]; then echo $USAGE >&2; exit 2; fi
+else
 if [ ! "$4" ]; then echo $USAGE >&2; exit 2; fi
 TITLE=$2
 TABLE=$3
@@ -19,7 +21,7 @@ cat <<EOF
 EOF
 if [ "$TABLE" ]; then
 cat <<EOF
-INSERT INTO pages  (form_id, seq, name) VALUES (0, 1, 'formax');
+INSERT INTO pages  (form_id, seq, name) VALUES (1, 1, 'formax');
 INSERT INTO maps   (page_id, line, mtext) VALUES (4, 1, '         ');
 INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
 INSERT INTO blocks (form_id, name, seq) VALUES (1, '$TABLE', 50);

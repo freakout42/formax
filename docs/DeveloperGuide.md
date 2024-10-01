@@ -78,10 +78,10 @@ boilerplate from the main page and loads it into your
 preferred editor. Edit the form layout and the field
 positions and lengths with a WYSIWYG concept. The edited
 file is inserted back to the form. The next step is running
-a form to modify all the fields properties, which makes up a
-great portion of any form development work. Last the editor
-is called with the .inp file to make other fine adjustments
-before the .frm is recreated.
+a form to modify all the fields properties and the triggers,
+which makes up a great portion of any form development work.
+Last the editor is called with the .inp file to make other
+fine adjustments before the .frm is recreated.
 
  - runform
 
@@ -177,7 +177,7 @@ processes of navigation and validation.
 Trigger Points
 --------------
 
-Every function that an event calls might have on or more
+Every function that an event calls might have one or more
 trigger point associated with it. A trigger point is
 temporal place in an event with a specific trigger type is
 associated. Trigger points and triggers are your primary
@@ -282,6 +282,21 @@ schemas for informations to alter the forms behaviour.
 Trigger programming
 ===================
 
+The word trigger means any device that activates some other
+mechanism. A trigger recognizes the occurrence of an event
+and is used to conditionally perform certain actions.
+Triggers are parcels of logic placed strategically throughout
+the form.
+
+For example a user may enter an order total that exceeds the
+customers credit limit. A trigger could be defined at this
+event point and reject such an order.
+
+Triggers in **formax** are written in JavaScript - the
+embedded engine is **elk** (See: github.com/cesanta/elk).
+
+JavaScript engine elk
+---------------------
 Elk is a tiny embeddable JavaScript engine that implements a
 small but usable subset of ES6.
 
@@ -309,7 +324,83 @@ small but usable subset of ES6.
 - No arrays, closures, prototypes, `this`, `new`, `delete`
 - No standard library: no `Date`, `Regexp`, `Function`, `String`, `Number`
 
-Note: Elk uses `snprintf()` standard function to format numbers (double).
-On some architectures, for example AVR Arduino, that standard function does
-not support float formatting - therefore printing numbers may output nothing
-or `?` symbols.
+## Variables and Functions
+
+| Name              | Purpose                              |
+|-------------------|--------------------------------------|
+| cb                | current block = table                |
+| cf                | current field = column               |
+| cr                | current record number                |
+| cv                | current field value                  |
+| nav0              | key to navigate direct to field +n   |
+| v0                | universal variable                   |
+| v1                | universal variable                   |
+| v2                | universal variable                   |
+| v3                | universal variable                   |
+| clip              | clipboard value                      |
+| next_item()       | navigate to next item/field          |
+| previous_item()   | navigate to previous item/field      |
+| next_record()     | navigate to next record              |
+| previous_record() | navigate to previous record          |
+| $("blk.fld"[,n])  | jQuery-like "DOM" access to fieldvals|
+| String(n)         | cast number to string (integer)      |
+| Message(text)     | message on status line               |
+| SQL(query)        | database access returns 1 value      |
+
+## Trigger types and return values
+
+Triggers can be fired on keyboard and application events and
+have two different effects for the form. Action triggers
+return a new key-id after processing - this key is fired at
+the end. By returning 0 the default key action is executed.
+Returning 1 means no further action should be carried out.
+Setting triggers return a new value for the current field.
+On success next_item() is fired to move to the next field.
+
+| Trigger    | Fire | Event/Key        | Type    | trgtyp |
+|------------|------|----------------------------|--------|
+| ENTERFORM  | App  | enter_the_form() | Action  | 1000   |
+| NEXTITEM   | Key  | CTRL('I') TAB    | Action  | 1001   |
+| PREVITEM   | Key  | CTRL('G') BTAB   | Action  | 1002   |
+| NEXTRECORD | Key  | CTRL('N') DOWN   | Action  | 1003   |
+| PREVRECORD | Key  | CTRL('P') UP     | Action  | 1004   |
+| NEXTSETREC | Key  | CTRL('W') NPAGE  | Action  | 1005   |
+| PREVSETREC | Key  | CTRL('R') PPAGE  | Action  | 1006   |
+| EDITFIELD  | Key  | ' '       SPACE  | Setting | 1007   |
+| COPYREC    | Key  | CTRL('T') F4     | Setting | 1008   |
+| COPY       | Key  | CTRL('C') F2     | Action  | 1009   |
+| PASTE      | Key  | CTRL('V') F3     | Setting | 1010   |
+
+## Trigger Table
+
+Triggers are stored in triggers and the code is in maps.
+Foreign key is the page_id. line number 0 is for a
+description and is not copied to the engine. The functions
+copy/paste and copy from previous record are implemented as
+triggers and not in C++. See their setup as an example.
+
+~~~
+CREATE TABLE triggers
+  (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   form_id   INTEGER NOT NULL DEFAULT 1,
+   trgfld    INTEGER NOT NULL DEFAULT 0,
+   trgtyp    INTEGER NOT NULL DEFAULT 0,
+   page_id   INTEGER NOT NULL DEFAULT 0
+  );
+
+INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (0,0,1008,1008);
+INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (0,0,1009,1009);
+INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (0,0,1010,1010);
+
+INSERT INTO maps (page_id, line, mtext) VALUES (1008, 0, 'copy_record');
+INSERT INTO maps (page_id, line, mtext) VALUES (1008, 1, '$(cb + "." + cf, cr - 1);');
+INSERT INTO maps (page_id, line, mtext) VALUES (1009, 0, 'copy');
+INSERT INTO maps (page_id, line, mtext) VALUES (1009, 1, 'clip = cv; 529;');
+INSERT INTO maps (page_id, line, mtext) VALUES (1010, 0, 'paste');
+INSERT INTO maps (page_id, line, mtext) VALUES (1010, 1, 'clip;');
+~~~
+
+## Future
+
+Functionalty is still limited and will be enhanced on demand
+by solving issues.

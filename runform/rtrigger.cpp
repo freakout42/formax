@@ -9,7 +9,7 @@ let(table,     "triggers");
 let(prikey,    "id");
 let(attrs,     "trgfld,trgtyp,page_id");
 letf(t(where), "form_id = 0 or form_id = %d", form_id);
-let(order,     "");
+let(order,     "trgfld DESC");
 columni = 3;
 return 0;
 }
