@@ -4,6 +4,7 @@
  * should always return a status int =1 success =0 failure
  * which cause the event to commit or cancel respectively
  */
+#include "stdio.h"
 #include "runform.h"
 #include "elk/elk.h"
 
@@ -96,13 +97,13 @@ char *fvalue;
 char *escaped;
 fvalue = CV;
 for (escaped=a; *fvalue; fvalue++) {
-  if (*fvalue == '\'')
-    *escaped++ = '\\';
-    *escaped++ = *fvalue;
+  if (*fvalue == '\'') *escaped++ = '\\';
+  *escaped++ = *fvalue;
 }
-    *escaped++ = '\0';
+*escaped++ = '\0';
 letf(t(prog), "cb = '%s'; cf = '%s'; cr = %d; cv = '%s';\n", CB.table, CF.name, CR, a);
 cats(t(prog), body);
+fprintf(stderr,":%s:\n", prog);
 return jsexecdirect(prog);
 }
 
