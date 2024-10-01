@@ -38,15 +38,15 @@ necessary.
 **formax** encorporates the concept of Oracle Forms with
 modern standards and current database best practices and
 technologies including all required enterprise features:
- - single column autoincrement primary key field
- - database integrity enforced through database
+ - single column autoincrement primary key
+ - integrity enforced through database
  - JavaScript for client scripting
  - regular expressions for validation
  - freedom to choose the database provider
- - multiple differnt databases simultaneously accessible
- - full logging of all queries in a single place
+ - multiple differnt databases simultaneously
+ - full logging of all queries
  - no free SQL for the enduser
- - no operating system exits in the form-engine
+ - no operating system exits in the engine
  - 3FA security can be setup easily
 
 Status
