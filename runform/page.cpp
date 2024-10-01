@@ -1,5 +1,4 @@
 /* page configuration */
-#include <stdlib.h>
 #include "runform.h"
 
 int Page::init(Qdata *pag, int rix) {
@@ -112,24 +111,29 @@ int Page::wait() {
 int i;
 char commit[16];
 switch (CM) {
- case MOD_QUERY:  strcpy(commit,            "  Execute-Query");                      break;
- case MOD_UPDATE: strcpy(commit,            "    Enter-Query");                      break;
- case MOD_INSERT: strcpy(commit, F(dirty) ? "  Insert-Record" : "   Clear-Record" ); break;
- case MOD_DELETE: strcpy(commit,            "  Delete-Record");                      break;
+ case MOD_QUERY:  strcpy(commit,            "Execute-Query");                    break;
+ case MOD_UPDATE: strcpy(commit,            "  Enter-Query");                    break;
+ case MOD_INSERT: strcpy(commit, F(dirty) ? "Insert-Record" : " Clear-Record" ); break;
+ case MOD_DELETE: strcpy(commit,            "Delete-Record");                    break;
 }
 wera();
 writef(0,  2, 0, 2,  "%2s-",      F(id));
 writes(0,  5,                     F(name));
 writef(0, 16, 0, 8,  "%s",        username);
-writef(0, 25, 0, 8,  "%s",        CB.table);
-writef(0, 34, 0, 9,  "%s",        CF.name);
-writef(0, 44, 0, 9,  "%4d/%4d",   CB.currentrecord, CB.q->rows);
-writef(0, 54, COL_HEADER,6,"%s",  rmodes[CM]);
-writef(0, 61, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
-//ites(0, 67,                     "runform-");
-//itef(0, 70, 0, 4,  "%4d",       F(lastcmd));
-//ites(0, 75,                     (char*)VERSION);
-writef(0, 65, COL_COMMIT,15,"%s", commit);
+writef(0, 25, 0, 7,  "%s",        CB.table);
+writef(0, 33, 0, 8,  "%s",        CF.name);
+writef(0, 42, 0, 9,  "%6d/%6d",   CB.currentrecord, CB.q->rows);
+writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
+writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
+#define SHOWKEYINSTATUSdis
+#if defined(SHOWKEYINSTATUS)
+writef(0, 70, 0, 4,  "%4d",       F(lastcmd));
+#elif defined(SHOWVERSIONINSTATUS)
+writes(0, 67,                     "runform-");
+writes(0, 75,                     (char*)VERSION);
+#else
+writef(0, 67, COL_COMMIT,13,"%s", commit);
+#endif
 refr();
 for (i=0; i<F(numfield); i++) F(l[i]).show(i == F(curfield));
 for (i=PGE_MAIN; i<F(numpage); i++) {

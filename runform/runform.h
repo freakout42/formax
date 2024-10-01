@@ -1,9 +1,22 @@
-/* constants macros and central procedures */
+/* runform.h - constants macros and central procedures */
+/* odbc driver provider database type */
 enum odrvr         { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_SQLSRVR, ODR_ADS, ODR_UNKNOWN };
+/* runform modes */
 enum fmode         { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
+/* field types */
 enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE, FTY_BOOL };
+/* pages array index */
 enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
+/* field edit variants for pos parameter */
+#define FED_FEDITOR -9999 /* full screen editor */
+#define FED_TRIGGER -9998 /* trigger "editor" */
+#define FED_TOGGLE  -9997 /* binary toggle */
+#define FED_INCR    -9996 /* increment */
+#define FED_DECR    -9995 /* decrement */
+#define FED_SPECIAL -9000 /* barrior for non-standard editors */
+/* runform modes display names */
 #define RMODENAMES { "Insert",   "Query ",  "Update",   "Delete" }
+
 #include "../version.h"
 
 /* global resource configuration */
@@ -22,8 +35,8 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 
 #include <assert.h>
 #include <string.h>
-#include "regex/re.h"
-#include "elk/elk.h"
+#include <ctype.h>
+#include <stdlib.h>
 #include "logger.h"
 #include "qdata.h"
 #include "record.h"
@@ -32,7 +45,6 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #include "rfield.h"
 #include "rpage.h"
 #include "rmap.h"
-#include "rtrigger.h"
 #include "block.h"
 #include "field.h"
 #include "screen.h"
@@ -44,7 +56,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 /* misc helper macros */
 #define max(x, y)	(((x) < (y)) ? (y) : (x))
 #define min(x, y)	(((x) < (y)) ? (x) : (y))
-#define let(target,source) strncpy(target, source, sizeof(target)-1)
+#define let(target,source) letstrncpy(target, source, sizeof(target)-1)
 #define t(target) target, sizeof(target)
 #define debugs(string) fprintf(stderr, ":%s:\n", string);
 
@@ -57,12 +69,14 @@ extern Form *f;
 #define CM F(rmode)
 #define CB F(b)[F(curblock)]
 #define CF F(l)[F(curfield)]
+#define CR CB.currentrecord
+#define CV *CF.valuep()
 #define LK F(lastkey)
 #define MSG(n) F(p)[0].message(n, NULL)
 #define MSG1(n,c) F(p)[0].message(n, c)
 
 /* helpers from version.cpp */
-extern Function u;
+extern char *letstrncpy(char *dest, const char *src, size_t n);
 extern int yesno(int c);
 extern int isprintable(int c);
 extern int ispunctation(int c);
@@ -101,3 +115,6 @@ extern int   deleprompt;
 extern int   queryonlym;
 extern char  *shiftednum;
 extern char  *username;
+extern char  *nullstring;
+extern Function u;
+extern char a[BIGSIZE];

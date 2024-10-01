@@ -4,23 +4,24 @@ public:
   int field_id;
   char name[SMLSIZE];
   int sequencenum;
+  int blockindex;
   char querywhere[MEDSIZE];
   int isprimarykey;
   char helptext[SMLSIZE];
   int init(Qdata *fld, int rix, Block *bs);
   void clear();
-  int toggle();
-  int increment(int ival);
+  int toggle(char *val);
+  int increment(char *val, int ival);
   int edit(int pos);
   int noedit();
   void show(int cur);
-private:
   char **valuep();
+  char **valuepr(int row);
+private:
 //  int blkn;
 //  int pgen;
   int line;
   int col;
-  int blockindex;
   int pageindex;
   int validate(char **c, char *buf);
   ftype fldtype();

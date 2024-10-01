@@ -1,7 +1,6 @@
 /* logging sql engine via sqlite3 lib - not odbc */
 #include <cstdarg>
 #include <stdio.h>
-#include <stdlib.h>
 #include <sqlite3.h>
 #include "runform.h"
 
@@ -72,9 +71,11 @@ return 0;
 
 void Logger::logfmt(const char *format, ...) {
 va_list args;
+char *apostrophe;
 if (*logpath) {
 va_start (args, format);
 vsnprintf (t(message), format, args);
+while (apostrophe = strchr(message, '\'')) *apostrophe = '"';
 snprintf (t(sqlquery), INSERTLOG, session, message);
 sqlite3_exec(db, sqlquery, callback, 0, NULL);
 //vfprintf(stderr, format, args);

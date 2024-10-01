@@ -1,8 +1,10 @@
+#include "rtrigger.h"
 #ifndef BEGINSQL
 /* map configuration */
 class rMap: public Record {
 public:
   int init(int page_id);
+  int getbody(int page_id, char *buf, int n);
   char *extract(int page_id);
   void slurp(int pid, char *tmpf);
 };
@@ -10,9 +12,10 @@ public:
 CREATE TABLE maps
   (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    page_id   INTEGER NOT NULL DEFAULT 1,
-   line      INTEGER NOT NULL DEFAULT 1,
+   line      INTEGER NOT NULL DEFAULT 1, /* =0 name */
    mtext     TEXT    NOT NULL DEFAULT ''
   );
+INSERT INTO maps (page_id, line, mtext) VALUES (2,  0, 'key_help_page');
 INSERT INTO maps (page_id, line, mtext) VALUES (2,  1, 'KEY C FUNCTION     KEY   C FUNCTION');
 INSERT INTO maps (page_id, line, mtext) VALUES (2,  2, 'Tab i NextField    ^Tab  g PrevField');
 INSERT INTO maps (page_id, line, mtext) VALUES (2,  3, 'F1  @ Field Help   Esc   y Cancel');
@@ -27,4 +30,10 @@ INSERT INTO maps (page_id, line, mtext) VALUES (2, 11, 'F9  y Cancel       PgUp 
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 12, 'F10 x Query        PgDn  w NextSetRec');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 13, 'F11 k Key Help     Home  a PrevBlock');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 14, 'F12 l Refresh      End   e NextBlock');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPYREC, 0, 'copy_record');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPYREC, 1, '$(cb + "." + cf, cr - 1);');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPY,    0, 'copy');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPY,    1, 'clip = cv;529;');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_PASTE,   0, 'paste');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_PASTE,   1, 'clip;');
 #endif

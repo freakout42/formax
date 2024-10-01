@@ -2,6 +2,7 @@
 #define MSG_OPENKEY  26
 #define MSG_SQL      50
 #define MSG_HELP     51
+#define MSG_JS       52
 #define MSG_FIRST    100
 #define MSG_EDITKEY  101
 #define MSG_RECDIRTY 102
@@ -14,6 +15,7 @@
 #define MSG_NORANGE  207
 #define MSG_RDONLY   208
 #define MSG_FLDFORM  209
+#define MSG_NOREC2   210
 #define MSG_COUNT0   301
 #define MSG_CLEAN    401
 #define MSG_DIRTY    402
@@ -36,6 +38,7 @@ INSERT INTO errors (num, severity, etext) VALUES (MSG_ALLOC,    3, 'Out of memor
 INSERT INTO errors (num, severity, etext) VALUES (MSG_OPENKEY,  3, 'Error opening key script file');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_HELP,     3, '');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_SQL,      3, 'SQL');
+INSERT INTO errors (num, severity, etext) VALUES (MSG_JS,       3, 'JS');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_FIRST,    1, 'At first record');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_EDITKEY,  2, 'Can''t edit a key field');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_RECDIRTY, 2, 'Record must be entered or deleted first');
@@ -48,6 +51,7 @@ INSERT INTO errors (num, severity, etext) VALUES (MSG_NORANGE,  2, 'Must be in r
 INSERT INTO errors (num, severity, etext) VALUES (MSG_RDONLY,   2, 'Form running in query-only mode. No changes');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_QUERYM,   2, 'Form running in query mode. No insert');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_FLDFORM,  2, 'Field must be in the form');
+INSERT INTO errors (num, severity, etext) VALUES (MSG_NOREC2,   2, 'Cannot copy field to first record');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_COUNT0,   2, 'Query caused no records to be retrieved');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_CLEAN,    1, 'No changes to commit');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_DIRTY,    2, 'Abort changes?');

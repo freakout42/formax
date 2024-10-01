@@ -10,21 +10,18 @@
  */
 #include "runform.h"
 
-int Function::dispatch() {
+int Function::dispatch() { /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
 F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
-  case KEF_COPY:            /* fcopy() */
-  case KEF_PASTE:           /* fpaste() */
-  case KEF_COPYREC:         /* fcopyrec() */
   case KEF_LIST:            /* flist() */
   case KEF_HOME:            /* fhome() */
   case KEF_END:             /* fend() */
-  case KEF_PRESETR:         /* fpresetr() */
-  case KEF_NXTSETR:         /* fnxtsetr() */
   case KEF_NAVI0:           /* fmenu() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
+  case KEF_NOOP:
+  case KEF_NOOP2:    LK = 0;                                                  break;
   case KEF_REFRESH:  LK = refresh_screen();                                   break;
   case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                                break;
   case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                                break;
@@ -38,9 +35,14 @@ switch(F(lastcmd)) {
   case KEF_NXTFLD:   LK = next_item();                                        break;
   case KEF_PREFLD:   LK = previous_item();                                    break;
   case KEF_NXTREC:   LK = next_record();                                      break;
+  case KEF_NXTSETR:  LK = next_setrecords();                                  break;
+  case KEF_PRESETR:  LK = previous_setrecords();                              break;
   case KEF_HELP:     LK = help_item();                                        break;
   case KEF_KEYHELP:  LK = keys_help();                                        break;
   case KEF_PREREC:   LK = previous_record();                                  break;
+  case KEF_COPYREC:  LK = fcopyrec();                                         break;
+  case KEF_COPY:     LK = fcopy();                                            break;
+  case KEF_PASTE:    LK = fpaste();                                           break;
   case KEF_INSERT:
    switch(CM) {
     case MOD_UPDATE:
@@ -77,8 +79,9 @@ switch(F(lastcmd)) {
    }                                                                          break;
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
-  case KEF_NAVI11:   LK = fedit(-9999);                                       break;
-  case '=':          LK = edit_map();                                         break;
+  case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
+  case '~':          LK = editrigger(TRT_EDITFIELD);                          break;
+  case '[':          LK = edit_map();                                         break;
   case ' ':          LK = ftoggle();                                          break;
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
@@ -97,7 +100,7 @@ F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
 enter_query();
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
-notrunning = trigger(TRT_ENTERFORM); //"enter_the_form");
+notrunning = triggern(TRT_ENTERFORM);
 return 0;
 }
 
@@ -116,7 +119,7 @@ return F(p[PGE_KEYHELP]).showpopup();
 }
 
 int Function::edit_map() {
-return F(p[PGE_EDITOR]).editmap(2);
+return F(p[PGE_EDITOR]).editmap(atoi(*CF.valuep()));
 }
 
 /* NAVIGATION */
@@ -126,20 +129,13 @@ if (CF.noedit()) fmove(0, 0);
 return 0;
 }
 
-int Function::next_item() {
-  if (!trigger(TRT_NEXTITEM)) fmove(0, 1);
-  return 0;
-}
-int Function::previous_item()   { return fmove(0, -1); }
-int Function::next_record()     { return fmover(1);    }
-int Function::previous_record() { return fmover(-1);   }
-
-/* export functions to javascript */
-#define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
-JSEXA(next_item)
-JSEXA(previous_item)
-JSEXA(next_record)
-JSEXA(previous_record)
+#define TRIGGRD(func,trgr,move,row,fld) int Function::func() {int i; return (i = triggern(TRT_ ## trgr)) ? i : move(row, fld); }
+TRIGGRD(next_item,NEXTITEM,fmove,0,1)
+TRIGGRD(previous_item,PREVITEM,fmove,0,-1)
+TRIGGRD(next_record,NEXTRECORD,fmover,0,1)
+TRIGGRD(previous_record,PREVRECORD,fmover,0,-1)
+TRIGGRD(next_setrecords,NEXTSETREC,fmover,0,CB.norec)
+TRIGGRD(previous_setrecords,PREVSETREC,fmover,0,-CB.norec)
 
 /* move from field to field */
 int Function::fmove(int bi, int fi) {
@@ -151,7 +147,7 @@ return 0;
 }
 
 /* move from record to record */
-int Function::fmover(int ri) {
+int Function::fmover(int bi, int ri) {
 switch (CM) {
  case MOD_QUERY:  return 0;                                                         break;
  case MOD_UPDATE:                                                                   break;
@@ -174,6 +170,7 @@ return 0;
 }
 
 /* EDITING */
+
 int Function::insert_record() {
 if (CM == MOD_UPDATE || CM == MOD_QUERY) {
   CB.q->splice(CB.currentrecord++);
@@ -190,18 +187,41 @@ switch_mode(MOD_UPDATE);
 return 0;
 }
 
+/* double pressed should copy record */
+int Function::fcopyrec() {
+if (CM != MOD_UPDATE) return 0;
+if (CR > 1) {
+  edittrgtyp = TRT_COPYREC;
+  changed = fedit(FED_TRIGGER);
+  return changed==KEF_CANCEL ? 0 : changed;
+} else {
+  MSG(MSG_NOREC2);
+  return 0;
+}
+}
+
+int Function::fcopy() {int i; return (i = triggern(TRT_COPY)) ? i : 0; }
+
+int Function::fpaste() {
+if (CM != MOD_UPDATE) return 0;
+  edittrgtyp = TRT_PASTE;
+  changed = fedit(FED_TRIGGER);
+  return changed==KEF_CANCEL ? 0 : changed;
+}
+
 int Function::ftoggle() {
-changed = CF.toggle();
-if (changed == KEF_CANCEL) return 0;
-if (CB.update(CB.currentrecord, CF.sequencenum)) MSG1(MSG_SQL, CB.sqlcmd);
-return changed;
+int editmode;
+edittrgtyp = TRT_EDITFIELD;
+editmode = qtrigger(edittrgtyp) > -1 ? FED_TRIGGER : FED_TOGGLE;
+changed = fedit(editmode);
+return changed==KEF_CANCEL ? 0 : changed;
 }
 
 int Function::fincrement(int ival) {
-changed = CF.increment(ival);
-if (changed == KEF_CANCEL) return 0;
-if (CB.update(CB.currentrecord, CF.sequencenum)) MSG1(MSG_SQL, CB.sqlcmd);
-return changed;
+int editmode;
+editmode = ival > 0 ? FED_INCR : FED_DECR;
+changed = fedit(editmode);
+return changed==KEF_CANCEL ? 0 : changed;
 }
 
 int Function::fedit(int pos) {
@@ -209,7 +229,7 @@ changed = 0;
 switch(CM) {
  case MOD_INSERT:
  case MOD_QUERY:
-  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos==-9999 ? -1 : pos);
+  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos<FED_SPECIAL ? -1 : pos);
   break;
  case MOD_UPDATE:
   changed = CF.edit(pos);
@@ -287,17 +307,67 @@ if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query();
 return 0;
 }
 
-int Function::trigger(int tid) {
+/* TRIGGER */
+int Function::editrigger(int tid) {
+int i, j;
+j = 0;
+if ((i = qtrigger(tid)) > -1) j = F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
+return 0;
+}
+
+int Function::qtrigger(int tid) {
+int i;
+for (i=0; i<F(numtrigger); i++)
+  if ((F(r)[i].trgfld == 0 || F(r)[i].trgfld == CF.field_id) && F(r)[i].trgtyp == tid)
+    return i;
+return -1;
+}
+
+/* raw trigger call NULL..notfound "..string [0-9]..number [^"0-9]..error
+ * javascript should always return number see below
+ */
+char *Function::trigger(int tid) {
 static int injstrigger = 0;
-int i, s;
-s = 0;
-if (injstrigger) return 0;
-if (tid >= 100) tid += CF.field_id * 1000;
-for (i=0; i<F(numtrigger); i++) if (F(r[i]).triggerid() == tid) {
+int i;
+char *s;
+s = NULL;
+if (injstrigger) return s;
+if ((i = qtrigger(tid)) > -1) {
   injstrigger = 1;
-    s = F(r[i]).jsexec();
+    s = F(r)[i].jsexec();
+    if (*s != '"' && !isdigit(*s)) {
+      g.logfmt("[%d]%s", tid, s);
+      MSG1(MSG_JS, s);
+      s = "-1";
+      notrunning = -1;
+    }
   injstrigger = 0;
 }
 return s;
+}
+
+int Function::triggern(int tid) {
+char *jsresult;
+jsresult = trigger(tid);
+return jsresult ? atoi(jsresult) : 0;
+}
+
+/* edit field with trigger */
+int Function::edittrg(char *buf) {
+int i;
+char *jsresult; /* BIGSIZE never overflows with elk's output */
+jsresult = trigger(edittrgtyp);
+if (!jsresult) { ;             /* check for trigger */
+} else if (*jsresult == '"') { /* check for output is js string */
+  strcpy(buf, jsresult+1);
+  i = strlen(buf) - 1;
+  assert(*(buf+i) == '\"');
+  *(buf+i) = '\0';
+  return KEF_NXTFLD;
+} else if (isdigit(*jsresult)) { /* check for output is js int */
+  strcpy(buf, jsresult);
+  return KEF_NXTFLD;
+}
+return KEF_CANCEL;
 }
 

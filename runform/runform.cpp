@@ -4,15 +4,14 @@
   " [-f formid ] [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]{1,4}\n"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <locale.h>
 #include "runform.h"
 
-char shiftedus[] = "/!@#$%^&*().";
-char shifteduk[] = "/!\"£$%^&*().";
-char shiftedde[] = "-!\"§$%&/()=.";
-char shiftedfr[] = "!&é\"'(-è_çá;";
+char shiftedus[] = "/!@#$%^&*().,";
+char shifteduk[] = "/!\"£$%^&*().,";
+char shiftedde[] = "-!\"§$%&/()=.,";
+char shiftedfr[] = "!&é\"'(-è_çá;,";
 char *shiftednum = shiftedus;
 
 char *lclocale;
@@ -30,12 +29,14 @@ int  autocommit  = 1;             // -a
 int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
 char *ypassword  = NULL;
+char *nullstring = "0";
 char *username;
 Logger g;
 Record dbconn[5];
 Screen y;
 Form *f;
 Function u;
+char a[BIGSIZE];
 
 static char b64pwd[65];
 
@@ -132,10 +133,11 @@ while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
     case 'g': if (g.setlogfile(optarg)) usage(16); break;
     case 'l': let(drv, optarg); break;
     case 'n':
-      if (!strcmp(optarg, "us")) shiftednum = shiftedus;
-      if (!strcmp(optarg, "uk")) shiftednum = shifteduk;
-      if (!strcmp(optarg, "de")) shiftednum = shiftedde;
-      if (!strcmp(optarg, "fr")) shiftednum = shiftedfr;
+#define shiftedlang(lang) if (!strcmp(optarg, #lang)) shiftednum = shifted ## lang
+      shiftedlang(us);
+      shiftedlang(uk);
+      shiftedlang(de);
+      shiftedlang(fr);
       break;
     case '3': useodbcve3 = 1; break;
     case 'k': monochrome = 1; break;
@@ -178,11 +180,16 @@ for (i=0; i<4; i++) {
     let(dsn0, argv[optind+i+1]);
     parsedsn(dsn, drv, dsn0);
     if (dbconn[i+1].connect(dsn)) usage(8);
+        dbconn[i+1].ropen();
   } else {
     dbconn[i+1].connect(NULL);
   }
 }
-if (dbconn[1].drv == ODR_SQLITE) querycharm = 2;
+switch(dbconn[1].drv) {
+ case ODR_SQLITE: querycharm = 2; break;
+ case ODR_ADS:    querycharm = 0; break;
+ default: ;
+}
 memset(dsn, 'y', MEDSIZE); // remove key from ram
 genxorkey(NULL, NULL);
 
@@ -192,14 +199,17 @@ if (y.init()) usage(17);
 // create load run and destroy the form
 rootform = new Form();
 if (rootform->fill(form_id)) usage(5);
-if ((s = rootform->run()) < 0) usage(6);
+if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
 rootform->clear();
 delete(rootform);
 
 // cleanup screen db connections and logger
 y.closedisplay();
-for (i=0; i<5; i++) dbconn[i].disconnect();
+for (i=0; i<5; i++) {
+  dbconn[i].rclose();
+  dbconn[i].disconnect();
+}
 g.lclose();
 
-exit(s<0 ? -s : 0);
+exit(s==-1 ? 0 : abs(s));
 }

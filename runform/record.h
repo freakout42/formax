@@ -27,6 +27,7 @@ public:
   void rclose();
   int clear();
   int query();
+  int execdirect(char *sql);
   Qdata *q;
 protected:
   SQLRETURN ret;
@@ -39,7 +40,6 @@ protected:
   char order[SMLSIZE];
   SQLCHAR querystr[MEDSIZE];
   char *bindv[NBINDPA];
-  int execdirect(SQLCHAR *sql);
   int execute(SQLCHAR *sql, char *bndv[]);
   int complete();
   int fetch(int row);
@@ -50,5 +50,6 @@ private:
   void setdrv(char *dbmsname);
   int failed(SQLSMALLINT hty);
   int succeeded(SQLRETURN s);
+  int fetchall();
 };
 

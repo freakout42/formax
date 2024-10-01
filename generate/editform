@@ -3,11 +3,13 @@ if [ "`dirname $0`" = "." ]; then
   ADJFIELD=./adjfield
   RUNFORM=../runform/runform
   FORMAXFRM=formax.frm
+  TRIGGRFRM=trgr.frm
   LOGGING=-g/tmp/formax.log
 else
   ADJFIELD=adjfield
   RUNFORM=runform
   FORMAXFRM=${ARX:-/opt/arx}/lib/formax.frm
+  TRIGGRFRM=${ARX:-/opt/arx}/lib/trgr.frm
   LOGGING=""
 fi
 FORM=$1
@@ -27,6 +29,7 @@ done
 $ADJFIELD <$FORM.map | $SQL
 rm $FORM.map
 $RUNFORM $LOGGING -x $FORMAXFRM $FORM.frm
+$RUNFORM $LOGGING -x $TRIGGRFRM $FORM.frm
 $SQL .dump >$FORM.inp
 ${EDITOR:-vi} $FORM.inp
 rm $FORM.frm

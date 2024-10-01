@@ -47,7 +47,7 @@ if ((s = rtrigger.query())) return s;
 numtrigger = rtrigger.q->rows;
 if (numtrigger > NTRIGGERS) return 7;
 for (i=0; i<numtrigger; i++) {
-  if (r[i].init(rtrigger.q, i+1)) return 9;
+  if (r[i].init(rtrigger.q, i+1, &rmap)) return 9;
 }
 rtrigger.rclose();
 
@@ -73,6 +73,7 @@ for (i=0; i<numpage; i++) {
   rmap.rclose();
 }
 rpage.rclose();
+rmap.connect(dbconn[1]);
 
 /* error messages */
 if (rerror.init()) return 9;
@@ -123,10 +124,21 @@ int i, s;
  f = this;
   for (i=0; i<numpage; i++) p[i].create();
   lastkey = -1;
-  while (!(s = u.dispatch())) {
+  while (!(s = u.dispatch())) { /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
     lastkey = F(p[PGE_STATUS]).wait();
   }
-return s==-1 ? 0 : s;
+return s;
+}
+
+/* search field */
+int Form::qfield(char *sel) {
+int i;
+char selector[SMLSIZE];
+for (i=0; i<numfield; i++) {
+  letf(t(selector), "%s.%s", b[l[i].blockindex].table, l[i].name);
+  if (!strcmp(sel, selector)) break;
+}
+return i<numfield ? i : -1;
 }
 
 /* application key mapping physical to function */

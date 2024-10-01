@@ -1,7 +1,6 @@
 /* record.cpp calls ODBC and
  * provides an interface in an ORM style like rails active-record
  */
-#include <stdlib.h>
 #include <sql.h>
 #include <sqlext.h>
 #include "runform.h"
@@ -107,9 +106,13 @@ if (dbc) {
 } }
 
 /* direct sql without orm support */
-int Record::execdirect(SQLCHAR *sql) {
-ret = SQLExecDirect(stmt, sql, strlen((char*)sql));                                            FAILEDQ(SQL_HANDLE_STMT);
-return ret;
+int Record::execdirect(char *sql) {
+ret = SQLExecDirect(stmt, (SQLCHAR*)sql, strlen(sql));                                         FAILEDQ(SQL_HANDLE_STMT);
+ret = SQLNumResultCols(stmt, &querycols);                                                      FAILEDQ(SQL_HANDLE_STMT);
+columni = querycols;
+if (clear()) return 13;
+g.logfmt("SQL: '%s' [%d]", sql, querycols);
+return fetchall();
 }
 
 /* direct sql with bind support from variable array */
@@ -145,11 +148,7 @@ if (*order) letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
 letf((char*)querystr, sizeof(querystr), "select %s from %s%s", attrs, table, whereorder);
 bindv[0] = NULL;
 if ((ret = execute(querystr, bindv))) return ret;
-do {
-  j = fetch(0);
-  if (j > 0) return j;
-} while (!j);
-return complete();
+return fetchall();
 }
 
 /* cleanup select handle after execution and fetch
@@ -162,6 +161,16 @@ if (drv == ODR_ORACLE) {
   SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);
 }
 return ret;
+}
+
+/* fetch all rows */
+int Record::fetchall() {
+int j;
+do {
+  j = fetch(0);
+  if (j > 0) return j;
+} while (!j);
+return complete();
 }
 
 /* orm fetch query data */
@@ -215,7 +224,7 @@ if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) {
   rec = 1;
   while (SQLGetDiagRec(hty, handle, rec++, szSqlState, &nNativeError, szError, 500, &nErrorMsg) == SQL_SUCCESS) {
     if (szError[strlen((char*)szError)-1] == '\n') szError[strlen((char*)szError)-1] = '\0';
-    g.logfmt("[%s]%s", szSqlState, szError );
+    g.logfmt("[%s]%s", szSqlState, szError);
   }
 } else ret = 0;
 return ret;

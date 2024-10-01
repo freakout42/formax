@@ -16,6 +16,7 @@ INSERT INTO errors (num, severity, etext) VALUES (24, 3, 'Out of memory');
 INSERT INTO errors (num, severity, etext) VALUES (26, 3, 'Error opening key script file');
 INSERT INTO errors (num, severity, etext) VALUES (51, 3, '');
 INSERT INTO errors (num, severity, etext) VALUES (50, 3, 'SQL');
+INSERT INTO errors (num, severity, etext) VALUES (52, 3, 'JS');
 INSERT INTO errors (num, severity, etext) VALUES (100, 1, 'At first record');
 INSERT INTO errors (num, severity, etext) VALUES (101, 2, 'Can''t edit a key field');
 INSERT INTO errors (num, severity, etext) VALUES (102, 2, 'Record must be entered or deleted first');
@@ -28,6 +29,7 @@ INSERT INTO errors (num, severity, etext) VALUES (207, 2, 'Must be in range');
 INSERT INTO errors (num, severity, etext) VALUES (208, 2, 'Form running in query-only mode. No changes');
 INSERT INTO errors (num, severity, etext) VALUES (106, 2, 'Form running in query mode. No insert');
 INSERT INTO errors (num, severity, etext) VALUES (209, 2, 'Field must be in the form');
+INSERT INTO errors (num, severity, etext) VALUES (210, 2, 'Cannot copy field to first record');
 INSERT INTO errors (num, severity, etext) VALUES (301, 2, 'Query caused no records to be retrieved');
 INSERT INTO errors (num, severity, etext) VALUES (401, 1, 'No changes to commit');
 INSERT INTO errors (num, severity, etext) VALUES (402, 2, 'Abort changes?');
@@ -81,6 +83,7 @@ CREATE TABLE maps
    line INTEGER NOT NULL DEFAULT 1,
    mtext TEXT NOT NULL DEFAULT ''
   );
+INSERT INTO maps (page_id, line, mtext) VALUES (2, 0, 'key_help_page');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 1, 'KEY C FUNCTION     KEY   C FUNCTION');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 2, 'Tab i NextField    ^Tab  g PrevField');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 3, 'F1  @ Field Help   Esc   y Cancel');
@@ -95,6 +98,8 @@ INSERT INTO maps (page_id, line, mtext) VALUES (2, 11, 'F9  y Cancel       PgUp 
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 12, 'F10 x Query        PgDn  w NextSetRec');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 13, 'F11 k Key Help     Home  a PrevBlock');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 14, 'F12 l Refresh      End   e NextBlock');
+INSERT INTO maps (page_id, line, mtext) VALUES (1100, 0, 'copy_record');
+INSERT INTO maps (page_id, line, mtext) VALUES (1100, 1, '$(cb + "." + cf, cr - 1);');
 CREATE TABLE pages
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -115,12 +120,11 @@ INSERT INTO pages (form_id, seq, name, ysiz, xsiz, vwpy0, vwpx0, popup, border) 
 CREATE TABLE triggers
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
-   name TEXT NOT NULL DEFAULT '',
    trgfld INTEGER NOT NULL DEFAULT 0,
    trgtyp INTEGER NOT NULL DEFAULT 0,
-   body TEXT NOT NULL DEFAULT '0'
+   page_id INTEGER NOT NULL DEFAULT 0
   );
-INSERT INTO triggers (name) VALUES ('enter_the_form');
+INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (0,0,10007,1100);
 INSERT INTO forms VALUES(1,'formax','Fields','','');
 INSERT INTO blocks VALUES (null,1,'fields',50,1,'id','','');
 INSERT INTO pages VALUES (null,1,'fields-0',1,'',23,80,1,0,0,1,0);

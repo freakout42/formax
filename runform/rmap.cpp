@@ -1,7 +1,6 @@
 /* multiline text maps
  * page boilerplates and trigger text (not yet)
  */
-#include <stdlib.h>
 #include "runform.h"
 
 int rMap::init(int page_id) {
@@ -11,10 +10,29 @@ if ((s = ropen())) return s;
 let(table,     "maps");
 let(prikey,    "id");
 let(attrs,     "line,mtext");
-letf(t(where), "page_id = %d", page_id);
+letf(t(where), "page_id = %d and line>0", page_id);
 let(order,     "line");
 columni = 2;
 return 0;
+}
+
+/* extract and write to buffer */
+int rMap::getbody(int page_id, char *buf, int n) {
+int i, m;
+init(page_id);
+query();
+for (i = 1; i <= q->rows; i++) {
+  m = strlen(q->v(i, 2));
+  n -= m + 3; /* cr and nil and reserve */
+  if (n > 0) {
+    strcpy(buf, q->v(i, 2));
+    buf += m;
+    *buf++ = '\n';
+    *buf++ = '\0';
+  }
+}
+rclose();
+return n < 0;
 }
 
 /* extract and write to temp file */

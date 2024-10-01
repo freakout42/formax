@@ -19,7 +19,7 @@ run: runform $(EXAMPLE)
 
 test: runform $(EXAMPLE)
 	/opt/valgrind/bin/valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
-    ./runform -g/tmp/formax.log $(EXAMPLE) 2>$@
+    ./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
 
 curkeys.h: curkeys
@@ -44,5 +44,5 @@ $(EXAMPLE):
 	cd ../generate; make clean test
 
 clean:
-	for D in colquery regex elk crypt membed; do ( cd $$D; make clean; ); done
+	for D in colquery regex elk crypt membed ../generate; do ( cd $$D; make clean; ); done
 	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_* $(EXAMPLE)

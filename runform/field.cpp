@@ -3,37 +3,37 @@
  * how the data should be displayed and validated
  * and how an operator should interact with the data while it is entered
  */
-#include <stdlib.h>
-#include <string.h>
 #include "runform.h"
+#include "regex/re.h"
 #include "colquery/colquery.h"
 
 int Field::init(Qdata *fld, int rix, Block *bs) {
-let(name,       fld->v(rix, 1));
-blockindex    = fld->n(rix, 2);
-pageindex     = fld->n(rix, 3);
-displaylen    = fld->n(rix, 4);
-line          = fld->n(rix, 5);
-col           = fld->n(rix, 6);
-isprimarykey  = fld->n(rix, 7);
-fieldtype     = (ftype)fld->n(rix, 8);
-fieldlen      = fld->n(rix, 9);
-basetable     = fld->n(rix,10);
-let(defaultval, fld->v(rix,11));
-enterable     = fld->n(rix,12);
-queryable     = fld->n(rix,13);
-updateable    = fld->n(rix,14);
-updnulable    = fld->n(rix,15);
-mandatory     = fld->n(rix,16);
-uppercase     = fld->n(rix,17);
-let(lovtitle,   fld->v(rix,18));
-lov_id        = fld->n(rix,19);
-lovi_id       = fld->n(rix,20);
-lowvalue      = fld->n(rix,21);
-highvalue     = fld->n(rix,22);
-let(validreg,   fld->v(rix,23));
-let(helptext,   fld->v(rix,24));
-field_id      = fld->n(rix,25);
+field_id      = fld->n(rix, 1);
+let(name,       fld->v(rix, 2));
+blockindex    = fld->n(rix, 3);
+pageindex     = fld->n(rix, 4);
+displaylen    = fld->n(rix, 5);
+line          = fld->n(rix, 6);
+col           = fld->n(rix, 7);
+isprimarykey  = fld->n(rix, 8);
+fieldtype     = (ftype)fld->n(rix, 9);
+fieldlen      = fld->n(rix,10);
+basetable     = fld->n(rix,11);
+let(defaultval, fld->v(rix,12));
+enterable     = fld->n(rix,13);
+queryable     = fld->n(rix,14);
+updateable    = fld->n(rix,15);
+updnulable    = fld->n(rix,16);
+mandatory     = fld->n(rix,17);
+uppercase     = fld->n(rix,18);
+let(lovtitle,   fld->v(rix,19));
+lov_id        = fld->n(rix,20);
+lovi_id       = fld->n(rix,21);
+lowvalue      = fld->n(rix,22);
+highvalue     = fld->n(rix,23);
+let(validreg,   fld->v(rix,24));
+let(helptext,   fld->v(rix,25));
+field_id      = fld->n(rix,26);
 let(queryhuman, "");
 let(querywhere, "");
 sequencenum = bs[blockindex].addattribute(rix-1, this);
@@ -84,18 +84,21 @@ if (CM == MOD_QUERY) {
 
 /* the current field value */
 char **Field::valuep() {
-return F(b[blockindex].q->w)(CB.currentrecord, sequencenum);
+return valuepr(CB.currentrecord);
+}
+
+/* field value any row */
+char **Field::valuepr(int row) {
+return F(b)[blockindex].q->w(row, sequencenum);
 }
 
 /* toggle boolean field value between 0 and 1 */
-int Field::toggle() {
-char **c;
+int Field::toggle(char *val) {
 if (CM == MOD_UPDATE && fldtype() == FTY_BOOL) {
-  c = valuep();
-  if (*c && strlen(*c)==1) {
-    switch (**c) {
-     case '0': **c = '1'; return KEF_NXTFLD;
-     case '1': **c = '0'; return KEF_NXTFLD;
+  if (strlen(val)==1) {
+    switch (*val) {
+     case '0': *val = '1'; return KEF_NXTFLD;
+     case '1': *val = '0'; return KEF_NXTFLD;
     }
   }
 }
@@ -103,19 +106,16 @@ return KEF_CANCEL;
 }
 
 /* increment/decrement integer field value */
-int Field::increment(int ival) {
-char **c;
-int a;
-char buf2[SMLSIZE];
+int Field::increment(char *val, int ival) {
+int letvalue;
 if (CM == MOD_UPDATE && fieldtype == FTY_INT) {
-  c = valuep();
-  if (*c) {
-    a = atoi(*c) + ival;
-    letf(t(buf2), "%d", a);
-    if (validate(c, buf2) != KEF_CANCEL) return 0; // KEF_NXTFLD;
+  if (isdigit(*val) || *val == '-') {
+    letvalue = atoi(val) + ival;
+    letf(val, SMLSIZE, "%d", letvalue);
+    return 0; // KEF_NXTFLD;
   }
 }
-return 0;
+return KEF_CANCEL;
 }
 
 /* checks new field value with validation rules */
@@ -173,7 +173,6 @@ return 0;
  */
 int Field::edit(int pos) {
 int pressed;
-char buf[BIGSIZE];
 char **c;
 pressed = 0;
 switch(CM) {
@@ -183,14 +182,20 @@ switch(CM) {
   if (noedit()) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
   if (F(b[blockindex].q->rows)) {
     c = valuep();
-    if (*c) let(buf, *c); else *buf = '\0';
-    if (pos == -9999) pressed = F(p[PGE_EDITOR]).editbuf(buf);
-    else              pressed = F(p[PGE_STATUS]).sedit(buf, pos, fldtype(), fieldlen);
-    if (pressed != KEF_CANCEL && validate(c, buf) == KEF_CANCEL) pressed = KEF_CANCEL;
+    if (*c) let(a, *c); else *a = '\0';
+    switch(pos) {
+     case FED_FEDITOR: pressed = F(p)[PGE_EDITOR].editbuf(a); break;
+     case FED_TRIGGER: pressed = u.edittrg(a);                break;
+     case FED_TOGGLE:  pressed = toggle(a);                   break;
+     case FED_INCR:    pressed = increment(a, 1);             break;
+     case FED_DECR:    pressed = increment(a, -1);            break;
+     default:          pressed = F(p)[PGE_STATUS].sedit(a, pos, fldtype(), fieldlen);
+    }
+    if (pressed != KEF_CANCEL && validate(c, a) == KEF_CANCEL) pressed = KEF_CANCEL;
   }
   break;
  case MOD_QUERY:
-  pressed = F(p[PGE_STATUS].sedit)(queryhuman, pos, FTY_ALL, SMLSIZE);
+  pressed = F(p[PGE_STATUS].sedit)(queryhuman, pos<FED_SPECIAL ? -1 : pos, FTY_ALL, SMLSIZE);
   colquery(queryhuman, querywhere, name, querycharm, 0);
   break;
  case MOD_DELETE:

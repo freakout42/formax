@@ -18,7 +18,7 @@ create table emps
   comm       integer,
   dept_id    integer
  );
-insert into emps values (7369, 'MC''SMITH',  'CLERK',     7902, '1980-12-17', NULL, 0, 20);
+insert into emps values (7369, 'MC''SMITH',  'CLERK',     9702, '1980-12-17', NULL, 0, 20);
 insert into emps values (7499, 'ALLEN',      'SALESMAN',  7698, '1981-02-20', 1600, 0, 30);
 insert into emps values (7521, 'WARD',       'SALESMAN',  7698, '1981-02-22', 1250, 1, 30);
 insert into emps values (7566, 'JONES',      'MANAGER',   7839, '1981-04-02', 2975, 0, 20);

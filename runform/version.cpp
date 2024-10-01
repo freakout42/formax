@@ -4,6 +4,18 @@
 #include <unistd.h>
 #include "runform.h"
 
+/* optimized strncpy */
+char *letstrncpy(char *dest, const char *src, size_t n) {
+unsigned int i;
+i = strlen(src);
+if (i < n-2) {
+  strcpy(dest, src);
+} else {
+  *dest = '\0';
+}
+return dest+i;
+}
+
 /* avoid include <stdio.h> need */
 int letf(char *target, size_t maxlen, const char *format, ...) {
 va_list args;
@@ -44,7 +56,7 @@ return 0;
 
 int ispunctation(int c) {
 char *pc;
-if (c && (pc = strchr(shiftednum, c))) return KEF_NAVI(pc - shiftednum);
+if (c && (pc = strchr(shiftednum, c))) return KEF_NAVI(pc-shiftednum);
 return c;
 }
 
@@ -63,8 +75,18 @@ switch(chr) {
 }
 
 int cats(char *target, size_t maxlen, const char *source) {
-strncat(target, source, maxlen);
-return strlen(target);
+/* strncat(target, source, maxlen);
+ * return strlen(target);
+ */
+unsigned int i, j;
+i = strlen(target);
+j = strlen(source);
+if (i+j < maxlen-2) {
+  strcpy(target+i, source);
+} else {
+  *target = '\0';
+}
+return i + j;
 }
 
 int catc(char *target, size_t maxlen, char source) {
