@@ -358,7 +358,7 @@ Setting triggers return a new value for the current field.
 On success next_item() is fired to move to the next field.
 
 | Trigger    | Fire | Event/Key        | Type    | trgtyp |
-|------------|------|----------------------------|--------|
+|------------|------|------------------|---------|--------|
 | ENTERFORM  | App  | enter_the_form() | Action  | 1000   |
 | NEXTITEM   | Key  | CTRL('I') TAB    | Action  | 1001   |
 | PREVITEM   | Key  | CTRL('G') BTAB   | Action  | 1002   |
