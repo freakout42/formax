@@ -51,16 +51,16 @@ technologies including all required enterprise features:
 
 Status
 ======
-Edge 1.5.0 is useable for single block single page forms.
+Trigger 1.8.0 is useable for single block single page forms.
 Don't hesitate to create an issue when in trouble or missing
 a feature or have found a bug or security problem.
 
 Feature roadmap
 ---------------
- - 1.8 triggers
- - 1.9 in-field editing
+ - 1.9 multiple blocks and non-db block
  - 2.0 multi-record fields
  - 2.1 multiple blocks and master-detail
+ - 2.2 in-field editing
  - 2.5 list of values - subforms
  - 3.0 menue multiple forms
  - 3.5 transaction processing

@@ -22,6 +22,10 @@ test: runform $(EXAMPLE)
     ./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
 
+testelk: testelk.c elk/elk.o
+	cc -g -O0 testelk.c elk/elk.o -o testelk
+	./testelk
+
 curkeys.h: curkeys
 	./curkeys >$@
 
@@ -45,4 +49,4 @@ $(EXAMPLE):
 
 clean:
 	for D in colquery regex elk crypt membed ../generate; do ( cd $$D; make clean; ); done
-	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_* $(EXAMPLE)
+	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log ads_* $(EXAMPLE) testelk

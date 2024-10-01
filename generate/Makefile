@@ -16,5 +16,5 @@ scotty.inp: testform makeform
 	./testform >$@
 
 clean:
-	rm -f formax.frm* trgr.frm* scotty.inp scotty.frm* scotty.sq3 ads_* adjfield runform
+	rm -f formax.frm* trgr.frm* scotty.inp scotty.frm* scotty.sq3 ads_* adjfield runform my*
 

@@ -119,8 +119,8 @@ switch (CM) {
 wera();
 writef(0,  2, 0, 2,  "%2s-",      F(id));
 writes(0,  5,                     F(name));
-writef(0, 16, 0, 8,  "%s",        username);
-writef(0, 25, 0, 7,  "%s",        CB.table);
+writef(0, 16, 0, 7,  "%s",        username);
+writef(0, 25, 0, 8,  "%s",        CB.table);
 writef(0, 33, 0, 8,  "%s",        CF.name);
 writef(0, 42, 0, 9,  "%6d/%6d",   CB.currentrecord, CB.q->rows);
 writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
