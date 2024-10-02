@@ -10,7 +10,9 @@ VALGRINDSUP=--gen-suppressions=no #all
 
 all: runform
 
-runform: curkeys.h $(OBJS) $(OBJA)
+$(OBJS): curkeys.h
+
+runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
 
 run: runform $(EXAMPLE)
@@ -21,10 +23,6 @@ test: runform $(EXAMPLE)
 	/opt/valgrind/bin/valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
     ./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
-
-testelk: testelk.c elk/elk.o
-	cc -g -O0 testelk.c elk/elk.o -o testelk
-	./testelk
 
 curkeys.h: curkeys
 	./curkeys >$@

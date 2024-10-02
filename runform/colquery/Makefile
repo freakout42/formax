@@ -26,16 +26,21 @@ cql.o: cql.l cqy.o
 	sed 's/YYcqwrap/yywrap/g' <lex.cq.c >cql.c
 	$(CC) $(CFLAGS) -c cql.c
 
-cqy.o: cqy.y
+cqy.c colq.h: cqy.y
 	$(YACC) $(YFLAGS) cqy.y
-	test -f cqy.tab.c && mv cqy.tab.c y.tab.c
+	-test -f y.tab.c   && mv y.tab.c   cqy.c
+	-test -f y.tab.h   && mv y.tab.h   colq.h
+	-test -f cqy.tab.c && mv cqy.tab.c cqy.c
+	-test -f cqy.tab.h && mv cqy.tab.h colq.h
+
+cqy.o: cqy.c colq.h
+	cp cqy.c  y.tab.c
+	cp colq.h cqy.tab.h
 	$(CC) $(CFLAGS) -c y.tab.c
-	mv y.tab.o $@
-	test -f cqy.tab.h && mv cqy.tab.h y.tab.h
-	mv y.tab.h colq.h
+	mv y.tab.o cqy.o
 
 colquery.h: cqy.o
 
 clean:
-	rm -f *.o y.tab.[ch] colq.h colquery.map colq lex.cq.c y.tab.c cql.c *.output cqy.tab.* test *core.*
+	rm -f *.o y.tab.[ch] colquery.map colq lex.cq.c y.tab.c *.output cqy.tab.* test *core.* cql.y colq.h cqy.c cql.c
 

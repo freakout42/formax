@@ -29,7 +29,6 @@ int  autocommit  = 1;             // -a
 int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
 char *ypassword  = NULL;
-char *nullstring = "0";
 char *username;
 Logger g;
 Record dbconn[5];

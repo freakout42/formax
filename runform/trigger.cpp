@@ -86,7 +86,7 @@ return map->getbody(map_id, body, sizeof(body));
 
 char *Trigger::jsexecdirect(char *prog) {
 jsval_t v;
-v = js_eval(javascript, prog, ~0);
+v = js_eval(javascript, prog, ~0U);
 return (char*)js_str(javascript, v);
 }
 

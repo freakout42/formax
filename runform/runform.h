@@ -115,6 +115,5 @@ extern int   deleprompt;
 extern int   queryonlym;
 extern char  *shiftednum;
 extern char  *username;
-extern char  *nullstring;
 extern Function u;
 extern char a[BIGSIZE];

@@ -11,7 +11,7 @@ TABLE=$3
 shift 3
 fi
 cat <<EOF
-#PRAGMA encoding="ISO-8859-15";
+/*#PRAGMA encoding="ISO-8859-15";*/
 `extractsql $ARX/runform/form.h`
 `extractsql $ARX/runform/rerror.h`
 `extractsql $ARX/runform/rblock.h`

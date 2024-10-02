@@ -9,6 +9,10 @@ test: unittest.c
 	$(CC) $(CFLAGS) unittest.c -o unittest
 	./unittest
 	
+testelk: testelk.c
+	$(CC) $(CFLAGS) testelk.c -o testelk
+	./testelk
+
 clean:
 	rm -f *.o unittest
 

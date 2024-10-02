@@ -337,7 +337,7 @@ if ((i = qtrigger(tid)) > -1) {
     if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
-      s = "-1";
+      strcpy(s, "-1");
       notrunning = -1;
     }
   injstrigger = 0;

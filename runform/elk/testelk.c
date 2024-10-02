@@ -2,14 +2,14 @@
  * get problems when working on modern 64 bit Linux (GitHub codespace)
  */
 #include <stdio.h>
-#include "elk/elk.h"
+#include "elk.c"
 
 int main(void) {
   char mem[100000];
   struct js *js = js_create(mem, sizeof(mem));  // Create JS instance
-  jsval_t v = js_eval(js, "let cb;let cf;let cr;let cv;let nav0 = 500;let v0;let v1;let v2;let v3;let clip = '0';", ~0);
+  jsval_t v = js_eval(js, "let cb;let cf;let cr;let cv;let nav0 = 500;let v0;let v1;let v2;let v3;let clip = '0';", ~0U);
   printf("result: %s\n", js_str(js, v));        // result: undefined
-  v = js_eval(js, "cb = 'depts'; cf = 'dname'; cr = 1; cv = 'ACCOUNTING';\nclip = cv;529;\n", ~0);
+  v = js_eval(js, "cb = 'depts'; cf = 'dname'; cr = 1; cv = 'ACCOUNTING';\nclip = cv;529;\n", ~0U);
   printf("result: %s\n", js_str(js, v));        // result: 529
   return 0;
 }

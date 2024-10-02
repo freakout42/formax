@@ -1,4 +1,4 @@
-#PRAGMA encoding="ISO-8859-15";
+/*#PRAGMA encoding="ISO-8859-15";*/
 CREATE TABLE forms
   (id INTEGER PRIMARY KEY NOT NULL,
    name TEXT NOT NULL DEFAULT 'form0',
