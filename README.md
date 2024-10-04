@@ -58,7 +58,7 @@ Enterprise requirements are accomplished immaculate:
     3FA included
  - Reliability \
     low complexity system \
-    only two interfaces \
+    only two interfaces
  - Cost \
     no license costs \
     easy deployment
