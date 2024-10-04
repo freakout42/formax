@@ -51,7 +51,7 @@ technologies:
  - no operating system exits in the engine
  - 3FA security can be setup easily
 
-Enterprise requirements are accomplished immaculate:
+Enterprise requirements are fully accomplished:
  - Security \
     high standards for source code \
     minimized use of libraries \
@@ -70,7 +70,8 @@ Enterprise requirements are accomplished immaculate:
     for bandwidth, cpu and memory
  - Sustainability \
     completely open source \
-    database independent
+    database independent \
+    NEVER LOOSE SUPPORT AGAIN
 
 Status
 ======
