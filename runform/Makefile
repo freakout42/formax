@@ -6,6 +6,7 @@ EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
 VALGRINDSUP=--gen-suppressions=no #all
 
 all: runform
+	strip runform
 
 $(OBJS): curkeys.h
 
@@ -15,7 +16,7 @@ runform: $(OBJS) $(OBJA)
 run: runform $(EXAMPLE)
 	./runform -g/tmp/formax.log $(EXAMPLE)
 
-test: runform $(EXAMPLE)
+test: clean runform $(EXAMPLE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
     ./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
