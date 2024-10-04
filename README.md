@@ -53,23 +53,23 @@ technologies:
 
 Enterprise requirements are accomplished immaculate:
  - Security \
-    high standards for source code
-    minimized use of libraries
+    high standards for source code \
+    minimized use of libraries \
     3FA included
- - Reliability
-    low complexity system
-    only two interfaces
- - Cost
-    no license costs
+ - Reliability \
+    low complexity system \
+    only two interfaces \
+ - Cost \
+    no license costs \
     easy deployment
- - Operational excellence
-    simple no hassle updates
+ - Operational excellence \
+    simple no hassle updates \
     full logging of user action
- - Performance efficience
-    very low resource demands
+ - Performance efficience \
+    very low resource demands \
     for bandwidth, cpu and memory
- - Sustainability
-    completely open source
+ - Sustainability \
+    completely open source \
     database independent
 
 Status
