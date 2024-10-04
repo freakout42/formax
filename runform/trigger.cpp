@@ -76,7 +76,7 @@ if (!javascript) {
   JSEXE(Message,message);
   JSEXE(SQL,sql);
   letf(t(a), "let cb;let cf;let cr;let cv;let nav0 = %d;let v0;let v1;let v2;let v3;let clip = '0';", KEF_NAVI0);
-  jsexecdirect(a);
+  jsexecdirect(a, strlen(a));
 }
 trgfld = trg->n(rix, 1);
 trgtyp = trg->n(rix, 2);
@@ -84,9 +84,9 @@ map_id = trg->n(rix, 3);
 return map->getbody(map_id, body, sizeof(body));
 }
 
-char *Trigger::jsexecdirect(char *prog) {
+char *Trigger::jsexecdirect(char *prg, int siz) {
 jsval_t v;
-v = js_eval(javascript, prog, ~0U);
+v = js_eval(javascript, prg, siz);
 return (char*)js_str(javascript, v);
 }
 
@@ -94,14 +94,15 @@ char *Trigger::jsexec() {
 char prog[BIGSIZE];
 char *fvalue;
 char *escaped;
-fvalue = CV;
-for (escaped=a; *fvalue; fvalue++) {
+int progsize;
+escaped = a;
+for (fvalue=CV; *fvalue; fvalue++) {
   if (*fvalue == '\'') *escaped++ = '\\';
   *escaped++ = *fvalue;
 }
 *escaped++ = '\0';
 letf(t(prog), "cb = '%s'; cf = '%s'; cr = %d; cv = '%s';\n", CB.table, CF.name, CR, a);
-cats(t(prog), body);
-return jsexecdirect(prog);
+progsize = cats(t(prog), body);
+return jsexecdirect(prog, progsize);
 }
 

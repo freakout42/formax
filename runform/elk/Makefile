@@ -1,18 +1,18 @@
-CFLAGS := -O0 -g -std=c99
+include ../cflags.make
+CFLAGS+=-std=c99
 
 all: elk.o
 
-elk.o: test elk.c
-	$(CC) $(CFLAGS) -c elk.c
-
-test: unittest.c
-	$(CC) $(CFLAGS) unittest.c -o unittest
+test: unittest testelk elk.o
 	./unittest
-	
-testelk: testelk.c
-	$(CC) $(CFLAGS) testelk.c -o testelk
 	./testelk
 
+elk.o: elk.c elk.h
+
+unittest.c: elk.o
+	
+testelk.c: elk.o
+
 clean:
-	rm -f *.o unittest
+	rm -f *.o unittest testelk
 

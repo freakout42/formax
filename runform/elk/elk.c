@@ -17,7 +17,7 @@
 #if defined(__GNUC__) && !defined(JS_OPT) && !defined(ARDUINO_AVR_UNO) && \
     !defined(ARDUINO_AVR_NANO) && !defined(ARDUINO_AVR_PRO) &&            \
     !defined(__APPLE__)
-#pragma GCC optimize("O3,inline")
+/*#pragma GCC optimize("O3,inline")*/
 #endif
 
 #include <assert.h>

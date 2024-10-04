@@ -1,15 +1,14 @@
-# Makefile for MEX on Unix
-
-CFLAGS=-g -O0 -Wall -Werror
+include ../cflags.make
 LIBS=-lcurses
 SRC=buffer.c cursor.c display.c files.c line.c random.c search.c term.c window.c word.c main.c
 OBJ=buffer.o cursor.o display.o files.o line.o random.o search.o term.o window.o word.o help.o
 
-all: mex libmex.a
+all: libmex.a
 
-mex: main.o $(OBJ)
-	$(CC) -o $@ $(LDFLAGS) main.o $(OBJ) $(LIBS)
-	strip $@
+test: mex
+
+mex: main.o libmex.a
+	$(CC) -o $@ $(LDFLAGS) -L. main.o -lmex $(LIBS)
 
 libmex.a: mainloop.o $(OBJ)
 	$(AR) rcs $@ mainloop.o $(OBJ)

@@ -1,4 +1,4 @@
 #!/bin/sh
 #sed -n '/BEGINSQL/,/endif/p' $1 | sed '1d;$d'
-cpp -P -DBEGINSQL $1
+cpp -w -P -DBEGINSQL $1
 exit

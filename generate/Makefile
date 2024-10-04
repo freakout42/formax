@@ -1,8 +1,8 @@
-all: adjfield formax.frm trgr.frm
+all: adjfield formax.frm trigger.frm
 
 test: all scotty.sq3 scotty.frm
 
-editform: adjfield formax.frm trgr.frm
+editform: adjfield formax.frm trigger.frm
 
 %.frm: %.inp
 	rm -f $@
@@ -16,5 +16,5 @@ scotty.inp: testform makeform
 	./testform >$@
 
 clean:
-	rm -f formax.frm* trgr.frm* scotty.inp scotty.frm* scotty.sq3 ads_* adjfield runform my*
+	rm -f *.frm* scotty.inp scotty.frm* scotty.sq3 ads_* adjfield runform my*
 
