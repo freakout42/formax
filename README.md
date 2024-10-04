@@ -2,11 +2,11 @@ formax: enterprise-applications on terminals
 ============================================
 **formax** is a tool for developing and executing user
 friedly character based database applications with extreme
-efficiency. The concept of Oracle Forms is combined with
-curses as the terminal interface, ODBC for universal
+efficiency. It joins the concept of venerable Oracle Forms
+with curses as the terminal interface, ODBC for universal
 database access and JavaScript for the trigger language. The
-result is the most efficient solution possible for the
-end-user. The applications can be build with minimal effort
+result is the most efficient solution possible for the end
+user. The applications can be build with minimal effort
 using a nocode approach.\
 Click on the image for a non technical description:
 
@@ -22,7 +22,9 @@ the runtime component. The form is used to view and edit
 data in a database driven manner. The environment supplies
 builtin record creation, query, delete and update modes,
 each with its own default data manipulations. This minimizes
-the need for program code. **formax** is a "Nocode RAD".
+the need for program code. **formax** is a "Nocode RAD". A
+fully functional (CRUD) form for a table can build within
+two seconds.
 
 The running form has an event driven interface and
 implements event handling functions called triggers which
@@ -37,7 +39,7 @@ necessary.
 
 **formax** encorporates the concept of Oracle Forms with
 modern standards and current database best practices and
-technologies including all required enterprise features:
+technologies:
  - single column autoincrement primary key
  - integrity enforced through database
  - JavaScript for client scripting
@@ -49,14 +51,35 @@ technologies including all required enterprise features:
  - no operating system exits in the engine
  - 3FA security can be setup easily
 
+Enterprise requirements are accomplished immaculate:
+ - Security \
+    high standards for source code
+    minimized use of libraries
+    3FA included
+ - Reliability
+    low complexity system
+    only two interfaces
+ - Cost
+    no license costs
+    easy deployment
+ - Operational excellence
+    simple no hassle updates
+    full logging of user action
+ - Performance efficience
+    very low resource demands
+    for bandwidth, cpu and memory
+ - Sustainability
+    completely open source
+    database independent
+
 Status
 ======
 Trigger 1.8.0 is useable for single block single page forms.
 Don't hesitate to create an issue when in trouble or missing
 a feature or have found a bug or security problem.
 
-Feature roadmap
----------------
+Future roadmap
+--------------
  - 1.9 multiple blocks and non-db block
  - 2.0 multi-record fields
  - 2.1 multiple blocks and master-detail
@@ -165,8 +188,7 @@ editform myform
 runform myform.frm mydb.sq3
 ~~~
 
-Read the developer guide for more information how to modify
-the form.
+Read the developer guide to modify the form in detail.
 
 Documentation
 -------------
