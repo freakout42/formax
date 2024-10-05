@@ -2,14 +2,14 @@
 if [ "`dirname $0`" = "." ]; then
   ADJFIELD=./adjfield
   RUNFORM=../runform/runform
-  FORMAXFRM=formax.frm
-  TRIGGRFRM=trgr.frm
+  FORMAXFRM=field.frm
+  TRIGGRFRM=trigger.frm
   LOGGING=-g/tmp/formax.log
 else
   ADJFIELD=adjfield
   RUNFORM=runform
-  FORMAXFRM=${ARX:-/opt/arx}/lib/formax.frm
-  TRIGGRFRM=${ARX:-/opt/arx}/lib/trgr.frm
+  FORMAXFRM=${ARX:-/opt/arx}/lib/field.frm
+  TRIGGRFRM=${ARX:-/opt/arx}/lib/trigger.frm
   LOGGING=""
 fi
 FORM=$1

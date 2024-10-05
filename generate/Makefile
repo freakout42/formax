@@ -2,7 +2,7 @@ all: adjfield formax.frm trigger.frm
 
 test: all scotty.sq3 scotty.frm
 
-editform: adjfield formax.frm trigger.frm
+editform: adjfield formax.frm field trigger.frm
 
 %.frm: %.inp
 	rm -f $@
