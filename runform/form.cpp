@@ -19,6 +19,10 @@ columni = 3;
 int Form::fill(int fid) {
 int i, s;
 Block *blk;
+Form *runningform;
+
+runningform = f;
+f = this;
 
 /* connect all configuration tables to the form database */
        connect(dbconn[0]);
@@ -106,6 +110,7 @@ for (i=0; i<numfield; i++) {
 }
 rfield.rclose();
 
+f = runningform;
 return 0;
 }
 
