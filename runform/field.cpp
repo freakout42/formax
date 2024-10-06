@@ -7,14 +7,17 @@
 #include "regex/re.h"
 #include "colquery/colquery.h"
 
+#define page  F(p)[pageindex]
+#define block F(b)[blockindex]
+
 int Field::init(Qdata *fld, int rix, Block *bs) {
 field_id      = fld->n(rix, 1);
 let(name,       fld->v(rix, 2));
 blockindex    = fld->n(rix, 3);
 pageindex     = fld->n(rix, 4);
 displaylen    = fld->n(rix, 5);
-line          = fld->n(rix, 6);
-col           = fld->n(rix, 7);
+line          = fld->n(rix, 6);// - page.border ? 0 : 1;
+col           = fld->n(rix, 7);// - page.border ? 0 : 1;
 isprimarykey  = fld->n(rix, 8);
 fieldtype     = (ftype)fld->n(rix, 9);
 fieldlen      = fld->n(rix,10);
@@ -66,8 +69,8 @@ switch(CM) {
  default:         color = COL_FIELD;
 }
 if (cur && CM != MOD_DELETE) color = COL_CURRENT;
-F(p[1]).writef(line, col, color, displaylen, "%.*s", displaylen, CM==MOD_QUERY ? queryhuman : *valuep());
-if (cur) F(p[1]).wmov(line, col);
+page.writef(line, col, color, displaylen, "%.*s", displaylen, CM==MOD_QUERY ? queryhuman : *valuep());
+if (cur) page.wmov(line, col);
 }
 
 /* clear field content */
@@ -91,7 +94,7 @@ return valuepr(CB.currentrecord);
 char **Field::valuepr(int row) {
 static char *emptystring = "";
 static char **val;
-val = F(b)[blockindex].q->w(row, sequencenum);
+val = block.q->w(row, sequencenum);
 if (!val || !*val) val = &emptystring;
 return val;
 }
@@ -184,7 +187,7 @@ switch(CM) {
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }
  case MOD_INSERT:
   if (noedit()) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
-  if (F(b[blockindex].q->rows)) {
+  if (block.q->rows) {
     c = valuep();
     if (*c) let(a, *c); else *a = '\0';
     switch(pos) {

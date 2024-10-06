@@ -7,6 +7,7 @@
 class Page: public Screen {
 public:
   int page_id;
+  int border;
   int init(Qdata *pag, int rix);
   void create();
   void repaint();
@@ -22,7 +23,6 @@ protected:
   int vwpy0;
   int vwpx0;
   int popup;
-  int border;
 private:
   char *map[NLINES];
   void refrnopop();
