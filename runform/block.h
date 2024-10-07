@@ -15,6 +15,7 @@ public:
   int blockfields[NFIELD1]; /* array index l[] */
   int primarykeys[NPRIKEY];
   char *cn(int c);
+  fmode rmode;
   int currentrecord;
   int bdirty;
   int sequence; // % 10 is blockindex for connection

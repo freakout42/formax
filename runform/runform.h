@@ -66,10 +66,10 @@ extern Record dbconn[5];
 extern Screen y;
 extern Form *f;
 #define F(method) f->method
-#define CM F(rmode)
 #define CB F(b)[F(curblock)]
 #define CF F(l)[F(curfield)]
 #define CR CB.currentrecord
+#define CM CB.rmode
 #define CV *CF.valuep()
 #define LK F(lastkey)
 #define MSG(n) F(p)[0].message(n, NULL)

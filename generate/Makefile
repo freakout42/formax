@@ -19,5 +19,5 @@ formax.sql: formax.frm
 	sqlite3 formax.frm .dump >$@
 
 clean:
-	rm -f *.frm* scotty.inp scotty.frm* scotty.sq3 ads_* adjfield runform my* formax.sql
+	rm -f *.frm* scotty.inp scotty.frm* scotty.sq3 ads_* adjfield runform my* formax.sq?
 
