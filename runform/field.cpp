@@ -68,8 +68,8 @@ switch(block.rmode) {
  case MOD_DELETE: color = COL_DELETED; break;
  default:         color = COL_FIELD;
 }
-if (cur && CM != MOD_DELETE) color = COL_CURRENT;
-page.writef(line, col, color, displaylen, "%.*s", displaylen, CM==MOD_QUERY ? queryhuman : *valuep());
+if (cur && block.rmode != MOD_DELETE) color = COL_CURRENT;
+page.writef(line, col, color, displaylen, "%.*s", displaylen, block.rmode==MOD_QUERY ? queryhuman : *valuep());
 if (cur) page.wmov(line, col);
 }
 
@@ -87,7 +87,7 @@ if (CM == MOD_QUERY) {
 
 /* the current field value */
 char **Field::valuep() {
-return valuepr(CB.currentrecord);
+return valuepr(block.currentrecord);
 }
 
 /* field value any row */

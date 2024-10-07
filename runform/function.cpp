@@ -15,8 +15,6 @@ F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
   case KEF_LIST:            /* flist() */
-  case KEF_HOME:            /* fhome() */
-  case KEF_END:             /* fend() */
   case KEF_NAVI0:           /* fmenu() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
@@ -41,6 +39,8 @@ switch(F(lastcmd)) {
   case KEF_KEYHELP:  LK = keys_help();                                        break;
   case KEF_PREREC:   LK = previous_record();                                  break;
   case KEF_COPYREC:  LK = fcopyrec();                                         break;
+  case KEF_HOME:     LK = fmove(-1, 0);                                       break;
+  case KEF_END:      LK = fmove( 1, 0);                                       break;
   case KEF_COPY:     LK = fcopy();                                            break;
   case KEF_PASTE:    LK = fpaste();                                           break;
   case KEF_INSERT:
@@ -140,7 +140,10 @@ TRIGGRD(previous_setrecords,PREVSETREC,fmover,0,-CB.norec)
 
 /* move from field to field */
 int Function::fmove(int bi, int fi) {
-//F(curblock) = (F(curblock) + F(numblock) + bi) % F(numblock);
+if (bi) {
+  F(curblock) = ((F(curblock)-4 + F(numblock)-4 + bi) % (F(numblock)-4) + 4);
+  F(curfield) = CB.blockfields[0];
+}
 if (fi < NFIELD1) F(curfield) = CB.blockfields[ (CF.sequencenum-1 + CB.fieldcount + fi) % CB.fieldcount ];
 else              F(curfield) = fi - NFIELD1 - 1;
 if (CF.noedit()) fmove(0, fi<0 ? -1 : 1);

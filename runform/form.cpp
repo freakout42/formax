@@ -169,6 +169,7 @@ switch(ck) {                                  /* C */
   case KEY_HOME:       return KEF_HOME;       /* a      fhome */
   case KEY_PPAGE:      return KEF_PRESETR;    /* r      fpresetr */
   case KEY_DC:         return KEF_DELETE;     /* d      delete_record */
+  case KEY_LL:
   case KEY_END:        return KEF_END;        /* e      fend */
   case KEY_NPAGE:      return KEF_NXTSETR;    /* w      fnxtsetr */
   case KEY_UP:         return KEF_PREREC;     /* p      fmover */
