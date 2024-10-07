@@ -96,9 +96,10 @@ return notrunning;
 
 /* GENERAL */
 int Function::enter_the_form() {
+int i;
 F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
-enter_query(&CB);
+forall(block) enter_query(&F(b)[i]);
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
 notrunning = triggern(TRT_ENTERFORM);
 return 0;
@@ -267,8 +268,10 @@ return 0;
 int Function::enter_query(Block *blk) {
 blk->clear();
 blk->currentrecord = 0;
-F(dirty) = 0;
-switch_mode(MOD_QUERY);
+if (blk == &CB) {
+  switch_mode(MOD_QUERY);
+  F(dirty) = 0;
+} else blk->rmode = MOD_QUERY;
 return 0;
 }
 

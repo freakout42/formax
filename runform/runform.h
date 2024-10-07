@@ -74,7 +74,7 @@ extern Form *f;
 #define LK F(lastkey)
 #define MSG(n) F(p)[0].message(n, NULL)
 #define MSG1(n,c) F(p)[0].message(n, c)
-
+#define forall(item) for (i=4; i<F(num ## item); i++)
 /* helpers from version.cpp */
 extern char *letstrncpy(char *dest, const char *src, size_t n);
 extern int yesno(int c);

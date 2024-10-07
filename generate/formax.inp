@@ -137,6 +137,6 @@ INSERT INTO fields VALUES (null,1,4,1,'mnunam',40,0,30,16,1,0,'',0,44,1,1,1,1,0,
 INSERT INTO fields VALUES (null,1,4,1,'mnugrp',50,0,30,16,1,0,'',0,61,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO maps VALUES (null,4,0,'Form  $1 $2______ $3__________________ Menu $4______________/$5______________');
 INSERT INTO maps VALUES (null,4,1,'Block $6 $7______ $8');
-INSERT INTO blocks (name,seq) VALUES ('blocks',51);
-INSERT INTO fields VALUES (null,1,4,2,'id',  60,0,30,2,1,1,'',1,6,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES (null,1,4,2,'name',70,0,30,8,1,0,'',1,8,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO blocks (name,seq) VALUES ('blocks',60);
+INSERT INTO fields VALUES (null,1,5,1,'id',  60,0,30,2,1,1,'',1,6,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES (null,1,5,1,'name',70,0,30,8,1,0,'',1,9,1,1,1,1,0,0,'',0,0,0,0,'','');

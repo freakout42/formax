@@ -62,7 +62,7 @@ return (fieldtype==FTY_INT && lowvalue==0 && highvalue==1) ? FTY_BOOL : fieldtyp
 /* display the field according to mode */
 void Field::show(int cur) {
 int color;
-switch(CM) {
+switch(block.rmode) {
  case MOD_QUERY:  color = COL_QUERY;  break;
  case MOD_INSERT: color = COL_NEWREC; break;
  case MOD_DELETE: color = COL_DELETED; break;
