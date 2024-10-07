@@ -1,6 +1,6 @@
 all: editform
 
-test: all scotty.sq3 scotty.frm
+test: all scotty.sq3 scotty.frm formax.frm formax.sq3
 
 editform: adjfield formax.frm field.frm trigger.frm
 
@@ -8,13 +8,16 @@ editform: adjfield formax.frm field.frm trigger.frm
 	rm -f $@
 	sqlite3 $@ <$<
 
-scotty.sq3: scotty.sql
+%.sq3: %.sql
 	rm -f $@
-	sqlite3 $@ <scotty.sql
+	sqlite3 $@ <$<
 
 scotty.inp: testform makeform
 	./testform >$@
 
+formax.sql: formax.frm
+	sqlite3 formax.frm .dump >$@
+
 clean:
-	rm -f *.frm* scotty.inp scotty.frm* scotty.sq3 ads_* adjfield runform my*
+	rm -f *.frm* scotty.inp scotty.frm* scotty.sq3 ads_* adjfield runform my* formax.sql
 

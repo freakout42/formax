@@ -59,12 +59,12 @@ switch(F(lastcmd)) {
     case MOD_DELETE: LK = destroy_record();                            break;
     default:         LK = 0;                                           break;
    }                                                                          break;
-  case KEF_QUERY:    LK = enter_query();                                      break;
+  case KEF_QUERY:    LK = enter_query(&CB);                                   break;
   case KEF_NAVI10:
   case KEF_COMMIT:
    switch(CM) {
     case MOD_QUERY:  LK = execute_query();                             break;
-    case MOD_UPDATE: LK = enter_query();                               break;
+    case MOD_UPDATE: LK = enter_query(&CB);                            break;
     case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
     case MOD_DELETE: LK = destroy_record();                            break;
    }                                                                          break;
@@ -98,7 +98,7 @@ return notrunning;
 int Function::enter_the_form() {
 F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
-enter_query();
+enter_query(&CB);
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
 notrunning = triggern(TRT_ENTERFORM);
 return 0;
@@ -264,9 +264,9 @@ notrunning = -1;
 return 0;
 }
 
-int Function::enter_query() {
-CB.clear();
-CB.currentrecord = 0;
+int Function::enter_query(Block *blk) {
+blk->clear();
+blk->currentrecord = 0;
 F(dirty) = 0;
 switch_mode(MOD_QUERY);
 return 0;
@@ -303,7 +303,7 @@ return 0;
 int Function::clear_record() {
 CB.q->splice(-CB.currentrecord);
 if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
-if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query(); 
+if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query(&CB); 
 return 0;
 }
 

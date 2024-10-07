@@ -3,6 +3,7 @@ SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 OBJA=cqerror.o colquery/colquery.o crypt/libmd5.a membed/libmex.a elk/elk.o regex/re.o
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
+FORMAXE=../generate/formax.frm ../generate/formax.sq3
 VALGRINDSUP=--gen-suppressions=no #all
 
 all: runform
@@ -16,9 +17,9 @@ runform: $(OBJS) $(OBJA)
 run: runform $(EXAMPLE)
 	./runform -g/tmp/formax.log $(EXAMPLE)
 
-test: clean runform $(EXAMPLE)
+test: clean runform $(EXAMPLE) $(FORMAXE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
-    ./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
+    ./runform -x -g/tmp/formax.log $(FORMAXE) 2>$@
 	test -f $@ -a ! -s $@
 
 curkeys.h: curkeys

@@ -36,7 +36,7 @@ private:
   int fquit();
   int insert_record();
   int create_record();
-  int enter_query();
+  int enter_query(Block *blk);
   int execute_query();
   int delete_record();
   int destroy_record();
