@@ -23,8 +23,8 @@ ${EDITOR:-vi} $FORM.map
 $SQL "delete from maps where page_id = 4"
 LINE=0
 IFS=% sed "s/^/'/;s/\$/'/" $FORM.map | while read TEXT; do
-  LINE=`expr $LINE + 1`
   $SQL "insert into maps (page_id, line, mtext) values (4, $LINE, $TEXT)"
+  LINE=`expr $LINE + 1`
 done
 $ADJFIELD <$FORM.map | $SQL
 rm $FORM.map

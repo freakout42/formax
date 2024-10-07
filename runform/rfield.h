@@ -21,7 +21,7 @@ CREATE TABLE fields
    key       INTEGER NOT NULL DEFAULT 0,    /* if the field is a primary key field */
    dflt      TEXT    NOT NULL DEFAULT '',   /* default value */
    line      INTEGER NOT NULL DEFAULT 0,    /* page location */
-   col       INTEGER NOT NULL DEFAULT 20,   /* column location */
+   col       INTEGER NOT NULL DEFAULT 19,   /* column location */
    enter     INTEGER NOT NULL DEFAULT 1,    /* if the field is enterable */
    query     INTEGER NOT NULL DEFAULT 1,    /* if the field can be queried */
    upd       INTEGER NOT NULL DEFAULT 1,    /* if the field can be updated */

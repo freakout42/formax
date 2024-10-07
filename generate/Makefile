@@ -1,8 +1,8 @@
-all: adjfield formax.frm trigger.frm
+all: editform
 
 test: all scotty.sq3 scotty.frm
 
-editform: adjfield formax.frm field trigger.frm
+editform: adjfield formax.frm field.frm trigger.frm
 
 %.frm: %.inp
 	rm -f $@

@@ -19,7 +19,7 @@ int Page::maps(Qdata *qma) {
 int i, r, y;
 char *t, *p;
 for (i = 1; i <= qma->rows; i++) {
-  r = qma->n(i, 1) - 1;
+  r = qma->n(i, 1);
   if (r > NLINES) return 1;
   map[r] = qma->c(i, 2);
   y = 1;

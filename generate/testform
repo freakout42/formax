@@ -22,7 +22,6 @@ INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,7,1001,2002);
 INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,8,1005,2003);
 EOF
 LINE=9
-LINE=`expr $LINE + 1`
 #elpmap 'F2    Ctrl+c Copy'
 #elpmap 'F3    Ctrl+v Paste'
 #elpmap 'F5    Ctrl+t Copy-Record'
@@ -36,7 +35,7 @@ helpmap 'F7    Ctrl+d Delete-Record    Delete: Move to the record'
 helpmap 'F8    Ctrl+z Exit                     Press "Delete" or Ctrl-d'
 helpmap 'F9    Ctrl+y Quit'          
 helpmap 'F10   Ctrl+x Query            Query:  Edit conditions in each field'
-LINE=0
+LINE=-1
 guidmap '                              Query examples Enter to execute'
 guidmap '>7700'
 guidmap '~jon'
