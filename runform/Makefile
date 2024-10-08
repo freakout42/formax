@@ -15,7 +15,7 @@ runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
 
 run: runform $(EXAMPLE)
-	./runform -g/tmp/formax.log $(EXAMPLE)
+	./runform -x -g/tmp/formax.log $(FORMAXE)
 
 test: clean runform $(EXAMPLE) $(FORMAXE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
@@ -37,6 +37,8 @@ regex/re.o:
 	cd regex; make $(SUBTARGET)
 
 $(EXAMPLE):
+	cd ../generate; make clean test
+$(FORMAXE):
 	cd ../generate; make clean test
 
 clean:
