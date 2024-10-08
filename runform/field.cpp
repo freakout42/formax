@@ -69,7 +69,7 @@ switch(block.rmode) {
  default:         color = COL_FIELD;
 }
 if (cur && block.rmode != MOD_DELETE) color = COL_CURRENT;
-page.writef(line, col, color, displaylen, "%.*s", displaylen, block.rmode==MOD_QUERY ? queryhuman : *valuep());
+if (displaylen > 0) page.writef(line, col, color, displaylen, "%.*s", displaylen, block.rmode==MOD_QUERY ? queryhuman : *valuep());
 if (cur) page.wmov(line, col);
 }
 
@@ -173,16 +173,6 @@ if (*c) {
 } else *c = strdup(buf);
 return 0;
 }
-/*
-#0  _vgr20160ZU_libcZdsoZa_strcmp (s1=0x0, s2=0x807c160 <a> "fields") at ../shared/vg_replace_strmem.c:940
-#1  0x0804be30 in Field::validate (this=0x483c3f0, c=0x807420c <Field::valuepr(int)::emptystring>, buf=0x807c160 <a> "fields")
-    at field.cpp:172
-#2  0x0804c0cb in Field::edit (this=0x483c3f0, pos=-1102) at field.cpp:201
-#3  0x0804eac7 in Function::fedit (this=0x807c150 <u>, pos=-1102) at function.cpp:237
-#4  0x0804ddb6 in Function::dispatch (this=0x807c150 <u>) at function.cpp:91
-#5  0x0804cde5 in Form::run (this=0x48259a0) at form.cpp:132
-#6  0x08052c1a in main (argc=5, argv=0xfee53bd4) at runform.cpp:208
-*/
 
 /* call the field editor depending on pos and current mode
  * when changed validate the new content and return next key

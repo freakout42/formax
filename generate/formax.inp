@@ -52,6 +52,7 @@ INSERT INTO blocks VALUES(3,0,'dual3',3,1,'id','','');
 INSERT INTO blocks VALUES(4,0,'dual4',4,1,'id','','');
 INSERT INTO blocks VALUES(5,1,'forms',50,1,'id','','');
 INSERT INTO blocks VALUES(6,1,'blocks',60,1,'id','','');
+INSERT INTO blocks VALUES(7,1,'fields',70,1,'id','','');
 CREATE TABLE fields
   (id INTEGER PRIMARY KEY NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -92,6 +93,32 @@ INSERT INTO fields VALUES(8,1,5,1,'seq',80,0,30,3,1,0,'',2,19,1,1,1,1,0,0,'',0,0
 INSERT INTO fields VALUES(9,1,5,1,'norec',90,0,30,3,1,0,'',2,23,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(10,1,5,1,'whereand',100,0,90,26,1,0,'',2,27,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(11,1,5,1,'orderby',110,0,90,26,1,0,'',2,54,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(12,1,6,1,'id',10,0,30,3,1,1,'',3,6,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(14,1,6,1,'blcn',30,0,30,3,1,0,'',3,15,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(15,1,6,1,'pgen',40,0,30,3,1,0,'',3,23,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(16,1,6,1,'name',50,0,30,12,1,0,'',3,27,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(17,1,6,1,'seq',60,0,30,3,1,0,'',4,6,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(18,1,6,1,'ftype',70,0,30,3,1,0,'',4,23,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(19,1,6,1,'len',80,0,30,3,1,0,'',5,23,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(20,1,6,1,'dlen',68,0,30,3,1,0,'',7,6,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(21,1,6,1,'btab',100,0,30,1,1,0,'',6,23,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(22,1,6,1,'key',110,0,30,1,1,0,'',6,33,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(23,1,6,1,'dflt',120,0,30,20,1,0,'',7,23,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(24,1,6,1,'line',65,0,30,3,1,0,'',5,6,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(25,1,6,1,'col',66,0,30,3,1,0,'',6,6,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(26,1,6,1,'enter',150,0,30,1,1,0,'',8,12,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(27,1,6,1,'query',160,0,30,1,1,0,'',9,12,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(28,1,6,1,'upd',170,0,30,1,1,0,'',10,12,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(29,1,6,1,'updnul',180,0,30,1,1,0,'',11,12,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(30,1,6,1,'mand',190,0,30,1,1,0,'',12,12,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(31,1,6,1,'upper',200,0,30,1,1,0,'',13,12,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(32,1,6,1,'lovtit',210,0,30,20,1,0,'',14,12,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(33,1,6,1,'lov_id',220,0,30,3,1,0,'',14,35,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(34,1,6,1,'lovi_id',230,0,30,3,1,0,'',14,41,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(35,1,6,1,'low',240,0,30,11,1,0,'',15,12,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(36,1,6,1,'high',250,0,30,11,1,0,'',15,29,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(37,1,6,1,'valpatn',260,0,30,34,1,0,'',16,12,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(38,1,6,1,'help',55,0,30,40,1,0,'',3,40,1,1,1,1,0,0,'',0,0,0,0,'','');
 CREATE TABLE triggers
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -125,9 +152,23 @@ INSERT INTO maps VALUES(14,2,13,'F12 l Refresh      End   e NextBlock');
 INSERT INTO maps VALUES(15,1008,1,'$(cb + "." + cf, cr - 1);');
 INSERT INTO maps VALUES(16,1009,1,'clip = cv;529;');
 INSERT INTO maps VALUES(17,1010,1,'clip;');
-INSERT INTO maps VALUES(24,4,0,'Form  $1_ $2______ $3__________________ Menu $4_______________/$5_______________');
-INSERT INTO maps VALUES(25,4,1,'                   Sq  Rec where                      order');
-INSERT INTO maps VALUES(26,4,2,'Block $6_ $7______ $8_ $9_ $10_______________________ $11_______________________');
+INSERT INTO maps VALUES(85,4,0,'Form  $1_ $2______ $3__________________ Menu $4_______________/$5_______________');
+INSERT INTO maps VALUES(86,4,1,'                   Sq  Rec where                      order');
+INSERT INTO maps VALUES(87,4,2,'Block $6_ $7______ $8_ $9_ $10_______________________ $11_______________________');
+INSERT INTO maps VALUES(88,4,3,'Field $12 blkn $14 pag $15 $16_________ $38_____________________________________');
+INSERT INTO maps VALUES(89,4,4,' Seq  $17      Type    $18 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE');
+INSERT INTO maps VALUES(90,4,5,' Line $24      Length  $19');
+INSERT INTO maps VALUES(91,4,6,' Col  $25      Table   $21. Pkey $22. ');
+INSERT INTO maps VALUES(92,4,7,' Dlen $20      Default $23_________________');
+INSERT INTO maps VALUES(93,4,8,' Enter      $26. edit in Insert-Mode');
+INSERT INTO maps VALUES(94,4,9,' Query      $27. edit in Query-Mode');
+INSERT INTO maps VALUES(95,4,10,' Update     $28. edit in Update-Mode');
+INSERT INTO maps VALUES(96,4,11,' UpdateNul  $29. edit in Update-Mode if NULL');
+INSERT INTO maps VALUES(97,4,12,' Mandatory  $30. must in Insert-Mode');
+INSERT INTO maps VALUES(98,4,13,' Uppercase  $31. convert uppercase Blk   Id');
+INSERT INTO maps VALUES(99,4,14,' ListOfVal  $32_________________ / $33 / $34');
+INSERT INTO maps VALUES(100,4,15,' Low        $35________ High $36________');
+INSERT INTO maps VALUES(101,4,16,' Pattern    $37_______________________________');
 CREATE TABLE pages
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -148,6 +189,6 @@ INSERT INTO pages VALUES(3,0,'editor',3,'',21,65,2,14,1,1,0);
 INSERT INTO pages VALUES(4,1,'formax',1,'',23,80,1,0,0,0,0);
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('triggers',3);
-INSERT INTO sqlite_sequence VALUES('maps',26);
+INSERT INTO sqlite_sequence VALUES('maps',101);
 INSERT INTO sqlite_sequence VALUES('pages',4);
 COMMIT;
