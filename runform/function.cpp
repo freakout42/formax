@@ -15,7 +15,6 @@ F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
   case KEF_LIST:            /* flist() */
-  case KEF_NAVI0:           /* fmenu() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
   case KEF_NOOP:
@@ -80,6 +79,8 @@ switch(F(lastcmd)) {
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
+  case KEF_NAVI0:    letf(t(a), "formax v%s charset %s - https://formax.freakout.de/", VERSION, CHARSET);
+                     LK = MSG1(MSG_HELP,a);                                   break;
   case '~':          LK = editrigger(TRT_EDITFIELD);                          break;
   case '[':          LK = edit_map();                                         break;
   case ' ':          LK = ftoggle();                                          break;

@@ -26,7 +26,8 @@ IFS=% sed "s/^/'/;s/\$/'/" $FORM.map | while read TEXT; do
   $SQL "insert into maps (page_id, line, mtext) values (4, $LINE, $TEXT)"
   LINE=`expr $LINE + 1`
 done
-$ADJFIELD <$FORM.map | $SQL
+BORDER=`$SQL "select border from pages where id=4;"`
+$ADJFIELD -$BORDER <$FORM.map | $SQL
 rm $FORM.map
 $RUNFORM $LOGGING -x $FORMAXFRM $FORM.frm
 $RUNFORM $LOGGING -x $TRIGGRFRM $FORM.frm
