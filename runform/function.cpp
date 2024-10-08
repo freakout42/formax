@@ -200,7 +200,7 @@ if (CR > 1) {
 }
 }
 
-int Function::fcopy() {int i; return (i = triggern(TRT_COPY)) ? i : 0; }
+int Function::fcopy() {int i; return CV && (i = triggern(TRT_COPY)) ? i : 0; }
 
 int Function::fpaste() {
 if (CM != MOD_UPDATE) return 0;

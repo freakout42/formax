@@ -89,10 +89,10 @@ return valuepr(CB.currentrecord);
 
 /* field value any row */
 char **Field::valuepr(int row) {
-static char *emptystring = "";
+//static char *emptystring = "";
 static char **val;
 val = F(b)[blockindex].q->w(row, sequencenum);
-if (!val || !*val) val = &emptystring;
+//if (!val || !*val) val = &emptystring;
 return val;
 }
 
