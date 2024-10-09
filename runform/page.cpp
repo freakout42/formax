@@ -97,6 +97,7 @@ int Page::editmap(int pid) {
 char *tmpf;
 redraw();
 refr();
+if (pid < NBLOCKS) pid = F(p)[pid].page_id;
 tmpf = F(rmap).extract(pid);
 F(rmap).slurp(mainloop(tmpf, wndw) ? pid : 0, tmpf);
 F(needredraw) = 1;
