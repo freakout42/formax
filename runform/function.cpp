@@ -117,11 +117,11 @@ return 0;
 }
 
 int Function::keys_help() {
-return F(p[PGE_KEYHELP]).showpopup();
+return F(p)[PGE_KEYHELP].showpopup();
 }
 
 int Function::edit_map() {
-return F(p[PGE_EDITOR]).editmap(atoi(*CF.valuep()));
+return F(p)[PGE_EDITOR].editmap(atoi(*CF.valuep()));
 }
 
 /* NAVIGATION */

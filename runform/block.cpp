@@ -5,6 +5,8 @@
  */
 #include "runform.h"
 
+#define field(i) F(l)[blockfields[i]]
+
 int Block::init(Qdata *blk, int rix) {
 let(table,  blk->v(rix, 1));
 sequence =  blk->n(rix, 2);
@@ -23,7 +25,7 @@ int Block::addattribute(int att, void *fld) {
 Field *l;
 l = (Field*)fld;
 if (*attrs) cats(t(attrs), ","); /* build the column list for query */
-cats(t(attrs), l->name);
+cats(t(attrs), l->basetable ? l->name : l->defaultval);
 blockfields[fieldcount++] = att;
 if (l->isprimarykey) primarykeys[prikeycnt++] = att;
 columni = fieldcount;
@@ -103,7 +105,7 @@ char sep;
 sep = '\0';
 j = 0;
 for (i=0; i<fieldcount; i++) {
-  if (q->v(r, i+1)) {
+  if (field(i).basetable && q->v(r, i+1)) {
     catc(t(columnslist), sep);
     cats(t(columnslist), F(l[blockfields[i]]).name);
     catc(t(valueslist),  sep);

@@ -6,8 +6,10 @@ public:
   int sequencenum;
   int blockindex;
   char querywhere[MEDSIZE];
+  int basetable;
   int isprimarykey;
   char helptext[SMLSIZE];
+  char defaultval[MEDSIZE];
   int init(Qdata *fld, int rix, Block *bs);
   void clear();
   int toggle(char *val);
@@ -18,8 +20,6 @@ public:
   char **valuep();
   char **valuepr(int row);
 private:
-//  int blkn;
-//  int pgen;
   int line;
   int col;
   int pageindex;
@@ -27,10 +27,8 @@ private:
   ftype fldtype();
   ftype fieldtype;
   int fieldlen;
-  int basetable;
   char queryhuman[SMLSIZE];
   int displaylen;
-  char defaultval[MEDSIZE];
   int enterable;
   int queryable;
   int updateable;

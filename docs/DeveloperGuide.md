@@ -370,6 +370,7 @@ On success next_item() is fired to move to the next field.
 | COPYREC    | Key  | CTRL('T') F4     | Setting | 1008   |
 | COPY       | Key  | CTRL('C') F2     | Action  | 1009   |
 | PASTE      | Key  | CTRL('V') F3     | Setting | 1010   |
+| POSTQUERY  | App  | execute_query()  | Setting | 1011   |
 
 ## Trigger Table
 
