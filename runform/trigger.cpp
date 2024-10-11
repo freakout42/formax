@@ -64,6 +64,7 @@ JSEXA(previous_record)
 
 /* init the engine and read from config bodys are in map */
 int Trigger::init(Qdata *trg, int rix, rMap *map) {
+int i;
 if (!javascript) {
   javascript = js_create(engine, HUGSIZE);
 #define JSEXE(jsfn,func) js_set(javascript, js_glob(javascript), #jsfn, js_mkfun(j_ ## func))
@@ -81,6 +82,8 @@ if (!javascript) {
 trgfld = trg->n(rix, 1);
 trgtyp = trg->n(rix, 2);
 map_id = trg->n(rix, 3);
+index = rix - 1;
+forall(field) if (fldi(i).field_id == trgfld) fieldindex = fldi(i).index;
 return map->getbody(map_id, body, sizeof(body));
 }
 

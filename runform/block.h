@@ -19,5 +19,6 @@ public:
   int currentrecord;
   int bdirty;
   int sequence; // % 10 is blockindex for connection
+  int index;
 private:
 };

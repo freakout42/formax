@@ -40,6 +40,7 @@ field_id      = fld->n(rix,26);
 let(queryhuman, "");
 let(querywhere, "");
 sequencenum = bs[blockindex].addattribute(rix-1, this);
+index = rix - 1;
 return 0;
 }
 

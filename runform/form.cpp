@@ -45,16 +45,6 @@ let(title, q->v(1, 3));
 needredraw = 0;
 rclose();
 
-/* triggers */
-if (rtrigger.init(fid)) return 9;
-if ((s = rtrigger.query())) return s;
-numtrigger = rtrigger.q->rows;
-if (numtrigger > NTRIGGERS) return 7;
-for (i=0; i<numtrigger; i++) {
-  if (r[i].init(rtrigger.q, i+1, &rmap)) return 9;
-}
-rtrigger.rclose();
-
 /*               i  id seq desc
  * pages - page [0] 1  0   status/edit/message window
  *              [1] 4  1   working window
@@ -109,6 +99,16 @@ for (i=0; i<numfield; i++) {
   if (l[i].init(rfield.q, i+1, b)) return 9;
 }
 rfield.rclose();
+
+/* triggers */
+if (rtrigger.init(fid)) return 9;
+if ((s = rtrigger.query())) return s;
+numtrigger = rtrigger.q->rows;
+if (numtrigger > NTRIGGERS) return 7;
+for (i=0; i<numtrigger; i++) {
+  if (r[i].init(rtrigger.q, i+1, &rmap)) return 9;
+}
+rtrigger.rclose();
 
 f = runningform;
 return 0;

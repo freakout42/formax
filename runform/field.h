@@ -2,6 +2,7 @@
 class Field {
 public:
   int field_id;
+  int index;
   char name[SMLSIZE];
   int sequencenum;
   int blockindex;

@@ -100,7 +100,7 @@ int Function::enter_the_form() {
 int i;
 F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
-forall(block) enter_query(&F(b)[i]);
+forall(block) if (i >= 4) enter_query(&F(b)[i]);
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
 notrunning = triggern(TRT_ENTERFORM);
 return 0;
@@ -280,9 +280,19 @@ return 0;
 }
 
 int Function::execute_query() {
+int i, j;
+int cf;
+cf = F(curfield);
 if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
   if (CB.q->rows > 0) {
+    for (i=0; i<CB.q->rows; i++) {
+      CB.currentrecord = i + 1;
+      for (j=0; j<CB.fieldcount; j++) {
+        F(curfield) = CB.blockfields[j];
+      }
+    }
     CB.currentrecord = 1;
+    F(curfield) = cf;
     switch_mode(MOD_UPDATE);
   } else {
     return insert_record();

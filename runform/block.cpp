@@ -5,8 +5,6 @@
  */
 #include "runform.h"
 
-#define field(i) F(l)[blockfields[i]]
-
 int Block::init(Qdata *blk, int rix) {
 let(table,  blk->v(rix, 1));
 sequence =  blk->n(rix, 2);
@@ -17,6 +15,7 @@ let(order,  blk->v(rix, 6));
 let(attrs,  "");
 fieldcount = 0;
 prikeycnt = 0;
+index = rix - 1;
 return 0;
 }
 
@@ -105,7 +104,7 @@ char sep;
 sep = '\0';
 j = 0;
 for (i=0; i<fieldcount; i++) {
-  if (field(i).basetable && q->v(r, i+1)) {
+  if (fldi(i).basetable && q->v(r, i+1)) {
     catc(t(columnslist), sep);
     cats(t(columnslist), F(l[blockfields[i]]).name);
     catc(t(valueslist),  sep);
