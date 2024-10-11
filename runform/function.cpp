@@ -229,6 +229,7 @@ changed = fedit(editmode);
 return changed==KEF_CANCEL ? 0 : changed;
 }
 
+/* change the field with various methods determined by pos */
 int Function::fedit(int pos) {
 changed = 0;
 switch(CM) {
@@ -238,7 +239,10 @@ switch(CM) {
   break;
  case MOD_UPDATE:
   changed = CF.edit(pos);
-  if (changed != KEF_CANCEL) if (CB.update(CB.currentrecord, CF.sequencenum)) MSG1(MSG_SQL, CB.sqlcmd);
+  if (changed != KEF_CANCEL)
+    if (CF.basetable)
+      if (CB.update(CB.currentrecord, CF.sequencenum))
+        MSG1(MSG_SQL, CB.sqlcmd);
   break;
  case MOD_DELETE:
   break;
@@ -279,20 +283,32 @@ if (blk == &CB) {
 return 0;
 }
 
+/* get record data into the block based on the query columns entered */
 int Function::execute_query() {
-int i, j;
+int i, j, k;
 int cf;
-cf = F(curfield);
+int triggerdfields[NFIELD1];
+int tfn;
 if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
   if (CB.q->rows > 0) {
-    for (i=0; i<CB.q->rows; i++) {
-      CB.currentrecord = i + 1;
-      for (j=0; j<CB.fieldcount; j++) {
-        F(curfield) = CB.blockfields[j];
+    edittrgtyp = TRT_POSTQUERY;
+    tfn = 0;
+    forall(trigger)
+      if (trgi(i).trgtyp == edittrgtyp && trgi(i).trgfld && fldi(trgi(i).fieldindex).blockindex == F(curblock))
+        triggerdfields[tfn++] = fldi(trgi(i).fieldindex).index;
+    if (tfn > 0) {
+      CM = MOD_UPDATE;
+      cf = F(curfield);
+      for (j=0; j<CB.q->rows; j++) {
+        for (k=0; k<tfn; k++) {
+          F(curfield) = triggerdfields[k];
+          CB.currentrecord = j + 1;
+          fedit(FED_TRIGGER);
+        }
       }
+      F(curfield) = cf;
     }
     CB.currentrecord = 1;
-    F(curfield) = cf;
     switch_mode(MOD_UPDATE);
   } else {
     return insert_record();

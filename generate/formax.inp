@@ -124,7 +124,7 @@ INSERT INTO fields VALUES(41,1,7,1,'id',10,0,30,3,1,1,'',22,6,1,1,1,1,0,0,'',0,0
 INSERT INTO fields VALUES(43,1,7,1,'trgfld',30,0,30,3,1,0,'',22,10,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(44,1,7,1,'trgtyp',40,0,30,4,1,0,'',22,14,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(45,1,7,1,'page_id',50,0,30,4,1,0,'',22,19,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(46,1,6,1,'fldidx',45,0,30,3,0,0,'88',6,31,0,0,0,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(46,1,6,1,'fldidx',45,0,30,3,0,0,'88',6,31,0,0,1,1,0,0,'',0,0,0,0,'','');
 CREATE TABLE triggers
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -159,7 +159,7 @@ INSERT INTO maps VALUES(14,2,13,'F12 l Refresh      End   e NextBlock');
 INSERT INTO maps VALUES(15,1008,1,'$(cb + "." + cf, cr - 1);');
 INSERT INTO maps VALUES(16,1009,1,'clip = cv;529;');
 INSERT INTO maps VALUES(17,1010,1,'clip;');
-INSERT INTO maps VALUES(18,1011,46,'77;');
+INSERT INTO maps VALUES(18,1011,1,'"yyy";');
 INSERT INTO maps VALUES(293,4,0,'Form  $1_ $2______ $3__________________ Menu $4_______________/$5_______________');
 INSERT INTO maps VALUES(294,4,1,'--------------------------------------------------------------------------------');
 INSERT INTO maps VALUES(295,4,2,'===== Id  table        Sq  Rec where                    order              =====');

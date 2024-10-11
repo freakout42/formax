@@ -186,6 +186,7 @@ pressed = 0;
 switch(CM) {
  case MOD_UPDATE:
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }
+  /*FALLTHRU*/
  case MOD_INSERT:
   if (noedit()) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
   if (block.q->rows) {
