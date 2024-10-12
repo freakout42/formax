@@ -14,8 +14,8 @@ static struct js *javascript = NULL;
 /* jsval_t js_mkstr(struct js *, const void *, size_t); */
 
 /* jquery like access to a "dom"
- * $(block.field)    => current row fields value
- * $(block.field, n) => row n fields value
+ * $("block.field")    => current row fields value
+ * $("block.field", n) => row n fields value
  */
 static jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
 char *fldvaluep;
@@ -24,7 +24,7 @@ double rownumber;
 selector = js_getstr(js, args[0], NULL);
 if (nargs == 2) {
   rownumber = js_getnum(args[1]);
-  fldvaluep = *F(l)[F(qfield)(selector)].valuepr((int)rownumber);
+  fldvaluep = *F(l)[F(qfield)(selector)].valuep((int)rownumber);
 } else {
   fldvaluep = *F(l)[F(qfield)(selector)].valuep();
 }
@@ -76,7 +76,7 @@ if (!javascript) {
   JSEXE(String,tostring);
   JSEXE(Message,message);
   JSEXE(SQL,sql);
-  letf(t(a), "let cb;let cf;let cr;let cv;let nav0 = %d;let v0;let v1;let v2;let v3;let clip = '0';", KEF_NAVI0);
+  letf(t(a), "let cb;let cf;let ci;let cr;let cv;let nav0 = %d;let v0;let v1;let v2;let v3;let clip = '0';", KEF_NAVI0);
   jsexecdirect(a, strlen(a));
 }
 trgfld = trg->n(rix, 1);
@@ -84,7 +84,7 @@ trgtyp = trg->n(rix, 2);
 map_id = trg->n(rix, 3);
 index = rix - 1;
 fieldindex = -1;
-forall(field) if (fldi(i).field_id == trgfld) fieldindex = fldi(i).index;
+forall(field) if (fldi(i).field_id == trgfld) fieldindex = i;
 return map->getbody(map_id, body, sizeof(body));
 }
 
@@ -100,12 +100,12 @@ char *fvalue;
 char *escaped;
 int progsize;
 escaped = a;
-for (fvalue=CV; *fvalue; fvalue++) {
+if (CV) for (fvalue=CV; *fvalue; fvalue++) {
   if (*fvalue == '\'') *escaped++ = '\\';
   *escaped++ = *fvalue;
 }
 *escaped++ = '\0';
-letf(t(prog), "cb = '%s'; cf = '%s'; cr = %d; cv = '%s';\n", CB.table, CF.name, CR, a);
+letf(t(prog), "cb = '%s'; cf = '%s'; ci = %d; cr = %d; cv = '%s';\n", CB.table, CF.name, CF.index, CR, a);
 progsize = cats(t(prog), body);
 return jsexecdirect(prog, progsize);
 }

@@ -88,11 +88,11 @@ if (CM == MOD_QUERY) {
 
 /* the current field value */
 char **Field::valuep() {
-return valuepr(block.currentrecord);
+return valuep(block.currentrecord);
 }
 
 /* field value any row */
-char **Field::valuepr(int row) {
+char **Field::valuep(int row) {
 //static char *emptystring = "";
 static char **val;
 val = block.q->w(row, sequencenum);

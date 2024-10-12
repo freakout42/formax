@@ -19,7 +19,7 @@ public:
   int noedit();
   void show(int cur);
   char **valuep();
-  char **valuepr(int row);
+  char **valuep(int row);
 private:
   int line;
   int col;

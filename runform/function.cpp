@@ -294,8 +294,10 @@ if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
     edittrgtyp = TRT_POSTQUERY;
     tfn = 0;
     forall(trigger)
-      if (trgi(i).trgtyp == edittrgtyp && trgi(i).trgfld && fldi(trgi(i).fieldindex).blockindex == F(curblock))
-        triggerdfields[tfn++] = fldi(trgi(i).fieldindex).index;
+      if (trgi(i).trgtyp == edittrgtyp)
+        if ((k = trgi(i).fieldindex) >= 0)
+          if (fldi(k).blockindex == F(curblock))
+            triggerdfields[tfn++] = trgi(i).fieldindex;
     if (tfn > 0) {
       CM = MOD_UPDATE;
       cf = F(curfield);
