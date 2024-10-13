@@ -95,11 +95,16 @@ return s ? KEF_NXTFLD : KEF_CANCEL;
 /* edit a map with the full screen editor */
 int Page::editmap(int pid) {
 char *tmpf;
+int hasborder;
+hasborder = 1; /* only real pages can not have a border and start with =0 */
 redraw();
 refr();
-if (pid < NBLOCKS) pid = F(p)[pid].page_id;
+if (pid < NBLOCKS) {
+  hasborder = F(p)[pid].border;
+  pid = F(p)[pid].page_id;
+}
 tmpf = F(rmap).extract(pid);
-F(rmap).slurp(mainloop(tmpf, wndw) ? pid : 0, tmpf);
+F(rmap).slurp(mainloop(tmpf, wndw) ? pid : 0, tmpf, hasborder);
 F(needredraw) = 1;
 return 0;
 }

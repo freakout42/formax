@@ -125,6 +125,7 @@ INSERT INTO fields VALUES(43,1,7,1,'trgfld',30,0,30,3,1,0,'',22,10,1,1,1,1,0,0,'
 INSERT INTO fields VALUES(44,1,7,1,'trgtyp',40,0,30,4,1,0,'',22,14,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(45,1,7,1,'page_id',50,0,30,4,1,0,'',22,19,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(46,1,6,1,'fldidx',45,0,30,3,0,0,'NULL',6,31,0,0,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(47,1,7,1,'body',60,0,200,56,0,0,'NULL',22,24,1,1,1,1,0,0,'',0,0,0,0,'','');
 CREATE TABLE triggers
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -136,6 +137,7 @@ INSERT INTO triggers VALUES(1,0,0,1008,1008);
 INSERT INTO triggers VALUES(2,0,0,1009,1009);
 INSERT INTO triggers VALUES(3,0,0,1010,1010);
 INSERT INTO triggers VALUES(4,1,46,1011,1011);
+INSERT INTO triggers VALUES(5,1,47,1011,2011);
 CREATE TABLE maps
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    page_id INTEGER NOT NULL DEFAULT 1,
@@ -160,29 +162,31 @@ INSERT INTO maps VALUES(15,1008,1,'$(cb + "." + cf, cr - 1);');
 INSERT INTO maps VALUES(16,1009,1,'clip = cv;529;');
 INSERT INTO maps VALUES(17,1010,1,'clip;');
 INSERT INTO maps VALUES(18,1011,1,'String(ci);');
-INSERT INTO maps VALUES(293,4,0,'Form  $1_ $2______ $3__________________ Menu $4_______________/$5_______________');
-INSERT INTO maps VALUES(294,4,1,'--------------------------------------------------------------------------------');
-INSERT INTO maps VALUES(295,4,2,'===== Id  table        Sq  Rec where                    order              =====');
-INSERT INTO maps VALUES(296,4,3,'Block $6_ $7__________ $8_ $9_ $10_____________________ $11_____________________');
-INSERT INTO maps VALUES(297,4,4,'--------------------------------------------------------------------------------');
-INSERT INTO maps VALUES(298,4,5,'===== Id  column       Blk Pag Idx Help                                    =====');
-INSERT INTO maps VALUES(299,4,6,'Field $12 $16_________ $14 $15 $46 $38__________________________________________');
-INSERT INTO maps VALUES(300,4,7,' Seq  $17      Type    $18 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE');
-INSERT INTO maps VALUES(301,4,8,' Line $24      Length  $19');
-INSERT INTO maps VALUES(302,4,9,' Col  $25      Table   $21. Pkey $22. ');
-INSERT INTO maps VALUES(303,4,10,' Dlen $20      Default $23_________________');
-INSERT INTO maps VALUES(304,4,11,' Enter    $26.edit in Insert-Mode');
-INSERT INTO maps VALUES(305,4,12,' Query    $27.edit in Query-Mode');
-INSERT INTO maps VALUES(306,4,13,' Update   $28.edit in Update-Mode');
-INSERT INTO maps VALUES(307,4,14,' UpdteNul $29.edit in Update-Mode if NULL');
-INSERT INTO maps VALUES(308,4,15,' Mandatry $30.must in Insert-Mode');
-INSERT INTO maps VALUES(309,4,16,' Uppercas $31.convert uppercase  Blk   Id');
-INSERT INTO maps VALUES(310,4,17,' LitOfVal $32_________________ / $33 / $34');
-INSERT INTO maps VALUES(311,4,18,'      Low $35________ High $36________');
-INSERT INTO maps VALUES(312,4,19,'  Pattern $37_________________________');
-INSERT INTO maps VALUES(313,4,20,'--------------------------------------------------------------------------------');
-INSERT INTO maps VALUES(314,4,21,'===== Id  Fld Type Page [ edit body');
-INSERT INTO maps VALUES(315,4,22,'Trigr $41 $43 $44_ $45_ ');
+INSERT INTO maps VALUES(339,0,1,'String(ci);');
+INSERT INTO maps VALUES(341,4,0,'Form  $1_ $2______ $3__________________ Menu $4_______________/$5_______________');
+INSERT INTO maps VALUES(342,4,1,'--------------------------------------------------------------------------------');
+INSERT INTO maps VALUES(343,4,2,'===== Id  table        Sq  Rec where                    order              =====');
+INSERT INTO maps VALUES(344,4,3,'Block $6_ $7__________ $8_ $9_ $10_____________________ $11_____________________');
+INSERT INTO maps VALUES(345,4,4,'--------------------------------------------------------------------------------');
+INSERT INTO maps VALUES(346,4,5,'===== Id  column       Blk Pag Idx Help                                    =====');
+INSERT INTO maps VALUES(347,4,6,'Field $12 $16_________ $14 $15 $46 $38__________________________________________');
+INSERT INTO maps VALUES(348,4,7,' Seq  $17      Type    $18 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE');
+INSERT INTO maps VALUES(349,4,8,' Line $24      Length  $19');
+INSERT INTO maps VALUES(350,4,9,' Col  $25      Table   $21. Pkey $22. ');
+INSERT INTO maps VALUES(351,4,10,' Dlen $20      Default $23_________________');
+INSERT INTO maps VALUES(352,4,11,' Enter    $26.edit in Insert-Mode ?');
+INSERT INTO maps VALUES(353,4,12,' Query    $27.edit in Query-Mode');
+INSERT INTO maps VALUES(354,4,13,' Update   $28.edit in Update-Mode');
+INSERT INTO maps VALUES(355,4,14,' UpdteNul $29.edit in Update-Mode if NULL');
+INSERT INTO maps VALUES(356,4,15,' Mandatry $30.must in Insert-Mode');
+INSERT INTO maps VALUES(357,4,16,' Uppercas $31.convert uppercase  Blk   Id');
+INSERT INTO maps VALUES(358,4,17,' LitOfVal $32_________________ / $33 / $34');
+INSERT INTO maps VALUES(359,4,18,'      Low $35________ High $36________');
+INSERT INTO maps VALUES(360,4,19,'  Pattern $37_________________________');
+INSERT INTO maps VALUES(361,4,20,'--------------------------------------------------------------------------------');
+INSERT INTO maps VALUES(362,4,21,'===== Id  Fld Type Page [ edit body');
+INSERT INTO maps VALUES(363,4,22,'Trigr $41 $43 $44_ $45_ $47_____________________________________________________');
+INSERT INTO maps VALUES(365,2011,1,'SQL("select mtext from maps where page_id=" + $("triggers.page_id") + " and line=1;");');
 CREATE TABLE pages
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -202,7 +206,7 @@ INSERT INTO pages VALUES(2,0,'keyhelp',2,'',16,41,2,30,1,1,0);
 INSERT INTO pages VALUES(3,0,'editor',3,'',21,65,2,14,1,1,0);
 INSERT INTO pages VALUES(4,1,'formax',1,'',23,80,1,0,0,0,0);
 DELETE FROM sqlite_sequence;
-INSERT INTO sqlite_sequence VALUES('triggers',3);
-INSERT INTO sqlite_sequence VALUES('maps',315);
+INSERT INTO sqlite_sequence VALUES('triggers',5);
+INSERT INTO sqlite_sequence VALUES('maps',365);
 INSERT INTO sqlite_sequence VALUES('pages',4);
 COMMIT;

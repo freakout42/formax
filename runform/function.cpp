@@ -121,7 +121,7 @@ return F(p)[PGE_KEYHELP].showpopup();
 }
 
 int Function::edit_map() {
-return F(p)[PGE_EDITOR].editmap(atoi(*CF.valuep()));
+return CV ? F(p)[PGE_EDITOR].editmap(atoi(CV)) : 0;
 }
 
 /* NAVIGATION */

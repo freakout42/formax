@@ -20,6 +20,7 @@ return 0;
 int rMap::getbody(int page_id, char *buf, int n) {
 int i, m;
 init(page_id);
+*buf = '\0';
 query();
 for (i = 1; i <= q->rows; i++) {
   m = strlen(q->v(i, 2));
@@ -55,7 +56,7 @@ return tmpath;
 }
 
 /* read from temp file and insert into map table */
-void rMap::slurp(int page_id, char *tmpf) {
+void rMap::slurp(int page_id, char *tmpf, int brdr) {
 int i, m;
 char r[SMLSIZE];
 char l[MEDSIZE];
@@ -66,7 +67,7 @@ bindv[0] = NULL;
 execute(querystr, bindv);
 letf((char*)querystr, sizeof(querystr), "insert into %s (page_id, line, mtext) VALUES (%d, ?, ?)", table, page_id);
 bindv[2] = NULL;
-for(m=1; tmpget(l, MEDSIZE); m++) {
+for(m=brdr; tmpget(l, MEDSIZE); m++) {
   if ((i = strlen(l)) > 1) {
     l[i-1] = '\0';
     letf(t(r), "%d", m);
