@@ -3,7 +3,7 @@ SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 OBJA=cqerror.o colquery/colquery.o crypt/libmd5.a membed/libmex.a elk/elk.o regex/re.o
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
-FORMAXE=../generate/formax.frm
+FORMAXE=../generate/formax.frm ../generate/formax.sq3
 VALGRINDSUP=--gen-suppressions=no #all
 
 all: runform
