@@ -69,6 +69,7 @@ JSEXA(next_block)
 JSEXA(previous_block)
 JSEXA(next_record)
 JSEXA(previous_record)
+JSEXA(exec_query)
 
 /* init the engine and read from config bodys are in map */
 int Trigger::init(Qdata *trg, int rix, rMap *map) {
@@ -82,6 +83,7 @@ if (!javascript) {
   JSEXE(previous_block,previous_block);
   JSEXE(next_record,next_record);
   JSEXE(previous_record,previous_record);
+  JSEXE(exec_query,exec_query);
   JSEXE($,snub);
   JSEXE(String,tostring);
   JSEXE(Message,message);

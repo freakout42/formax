@@ -344,6 +344,7 @@ small but usable subset of ES6.
 | previous_block()  | navigate to previous block           |
 | next_record()     | navigate to next record              |
 | previous_record() | navigate to previous record          |
+| exec_query()      | execute query in current block       |
 | $("blk.fld"[,n])  | jQuery-like "DOM" access to fieldvals|
 | String(n)         | cast number to string (integer)      |
 | Message(text)     | message on status line               |

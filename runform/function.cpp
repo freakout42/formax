@@ -141,6 +141,9 @@ TRIGGRD(previous_record,PREVRECORD,fmover,0,-1)
 TRIGGRD(next_setrecords,NEXTSETREC,fmover,0,CB.norec)
 TRIGGRD(previous_setrecords,PREVSETREC,fmover,0,-CB.norec)
 
+#define TRIGGR0(func,trgr,method) int Function::func() {int i; return (i = triggern(TRT_ ## trgr)) ? i : method(); }
+TRIGGR0(exec_query,EXEQUERY,execute_query)
+
 /* move from field to field */
 int Function::fmove(int bi, int fi) {
 if (bi) {

@@ -10,6 +10,7 @@ public:
   int previous_setrecords();
   int next_setrecords();
   int previous_record();
+  int exec_query();
   int edittrg(char *buf);
 protected:
 private:
