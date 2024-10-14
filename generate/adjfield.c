@@ -1,5 +1,6 @@
 /* adjust field position and length in form from screen map */
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 #define NXT getc(stdin); col++

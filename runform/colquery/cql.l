@@ -1,3 +1,4 @@
+%option nounput
 %a 8000
 %k 5000
 %o 10000
