@@ -340,6 +340,8 @@ small but usable subset of ES6.
 | clip              | clipboard value                      |
 | next_item()       | navigate to next item/field          |
 | previous_item()   | navigate to previous item/field      |
+| next_block()      | navigate to next block               |
+| previous_block()  | navigate to previous block           |
 | next_record()     | navigate to next record              |
 | previous_record() | navigate to previous record          |
 | $("blk.fld"[,n])  | jQuery-like "DOM" access to fieldvals|

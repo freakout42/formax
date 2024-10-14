@@ -134,6 +134,8 @@ return 0;
 #define TRIGGRD(func,trgr,move,row,fld) int Function::func() {int i; return (i = triggern(TRT_ ## trgr)) ? i : move(row, fld); }
 TRIGGRD(next_item,NEXTITEM,fmove,0,1)
 TRIGGRD(previous_item,PREVITEM,fmove,0,-1)
+TRIGGRD(next_block,NEXTBLOCK,fmove,1,0)
+TRIGGRD(previous_block,PREVBLOCK,fmove,-1,0)
 TRIGGRD(next_record,NEXTRECORD,fmover,0,1)
 TRIGGRD(previous_record,PREVRECORD,fmover,0,-1)
 TRIGGRD(next_setrecords,NEXTSETREC,fmover,0,CB.norec)
@@ -205,7 +207,10 @@ if (CR > 1) {
 }
 }
 
-int Function::fcopy() {int i; return CV && (i = triggern(TRT_COPY)) ? i : 0; }
+int Function::fcopy() {
+if (CM == MOD_UPDATE && CV) return triggern(TRT_COPY);
+return 0;
+}
 
 int Function::fpaste() {
 if (CM != MOD_UPDATE) return 0;
@@ -354,7 +359,7 @@ return 0;
 
 int Function::qtrigger(int tid) {
 int i;
-for (i=0; i<F(numtrigger); i++)
+forall(trigger)
   if ((F(r)[i].trgfld == 0 || F(r)[i].trgfld == CF.field_id) && F(r)[i].trgtyp == tid)
     return i;
 return -1;

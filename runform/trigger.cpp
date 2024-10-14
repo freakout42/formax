@@ -18,17 +18,23 @@ static struct js *javascript = NULL;
  * $("block.field", n) => row n fields value
  */
 static jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
+int fldn;
 char *fldvaluep;
 char *selector;
 double rownumber;
+//let(a, "(null)");
+empty(a);
 selector = js_getstr(js, args[0], NULL);
+fldn = F(qfield)(selector);
+if (fldn >= 0) {
 if (nargs == 2) {
   rownumber = js_getnum(args[1]);
-  fldvaluep = *F(l)[F(qfield)(selector)].valuep((int)rownumber);
+  fldvaluep = *fldi(fldn).valuep((int)rownumber);
 } else {
-  fldvaluep = *F(l)[F(qfield)(selector)].valuep();
+  fldvaluep = *fldi(fldn).valuep();
 }
-if (fldvaluep) let(a, fldvaluep); else empty(a);
+if (fldvaluep) let(a, fldvaluep);
+}
 return js_mkstr(js, a, strlen(a)+1);
 }
 
@@ -59,6 +65,8 @@ return js_mkstr(js, a, strlen(a)+1);
 #define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
 JSEXA(next_item)
 JSEXA(previous_item)
+JSEXA(next_block)
+JSEXA(previous_block)
 JSEXA(next_record)
 JSEXA(previous_record)
 
@@ -70,6 +78,8 @@ if (!javascript) {
 #define JSEXE(jsfn,func) js_set(javascript, js_glob(javascript), #jsfn, js_mkfun(j_ ## func))
   JSEXE(next_item,next_item);
   JSEXE(previous_item,previous_item);
+  JSEXE(next_block,next_block);
+  JSEXE(previous_block,previous_block);
   JSEXE(next_record,next_record);
   JSEXE(previous_record,previous_record);
   JSEXE($,snub);

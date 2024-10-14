@@ -4,6 +4,8 @@ public:
   int dispatch();
   int next_item();
   int previous_item();
+  int next_block();
+  int previous_block();
   int next_record();
   int previous_setrecords();
   int next_setrecords();

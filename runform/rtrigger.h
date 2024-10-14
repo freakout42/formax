@@ -10,6 +10,8 @@
 #define TRT_COPY       1009
 #define TRT_PASTE      1010
 #define TRT_POSTQUERY  1011
+#define TRT_NEXTBLOCK  1012
+#define TRT_PREVBLOCK  1013
 #ifndef BEGINSQL
 /* trigger configuration */
 class rTrigger: public Record {

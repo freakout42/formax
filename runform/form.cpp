@@ -62,7 +62,7 @@ if (rpage.init(fid)) return 9;
 if ((s = rpage.query())) return s;
 numpage = rpage.q->rows;
 if (numpage > NBLOCKS) return 7;
-for (i=0; i<numpage; i++) {
+forall(page) {
   if (p[i].init(rpage.q, i+1)) return 9;
   if (rmap.init(p[i].page_id)) return 9;
   if ((s = rmap.query())) return s;
@@ -70,7 +70,6 @@ for (i=0; i<numpage; i++) {
   rmap.rclose();
 }
 rpage.rclose();
-rmap.connect(dbconn[1]);
 
 /* error messages */
 if (rerror.init()) return 9;
@@ -84,7 +83,7 @@ if (rblock.init(fid)) return 9;
 if ((s = rblock.query())) return s;
 numblock = rblock.q->rows;
 if (numblock > NBLOCKS) return 7;
-for (i=0; i<numblock; i++) {
+forall(block) {
   blk = &b[i];
   if (blk->init(rblock.q, i+1)) return 9;
   if (i < 4) blk->connect(dbconn[i+1]);
@@ -98,7 +97,7 @@ if (rfield.init(fid)) return 9;
 if ((s = rfield.query())) return s;
 numfield = rfield.q->rows;
 if (numfield > NFIELDS) return 7;
-for (i=0; i<numfield; i++) {
+forall(field) {
   if (l[i].init(rfield.q, i+1, b)) return 9;
 }
 rfield.rclose();
@@ -108,10 +107,11 @@ if (rtrigger.init(fid)) return 9;
 if ((s = rtrigger.query())) return s;
 numtrigger = rtrigger.q->rows;
 if (numtrigger > NTRIGGERS) return 7;
-for (i=0; i<numtrigger; i++) {
+forall(trigger) {
   if (r[i].init(rtrigger.q, i+1, &rmap)) return 9;
 }
 rtrigger.rclose();
+rmap.connect(dbconn[1]);
 
 f = runningform;
 return 0;
