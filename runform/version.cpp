@@ -11,7 +11,7 @@ i = strlen(src);
 if (i < n-2) {
   strcpy(dest, src);
 } else {
-  *dest = '\0';
+  empty(dest);
 }
 return dest+i;
 }
@@ -84,7 +84,7 @@ j = strlen(source);
 if (i+j < maxlen-2) {
   strcpy(target+i, source);
 } else {
-  *target = '\0';
+  empty(target);
 }
 return i + j;
 }

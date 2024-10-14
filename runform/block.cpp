@@ -15,6 +15,7 @@ let(order,  blk->v(rix, 6));
 let(attrs,  "");
 fieldcount = 0;
 prikeycnt = 0;
+empty(condition);
 index = rix - 1;
 return 0;
 }
@@ -34,20 +35,18 @@ return fieldcount;
 /* orm retrieve respects the colquery conditions */
 int Block::select() {
 int i;
-char wall[MEDSIZE-2];
 char sep[7];
-*wall = '\0';
-*sep = '\0';
+empty(condition);
+empty(sep);
 for (i=0; i<fieldcount; i++) {
   if (F(l[blockfields[i]]).querywhere[0]) {
-    cats(t(wall), sep);
+    cats(t(condition), sep);
     strcpy(sep, " AND ");
-    cats(t(wall), "(");
-    cats(t(wall), F(l[blockfields[i]]).querywhere);
-    cats(t(wall), ")");
+    cats(t(condition), "(");
+    cats(t(condition), F(l[blockfields[i]]).querywhere);
+    cats(t(condition), ")");
   }
 }
-let(where, wall);
 return query();
 }
 
@@ -99,8 +98,8 @@ int i, j;
 char columnslist[MEDSIZE];
 char valueslist[SMLSIZE];
 char sep;
-*columnslist = '\0';
-*valueslist = '\0';
+empty(columnslist);
+empty(valueslist);
 sep = '\0';
 j = 0;
 for (i=0; i<fieldcount; i++) {

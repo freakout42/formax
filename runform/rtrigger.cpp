@@ -11,5 +11,6 @@ let(attrs,     "trgfld,trgtyp,page_id");
 letf(t(where), "form_id = 0 or form_id = %d", form_id);
 let(order,     "trgfld DESC");
 columni = 3;
+empty(condition);
 return 0;
 }

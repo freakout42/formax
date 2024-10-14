@@ -14,5 +14,6 @@ let(attrs,  "num,severity,etext");
 let(where,  "");
 let(order,  "num");
 columni = 3;
+empty(condition);
 return 0;
 }

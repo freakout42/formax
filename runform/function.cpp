@@ -127,7 +127,7 @@ return CV ? F(p)[PGE_EDITOR].editmap(atoi(CV)) : 0;
 /* NAVIGATION */
 int Function::switch_mode(fmode mod) {
 CM = mod;
-if (CF.noedit()) fmove(0, 0);
+if (CF.noedit() || !CF.enterable) fmove(0, 0);
 return 0;
 }
 
@@ -147,7 +147,7 @@ if (bi) {
 }
 if (fi < NFIELD1) F(curfield) = CB.blockfields[ (CF.sequencenum-1 + CB.fieldcount + fi) % CB.fieldcount ];
 else              F(curfield) = fi - NFIELD1 - 1;
-if (CF.noedit()) fmove(0, fi<0 ? -1 : 1);
+if (CF.noedit() || !(CF.enterable)) fmove(0, fi<0 ? -1 : 1);
 return 0;
 }
 
@@ -194,7 +194,7 @@ return 0;
 
 /* double pressed should copy record */
 int Function::fcopyrec() {
-if (CM != MOD_UPDATE) return 0;
+if (CM != MOD_UPDATE && CM != MOD_INSERT) return 0;
 if (CR > 1) {
   edittrgtyp = TRT_COPYREC;
   changed = fedit(FED_TRIGGER);
@@ -235,12 +235,15 @@ changed = 0;
 switch(CM) {
  case MOD_INSERT:
  case MOD_QUERY:
-  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos<FED_SPECIAL ? -1 : pos);
-  break;
+  if (pos == KEF_DEL) {
+    CF.clear();
+    changed = 0;
+    break;
+  }
  case MOD_UPDATE:
   changed = CF.edit(pos);
   if (changed != KEF_CANCEL)
-    if (CF.basetable)
+    if (CM == MOD_UPDATE && CF.basetable)
       if (CB.update(CB.currentrecord, CF.sequencenum))
         MSG1(MSG_SQL, CB.sqlcmd);
   break;

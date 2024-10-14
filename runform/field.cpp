@@ -49,7 +49,7 @@ int Field::noedit() {
 switch(CM) {
  case MOD_UPDATE: if (isprimarykey || !(updateable || (updnulable && *valuep()==NULL))) return 1; break;
  case MOD_QUERY:  if (!queryable)                                                       return 1; break;
- case MOD_INSERT: if (!enterable)                                                       return 1; break;
+ case MOD_INSERT: if (!updateable)                                                      return 1; break;
  case MOD_DELETE:                                                                                 break;
 }
 return 0;
@@ -78,8 +78,8 @@ if (cur) page.wmov(line, col);
 void Field::clear() {
 char **v;
 if (CM == MOD_QUERY) {
-  *queryhuman = '\0';
-  *querywhere = '\0';
+  empty(queryhuman);
+  empty(querywhere);
 } else {
   v = valuep();
   free(v);
@@ -96,7 +96,7 @@ char **Field::valuep(int row) {
 //static char *emptystring = "";
 static char **val;
 val = block.q->w(row, sequencenum);
-//if (!val || !*val) val = &emptystring;
+//if (!val || !(*val)) val = &emptystring;
 return val;
 }
 
@@ -188,10 +188,10 @@ switch(CM) {
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }
   /*FALLTHRU*/
  case MOD_INSERT:
-  if (noedit()) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
+  if (noedit() || (!enterable && pos>FED_SPECIAL)) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
   if (block.q->rows) {
     c = valuep();
-    if (*c) let(a, *c); else *a = '\0';
+    if (*c) let(a, *c); else empty(a);
     switch(pos) {
      case FED_FEDITOR: pressed = F(p)[PGE_EDITOR].editbuf(a); break;
      case FED_TRIGGER: pressed = u.edittrg(a);                break;

@@ -34,7 +34,7 @@ for (i = 1; i <= qma->rows; i++) {
         p = NULL;
       }
     }
-    if (!*t) y = 0;
+    if (!(*t)) y = 0;
   }
 }
 return 0;
@@ -87,7 +87,7 @@ s = mainloop(tmpf, wndw);
 tmpopen();
 i = tmpread(buf, BIGSIZE);
 buf[i] = '\0';
-if ((eol = strchr(buf, '\n')) && *(eol+1) == '\0') *eol = '\0';
+if ((eol = strchr(buf, '\n')) && *(eol+1) == '\0') empty(eol);
 tmpclose(1);
 return s ? KEF_NXTFLD : KEF_CANCEL;
 }

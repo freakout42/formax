@@ -11,5 +11,6 @@ let(attrs,     "id,name,blcn,pgen,dlen,line,col,key,ftype,len,btab,dflt,enter,qu
 letf(t(where), "form_id = %d", form_id);
 let(order,     "seq");
 columni = 26;
+empty(condition);
 return 0;
 }

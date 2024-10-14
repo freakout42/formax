@@ -58,6 +58,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #define min(x, y)	(((x) < (y)) ? (x) : (y))
 #define let(target,source) letstrncpy(target, source, sizeof(target)-1)
 #define t(target) target, sizeof(target)
+#define empty(strp) *strp = '\0'
 #define debugs(string) fprintf(stderr, ":%s:\n", string);
 
 /* access to the current running dbs form mode blocks fields */

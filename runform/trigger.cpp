@@ -28,7 +28,7 @@ if (nargs == 2) {
 } else {
   fldvaluep = *F(l)[F(qfield)(selector)].valuep();
 }
-if (fldvaluep) let(a, fldvaluep); else *a = '\0';
+if (fldvaluep) let(a, fldvaluep); else empty(a);
 return js_mkstr(js, a, strlen(a)+1);
 }
 
@@ -104,7 +104,7 @@ if (CV) for (fvalue=CV; *fvalue; fvalue++) {
   if (*fvalue == '\'') *escaped++ = '\\';
   *escaped++ = *fvalue;
 }
-*escaped++ = '\0';
+empty(escaped++);
 letf(t(prog), "cb = '%s'; cf = '%s'; ci = %d; cr = %d; cv = '%s';\n", CB.table, CF.name, CF.index, CR, a);
 progsize = cats(t(prog), body);
 return jsexecdirect(prog, progsize);

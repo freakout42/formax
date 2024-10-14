@@ -13,6 +13,7 @@ let(attrs,     "line,mtext");
 letf(t(where), "page_id = %d", page_id);
 let(order,     "line");
 columni = 2;
+empty(condition);
 return 0;
 }
 
@@ -20,7 +21,7 @@ return 0;
 int rMap::getbody(int page_id, char *buf, int n) {
 int i, m;
 init(page_id);
-*buf = '\0';
+empty(buf);
 query();
 for (i = 1; i <= q->rows; i++) {
   m = strlen(q->v(i, 2));

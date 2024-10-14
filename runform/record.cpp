@@ -142,12 +142,16 @@ return 0;
 int Record::query() {
 int j;
 if (clear()) return 13;
-*whereorder = '\0';
-j = *where ? letf(whereorder, sizeof(whereorder), " where %s", where) : 0;
-if (*order) letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
+empty(whereorder);
+j = 0;
+if (  *where  && !(*condition)) j = letf(t(whereorder), " where %s", where);
+if (!(*where) &&   *condition)  j = letf(t(whereorder), " where %s", condition);
+if (  *where  &&   *condition)  j = letf(t(whereorder), " where (%s) AND (%s)", where, condition);
+if (  *order                 )      letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
 letf((char*)querystr, sizeof(querystr), "select %s from %s%s", attrs, table, whereorder);
 bindv[0] = NULL;
 if ((ret = execute(querystr, bindv))) return ret;
+empty(condition);
 return fetchall();
 }
 
@@ -192,7 +196,7 @@ if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
       free(*qp);
       if (indicator == SQL_NULL_DATA) *qp = NULL; else {
         decimal = buf + strspn(buf, "0123456789"); // cut trailing .00
-        if (*decimal == '.' && strspn(decimal, "0.") == strlen(decimal)) *decimal = '\0';
+        if (*decimal == '.' && strspn(decimal, "0.") == strlen(decimal)) empty(decimal);
         if (!(*qp = strdup(buf))) return 13;
       }
     }

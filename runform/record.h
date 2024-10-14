@@ -17,6 +17,7 @@ public:
   odrvr drv;
   char table[SMLSIZE];
   char sqlcmd[MEDSIZE];
+  char condition[MEDSIZE];
   char whereorder[MEDSIZE];
   int connect(char *dsn);
   int connect(Record r);

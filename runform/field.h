@@ -9,6 +9,7 @@ public:
   char querywhere[MEDSIZE];
   int basetable;
   int isprimarykey;
+  int enterable;
   char helptext[SMLSIZE];
   char defaultval[MEDSIZE];
   int init(Qdata *fld, int rix, Block *bs);
@@ -30,7 +31,6 @@ private:
   int fieldlen;
   char queryhuman[SMLSIZE];
   int displaylen;
-  int enterable;
   int queryable;
   int updateable;
   int updnulable;
