@@ -100,7 +100,7 @@ hasborder = 1; /* only real pages can not have a border and start with =0 */
 redraw();
 refr();
 if (pid < NBLOCKS) {
-  hasborder = F(p)[pid].border;
+  hasborder = F(p)[pid].border * 2;
   pid = F(p)[pid].page_id;
 }
 tmpf = F(rmap).extract(pid);

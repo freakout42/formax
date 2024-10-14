@@ -116,6 +116,7 @@ return fetchall();
 }
 
 /* direct sql with bind support from variable array */
+int Record::execute() { return execute(querystr, bindv); }
 int Record::execute(SQLCHAR *sql, char *b[]) {
 SQLLEN len;
 int i;

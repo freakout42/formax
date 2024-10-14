@@ -56,25 +56,62 @@ rclose();
 return tmpath;
 }
 
-/* read from temp file and insert into map table */
+/* read from temp file and insert into map table
+ * adjust the field positions and lengths according to the $nn[._] placeholders
+ */
 void rMap::slurp(int page_id, char *tmpf, int brdr) {
-int i, m;
-char r[SMLSIZE];
-char l[MEDSIZE];
+int i, j;
+char rows[SMLSIZE];
+char cols[SMLSIZE];
+char lens[SMLSIZE];
+char lins[MEDSIZE];
+Block *fields;
+int col=0, act, len;
+char k;
+char fldstr[3];
+fields = NULL;
+fldstr[2] = '\0';
+if (brdr == 0 || brdr == 2) { /* we are maintaining a screen page */
+  forall(block) if (!strcmp(blki(i).table, "fields")) fields = &blki(i);
+  if (fields) {
+    letstrncpy((char*)fields->querystr, "update fields set line = ?, col = ?, dlen = ? where id = ?", MEDSIZE-2);
+    fields->bindv[4] = NULL;
+  }
+}
 tmpopen();
 init(page_id);
 letf((char*)querystr, sizeof(querystr), "delete from %s where page_id = %d", table, page_id);
 bindv[0] = NULL;
-execute(querystr, bindv);
+execute();
 letf((char*)querystr, sizeof(querystr), "insert into %s (page_id, line, mtext) VALUES (%d, ?, ?)", table, page_id);
 bindv[2] = NULL;
-for(m=brdr; tmpget(l, MEDSIZE); m++) {
-  if ((i = strlen(l)) > 1) {
-    l[i-1] = '\0';
-    letf(t(r), "%d", m);
-    bindv[0] = r;
-    bindv[1] = l;
-    execute(querystr, bindv);
+for(j = brdr / 2; tmpget(lins, MEDSIZE); j++) {
+  if ((i = strlen(lins)) > 1) {
+    lins[i-1] = '\0';
+    letf(t(rows), "%d", j);
+    bindv[0] = rows;
+    bindv[1] = lins;
+    execute();
+    if (fields) {
+      letf(t(rows), "%d", j + brdr/2);
+      fields->bindv[0] = rows;
+      for(col=0; lins[col]; col++) {
+        k = lins[col];
+        if (k == '$') {
+          act = col;
+          fldstr[0] = lins[++col];
+          fldstr[1] = k = lins[++col];
+          len = 2;
+          while(k == '_' || k == '.' || (k >= '0' && k <= '9')) { len = k=='.' ? 1 : len+1; k = lins[++col]; }
+          letf(t(cols), "%d", act + brdr/2);
+          fields->bindv[1] = cols;
+          letf(t(lens), "%d", len);
+          fields->bindv[2] = lens;
+          fields->bindv[3] = fldstr;
+          fields->execute();
+        }
+      }
+    }
   }
 }
 rclose();
