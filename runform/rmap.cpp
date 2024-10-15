@@ -72,6 +72,7 @@ char fldstr[3];
 fields = NULL;
 fldstr[2] = '\0';
 if (brdr == 0 || brdr == 2) { /* we are maintaining a screen page */
+  /* search for the fields block */
   forall(block) if (!strcmp(blki(i).table, "fields")) fields = &blki(i);
   if (fields) {
     letstrncpy((char*)fields->querystr, "update fields set line = ?, col = ?, dlen = ? where id = ?", MEDSIZE-2);
@@ -92,7 +93,7 @@ for (j = brdr / 2; tmpget(lins, MEDSIZE); j++) {
     bindv[0] = rows;
     bindv[1] = lins;
     execute();
-    if (fields) {
+    if (fields) { /* we want to maintain the fields pos and length */
       letf(t(rows), "%d", j + brdr/2);
       fields->bindv[0] = rows;
       for (col=0; lins[col]; col++) {

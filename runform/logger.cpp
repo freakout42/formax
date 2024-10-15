@@ -58,17 +58,22 @@ switch (session) {
   break;
 } }
 
+/* cleanup logging */
 void Logger::lclose() {
 if (*logpath) sqlite3_close(db);
 session = 0;
 }
 
+/* set the path to the sqlite3 logfile */
 int Logger::setlogfile(char *lg3) {
 session = 0;
 let(logpath, lg3);
 return 0;
 }
 
+/* varargs style message to be logged
+ * try to make the inserted sql working with cut/paste
+ */
 void Logger::logfmt(const char *format, ...) {
 va_list args;
 char *apostrophe;

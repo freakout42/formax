@@ -1,9 +1,9 @@
 /* query data handling storage class
  * TODO: should implement a Cell object to replace the simple char*
  */
-#include <stdlib.h>
 #include "runform.h"
 
+/* int takes care about the allocation for the fields/columns */
 Qdata::Qdata() { allocatedrows = 0; }
 Qdata::~Qdata() { freed(); }
 
@@ -34,8 +34,7 @@ if (rown >= 0) {
   memmove(w(rown,1), w(rown+1,1), (rows-rown) * cols * (sizeof(void*)));
   memset(w(rows,1), 0, cols * (sizeof(void*)));
   rows--;
-}
-}
+} }
 
 /* free the pointer array and all data pointer to */
 void Qdata::freed() {

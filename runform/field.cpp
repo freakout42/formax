@@ -204,7 +204,7 @@ switch(CM) {
   }
   break;
  case MOD_QUERY:
-  pressed = F(p[PGE_STATUS].sedit)(queryhuman, pos<FED_SPECIAL ? -1 : pos, FTY_ALL, SMLSIZE);
+  pressed = F(p)[PGE_STATUS].sedit(queryhuman, pos<FED_SPECIAL ? -1 : pos, FTY_ALL, SMLSIZE);
   colquery(queryhuman, querywhere, column, querycharm, 0);
   break;
  case MOD_DELETE:

@@ -375,6 +375,7 @@ int oldy, oldx;
 va_start (args, format);
 vsnprintf (s, sizeof(s), format, args);
 va_end (args);
+if (width < MEDSIZE) s[width] = '\0';
 if ((crp = strchr(s, '\n'))) strncpy(crp, "...", sizeof(s) - (crp - s));
 setcode(colcode);
 getyx(wndw, oldy, oldx);

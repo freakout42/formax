@@ -10,6 +10,7 @@
 static char engine[HUGSIZE];
 static struct js *javascript = NULL;
 
+/* examples */
 /* char *js_getstr(struct js *js, jsval_t value, size_t *len); */
 /* jsval_t js_mkstr(struct js *, const void *, size_t); */
 
@@ -72,11 +73,11 @@ JSEXA(previous_record)
 JSEXA(exec_query)
 
 /* init the engine and read from config bodys are in map */
+#define JSEXE(jsfn,func) js_set(javascript, js_glob(javascript), #jsfn, js_mkfun(j_ ## func))
 int Trigger::init(Qdata *trg, int rix, rMap *map) {
 int i;
 if (!javascript) {
   javascript = js_create(engine, HUGSIZE);
-#define JSEXE(jsfn,func) js_set(javascript, js_glob(javascript), #jsfn, js_mkfun(j_ ## func))
   JSEXE(next_item,next_item);
   JSEXE(previous_item,previous_item);
   JSEXE(next_block,next_block);
@@ -100,12 +101,14 @@ forall(field) if (fldi(i).field_id == trgfld) fieldindex = i;
 return map->getbody(map_id, body, sizeof(body));
 }
 
+/* exec pure javascript */
 char *Trigger::jsexecdirect(char *prg, int siz) {
 jsval_t v;
 v = js_eval(javascript, prg, siz);
 return (char*)js_str(javascript, v);
 }
 
+/* exec javascript from trigger */
 char *Trigger::jsexec() {
 char prog[BIGSIZE];
 char *fvalue;

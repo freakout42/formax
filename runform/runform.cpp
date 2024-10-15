@@ -43,6 +43,7 @@ char a[BIGSIZE];
 
 static char b64pwd[65];
 
+/* local primary errors before any processing */
 static void usage(int ecd) {
 const char *est[] = {
   "command line options wrong",   //  1
@@ -89,8 +90,7 @@ if (strchr(dsn0, ';') == NULL && (filesq3 = fopen(dsn0, "r+"))) {
   }
 } else {
     snprintf(dsn, MEDSIZE, "DSN=%s", dsn0);
-}
-}
+} }
 
 int main(int argc, char *argv[]) { //, char **envp
 int i, j, s, form_id;
@@ -115,6 +115,7 @@ for (i=0; i<3; i++) {
   }
 }
 
+/* user and charset environment */
 username = getenv("USER");
 setenv("LC_ALL", CHARSET, 1);
 lclocale = setlocale(LC_ALL, CHARSET);
@@ -136,7 +137,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
     case 'g': if (g.setlogfile(optarg)) usage(16); break;
     case 'l': let(drv, optarg); break;
     case 'n':
-#define shiftedlang(lang) if (!strcmp(optarg, #lang)) shiftednum = shifted ## lang
+      #define shiftedlang(lang) if (!strcmp(optarg, #lang)) shiftednum = shifted ## lang
       shiftedlang(us);
       shiftedlang(uk);
       shiftedlang(de);
@@ -202,7 +203,7 @@ genxorkey(NULL, NULL);
 /* open the screen */
 if (y.init()) usage(17);
 
-/* create load run and destroy the form */
+/* create, load, run and destroy the form */
 rootform = new Form();
 if (rootform->fill(form_id)) usage(5);
 if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
@@ -219,3 +220,4 @@ g.lclose();
 
 exit(s==-1 ? 0 : abs(s));
 }
+

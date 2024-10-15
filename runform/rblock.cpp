@@ -14,3 +14,4 @@ columni = 6;
 empty(condition);
 return 0;
 }
+

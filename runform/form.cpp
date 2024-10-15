@@ -15,7 +15,7 @@ let(order,  "id");
 columni = 3;
 }
 
-/* fill objects with configuation */
+/* fill objects with configuation from sqlite db (.frm) */
 int Form::fill(int fid) {
 int i, s;
 Block *blk;
@@ -109,6 +109,10 @@ forall(trigger) {
   if (r[i].init(rtrigger.q, i+1, &rmap)) return 9;
 }
 rtrigger.rclose();
+/* move the maps connection to the user database
+ * this way its possible to edit pages and trigger bodies
+ * from a form (formax.frm)
+ */
 rmap.connect(dbconn[1]);
 
 f = runningform;

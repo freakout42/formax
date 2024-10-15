@@ -1,6 +1,5 @@
 #include <cstdarg>
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include "runform.h"
 
@@ -30,6 +29,7 @@ return n;
 static char tfp[14];
 static FILE *tf;
 
+/* temporary file handling */
 char *tmpcreat() {
 strcpy(tfp, "/tmp/fmXXXXXX");
 tf = fdopen(mkstemp(tfp), "w");
@@ -49,11 +49,11 @@ return fread(buf, 1, siz, tf);
 char *tmpget(char *buf, int siz) { return fgets(buf, siz, tf); }
 void tmput(char *v) { if (*v) { if (v[1] == '\0') fputc(*v, tf); else fputs(v, tf); } }
 
+/* string helpers */
 int isprintable(int c) {
 if ((c >= 32 && c <= 126) || (c >= 160 && c <= 255)) return c;
 return 0;
 }
-
 int ispunctation(int c) {
 char *pc;
 if (c && (pc = strchr(shiftednum, c))) return KEF_NAVI(pc-shiftednum);
@@ -71,21 +71,17 @@ switch(chr) {
  case 'J':
  case 'O': return 1; break;
  default:  return 0;
-}
-}
+} }
 
-int cats(char *target, size_t maxlen, const char *source) {
 /* strncat(target, source, maxlen);
  * return strlen(target);
  */
+int cats(char *target, size_t maxlen, const char *source) {
 unsigned int i, j;
 i = strlen(target);
 j = strlen(source);
-if (i+j < maxlen-2) {
-  strcpy(target+i, source);
-} else {
-  empty(target);
-}
+if (i+j < maxlen-2) strcpy(target+i, source);
+else                empty(target);
 return i + j;
 }
 

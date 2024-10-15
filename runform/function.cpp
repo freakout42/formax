@@ -180,7 +180,6 @@ return 0;
 }
 
 /* EDITING */
-
 int Function::insert_record() {
 if (CM == MOD_UPDATE || CM == MOD_QUERY) {
   CB.q->splice(CB.currentrecord++);
@@ -302,6 +301,10 @@ int triggerdfields[NFIELD1];
 int tfn;
 if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
   if (CB.q->rows > 0) {
+    /* optimized - first check for triggers
+     * collect them in triggerdfields
+     * and run them within one loop through the records
+     */
     edittrgtyp = TRT_POSTQUERY;
     tfn = 0;
     forall(trigger)
@@ -360,6 +363,7 @@ if ((i = qtrigger(tid)) > -1) F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
 return 0;
 }
 
+/* search for trigger */
 int Function::qtrigger(int tid) {
 int i;
 forall(trigger)
@@ -391,6 +395,7 @@ if ((i = qtrigger(tid)) > -1) {
 return s;
 }
 
+/* execute the trigger */
 int Function::triggern(int tid) {
 char *jsresult;
 jsresult = trigger(tid);

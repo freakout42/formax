@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
       f[1] = t = NXT;
       len = 2;
       while(t == '_' || t == '.' || (t >= '0' && t <= '9')) { len = t=='.' ? 1 : len+1; t = NXT; }
-      printf("UPDATE fields set line = %d, col = %d, dlen = %d where id = %d;\n", line-1+border, act-1+border, len, atoi(f));
+      printf("UPDATE fields set line = %d, col = %d, dlen = %d where id = %d;\n", line-2+border, act-2+border, len, atoi(f));
     }
     if (t == '\n') {
       line++;

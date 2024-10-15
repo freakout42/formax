@@ -20,7 +20,9 @@ index = rix - 1;
 return 0;
 }
 
-/* the fields correspond to the columns of the table */
+/* the fields correspond to the columns of the table
+ * we keep lists for the fields in the block => blockfields
+ */
 int Block::addattribute(int att, void *fld) {
 Field *l;
 l = (Field*)fld;

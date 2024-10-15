@@ -8,8 +8,7 @@
 #define FAILEDQ(hty) if (failed(hty)) return ret
 
 /* driver / database provider info */
-void Record::setdrv(char *dbmsname) {
-                                               drv = ODR_UNKNOWN;
+void Record::setdrv(char *dbmsname) {          drv = ODR_UNKNOWN;
 if (!strcmp(dbmsname, "SQLite"))               drv = ODR_SQLITE;
 if (!strcmp(dbmsname, "MySQL"))                drv = ODR_MYSQL;
 if (!strcmp(dbmsname, "PostgreSQL"))           drv = ODR_PG;
@@ -186,7 +185,6 @@ SQLLEN indicator;
 char *decimal;
 char **qp;
 char buf[HUGSIZE];
-
 //if (row) s = SQLMoreResults(stmt);
 if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
   if (!row) row = q->rows++ + 1;
@@ -234,3 +232,4 @@ if (ret && ret != SQL_NO_DATA && ret != SQL_SUCCESS_WITH_INFO) {
 } else ret = 0;
 return ret;
 }
+

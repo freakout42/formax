@@ -1,4 +1,4 @@
-/* body should be in a map */
+/* trigger configuration */
 #include "runform.h"
 
 int rTrigger::init(int form_id) {

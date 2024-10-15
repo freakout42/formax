@@ -17,3 +17,4 @@ columni = 3;
 empty(condition);
 return 0;
 }
+
