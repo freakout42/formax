@@ -15,11 +15,11 @@ runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
 
 run: runform $(EXAMPLE)
-	./runform -x -g/tmp/formax.log $(FORMAXE)
+	./runform -x -g/tmp/formax.log ../generate/formax.frm ../generate/scotty.frm
 
 test: clean runform $(EXAMPLE) $(FORMAXE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
-    ./runform -x -g/tmp/formax.log $(FORMAXE) 2>$@
+    ./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
 
 curkeys.h: curkeys

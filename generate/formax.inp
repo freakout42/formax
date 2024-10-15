@@ -103,7 +103,7 @@ INSERT INTO fields VALUES(18,1,6,1,'ftype',70,0,30,3,1,0,'',7,23,1,1,1,1,0,0,'',
 INSERT INTO fields VALUES(19,1,6,1,'len',80,0,30,3,1,0,'',8,23,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(20,1,6,1,'dlen',68,0,30,3,1,0,'',10,6,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(21,1,6,1,'btab',100,2,1,1,1,0,'',9,23,1,1,1,1,0,0,'',0,0,0,1,'','');
-INSERT INTO fields VALUES(22,1,6,1,'key',110,0,30,1,1,0,'',9,33,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(22,1,6,1,'key',110,2,1,1,1,0,'',9,33,1,1,1,1,0,0,'',0,0,0,1,'','');
 INSERT INTO fields VALUES(23,1,6,1,'dflt',120,0,30,20,1,0,'',10,23,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(24,1,6,1,'line',65,0,30,3,1,0,'',8,6,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(25,1,6,1,'col',66,0,30,3,1,0,'',9,6,1,1,1,1,0,0,'',0,0,0,0,'','');
@@ -168,7 +168,7 @@ INSERT INTO maps VALUES(391,4,1,'-----------------------------------------------
 INSERT INTO maps VALUES(392,4,2,'===== Id  table        Sq  Rec where                    order              =====');
 INSERT INTO maps VALUES(393,4,3,'Block $6_ $7__________ $8_ $9_ $10_____________________ $11_____________________');
 INSERT INTO maps VALUES(394,4,4,'--------------------------------------------------------------------------------');
-INSERT INTO maps VALUES(395,4,5,'===== Id  column       Blk Pag Help                                    =====');
+INSERT INTO maps VALUES(395,4,5,'===== Id  column       Blk Pag Help                                        =====');
 INSERT INTO maps VALUES(396,4,6,'Field $12 $16_________ $14 $15 $38______________________________________________');
 INSERT INTO maps VALUES(397,4,7,' Seq  $17      Type    $18 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE');
 INSERT INTO maps VALUES(398,4,8,' Line $24      Length  $19');
