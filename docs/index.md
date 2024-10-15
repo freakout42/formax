@@ -31,17 +31,17 @@ The minimal costs to build a **formax** application makes
 adapting this technology a no-brainer for any enterprise.
 
 In every system of decent size is the need for something
-like **formax**. The system-adminstrator needs to change a
-base-table or master-data. Most of the times he is forced to
-use error-prone and dangerous SQL or a database-admin-tool
+like **formax**. Examples: The sysadmin needs to change a
+base-table or master-data: most of the times he is forced to
+use error prone and dangerous SQL or a database-admin-tool
 like phpMyAdmin because there was no web-application build
-for all these small things. Or for maintaining customer
-information. Beside the new address-data itself there are
+for all these small things. Maintaining customer
+information: beside the new address data itself there are
 only around 20 keystrokes required to edit the record - no
 mouse-moving - no scrolling - with milliseconds response
 time. Frequently used apps like order-entry for which the
 initial training to use a powerful keyboard application pays
-off thousand times are even natch candidates for it.
+off thousand times, are even natch candidates for it.
 
 ### History/Motivation
 
@@ -71,7 +71,7 @@ trained user can enter data with minimal effort and time,
 due to the fast application, optimized keyboard handling and
 ultra low bandwidth usage. The productivity these forms
 bring to the table cannot be achieved with any other tool
-out there.
+or technology out there.
 
 #### Development
 
@@ -79,8 +79,8 @@ The form application can be build without code by setting up
 some data in a couple of tables with minimal programming. A
 minimal form to maintain a single table with complete CRUD
 functionality can be build with a single line of code within
-two seconds. Anyways the primary goal is the efficiency of
-the end-user application. Developer comfort is on second
+two seconds. Anyways is the primary goal the efficiency of
+the end user application. Developer comfort is on second
 place.
 
 Only the concept is inherited from SQL-Forms 3. There is no
@@ -108,14 +108,13 @@ action (SQL) can be logged in a central database.
 
 ### Status
 
-Current v1.5.0 is stable - the generator can create a
+Current v1.9.0 is stable - the generator can create a
 single-block single-page form. You are able to create,
-retrieve, update and delete (CRUD) records in the table. No
-triggers, no transactions, no help yet. The designer-tool is
-able to edit the page markup and to integrate the field
-positions and lengths into the form. There is also a form to
-maintain the field properties. The rest must be done by
-editing the .inp-file.
+retrieve, update and delete (CRUD) records in the table. The
+designer-tool is able to edit the page markup and to
+integrate the field positions and lengths into the form.
+There is also a form to maintain the field properties and
+the triggers. The rest is done by editing the .inp-file.
 
 Full Forms3 functionality is a big task and depends highly
 on the community participation in the future. The database

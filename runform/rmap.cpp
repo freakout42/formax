@@ -85,7 +85,7 @@ bindv[0] = NULL;
 execute();
 letf((char*)querystr, sizeof(querystr), "insert into %s (page_id, line, mtext) VALUES (%d, ?, ?)", table, page_id);
 bindv[2] = NULL;
-for(j = brdr / 2; tmpget(lins, MEDSIZE); j++) {
+for (j = brdr / 2; tmpget(lins, MEDSIZE); j++) {
   if ((i = strlen(lins)) > 1) {
     lins[i-1] = '\0';
     letf(t(rows), "%d", j);
@@ -95,7 +95,7 @@ for(j = brdr / 2; tmpget(lins, MEDSIZE); j++) {
     if (fields) {
       letf(t(rows), "%d", j + brdr/2);
       fields->bindv[0] = rows;
-      for(col=0; lins[col]; col++) {
+      for (col=0; lins[col]; col++) {
         k = lins[col];
         if (k == '$') {
           act = col;

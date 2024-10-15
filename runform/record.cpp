@@ -151,7 +151,7 @@ if (  *where  &&   *condition)  j = letf(t(whereorder), " where (%s) AND (%s)", 
 if (  *order                 )      letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
 letf((char*)querystr, sizeof(querystr), "select %s from %s%s", attrs, table, whereorder);
 bindv[0] = NULL;
-if ((ret = execute(querystr, bindv))) return ret;
+if ((ret = execute())) return ret;
 empty(condition);
 return fetchall();
 }

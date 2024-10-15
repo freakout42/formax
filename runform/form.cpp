@@ -97,9 +97,7 @@ if (rfield.init(fid)) return 9;
 if ((s = rfield.query())) return s;
 numfield = rfield.q->rows;
 if (numfield > NFIELDS) return 7;
-forall(field) {
-  if (l[i].init(rfield.q, i+1, b)) return 9;
-}
+forall(field) if (l[i].init(rfield.q, i+1, b)) return 9;
 rfield.rclose();
 
 /* triggers */

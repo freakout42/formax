@@ -38,15 +38,14 @@ int i;
 char sep[7];
 empty(condition);
 empty(sep);
-for (i=0; i<fieldcount; i++) {
-  if (F(l[blockfields[i]]).querywhere[0]) {
+for (i=0; i<fieldcount; i++)
+  if (F(l)[blockfields[i]].querywhere[0]) {
     cats(t(condition), sep);
     strcpy(sep, " AND ");
     cats(t(condition), "(");
     cats(t(condition), F(l[blockfields[i]]).querywhere);
     cats(t(condition), ")");
   }
-}
 return query();
 }
 
@@ -55,7 +54,7 @@ char *Block::cn(int c) {
 return F(l[blockfields[c]]).name;
 }
 
-/* orm update by bind variables - disable usebindvar=FALSE completely */
+/* orm update by bind variables - disabled usebindvar=FALSE completely */
 int Block::update(int r, int c) {
 #ifdef USEBINDVARFALSEENABLED
 if (usebindvar) {
@@ -71,7 +70,7 @@ letf((char*)querystr, sizeof(querystr), "update %s set %s = '%s' where %s = '%s'
 bindv[0] = NULL;
 }
 #endif
-if ((ret = execute(querystr, bindv))) return ret;
+if ((ret = execute())) return ret;
 return complete();
 }
 
@@ -89,7 +88,7 @@ letf((char*)querystr, sizeof(querystr),
 bindv[0] = NULL;
 }
 #endif
-if ((ret = execute(querystr, bindv))) return ret;
+if ((ret = execute())) return ret;
 return complete();
 }
 
@@ -124,10 +123,10 @@ bindv[j] = NULL;
 if (drv == ODR_ORACLE) {
 //{CALL begin insert into %s (%s) values (%s) return %s into ?", table, columnslist, valueslist, }
   letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s)", table, columnslist, valueslist);
-  if ((ret = execute(querystr, bindv))) return ret;
+  if ((ret = execute())) return ret;
 } else {
   letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s) returning %s", table, columnslist, valueslist, attrs);
-  if ((ret = execute(querystr, bindv))) return ret;
+  if ((ret = execute())) return ret;
   if ((ret = fetch(r))) MSG(MSG_NOREC);
 }
 return complete();
