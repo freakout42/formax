@@ -1,0 +1,28 @@
+--- lex.cq.c	2024-10-06 16:51:44.618673492 +0200
++++ cql.c	2024-10-06 16:53:03.750677848 +0200
+@@ -791,7 +791,9 @@
+ #endif
+ #endif
+ 
++#ifndef YY_NO_UNPUT
+     static void yyunput (int c,char *buf_ptr  );
++#endif
+     
+ #ifndef yytext_ptr
+ static void yy_flex_strncpy (char *,yyconst char *,int );
+@@ -1658,6 +1660,7 @@
+ 	return yy_is_jam ? 0 : yy_current_state;
+ }
+ 
++#ifndef YY_NO_UNPUT
+     static void yyunput (int c, register char * yy_bp )
+ {
+ 	register char *yy_cp;
+@@ -1694,6 +1697,7 @@
+ 	(yy_hold_char) = *yy_cp;
+ 	(yy_c_buf_p) = yy_cp;
+ }
++#endif
+ 
+ #ifndef YY_NO_INPUT
+ #ifdef __cplusplus

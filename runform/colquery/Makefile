@@ -25,6 +25,7 @@ colquery0.o: colquery.c colquery.h colq.h
 cql.o: cql.l cqy.o
 	$(LEX) $(LEXFLAGS) cql.l
 	sed 's/YYcqwrap/yywrap/g' <lex.cq.c >cql.c
+	: patch -p0 <cql.c.patch
 	$(CC) $(CFLAGS) -c cql.c
 
 cqy.c colq.h: cqy.y

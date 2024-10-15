@@ -1,0 +1,41 @@
+#!/bin/sh
+if ! bison --version; then
+  if [ -f /etc/redhat-release ]; then
+    sudo yum -y update
+    sudo yum -y group install "Development Tools"
+    sudo yum -y install python3
+    sudo yum -y install unixODBC
+    sudo yum -y install unixODBC-devel
+    sudo yum -y install ncurses-devel
+    sudo yum -y install sqlite
+    rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-0.9998-1.x86_64.rpm
+  else
+    sudo apt-get -y update
+    sudo apt-get -y install build-essential
+    sudo apt-get -y install python
+    sudo apt-get -y install unixodbc
+    sudo apt-get -y install libsqliteodbc
+    sudo apt-get -y install libncurses5-dev
+    sudo apt-get -y install flex
+  fi
+fi
+./configure clean
+./configure
+make
+sudo make install
+. /etc/profile.d/arx.sh
+rm -rf myform
+mkdir myform
+cd myform
+sqlite3 mydb.sq3 <<'EOF'
+create table depts (id integer primary key not null, dname text, loc text);
+insert into depts values (10, 'ACCOUNTING', 'NEW YORK');
+insert into depts values (20, 'RESEARCH',   'DALLAS');
+insert into depts values (30, 'SALES',      'CHICAGO');
+insert into depts values (40, 'OPERATIONS', 'BOSTON');
+EOF
+makeform deptform Departments depts id dname loc | sqlite3 myform.frm
+runform myform.frm mydb.sq3
+editform myform
+runform myform.frm mydb.sq3
+exit

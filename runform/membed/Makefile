@@ -1,27 +1,33 @@
 include ../cflags.make
 LIBS=-lcurses
+CFLAGS+=-Wno-missing-braces
 SRC=buffer.c cursor.c display.c files.c line.c random.c search.c term.c window.c word.c main.c
-OBJ=buffer.o cursor.o display.o files.o line.o random.o search.o term.o window.o word.o help.o
+OBC=buffer.o cursor.o files.o line.o random.o search.o term.o window.o word.o
+OBJ=$(OBC) display.o help.o
+OBJL=$(OBC) display-h.o help-h.o
 
 all: libmex.a
 
-test: mex
+test: libmex.a mex
 
-mex: main.o libmex.a
-	$(CC) -o $@ $(LDFLAGS) -L. main.o -lmex $(LIBS)
+mex: main.o $(OBJ)
+	$(CC) -o $@ $(LDFLAGS) main.o $(OBJ) $(LIBS)
 
-libmex.a: mainloop.o $(OBJ)
-	$(AR) rcs $@ mainloop.o $(OBJ)
+libmex.a: mainloop.o $(OBJL)
+	$(AR) rcs $@ mainloop.o $(OBJL)
 
-$(SRC):	ed.h
+$(SRC):	ed.h curkeys.h
 
-main.o: main.c curkeys.h
-	$(CC) $(CFLAGS) -Wno-missing-braces -c main.c
+mainloop.o: main.c
+	$(CC) $(CFLAGS) -DEMBEDDED -c main.c -o $@
 
-mainloop.o: main.c curkeys.h
-	$(CC) $(CFLAGS) -DEMBEDDED -Wno-missing-braces -c main.c -o $@
+display-h.o: display.c
+	$(CC) $(CFLAGS) -DEMBEDDED -c display.c -o $@
 
-term.o: term.c ed.h
+help-h.o: help.c
+	$(CC) $(CFLAGS) -DEMBEDDED -c help.c -o $@
+
+term.o: term.c
 	$(CC) $(CFLAGS) -I/usr/include/ncurses -c term.c
 
 curkeys.h: curkeys.c

@@ -292,18 +292,22 @@ KEYTAB  keytab[] = {
 	CTLX|'=',		showcpos,
 	CTLX|'(',		ctlxlp,
 	CTLX|')',		ctlxrp,
+#ifndef EMBEDDED
 	CTLX|'1',		onlywind,
 	CTLX|'2',		splitwind,
 	CTLX|'B',		usebuffer,
+#endif
 	CTLX|'C',		casestog,
 	CTLX|'E',		ctlxe,
      ED|CTLX|'F',		reformat,	/* mb: added */
 	CTLX|'K',		killbuffer,
      ED|CTLX|'L',		setlmargin,	/* mb: added */
 	CTLX|'M',		defmacro,	/* mb: added */
+#ifndef EMBEDDED
 	CTLX|'N',		nextwind,
 	CTLX|'O',		nextwind,	/* mb: EMACS-like */
 	CTLX|'P',		prevwind,
+#endif
 	CTLX|'Q',		visitog,	/* mb: added */
      ED|CTLX|'R',		setfillcol,
 #ifndef EMBEDDED

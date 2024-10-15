@@ -13,7 +13,7 @@ else
   LOGGING=""
 fi
 FORM=$1
-if ! cp -v $FORM.frm $FORM.frm.bac; then
+if ! cp $FORM.frm $FORM.frm.bac; then
   echo "$FORM.frm not found" >&2
   exit 2
 fi
