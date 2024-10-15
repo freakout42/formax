@@ -19,6 +19,10 @@ columni = 3;
 int Form::fill(int fid) {
 int i, s;
 Block *blk;
+Form *runningform;
+
+runningform = f;
+f = this;
 
 /* connect all configuration tables to the form database */
        connect(dbconn[0]);
@@ -33,6 +37,9 @@ rtrigger.connect(dbconn[0]);
 stmt = NULL;
 if ((s = ropen())) return s;
 letf(t(where), "id = %d", fid);
+empty(where);
+empty(order);
+empty(condition);
 if ((s = query())) return s;
 if (q->rows != 1) return 7;
 let(id,    q->v(1, 1));
@@ -40,16 +47,6 @@ let(name,  q->v(1, 2));
 let(title, q->v(1, 3));
 needredraw = 0;
 rclose();
-
-/* triggers */
-if (rtrigger.init(fid)) return 9;
-if ((s = rtrigger.query())) return s;
-numtrigger = rtrigger.q->rows;
-if (numtrigger > NTRIGGERS) return 7;
-for (i=0; i<numtrigger; i++) {
-  if (r[i].init(rtrigger.q, i+1, &rmap)) return 9;
-}
-rtrigger.rclose();
 
 /*               i  id seq desc
  * pages - page [0] 1  0   status/edit/message window
@@ -65,7 +62,7 @@ if (rpage.init(fid)) return 9;
 if ((s = rpage.query())) return s;
 numpage = rpage.q->rows;
 if (numpage > NBLOCKS) return 7;
-for (i=0; i<numpage; i++) {
+forall(page) {
   if (p[i].init(rpage.q, i+1)) return 9;
   if (rmap.init(p[i].page_id)) return 9;
   if ((s = rmap.query())) return s;
@@ -73,7 +70,6 @@ for (i=0; i<numpage; i++) {
   rmap.rclose();
 }
 rpage.rclose();
-rmap.connect(dbconn[1]);
 
 /* error messages */
 if (rerror.init()) return 9;
@@ -87,7 +83,7 @@ if (rblock.init(fid)) return 9;
 if ((s = rblock.query())) return s;
 numblock = rblock.q->rows;
 if (numblock > NBLOCKS) return 7;
-for (i=0; i<numblock; i++) {
+forall(block) {
   blk = &b[i];
   if (blk->init(rblock.q, i+1)) return 9;
   if (i < 4) blk->connect(dbconn[i+1]);
@@ -101,11 +97,21 @@ if (rfield.init(fid)) return 9;
 if ((s = rfield.query())) return s;
 numfield = rfield.q->rows;
 if (numfield > NFIELDS) return 7;
-for (i=0; i<numfield; i++) {
-  if (l[i].init(rfield.q, i+1, b)) return 9;
-}
+forall(field) if (l[i].init(rfield.q, i+1, b)) return 9;
 rfield.rclose();
 
+/* triggers */
+if (rtrigger.init(fid)) return 9;
+if ((s = rtrigger.query())) return s;
+numtrigger = rtrigger.q->rows;
+if (numtrigger > NTRIGGERS) return 7;
+forall(trigger) {
+  if (r[i].init(rtrigger.q, i+1, &rmap)) return 9;
+}
+rtrigger.rclose();
+rmap.connect(dbconn[1]);
+
+f = runningform;
 return 0;
 }
 
@@ -135,7 +141,7 @@ int Form::qfield(char *sel) {
 int i;
 char selector[SMLSIZE];
 for (i=0; i<numfield; i++) {
-  letf(t(selector), "%s.%s", b[l[i].blockindex].table, l[i].name);
+  letf(t(selector), "%s.%s", b[l[i].blockindex].table, l[i].column);
   if (!strcmp(sel, selector)) break;
 }
 return i<numfield ? i : -1;
@@ -164,6 +170,7 @@ switch(ck) {                                  /* C */
   case KEY_HOME:       return KEF_HOME;       /* a      fhome */
   case KEY_PPAGE:      return KEF_PRESETR;    /* r      fpresetr */
   case KEY_DC:         return KEF_DELETE;     /* d      delete_record */
+  case KEY_LL:
   case KEY_END:        return KEF_END;        /* e      fend */
   case KEY_NPAGE:      return KEF_NXTSETR;    /* w      fnxtsetr */
   case KEY_UP:         return KEF_PREREC;     /* p      fmover */

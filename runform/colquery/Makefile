@@ -3,6 +3,7 @@ CFLAGS+=-DYY_NO_UNPUT -DYY_NO_INPUT -DYY_SKIP_YYWRAP
 LDFLAGS=-r
 YACC=bison
 YFLAGS=-d --name-prefix=cq
+# -Wno-conflicts-sr
 LEXFLAGS=--prefix=cq
 
 all: colquery.o

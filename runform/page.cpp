@@ -19,7 +19,7 @@ int Page::maps(Qdata *qma) {
 int i, r, y;
 char *t, *p;
 for (i = 1; i <= qma->rows; i++) {
-  r = qma->n(i, 1) - 1;
+  r = qma->n(i, 1);
   if (r > NLINES) return 1;
   map[r] = qma->c(i, 2);
   y = 1;
@@ -34,7 +34,7 @@ for (i = 1; i <= qma->rows; i++) {
         p = NULL;
       }
     }
-    if (!*t) y = 0;
+    if (!(*t)) y = 0;
   }
 }
 return 0;
@@ -87,7 +87,7 @@ s = mainloop(tmpf, wndw);
 tmpopen();
 i = tmpread(buf, BIGSIZE);
 buf[i] = '\0';
-if ((eol = strchr(buf, '\n')) && *(eol+1) == '\0') *eol = '\0';
+if ((eol = strchr(buf, '\n')) && *(eol+1) == '\0') empty(eol);
 tmpclose(1);
 return s ? KEF_NXTFLD : KEF_CANCEL;
 }
@@ -95,10 +95,16 @@ return s ? KEF_NXTFLD : KEF_CANCEL;
 /* edit a map with the full screen editor */
 int Page::editmap(int pid) {
 char *tmpf;
+int hasborder;
+hasborder = 1; /* only real pages can not have a border and start with =0 */
 redraw();
 refr();
+if (pid < NBLOCKS) {
+  hasborder = F(p)[pid].border * 2;
+  pid = F(p)[pid].page_id;
+}
 tmpf = F(rmap).extract(pid);
-F(rmap).slurp(mainloop(tmpf, wndw) ? pid : 0, tmpf);
+F(rmap).slurp(mainloop(tmpf, wndw) ? pid : 0, tmpf, hasborder);
 F(needredraw) = 1;
 return 0;
 }
@@ -121,7 +127,7 @@ writef(0,  2, 0, 2,  "%2s-",      F(id));
 writes(0,  5,                     F(name));
 writef(0, 16, 0, 7,  "%s",        username);
 writef(0, 25, 0, 8,  "%s",        CB.table);
-writef(0, 33, 0, 8,  "%s",        CF.name);
+writef(0, 33, 0, 8,  "%s",        CF.column);
 writef(0, 42, 0, 9,  "%6d/%6d",   CB.currentrecord, CB.q->rows);
 writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));

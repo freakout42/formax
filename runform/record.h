@@ -17,7 +17,10 @@ public:
   odrvr drv;
   char table[SMLSIZE];
   char sqlcmd[MEDSIZE];
+  char condition[MEDSIZE];
   char whereorder[MEDSIZE];
+  SQLCHAR querystr[MEDSIZE];
+  char *bindv[NBINDPA];
   int connect(char *dsn);
   int connect(Record r);
   int commit();
@@ -28,6 +31,7 @@ public:
   int clear();
   int query();
   int execdirect(char *sql);
+  int execute();
   Qdata *q;
 protected:
   SQLRETURN ret;
@@ -38,8 +42,6 @@ protected:
   char attrs[SMLSIZE];
   char where[MEDSIZE];
   char order[SMLSIZE];
-  SQLCHAR querystr[MEDSIZE];
-  char *bindv[NBINDPA];
   int execute(SQLCHAR *sql, char *bndv[]);
   int complete();
   int fetch(int row);

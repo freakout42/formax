@@ -21,7 +21,6 @@ public:
   int curfield;
   int lastcmd;
   int lastkey;
-  fmode rmode;
   int dirty;
   int fill(int id);
   int qfield(char *sel);

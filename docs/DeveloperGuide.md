@@ -6,7 +6,7 @@ based applications. These applications can enter, query,
 update and delete data in any database which has an
 ODBC-driver. With no programming simply by assigning form
 fields to database tables and columns a working form can be
-build within 5 minutes without any coding.
+build within minutes without any coding.
 
 The forms run within a terminal. They are full-screen,
 interactive and keyboard driven. Any terminal with a
@@ -213,15 +213,14 @@ Development
 ===========
 
 In version 1.x developing with **formax** is kind of a
-rudimentary	task only supported by a simple script
+rudimentary task only supported by a simple script
 `editform`. Version 1 first attention applys to user
 experience and documentation. Anything beyond layout editing
-and field properties has to be done by editing the .inp
-file and needs knowledge from the source code or adapted
-experience from Oracle Forms jobs. Since 1.x can only handle
-one block, table and page this is not a big deal anyway.
-Follow the "Getting started" instruction in the README first
-to get the basic idea for development quickly.
+and field properties has to be done by editing the .inp file
+and needs knowledge from the source code or adapted
+experience from Oracle Forms jobs. Follow the "Getting
+started" instruction in the README first to get the basic
+idea for development quickly.
 
 Page layout
 -----------
@@ -258,7 +257,7 @@ as follows:
 | Table    | 0=no database column 1=database column        |
 | Pkey     | primary key   - DO NOT CHANGE                 |
 | Default  | default value in Insert-Mode                  |
-| Enter    | allowed to edit in Insert-Mode                |
+| Enter    | allowed to edit interactively                 |
 | Query    | allowed to edit in Query-Mode                 |
 | Update   | allowed to edit in Update-Mode                |
 | UpdateNul| allowed to edit in Update-Mode when NULL      |
@@ -340,8 +339,11 @@ small but usable subset of ES6.
 | clip              | clipboard value                      |
 | next_item()       | navigate to next item/field          |
 | previous_item()   | navigate to previous item/field      |
+| next_block()      | navigate to next block               |
+| previous_block()  | navigate to previous block           |
 | next_record()     | navigate to next record              |
 | previous_record() | navigate to previous record          |
+| exec_query()      | execute query in current block       |
 | $("blk.fld"[,n])  | jQuery-like "DOM" access to fieldvals|
 | String(n)         | cast number to string (integer)      |
 | Message(text)     | message on status line               |
@@ -370,6 +372,7 @@ On success next_item() is fired to move to the next field.
 | COPYREC    | Key  | CTRL('T') F4     | Setting | 1008   |
 | COPY       | Key  | CTRL('C') F2     | Action  | 1009   |
 | PASTE      | Key  | CTRL('V') F3     | Setting | 1010   |
+| POSTQUERY  | App  | execute_query()  | Setting | 1011   |
 
 ## Trigger Table
 
@@ -403,4 +406,4 @@ INSERT INTO maps (page_id, line, mtext) VALUES (1010, 1, 'clip;');
 ## Future
 
 Functionalty is still limited and will be enhanced on demand
-by solving issues.
+by solving issues. Community participation is welcome.

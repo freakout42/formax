@@ -1,7 +1,7 @@
 #!/bin/sh
 helpmap() {
 LINE=`expr $LINE + 1`
-echo "INSERT INTO maps (page_id, line, mtext) VALUES (4, $LINE, ' $1');"
+echo "INSERT INTO maps (page_id, line, mtext) VALUES (4, $LINE+1, ' $1');"
 }
 guidmap() {
 LINE=`expr $LINE + 1`
@@ -9,6 +9,10 @@ echo "UPDATE maps set mtext = mtext || ' $1' where page_id = 4 and line = $LINE;
 }
 ARX=`pwd`/.. sh ./makeform scotty formax1 emps id ename job mgr hiredate sal comm dept_id
   cat <<EOF
+INSERT INTO blocks (form_id, name, seq) VALUES (1, 'depts', 60);
+INSERT INTO fields VALUES(9,1,5,1,'id',100,0,30,2,1,1,'',8,40,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(10,1,5,1,'dname',110,0,30,10,1,0,'',8,43,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(11,1,5,1,'loc',120,0,30,22,1,0,'',8,55,1,1,1,1,0,0,'',0,0,0,0,'','');
 UPDATE fields set help = 'Employees last name' where id=2;
 UPDATE fields set ftype = 2, dlen = 4, len = 4, low = 7000, high = 8999, valpatn = '\d\d\d\d' where id=4;
 UPDATE fields set ftype = 4 where id=5;
@@ -22,7 +26,6 @@ INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,7,1001,2002);
 INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,8,1005,2003);
 EOF
 LINE=9
-LINE=`expr $LINE + 1`
 #elpmap 'F2    Ctrl+c Copy'
 #elpmap 'F3    Ctrl+v Paste'
 #elpmap 'F5    Ctrl+t Copy-Record'
@@ -36,7 +39,7 @@ helpmap 'F7    Ctrl+d Delete-Record    Delete: Move to the record'
 helpmap 'F8    Ctrl+z Exit                     Press "Delete" or Ctrl-d'
 helpmap 'F9    Ctrl+y Quit'          
 helpmap 'F10   Ctrl+x Query            Query:  Edit conditions in each field'
-LINE=0
+LINE=-1
 guidmap '                              Query examples Enter to execute'
 guidmap '>7700'
 guidmap '~jon'
@@ -44,4 +47,5 @@ guidmap 'MANAGER,SALESMAN'
 guidmap ''
 guidmap '02/18/80-11/30/81'
 guidmap '2000-3000'
+guidmap '$9_ $10_______ $11____________________'
 exit

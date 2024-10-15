@@ -1,19 +1,21 @@
 /* runform.cpp main and os interfaces except curses and odbc */
 
 #define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpqx] [-n lg]\n" \
-  " [-f formid ] [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]{1,4}\n"
+  " [-f formid ] [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...\n"
 
 #include <stdio.h>
 #include <unistd.h>
 #include <locale.h>
 #include "runform.h"
 
+/* fast keys for different keyboard layouts for -n option */
 char shiftedus[] = "/!@#$%^&*().,";
 char shifteduk[] = "/!\"£$%^&*().,";
 char shiftedde[] = "-!\"§$%&/()=.,";
 char shiftedfr[] = "!&é\"'(-è_çá;,";
 char *shiftednum = shiftedus;
 
+/* options are global vars */
 char *lclocale;
 int  firststart  = 1;
 int  insertmode  = 1;
@@ -30,6 +32,8 @@ int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
 char *ypassword  = NULL;
 char *username;
+
+/* global form dbs screen functions and logger */
 Logger g;
 Record dbconn[5];
 Screen y;
@@ -96,7 +100,7 @@ char totpdigest[8];
 char totpresult[8];
 Form *rootform;
 
-// search for the sqlite3 driver
+/* search for the sqlite3 driver */
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
 const char *drvs[] = {
@@ -117,7 +121,7 @@ lclocale = setlocale(LC_ALL, CHARSET);
 
 form_id = 1;
 
-// command-line arguments and options check and process
+/* command-line arguments and options check and process */
 while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
@@ -153,8 +157,10 @@ while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
   }
 }
 
+/* build the key based on the form-file and the key in version.h */
 if ((i = genxorkey(argv[optind], XORKEY1))) usage(i);
 
+/* generate encrypted passwords - must be root */
 if (ypassword) {
   if (getuid()) usage(1);
   let(b64pwd, ypassword);
@@ -163,9 +169,10 @@ if (ypassword) {
   exit(99);
 }
 
+/* initialize the logger with first dsn */
 g.init(argv[optind+1]);
 
-// open the form database - sqlite3 file named .frm
+/* open the form database - sqlite3 file named .frm */
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
 if (dbconn[0].connect(dsn)) usage(4);
 
@@ -192,17 +199,17 @@ switch(dbconn[1].drv) {
 memset(dsn, 'y', MEDSIZE); // remove key from ram
 genxorkey(NULL, NULL);
 
-// open the screen
+/* open the screen */
 if (y.init()) usage(17);
 
-// create load run and destroy the form
+/* create load run and destroy the form */
 rootform = new Form();
 if (rootform->fill(form_id)) usage(5);
 if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
 rootform->clear();
 delete(rootform);
 
-// cleanup screen db connections and logger
+/* cleanup screen db connections and logger */
 y.closedisplay();
 for (i=0; i<5; i++) {
   dbconn[i].rclose();

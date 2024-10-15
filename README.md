@@ -1,7 +1,7 @@
 formax: enterprise-applications on terminals
 ============================================
 **formax** is a tool for developing and executing user
-friedly character based database applications with extreme
+friedly, character based database applications with extreme
 efficiency. It joins the concept of venerable Oracle Forms
 with curses as the terminal interface, ODBC for universal
 database access and JavaScript for the trigger language. The
@@ -55,7 +55,7 @@ Enterprise requirements are fully accomplished:
  - Security \
     high standards for source code \
     minimized use of libraries \
-    3FA included
+    3FA included in runtime
  - Reliability \
     low complexity system \
     only two interfaces
@@ -63,8 +63,8 @@ Enterprise requirements are fully accomplished:
     no license costs \
     easy deployment
  - Operational excellence \
-    simple no hassle updates \
-    full logging of user action
+    simple, no hassle updates \
+    full logging of user actions
  - Performance efficience \
     very low resource demands \
     for bandwidth, cpu and memory
@@ -75,15 +75,16 @@ Enterprise requirements are fully accomplished:
 
 Status
 ======
-Trigger 1.8.0 is useable for single block single page forms.
-Don't hesitate to create an issue when in trouble or missing
-a feature or have found a bug or security problem.
+
+Release 1.9.0 is useable but has not matured to call it
+fully production ready. Don't hesitate to create an issue
+when in trouble or missing a feature or have found a bug or
+security problem.
 
 Future roadmap
 --------------
- - 1.9 multiple blocks and non-db block
  - 2.0 multi-record fields
- - 2.1 multiple blocks and master-detail
+ - 2.1 master-detail
  - 2.2 in-field editing
  - 2.5 list of values - subforms
  - 3.0 menue multiple forms

@@ -8,5 +8,7 @@ public:
   char *jsexec();
   int trgfld;
   int trgtyp;
+  int index;
+  int fieldindex;
 private:
 };

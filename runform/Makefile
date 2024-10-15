@@ -3,9 +3,11 @@ SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 OBJA=cqerror.o colquery/colquery.o crypt/libmd5.a membed/libmex.a elk/elk.o regex/re.o
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
+FORMAXE=../generate/formax.frm ../generate/formax.sq3
 VALGRINDSUP=--gen-suppressions=no #all
 
 all: runform
+	strip runform
 
 $(OBJS): curkeys.h
 
@@ -13,9 +15,9 @@ runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
 
 run: runform $(EXAMPLE)
-	./runform -g/tmp/formax.log $(EXAMPLE)
+	./runform -x -g/tmp/formax.log ../generate/formax.frm ../generate/scotty.frm
 
-test: runform $(EXAMPLE)
+test: clean runform $(EXAMPLE) $(FORMAXE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
     ./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
@@ -35,6 +37,8 @@ regex/re.o:
 	cd regex; make $(SUBTARGET)
 
 $(EXAMPLE):
+	cd ../generate; make clean test
+$(FORMAXE):
 	cd ../generate; make clean test
 
 clean:

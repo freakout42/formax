@@ -58,6 +58,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #define min(x, y)	(((x) < (y)) ? (x) : (y))
 #define let(target,source) letstrncpy(target, source, sizeof(target)-1)
 #define t(target) target, sizeof(target)
+#define empty(strp) *strp = '\0'
 #define debugs(string) fprintf(stderr, ":%s:\n", string);
 
 /* access to the current running dbs form mode blocks fields */
@@ -66,15 +67,18 @@ extern Record dbconn[5];
 extern Screen y;
 extern Form *f;
 #define F(method) f->method
-#define CM F(rmode)
 #define CB F(b)[F(curblock)]
 #define CF F(l)[F(curfield)]
 #define CR CB.currentrecord
+#define CM CB.rmode
 #define CV *CF.valuep()
 #define LK F(lastkey)
 #define MSG(n) F(p)[0].message(n, NULL)
 #define MSG1(n,c) F(p)[0].message(n, c)
-
+#define blki(i) F(b)[i]
+#define fldi(i) F(l)[i]
+#define trgi(i) F(r)[i]
+#define forall(item) for (i=0; i<F(num ## item); i++)
 /* helpers from version.cpp */
 extern char *letstrncpy(char *dest, const char *src, size_t n);
 extern int yesno(int c);

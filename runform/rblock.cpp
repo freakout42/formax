@@ -11,5 +11,6 @@ let(attrs,     "name,seq,norec,prikey,whereand,orderby");
 letf(t(where), "form_id in (0, %d)", form_id);
 let(order,     "seq");
 columni = 6;
+empty(condition);
 return 0;
 }

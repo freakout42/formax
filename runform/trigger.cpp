@@ -14,21 +14,27 @@ static struct js *javascript = NULL;
 /* jsval_t js_mkstr(struct js *, const void *, size_t); */
 
 /* jquery like access to a "dom"
- * $(block.field)    => current row fields value
- * $(block.field, n) => row n fields value
+ * $("block.field")    => current row fields value
+ * $("block.field", n) => row n fields value
  */
 static jsval_t j_snub(struct js *js, jsval_t *args, int nargs) {
+int fldn;
 char *fldvaluep;
 char *selector;
 double rownumber;
+//let(a, "(null)");
+empty(a);
 selector = js_getstr(js, args[0], NULL);
+fldn = F(qfield)(selector);
+if (fldn >= 0) {
 if (nargs == 2) {
   rownumber = js_getnum(args[1]);
-  fldvaluep = *F(l)[F(qfield)(selector)].valuepr((int)rownumber);
+  fldvaluep = *fldi(fldn).valuep((int)rownumber);
 } else {
-  fldvaluep = *F(l)[F(qfield)(selector)].valuep();
+  fldvaluep = *fldi(fldn).valuep();
 }
-if (fldvaluep) let(a, fldvaluep); else *a = '\0';
+if (fldvaluep) let(a, fldvaluep);
+}
 return js_mkstr(js, a, strlen(a)+1);
 }
 
@@ -59,28 +65,38 @@ return js_mkstr(js, a, strlen(a)+1);
 #define JSEXA(func) jsval_t j_ ## func (struct js *js, jsval_t *args, int nargs) { return js_mknum(u.func()); }
 JSEXA(next_item)
 JSEXA(previous_item)
+JSEXA(next_block)
+JSEXA(previous_block)
 JSEXA(next_record)
 JSEXA(previous_record)
+JSEXA(exec_query)
 
 /* init the engine and read from config bodys are in map */
 int Trigger::init(Qdata *trg, int rix, rMap *map) {
+int i;
 if (!javascript) {
   javascript = js_create(engine, HUGSIZE);
 #define JSEXE(jsfn,func) js_set(javascript, js_glob(javascript), #jsfn, js_mkfun(j_ ## func))
   JSEXE(next_item,next_item);
   JSEXE(previous_item,previous_item);
+  JSEXE(next_block,next_block);
+  JSEXE(previous_block,previous_block);
   JSEXE(next_record,next_record);
   JSEXE(previous_record,previous_record);
+  JSEXE(exec_query,exec_query);
   JSEXE($,snub);
   JSEXE(String,tostring);
   JSEXE(Message,message);
   JSEXE(SQL,sql);
-  letf(t(a), "let cb;let cf;let cr;let cv;let nav0 = %d;let v0;let v1;let v2;let v3;let clip = '0';", KEF_NAVI0);
+  letf(t(a), "let cb;let cf;let ci;let cr;let cv;let nav0 = %d;let v0;let v1;let v2;let v3;let clip = '0';", KEF_NAVI0);
   jsexecdirect(a, strlen(a));
 }
 trgfld = trg->n(rix, 1);
 trgtyp = trg->n(rix, 2);
 map_id = trg->n(rix, 3);
+index = rix - 1;
+fieldindex = -1;
+forall(field) if (fldi(i).field_id == trgfld) fieldindex = i;
 return map->getbody(map_id, body, sizeof(body));
 }
 
@@ -96,12 +112,12 @@ char *fvalue;
 char *escaped;
 int progsize;
 escaped = a;
-for (fvalue=CV; *fvalue; fvalue++) {
+if (CV) for (fvalue=CV; *fvalue; fvalue++) {
   if (*fvalue == '\'') *escaped++ = '\\';
   *escaped++ = *fvalue;
 }
-*escaped++ = '\0';
-letf(t(prog), "cb = '%s'; cf = '%s'; cr = %d; cv = '%s';\n", CB.table, CF.name, CR, a);
+empty(escaped++);
+letf(t(prog), "cb = '%s'; cf = '%s'; ci = %d; cr = %d; cv = '%s';\n", CB.table, CF.column, CF.index, CR, a);
 progsize = cats(t(prog), body);
 return jsexecdirect(prog, progsize);
 }

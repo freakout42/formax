@@ -15,6 +15,8 @@ let(order,  blk->v(rix, 6));
 let(attrs,  "");
 fieldcount = 0;
 prikeycnt = 0;
+empty(condition);
+index = rix - 1;
 return 0;
 }
 
@@ -23,7 +25,7 @@ int Block::addattribute(int att, void *fld) {
 Field *l;
 l = (Field*)fld;
 if (*attrs) cats(t(attrs), ","); /* build the column list for query */
-cats(t(attrs), l->name);
+cats(t(attrs), l->basetable ? l->column : l->defaultval);
 blockfields[fieldcount++] = att;
 if (l->isprimarykey) primarykeys[prikeycnt++] = att;
 columni = fieldcount;
@@ -33,45 +35,42 @@ return fieldcount;
 /* orm retrieve respects the colquery conditions */
 int Block::select() {
 int i;
-char wall[MEDSIZE-2];
 char sep[7];
-*wall = '\0';
-*sep = '\0';
-for (i=0; i<fieldcount; i++) {
-  if (F(l[blockfields[i]]).querywhere[0]) {
-    cats(t(wall), sep);
+empty(condition);
+empty(sep);
+for (i=0; i<fieldcount; i++)
+  if (F(l)[blockfields[i]].querywhere[0]) {
+    cats(t(condition), sep);
     strcpy(sep, " AND ");
-    cats(t(wall), "(");
-    cats(t(wall), F(l[blockfields[i]]).querywhere);
-    cats(t(wall), ")");
+    cats(t(condition), "(");
+    cats(t(condition), F(l[blockfields[i]]).querywhere);
+    cats(t(condition), ")");
   }
-}
-let(where, wall);
 return query();
 }
 
-/* block field name */
+/* block field column */
 char *Block::cn(int c) {
-return F(l[blockfields[c]]).name;
+return F(l[blockfields[c]]).column;
 }
 
-/* orm update by bind variables - disable usebindvar=FALSE completely */
+/* orm update by bind variables - disabled usebindvar=FALSE completely */
 int Block::update(int r, int c) {
 #ifdef USEBINDVARFALSEENABLED
 if (usebindvar) {
 #endif
-letf((char*)querystr, sizeof(querystr), "update %s set %s = ? where %s = ?", table, cn(c-1), F(l[primarykeys[0]]).name);
+letf((char*)querystr, sizeof(querystr), "update %s set %s = ? where %s = ?", table, cn(c-1), F(l[primarykeys[0]]).column);
 bindv[0] = q->v(r, c);
 bindv[1] = q->v(r, F(l[primarykeys[0]]).sequencenum);
 bindv[2] = NULL;
 #ifdef USEBINDVARFALSEENABLED
 } else {
 letf((char*)querystr, sizeof(querystr), "update %s set %s = '%s' where %s = '%s'", table, cn(c-1), q->v(r, c),
-                                           F(l[primarykeys[0]]).name, q->v(r, F(l[primarykeys[0]]).sequencenum));
+                                           F(l[primarykeys[0]]).column, q->v(r, F(l[primarykeys[0]]).sequencenum));
 bindv[0] = NULL;
 }
 #endif
-if ((ret = execute(querystr, bindv))) return ret;
+if ((ret = execute())) return ret;
 return complete();
 }
 
@@ -79,17 +78,17 @@ int Block::destroy(int r) {
 #ifdef USEBINDVARFALSEENABLED
 if (usebindvar) {
 #endif
-letf((char*)querystr, sizeof(querystr), "delete from %s where %s = ?", table, F(l[primarykeys[0]]).name);
+letf((char*)querystr, sizeof(querystr), "delete from %s where %s = ?", table, F(l[primarykeys[0]]).column);
 bindv[0] = q->v(r, F(l[primarykeys[0]]).sequencenum);
 bindv[1] = NULL;
 #ifdef USEBINDVARFALSEENABLED
 } else {
 letf((char*)querystr, sizeof(querystr),
-  "delete from %s where %s = '%s'", table, F(l[primarykeys[0]]).name, q->v(r, F(l[primarykeys[0]]).sequencenum));
+  "delete from %s where %s = '%s'", table, F(l[primarykeys[0]]).column, q->v(r, F(l[primarykeys[0]]).sequencenum));
 bindv[0] = NULL;
 }
 #endif
-if ((ret = execute(querystr, bindv))) return ret;
+if ((ret = execute())) return ret;
 return complete();
 }
 
@@ -98,14 +97,14 @@ int i, j;
 char columnslist[MEDSIZE];
 char valueslist[SMLSIZE];
 char sep;
-*columnslist = '\0';
-*valueslist = '\0';
+empty(columnslist);
+empty(valueslist);
 sep = '\0';
 j = 0;
 for (i=0; i<fieldcount; i++) {
-  if (q->v(r, i+1)) {
+  if (fldi(i).basetable && q->v(r, i+1)) {
     catc(t(columnslist), sep);
-    cats(t(columnslist), F(l[blockfields[i]]).name);
+    cats(t(columnslist), F(l[blockfields[i]]).column);
     catc(t(valueslist),  sep);
 #ifdef USEBINDVARFALSEENABLED
 if (usebindvar) {
@@ -124,10 +123,10 @@ bindv[j] = NULL;
 if (drv == ODR_ORACLE) {
 //{CALL begin insert into %s (%s) values (%s) return %s into ?", table, columnslist, valueslist, }
   letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s)", table, columnslist, valueslist);
-  if ((ret = execute(querystr, bindv))) return ret;
+  if ((ret = execute())) return ret;
 } else {
   letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s) returning %s", table, columnslist, valueslist, attrs);
-  if ((ret = execute(querystr, bindv))) return ret;
+  if ((ret = execute())) return ret;
   if ((ret = fetch(r))) MSG(MSG_NOREC);
 }
 return complete();

@@ -7,14 +7,17 @@
 #include "regex/re.h"
 #include "colquery/colquery.h"
 
+#define page  F(p)[pageindex]
+#define block F(b)[blockindex]
+
 int Field::init(Qdata *fld, int rix, Block *bs) {
 field_id      = fld->n(rix, 1);
-let(name,       fld->v(rix, 2));
+let(column,     fld->v(rix, 2));
 blockindex    = fld->n(rix, 3);
 pageindex     = fld->n(rix, 4);
 displaylen    = fld->n(rix, 5);
-line          = fld->n(rix, 6);
-col           = fld->n(rix, 7);
+line          = fld->n(rix, 6) + (page.border ? 1 : 0);
+col           = fld->n(rix, 7) + (page.border ? 1 : 0);
 isprimarykey  = fld->n(rix, 8);
 fieldtype     = (ftype)fld->n(rix, 9);
 fieldlen      = fld->n(rix,10);
@@ -34,9 +37,10 @@ highvalue     = fld->n(rix,23);
 let(validreg,   fld->v(rix,24));
 let(helptext,   fld->v(rix,25));
 field_id      = fld->n(rix,26);
-let(queryhuman, "");
-let(querywhere, "");
+empty(queryhuman);
+empty(querywhere);
 sequencenum = bs[blockindex].addattribute(rix-1, this);
+index = rix - 1;
 return 0;
 }
 
@@ -45,7 +49,7 @@ int Field::noedit() {
 switch(CM) {
  case MOD_UPDATE: if (isprimarykey || !(updateable || (updnulable && *valuep()==NULL))) return 1; break;
  case MOD_QUERY:  if (!queryable)                                                       return 1; break;
- case MOD_INSERT: if (!enterable)                                                       return 1; break;
+ case MOD_INSERT: if (!updateable)                                                      return 1; break;
  case MOD_DELETE:                                                                                 break;
 }
 return 0;
@@ -59,23 +63,23 @@ return (fieldtype==FTY_INT && lowvalue==0 && highvalue==1) ? FTY_BOOL : fieldtyp
 /* display the field according to mode */
 void Field::show(int cur) {
 int color;
-switch(CM) {
+switch(block.rmode) {
  case MOD_QUERY:  color = COL_QUERY;  break;
  case MOD_INSERT: color = COL_NEWREC; break;
  case MOD_DELETE: color = COL_DELETED; break;
  default:         color = COL_FIELD;
 }
-if (cur && CM != MOD_DELETE) color = COL_CURRENT;
-F(p[1]).writef(line, col, color, displaylen, "%.*s", displaylen, CM==MOD_QUERY ? queryhuman : *valuep());
-if (cur) F(p[1]).wmov(line, col);
+if (cur && block.rmode != MOD_DELETE) color = COL_CURRENT;
+if (displaylen > 0) page.writef(line, col, color, displaylen, "%.*s", displaylen, block.rmode==MOD_QUERY ? queryhuman : *valuep());
+if (cur) page.wmov(line, col);
 }
 
 /* clear field content */
 void Field::clear() {
 char **v;
 if (CM == MOD_QUERY) {
-  *queryhuman = '\0';
-  *querywhere = '\0';
+  empty(queryhuman);
+  empty(querywhere);
 } else {
   v = valuep();
   free(v);
@@ -84,15 +88,15 @@ if (CM == MOD_QUERY) {
 
 /* the current field value */
 char **Field::valuep() {
-return valuepr(CB.currentrecord);
+return valuep(block.currentrecord);
 }
 
 /* field value any row */
-char **Field::valuepr(int row) {
+char **Field::valuep(int row) {
 //static char *emptystring = "";
 static char **val;
-val = F(b)[blockindex].q->w(row, sequencenum);
-//if (!val || !*val) val = &emptystring;
+val = block.q->w(row, sequencenum);
+//if (!val || !(*val)) val = &emptystring;
 return val;
 }
 
@@ -182,11 +186,12 @@ pressed = 0;
 switch(CM) {
  case MOD_UPDATE:
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }
+  /*FALLTHRU*/
  case MOD_INSERT:
-  if (noedit()) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
-  if (F(b[blockindex].q->rows)) {
+  if (noedit() || (!enterable && pos>FED_SPECIAL)) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
+  if (block.q->rows) {
     c = valuep();
-    if (*c) let(a, *c); else *a = '\0';
+    if (*c) let(a, *c); else empty(a);
     switch(pos) {
      case FED_FEDITOR: pressed = F(p)[PGE_EDITOR].editbuf(a); break;
      case FED_TRIGGER: pressed = u.edittrg(a);                break;
@@ -200,7 +205,7 @@ switch(CM) {
   break;
  case MOD_QUERY:
   pressed = F(p[PGE_STATUS].sedit)(queryhuman, pos<FED_SPECIAL ? -1 : pos, FTY_ALL, SMLSIZE);
-  colquery(queryhuman, querywhere, name, querycharm, 0);
+  colquery(queryhuman, querywhere, column, querycharm, 0);
   break;
  case MOD_DELETE:
   break;

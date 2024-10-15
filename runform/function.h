@@ -4,10 +4,13 @@ public:
   int dispatch();
   int next_item();
   int previous_item();
+  int next_block();
+  int previous_block();
   int next_record();
   int previous_setrecords();
   int next_setrecords();
   int previous_record();
+  int exec_query();
   int edittrg(char *buf);
 protected:
 private:
@@ -36,7 +39,7 @@ private:
   int fquit();
   int insert_record();
   int create_record();
-  int enter_query();
+  int enter_query(Block *blk);
   int execute_query();
   int delete_record();
   int destroy_record();

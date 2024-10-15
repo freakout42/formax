@@ -2,12 +2,16 @@
 class Field {
 public:
   int field_id;
-  char name[SMLSIZE];
+  int index;
+  char column[SMLSIZE];
   int sequencenum;
   int blockindex;
   char querywhere[MEDSIZE];
+  int basetable;
   int isprimarykey;
+  int enterable;
   char helptext[SMLSIZE];
+  char defaultval[MEDSIZE];
   int init(Qdata *fld, int rix, Block *bs);
   void clear();
   int toggle(char *val);
@@ -16,10 +20,8 @@ public:
   int noedit();
   void show(int cur);
   char **valuep();
-  char **valuepr(int row);
+  char **valuep(int row);
 private:
-//  int blkn;
-//  int pgen;
   int line;
   int col;
   int pageindex;
@@ -27,11 +29,8 @@ private:
   ftype fldtype();
   ftype fieldtype;
   int fieldlen;
-  int basetable;
   char queryhuman[SMLSIZE];
   int displaylen;
-  char defaultval[MEDSIZE];
-  int enterable;
   int queryable;
   int updateable;
   int updnulable;

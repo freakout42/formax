@@ -15,9 +15,6 @@ F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
   case KEF_LIST:            /* flist() */
-  case KEF_HOME:            /* fhome() */
-  case KEF_END:             /* fend() */
-  case KEF_NAVI0:           /* fmenu() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
   case KEF_NOOP:
@@ -41,6 +38,8 @@ switch(F(lastcmd)) {
   case KEF_KEYHELP:  LK = keys_help();                                        break;
   case KEF_PREREC:   LK = previous_record();                                  break;
   case KEF_COPYREC:  LK = fcopyrec();                                         break;
+  case KEF_HOME:     LK = fmove(-1, 0);                                       break;
+  case KEF_END:      LK = fmove( 1, 0);                                       break;
   case KEF_COPY:     LK = fcopy();                                            break;
   case KEF_PASTE:    LK = fpaste();                                           break;
   case KEF_INSERT:
@@ -59,12 +58,12 @@ switch(F(lastcmd)) {
     case MOD_DELETE: LK = destroy_record();                            break;
     default:         LK = 0;                                           break;
    }                                                                          break;
-  case KEF_QUERY:    LK = enter_query();                                      break;
+  case KEF_QUERY:    LK = enter_query(&CB);                                   break;
   case KEF_NAVI10:
   case KEF_COMMIT:
    switch(CM) {
     case MOD_QUERY:  LK = execute_query();                             break;
-    case MOD_UPDATE: LK = enter_query();                               break;
+    case MOD_UPDATE: LK = enter_query(&CB);                            break;
     case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
     case MOD_DELETE: LK = destroy_record();                            break;
    }                                                                          break;
@@ -80,6 +79,8 @@ switch(F(lastcmd)) {
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
+  case KEF_NAVI0:    letf(t(a), "formax v%s charset %s - https://formax.freakout.de/", VERSION, CHARSET);
+                     LK = MSG1(MSG_HELP,a);                                   break;
   case '~':          LK = editrigger(TRT_EDITFIELD);                          break;
   case '[':          LK = edit_map();                                         break;
   case ' ':          LK = ftoggle();                                          break;
@@ -96,9 +97,10 @@ return notrunning;
 
 /* GENERAL */
 int Function::enter_the_form() {
+int i;
 F(curblock) = 4;
 F(curfield) = CB.blockfields[0];
-enter_query();
+forall(block) if (i >= 4) enter_query(&F(b)[i]);
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
 notrunning = triggern(TRT_ENTERFORM);
 return 0;
@@ -115,34 +117,42 @@ return 0;
 }
 
 int Function::keys_help() {
-return F(p[PGE_KEYHELP]).showpopup();
+return F(p)[PGE_KEYHELP].showpopup();
 }
 
 int Function::edit_map() {
-return F(p[PGE_EDITOR]).editmap(atoi(*CF.valuep()));
+return CV ? F(p)[PGE_EDITOR].editmap(atoi(CV)) : 0;
 }
 
 /* NAVIGATION */
 int Function::switch_mode(fmode mod) {
 CM = mod;
-if (CF.noedit()) fmove(0, 0);
+if (CF.noedit() || !CF.enterable) fmove(0, 0);
 return 0;
 }
 
 #define TRIGGRD(func,trgr,move,row,fld) int Function::func() {int i; return (i = triggern(TRT_ ## trgr)) ? i : move(row, fld); }
 TRIGGRD(next_item,NEXTITEM,fmove,0,1)
 TRIGGRD(previous_item,PREVITEM,fmove,0,-1)
+TRIGGRD(next_block,NEXTBLOCK,fmove,1,0)
+TRIGGRD(previous_block,PREVBLOCK,fmove,-1,0)
 TRIGGRD(next_record,NEXTRECORD,fmover,0,1)
 TRIGGRD(previous_record,PREVRECORD,fmover,0,-1)
 TRIGGRD(next_setrecords,NEXTSETREC,fmover,0,CB.norec)
 TRIGGRD(previous_setrecords,PREVSETREC,fmover,0,-CB.norec)
 
+#define TRIGGR0(func,trgr,method) int Function::func() {int i; return (i = triggern(TRT_ ## trgr)) ? i : method(); }
+TRIGGR0(exec_query,EXEQUERY,execute_query)
+
 /* move from field to field */
 int Function::fmove(int bi, int fi) {
-//F(curblock) = (F(curblock) + F(numblock) + bi) % F(numblock);
+if (bi) {
+  F(curblock) = ((F(curblock)-4 + F(numblock)-4 + bi) % (F(numblock)-4) + 4);
+  F(curfield) = CB.blockfields[0];
+}
 if (fi < NFIELD1) F(curfield) = CB.blockfields[ (CF.sequencenum-1 + CB.fieldcount + fi) % CB.fieldcount ];
 else              F(curfield) = fi - NFIELD1 - 1;
-if (CF.noedit()) fmove(0, fi<0 ? -1 : 1);
+if (CF.noedit() || !(CF.enterable)) fmove(0, fi<0 ? -1 : 1);
 return 0;
 }
 
@@ -189,7 +199,7 @@ return 0;
 
 /* double pressed should copy record */
 int Function::fcopyrec() {
-if (CM != MOD_UPDATE) return 0;
+if (CM != MOD_UPDATE && CM != MOD_INSERT) return 0;
 if (CR > 1) {
   edittrgtyp = TRT_COPYREC;
   changed = fedit(FED_TRIGGER);
@@ -200,7 +210,10 @@ if (CR > 1) {
 }
 }
 
-int Function::fcopy() {int i; return CV && (i = triggern(TRT_COPY)) ? i : 0; }
+int Function::fcopy() {
+if (CM == MOD_UPDATE && CV) return triggern(TRT_COPY);
+return 0;
+}
 
 int Function::fpaste() {
 if (CM != MOD_UPDATE) return 0;
@@ -224,16 +237,23 @@ changed = fedit(editmode);
 return changed==KEF_CANCEL ? 0 : changed;
 }
 
+/* change the field with various methods determined by pos */
 int Function::fedit(int pos) {
 changed = 0;
 switch(CM) {
  case MOD_INSERT:
  case MOD_QUERY:
-  if (pos == KEF_DEL) CF.clear(); else changed = CF.edit(pos<FED_SPECIAL ? -1 : pos);
-  break;
+  if (pos == KEF_DEL) {
+    CF.clear();
+    changed = 0;
+    break;
+  }
  case MOD_UPDATE:
   changed = CF.edit(pos);
-  if (changed != KEF_CANCEL) if (CB.update(CB.currentrecord, CF.sequencenum)) MSG1(MSG_SQL, CB.sqlcmd);
+  if (changed != KEF_CANCEL)
+    if (CM == MOD_UPDATE && CF.basetable)
+      if (CB.update(CB.currentrecord, CF.sequencenum))
+        MSG1(MSG_SQL, CB.sqlcmd);
   break;
  case MOD_DELETE:
   break;
@@ -264,17 +284,43 @@ notrunning = -1;
 return 0;
 }
 
-int Function::enter_query() {
-CB.clear();
-CB.currentrecord = 0;
-F(dirty) = 0;
-switch_mode(MOD_QUERY);
+int Function::enter_query(Block *blk) {
+blk->clear();
+blk->currentrecord = 0;
+if (blk == &CB) {
+  switch_mode(MOD_QUERY);
+  F(dirty) = 0;
+} else blk->rmode = MOD_QUERY;
 return 0;
 }
 
+/* get record data into the block based on the query columns entered */
 int Function::execute_query() {
+int i, j, k;
+int cf;
+int triggerdfields[NFIELD1];
+int tfn;
 if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
   if (CB.q->rows > 0) {
+    edittrgtyp = TRT_POSTQUERY;
+    tfn = 0;
+    forall(trigger)
+      if (trgi(i).trgtyp == edittrgtyp)
+        if ((k = trgi(i).fieldindex) >= 0)
+          if (fldi(k).blockindex == F(curblock))
+            triggerdfields[tfn++] = trgi(i).fieldindex;
+    if (tfn > 0) {
+      CM = MOD_UPDATE;
+      cf = F(curfield);
+      for (j=0; j<CB.q->rows; j++) {
+        for (k=0; k<tfn; k++) {
+          F(curfield) = triggerdfields[k];
+          CB.currentrecord = j + 1;
+          fedit(FED_TRIGGER);
+        }
+      }
+      F(curfield) = cf;
+    }
     CB.currentrecord = 1;
     switch_mode(MOD_UPDATE);
   } else {
@@ -303,7 +349,7 @@ return 0;
 int Function::clear_record() {
 CB.q->splice(-CB.currentrecord);
 if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
-if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query(); 
+if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query(&CB); 
 return 0;
 }
 
@@ -316,7 +362,7 @@ return 0;
 
 int Function::qtrigger(int tid) {
 int i;
-for (i=0; i<F(numtrigger); i++)
+forall(trigger)
   if ((F(r)[i].trgfld == 0 || F(r)[i].trgfld == CF.field_id) && F(r)[i].trgtyp == tid)
     return i;
 return -1;
