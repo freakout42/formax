@@ -4,7 +4,7 @@ class rField: public Record {
 public:
   int init(int form_id);
 private:
-//  char *name;
+//  char *column;
 };
 #else
 CREATE TABLE fields

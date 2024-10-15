@@ -12,7 +12,7 @@
 
 int Field::init(Qdata *fld, int rix, Block *bs) {
 field_id      = fld->n(rix, 1);
-let(name,       fld->v(rix, 2));
+let(column,     fld->v(rix, 2));
 blockindex    = fld->n(rix, 3);
 pageindex     = fld->n(rix, 4);
 displaylen    = fld->n(rix, 5);
@@ -205,7 +205,7 @@ switch(CM) {
   break;
  case MOD_QUERY:
   pressed = F(p[PGE_STATUS].sedit)(queryhuman, pos<FED_SPECIAL ? -1 : pos, FTY_ALL, SMLSIZE);
-  colquery(queryhuman, querywhere, name, querycharm, 0);
+  colquery(queryhuman, querywhere, column, querycharm, 0);
   break;
  case MOD_DELETE:
   break;

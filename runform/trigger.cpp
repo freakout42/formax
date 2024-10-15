@@ -117,7 +117,7 @@ if (CV) for (fvalue=CV; *fvalue; fvalue++) {
   *escaped++ = *fvalue;
 }
 empty(escaped++);
-letf(t(prog), "cb = '%s'; cf = '%s'; ci = %d; cr = %d; cv = '%s';\n", CB.table, CF.name, CF.index, CR, a);
+letf(t(prog), "cb = '%s'; cf = '%s'; ci = %d; cr = %d; cv = '%s';\n", CB.table, CF.column, CF.index, CR, a);
 progsize = cats(t(prog), body);
 return jsexecdirect(prog, progsize);
 }
