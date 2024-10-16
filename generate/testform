@@ -11,8 +11,8 @@ ARX=`pwd`/.. sh ./makeform scotty formax1 emps id ename job mgr hiredate sal com
   cat <<EOF
 INSERT INTO blocks (form_id, name, seq) VALUES (1, 'depts', 60);
 INSERT INTO fields VALUES(9,1,5,1,'id',100,0,30,2,1,1,'',8,40,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(10,1,5,1,'dname',110,0,30,10,1,0,'',8,43,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(11,1,5,1,'loc',120,0,30,22,1,0,'',8,55,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(10,1,5,1,'dname',110,0,30,12,1,0,'',8,43,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(11,1,5,1,'loc',120,0,30,20,1,0,'',8,56,1,1,1,1,0,0,'',0,0,0,0,'','');
 UPDATE fields set help = 'Employees last name' where id=2;
 UPDATE fields set ftype = 2, dlen = 4, len = 4, low = 7000, high = 8999, valpatn = '\d\d\d\d' where id=4;
 UPDATE fields set ftype = 4 where id=5;

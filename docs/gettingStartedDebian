@@ -1,5 +1,5 @@
 #!/bin/sh
-if ! flex --version; then
+if ! flex --version 2>/dev/null; then
   if [ -f /etc/redhat-release ]; then
     sudo yum -y update
     sudo yum -y group install "Development Tools"
