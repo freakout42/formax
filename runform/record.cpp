@@ -5,6 +5,9 @@
 #include <sqlext.h>
 #include "runform.h"
 
+#define odbcver(hexver) char odbcversion[8] = str(hexver)
+odbcver(ODBCVER);
+
 #define FAILEDQ(hty) if (failed(hty)) return ret
 
 /* driver / database provider info */

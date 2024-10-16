@@ -79,8 +79,7 @@ switch(F(lastcmd)) {
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
-  case KEF_NAVI0:    letf(t(a), "formax v%s charset %s - https://formax.freakout.de/", VERSION, CHARSET);
-                     LK = MSG1(MSG_HELP,a);                                   break;
+  case KEF_NAVI0:    LK = MSG1(MSG_HELP, about);                              break;
   case '~':          LK = editrigger(TRT_EDITFIELD);                          break;
   case '[':          LK = edit_map();                                         break;
   case ' ':          LK = ftoggle();                                          break;

@@ -1,6 +1,6 @@
 /* runform.cpp main and os interfaces except curses and odbc */
 
-#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpqx] [-n lg]\n" \
+#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpqxV] [-n lg]\n" \
   " [-f formid ] [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...\n"
 
 #include <stdio.h>
@@ -32,6 +32,7 @@ int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
 char *ypassword  = NULL;
 char *username;
+char about[SMLSIZE];
 
 /* global form dbs screen functions and logger */
 Logger g;
@@ -99,7 +100,12 @@ char dsn[MEDSIZE];
 char totpdigest[8];
 char totpresult[8];
 Form *rootform;
+const char *ds;
 
+/* version information and about */
+ds = __DATE__; /* :Oct 16 2024: https://formax.toarx.de/ */
+letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s %2.2s%3.3s%2.2s-%5.5s",
+  VERSION, CHARSET, odbcversion+2, cursesversion, ds+4, ds, ds+9, __TIME__);
 /* search for the sqlite3 driver */
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
@@ -125,7 +131,7 @@ form_id = 1;
 /* command-line arguments and options check and process */
 while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
   switch (i) {
-    case 'V': fprintf(stderr, "runform %s\n", VERSION); exit(2);
+    case 'V': fprintf(stderr, "runform %s\n", about); exit(2);
     case 'y': ypassword = optarg; break;
     case 't':
       fputs("TOTP: ", stdout);

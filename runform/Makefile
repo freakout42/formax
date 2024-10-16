@@ -9,7 +9,8 @@ VALGRINDSUP=--gen-suppressions=no #all
 all: runform
 	strip runform
 
-$(OBJS): curkeys.h
+$(OBJS): runform.h
+runform.h: curkeys.h
 
 runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@

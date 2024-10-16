@@ -1,4 +1,34 @@
 /* runform.h - constants macros and central procedures */
+#define VERSION "1.9.1"
+extern char odbcversion[];
+extern char cursesversion[];
+extern char about[];
+#define gnucs1(m, i, l) #m "." #i "." #l
+#define gnucs(m, i, l) gnucs1(m, i, l)
+#if defined(__clang__)
+#define gnucver "Clang-" gnucs(__clang_major__, __clang_minor__, __clang_patchlevel__)
+#elif defined(__GNUC__)
+#define gnucver "GCC-" gnucs(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)
+#else
+#define gnucver "cc"
+#endif
+#define CCOMPILER gnucver
+#if __hpux
+#define PLATFORM        "HP-UX"
+#elif __FreeBSD__
+#define PLATFORM        "FreeBSD"
+#elif __APPLE_CC__
+#define PLATFORM        "MacOS"
+#elif linux
+#define PLATFORM        "Linux"
+#elif sparc
+#define PLATFORM        "Solaris"
+#elif _AIX
+#define PLATFORM        "AIX"
+#else
+#define PLATFORM        "generic"
+#endif
+
 /* odbc driver provider database type */
 enum odrvr         { ODR_SQLITE, ODR_ORACLE, ODR_PG, ODR_MYSQL, ODR_SQLSRVR, ODR_ADS, ODR_UNKNOWN };
 /* runform modes */
@@ -54,6 +84,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #include "function.h"
 
 /* misc helper macros */
+#define str(s) #s
 #define max(x, y)	(((x) < (y)) ? (y) : (x))
 #define min(x, y)	(((x) < (y)) ? (x) : (y))
 #define let(target,source) letstrncpy(target, source, sizeof(target)-1)
