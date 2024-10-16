@@ -131,15 +131,7 @@ writef(0, 33, 0, 8,  "%s",        CF.column);
 writef(0, 42, 0, 9,  "%6d/%6d",   CB.currentrecord, CB.q->rows);
 writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
-#define SHOWKEYINSTATUSdis
-#if defined(SHOWKEYINSTATUS)
-writef(0, 70, 0, 4,  "%4d",       F(lastcmd));
-#elif defined(SHOWVERSIONINSTATUS)
-writes(0, 67,                     "runform-");
-writes(0, 75,                     (char*)VERSION);
-#else
 writef(0, 67, COL_COMMIT,13,"%s", commit);
-#endif
 refr();
 forall(field) F(l)[i].show(i == F(curfield));
 for (i=PGE_MAIN; i<F(numpage); i++) {
@@ -157,13 +149,12 @@ static char empty[] = "";
 const char *pntst;
 if (y.ysiz > 0) { // can only display with open window
 if (pnt) pntst = pnt; else pntst = empty;
-if (strlen(pntst) > LINE0SIZE-12) i = strlen(pntst) - LINE0SIZE + 12; else 
-i = 0;
+i = (strlen(pntst) > LINE0SIZE-9) ? strlen(pntst) - LINE0SIZE + 9 : 0;
 writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, y.msg(ern), pntst+i);
 //writef(0, 76, 0, 4, "%04d", F(lastcmd));
 wmov(0,0);
 refr();
-return getkb();
+return (i = getkb())==KEY_ESC ? 0 : i;
 }
 return 0;
 }

@@ -6,6 +6,8 @@
 #include <curses.h>
 #include "runform.h"
 
+char cursesversion[8] = NCURSES_VERSION;
+
 Screen::Screen() {
 ysiz = 0;
 }
