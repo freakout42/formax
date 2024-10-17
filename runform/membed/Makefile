@@ -2,9 +2,9 @@ include ../cflags.make
 LIBS=-lcurses
 CFLAGS+=-Wno-missing-braces
 SRC=buffer.c cursor.c display.c files.c line.c random.c search.c term.c window.c word.c main.c
-OBC=buffer.o cursor.o files.o line.o random.o search.o term.o window.o word.o
-OBJ=$(OBC) display.o help.o
-OBJL=$(OBC) display-h.o help-h.o
+OBC=buffer.o cursor.o line.o random.o search.o term.o window.o word.o
+OBJ=$(OBC) display.o help.o files.o
+OBJL=$(OBC) display-h.o help-h.o files-h.o
 
 all: libmex.a
 
@@ -23,9 +23,10 @@ mainloop.o: main.c
 
 display-h.o: display.c
 	$(CC) $(CFLAGS) -DEMBEDDED -c display.c -o $@
-
 help-h.o: help.c
 	$(CC) $(CFLAGS) -DEMBEDDED -c help.c -o $@
+files-h.o: files.c
+	$(CC) $(CFLAGS) -DEMBEDDED -c files.c -o $@
 
 term.o: term.c
 	$(CC) $(CFLAGS) -I/usr/include/ncurses -c term.c

@@ -14,6 +14,7 @@ runform.h: curkeys.h
 
 runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
+	strip $@
 
 run: runform $(EXAMPLE)
 	./runform -x -g/tmp/formax.log ../generate/formax.frm ../generate/scotty.frm

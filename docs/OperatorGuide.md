@@ -41,9 +41,9 @@ requirements are fundamental for this application:
 
     Central easy to manage logging for every session and
     every sql command is build into the runtime. Updates are
-    a simple copy of the runtime binary (one file). New
-    forms are also simple copies of the .frm files. This
-    said, operations are a no-brainer.
+    a simple copy of the runtime binary (1 (one!) 250kb file).
+    New forms are also simple copies of the .frm files. This
+    said, operations are a breeze.
 
  - Performance efficience
 
@@ -59,6 +59,8 @@ requirements are fundamental for this application:
     proof. By forking the repos you will never loose the
     support for your investments. The database independence
     of ODBC and JavaScript tops this nature further more.
+    If a feature is missing or something must work differnt
+    for you, simply change it or open an issue on GitHub.
     Ask old SQL-Forms guys about the importance of this
     topic.
 

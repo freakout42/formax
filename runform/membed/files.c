@@ -184,6 +184,7 @@ addfile (fname)  char *fname;  {
 	return (FALSE);
 }
 
+#ifndef EMBEDDED
 int choosefile(prompt, fname, flag)
 	char	*prompt, *fname;
 	int	flag;
@@ -254,6 +255,7 @@ start:
 		addfile (fname);
 	return (TRUE);
 }
+#endif
 
 /*
  * Open a file for reading.
@@ -732,6 +734,7 @@ char    *fn;
  * "read a file into the current buffer" code.
  * Bound to "C-X C-R".   mb: added keep&insert stuff.
  */
+#ifndef EMBEDDED
 int fileread(f, n)
 	int f, n;
 {
@@ -842,6 +845,7 @@ out:
 	curwp->w_flag |= WFMODE|WFFORCE|WFHARD;
 	return (TRUE);
 }
+#endif
 
 /*
  * Take a file name, and from it
@@ -893,6 +897,7 @@ char    fname[];
 	*cp2 = 0;
 }
 
+#ifndef EMBEDDED
 /*
  * Ask for a file name, and write the
  * contents of the current buffer to that file.
@@ -925,6 +930,7 @@ int filewrite(f, n)
 	}
 	return (s);
 }
+#endif
 
 /*
  * Save the contents of the current
@@ -958,6 +964,7 @@ int filesave(f, n)
 	return (s);
 }
 
+#ifndef EMBEDDED
 /*
  * The command allows the user
  * to modify the file name associated with
@@ -984,7 +991,7 @@ int filename(f, n)
 	}
 	return (TRUE);
 }
-
+#endif
 
 #if CANLOG
 
