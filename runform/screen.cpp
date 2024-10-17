@@ -41,7 +41,7 @@ static attrel attrels[] = {
   { COL_NEWREC,          A_REVERSE,             COLOR_YELLOW,  COLOR_BLACK },   /* insert */
   { COL_COMMIT,          A_BOLD,                COLOR_GREEN,   COLOR_BLACK },   /* commit key action */
   { COL_DELETED,         A_BLINK,               COLOR_RED,     COLOR_BLACK },   /* delete */
-  { MESSAGECOLOR,        A_BOLD|A_BLINK,        0,             0 },             /* messages */
+  { COL_DATA,            A_REVERSE,             COLOR_WHITE,   COLOR_BLACK },   /* data */
   { PROMPTCOLOR,         A_BOLD,                0,             0 },             /* prompt */
   { INPUTCOLOR,          A_REVERSE,             0,             0 },             /* editor */
   { CELLCONTENTSCOLOR,   A_NORMAL,              0,             0 },             /* cell content info */

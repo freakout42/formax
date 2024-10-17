@@ -61,7 +61,7 @@ enum {
   COL_NEWREC,          /* =21 */
   COL_COMMIT,          /* =22 */
   COL_DELETED,         /* =23 */
-  MESSAGECOLOR,        /* =24 */
+  COL_DATA,            /* =24 */
   PROMPTCOLOR,         /* =25 */
   INPUTCOLOR,          /* =26 */
   CELLCONTENTSCOLOR,   /* =27 */

@@ -18,7 +18,7 @@ public:
   int increment(char *val, int ival);
   int edit(int pos);
   int noedit();
-  void show(int cur);
+  void show();
   char **valuep();
   char **valuep(int row);
 private:

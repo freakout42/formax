@@ -133,7 +133,7 @@ writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
 writef(0, 67, COL_COMMIT,13,"%s", commit);
 refr();
-forall(field) F(l)[i].show(i == F(curfield));
+forall(field) F(l)[i].show();
 for (i=PGE_MAIN; i<F(numpage); i++) {
   if (F(needredraw)) F(p)[i].repaint();
   F(p)[i].refrnopop();
