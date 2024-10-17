@@ -66,27 +66,19 @@ int cur, color, outline, outrec;
 const char *outcell;
 if (displaylen > 0)
   for (outline = line; outline < line + block.norec; outline++) {
+    outcell = NULL;
     outrec = block.toprec + outline - line;
-    cur = (index == F(curfield)) && ((block.rmode == MOD_QUERY && outline == line) || (block.rmode != MOD_QUERY && outrec == CR));
-    if (block.rmode == MOD_QUERY) outcell = outline==line ? queryhuman : "";
-    else                          outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
     switch(block.rmode) {
-     case MOD_QUERY:  color = cur ? COL_CURRENT : COL_QUERY;  break;
-     case MOD_INSERT: color = cur ? COL_CURRENT : COL_NEWREC; break;
-     case MOD_DELETE: color = COL_DELETED;                    break;
-     default:         color = COL_FIELD;                      break;
+     case MOD_QUERY:  outcell = outline==line ? queryhuman : "";
+                      color = COL_QUERY;   break;
+     case MOD_INSERT: color = COL_NEWREC;  break;
+     case MOD_DELETE: color = COL_DELETED; break;
+     case MOD_UPDATE: color = COL_FIELD;   break;
     }
-/*
-    switch(block.rmode) {
-     case MOD_QUERY:
-      outcell = outline==line ? queryhuman : "";
-      color = cur ? COL_CURRENT : COL_QUERY;
-      break;
-     case MOD_INSERT: color = cur ? COL_CURRENT : COL_NEWREC; break;
-     case MOD_DELETE: color = COL_DELETED;                    break;
-     default:         color = COL_FIELD;                      break;
-    }
-*/
+    cur = index == F(curfield);
+    cur = cur && (outcell ? outline == line : outrec == CR);
+    if (cur) color = COL_CURRENT;
+    if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
     page.writef(outline, col, color, displaylen, "%.*s", displaylen, outcell);
     if (cur) page.wmov(outline, col);
   }
