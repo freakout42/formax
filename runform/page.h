@@ -18,6 +18,7 @@ public:
   char name[SMLSIZE];
   int maps(Qdata *rmap);
   int wait();
+  void working();
   int message(int num, const char *pnt);
 protected:
   int vwpy0;

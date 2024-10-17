@@ -142,6 +142,11 @@ F(needredraw) = 0;
 return LK ? LK : getkb();
 }
 
+void Page::working() {
+writef(0, 67, COL_BUSY,13,"%s", "!! Working...");
+refr();
+}
+
 /* display message in status line and wait for key pressed */
 int Page::message(int ern, const char *pnt) {
 int i;

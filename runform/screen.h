@@ -48,11 +48,11 @@ enum {
   COL_WHITE,           /* = 8 */
   TEXTCOLOR,           /* = 9 */
   EDITCOLOR,           /* =10 */
-  ERRORCOLOR,          /* =11 */
+  COL_ERROR,           /* =11 */
   VALUECOLOR,          /* =12 */
   FORMULACOLOR,        /* =13 */
   STRINGCOLOR,         /* =14 */
-  BLANKCOLOR,          /* =15 */
+  COL_BUSY,            /* =15 */
   COMMANDCOLOR,        /* =16 */
   COL_CURRENT,         /* =17 */
   COL_FIELD,           /* =18 */
