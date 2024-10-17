@@ -128,7 +128,7 @@ writes(0,  5,                     F(name));
 writef(0, 16, 0, 8,  "%s",        username);
 writef(0, 25, 0, 8,  "%s",        CB.table);
 writef(0, 33, 0, 8,  "%s",        CF.column);
-writef(0, 42, 0, 9,  "%6d/%6d",   CB.currentrecord, CB.q->rows);
+writef(0, 42, 0, 9,  "%6d/%6d",   CR, CB.q->rows);
 writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
 writef(0, 67, COL_COMMIT,13,"%s", commit);

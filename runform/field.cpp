@@ -62,8 +62,7 @@ return (fieldtype==FTY_INT && lowvalue==0 && highvalue==1) ? FTY_BOOL : fieldtyp
 
 /* display the field according to mode */
 void Field::show() {
-int cur;
-int color;
+int cur, color, outline;
 cur = index == F(curfield);
 switch(block.rmode) {
  case MOD_QUERY:  color = COL_QUERY;  break;
@@ -72,7 +71,16 @@ switch(block.rmode) {
  default:         color = COL_FIELD;
 }
 if (cur && block.rmode != MOD_DELETE) color = COL_CURRENT;
-if (displaylen > 0) page.writef(line, col, color, displaylen, "%.*s", displaylen, block.rmode==MOD_QUERY ? queryhuman : *valuep());
+if (displaylen > 0)
+  for (outline = line; outline < line + block.norec; outline++)
+    switch(block.rmode) {
+      case MOD_QUERY:
+        page.writef(outline, col, color, displaylen, "%.*s", displaylen, outline==line ? queryhuman : "");
+        break;
+      default:
+        page.writef(outline, col, color, displaylen, "%.*s", displaylen, *valuep());
+        break;
+    }
 if (cur) page.wmov(line, col);
 }
 
@@ -90,7 +98,7 @@ if (CM == MOD_QUERY) {
 
 /* the current field value */
 char **Field::valuep() {
-return valuep(block.currentrecord);
+return valuep(block.currentrec);
 }
 
 /* field value any row */

@@ -51,7 +51,7 @@ INSERT INTO blocks VALUES(2,0,'dual2',2,1,'id','','');
 INSERT INTO blocks VALUES(3,0,'dual3',3,1,'id','','');
 INSERT INTO blocks VALUES(4,0,'dual4',4,1,'id','','');
 INSERT INTO blocks VALUES(5,1,'depts',50,1,'id','','');
-INSERT INTO blocks VALUES(6,1,'emps',60,1,'id','','');
+INSERT INTO blocks VALUES(6,1,'emps',60,10,'id','','');
 CREATE TABLE fields
   (id INTEGER PRIMARY KEY NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -102,9 +102,6 @@ CREATE TABLE triggers
 INSERT INTO triggers VALUES(1,0,0,1008,1008);
 INSERT INTO triggers VALUES(2,0,0,1009,1009);
 INSERT INTO triggers VALUES(3,0,0,1010,1010);
-INSERT INTO triggers VALUES(4,1,0,1000,2001);
-INSERT INTO triggers VALUES(5,1,7,1001,2002);
-INSERT INTO triggers VALUES(6,1,8,1005,2003);
 CREATE TABLE maps
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    page_id INTEGER NOT NULL DEFAULT 1,
@@ -128,9 +125,6 @@ INSERT INTO maps VALUES(14,2,13,'F12 l Refresh      End   e NextBlock');
 INSERT INTO maps VALUES(15,1008,1,'$(cb + "." + cf, cr - 1);');
 INSERT INTO maps VALUES(16,1009,1,'clip = cv;529;');
 INSERT INTO maps VALUES(17,1010,1,'clip;');
-INSERT INTO maps VALUES(27,2001,1,'next_item();0;');
-INSERT INTO maps VALUES(28,2002,1,'Message("trg:10002,1101");nav0 + 3;');
-INSERT INTO maps VALUES(29,2003,1,'SQL("select 9001");');
 INSERT INTO maps VALUES(40,0,0,'                                        Query examples Enter to execute');
 INSERT INTO maps VALUES(41,0,1,' [1]id             $1__________________ >7700');
 INSERT INTO maps VALUES(42,0,2,' [2]ename          $2__________________ ~jon');

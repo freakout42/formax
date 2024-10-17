@@ -164,15 +164,15 @@ switch (CM) {
  case MOD_DELETE: if (!yesno(MSG(MSG_DIRTY))) destroy_record();                     break;
 }
 switch_mode(MOD_UPDATE);
-if (CB.currentrecord > 0) {
-  CB.currentrecord += ri;
-  if (CB.currentrecord > CB.q->rows) {
+if (CR > 0) {
+  CR += ri;
+  if (CR > CB.q->rows) {
     MSG(MSG_LAST);
-    CB.currentrecord = CB.q->rows;
+    CR = CB.q->rows;
   }
-  if (CB.currentrecord < 1) {
+  if (CR < 1) {
     MSG(MSG_FIRST);
-    CB.currentrecord = 1;
+    CR = 1;
   }
 }
 return 0;
@@ -181,7 +181,7 @@ return 0;
 /* EDITING */
 int Function::insert_record() {
 if (CM == MOD_UPDATE || CM == MOD_QUERY) {
-  CB.q->splice(CB.currentrecord++);
+  CB.q->splice(CR++);
   switch_mode(MOD_INSERT);
 } else {
   MSG(MSG_QUERYM);
@@ -190,7 +190,7 @@ return 0;
 }
 
 int Function::create_record() {
-if (CB.insert(CB.currentrecord)) MSG1(MSG_SQL, CB.sqlcmd);
+if (CB.insert(CR)) MSG1(MSG_SQL, CB.sqlcmd);
 switch_mode(MOD_UPDATE);
 return 0;
 }
@@ -250,7 +250,7 @@ switch(CM) {
   changed = CF.edit(pos);
   if (changed != KEF_CANCEL)
     if (CM == MOD_UPDATE && CF.basetable)
-      if (CB.update(CB.currentrecord, CF.sequencenum))
+      if (CB.update(CR, CF.sequencenum))
         MSG1(MSG_SQL, CB.sqlcmd);
   break;
  case MOD_DELETE:
@@ -284,7 +284,7 @@ return 0;
 
 int Function::enter_query(Block *blk) {
 blk->clear();
-blk->currentrecord = 0;
+blk->currentrec = 0;
 if (blk == &CB) {
   switch_mode(MOD_QUERY);
   F(dirty) = 0;
@@ -318,13 +318,14 @@ if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
       for (j=0; j<CB.q->rows; j++) {
         for (k=0; k<tfn; k++) {
           F(curfield) = triggerdfields[k];
-          CB.currentrecord = j + 1;
+          CR = j + 1;
           fedit(FED_TRIGGER);
         }
       }
       F(curfield) = cf;
     }
-    CB.currentrecord = 1;
+    CR = 1;
+    CB.toprec = 1;
     switch_mode(MOD_UPDATE);
   } else {
     return insert_record();
@@ -343,15 +344,15 @@ int s;
 s = KEY_ENTER;
 if (deleprompt) s = MSG(MSG_DELASK);
 if (yesno(s)) {
-  CB.destroy(CB.currentrecord);
+  CB.destroy(CR);
   clear_record();
 } else switch_mode(MOD_UPDATE);
 return 0;
 }
 
 int Function::clear_record() {
-CB.q->splice(-CB.currentrecord);
-if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
+CB.q->splice(-CR);
+if (CR > CB.q->rows) CR = CB.q->rows;
 if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query(&CB); 
 return 0;
 }

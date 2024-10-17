@@ -100,7 +100,7 @@ extern Form *f;
 #define F(method) f->method
 #define CB F(b)[F(curblock)]
 #define CF F(l)[F(curfield)]
-#define CR CB.currentrecord
+#define CR CB.currentrec
 #define CM CB.rmode
 #define CV *CF.valuep()
 #define LK F(lastkey)
