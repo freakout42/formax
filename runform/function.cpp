@@ -174,6 +174,7 @@ if (CR > 0) {
     MSG(MSG_FIRST);
     CR = 1;
   }
+CB.toprec = CB.norec > 1 ? 1 : CR;
 }
 return 0;
 }
