@@ -27,11 +27,11 @@ static attrel attrels[] = {
 
   { TEXTCOLOR,           A_NORMAL,              0,             0 },             /* text cell */
   { EDITCOLOR,           A_BOLD,                COLOR_BLUE,    COLOR_WHITE },   /* editor */
-  { ERRORCOLOR,          A_BLINK,               COLOR_RED,     -1 },            /* error cell */
+  { COL_ERROR,           A_BLINK,               COLOR_YELLOW,  COLOR_RED },     /* error */
   { VALUECOLOR,          A_NORMAL,              0,             0 },             /* value cell */
   { FORMULACOLOR,        A_NORMAL,              0,             0 },             /* formula cell */
   { STRINGCOLOR,         A_NORMAL,              0,             0 },             /* string cell */
-  { BLANKCOLOR,          A_NORMAL,              0,             0 },             /* blank cell */
+  { COL_BUSY,            A_BLINK,               COLOR_YELLOW,  COLOR_BLUE },    /* busy */
   { COMMANDCOLOR,        A_UNDERLINE,           COLOR_BLUE,    -1 },            /* command cell */
 
   { COL_CURRENT,         A_REVERSE|A_UNDERLINE, COLOR_BLUE,    COLOR_WHITE },   /* current field */

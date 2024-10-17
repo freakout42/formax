@@ -298,6 +298,7 @@ int i, j, k;
 int cf;
 int triggerdfields[NFIELD1];
 int tfn;
+F(p)[PGE_STATUS].working();
 if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
   if (CB.q->rows > 0) {
     /* optimized - first check for triggers
