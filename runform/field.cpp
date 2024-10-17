@@ -63,16 +63,20 @@ return (fieldtype==FTY_INT && lowvalue==0 && highvalue==1) ? FTY_BOOL : fieldtyp
 /* display the field according to mode */
 void Field::show() {
 int cur, color, outline;
-cur = index == F(curfield);
-switch(block.rmode) {
- case MOD_QUERY:  color = COL_QUERY;  break;
- case MOD_INSERT: color = COL_NEWREC; break;
- case MOD_DELETE: color = COL_DELETED; break;
- default:         color = COL_FIELD;
-}
-if (cur && block.rmode != MOD_DELETE) color = COL_CURRENT;
 if (displaylen > 0)
-  for (outline = line; outline < line + block.norec; outline++)
+  for (outline = line; outline < line + block.norec; outline++) {
+    /* line         base line
+     * outline      output line
+     * CR           current record
+     * block.toprec recored for the base line
+     */
+    cur = index == F(curfield);// && (block.toprec + outline - line) == CR;
+    switch(block.rmode) {
+     case MOD_QUERY:  color = cur ? COL_CURRENT : COL_QUERY;  break;
+     case MOD_INSERT: color = cur ? COL_CURRENT : COL_NEWREC; break;
+     case MOD_DELETE: color = COL_DELETED;                    break;
+     default:         color = COL_FIELD;
+    }
     switch(block.rmode) {
       case MOD_QUERY:
         page.writef(outline, col, color, displaylen, "%.*s", displaylen, outline==line ? queryhuman : "");
@@ -81,7 +85,8 @@ if (displaylen > 0)
         page.writef(outline, col, color, displaylen, "%.*s", displaylen, *valuep());
         break;
     }
-if (cur) page.wmov(line, col);
+    if (cur) page.wmov(outline, col);
+  }
 }
 
 /* clear field content */

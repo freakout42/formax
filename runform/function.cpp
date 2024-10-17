@@ -285,6 +285,7 @@ return 0;
 int Function::enter_query(Block *blk) {
 blk->clear();
 blk->currentrec = 0;
+blk->toprec = 1;
 if (blk == &CB) {
   switch_mode(MOD_QUERY);
   F(dirty) = 0;
@@ -325,7 +326,6 @@ if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
       F(curfield) = cf;
     }
     CR = 1;
-    CB.toprec = 1;
     switch_mode(MOD_UPDATE);
   } else {
     return insert_record();
