@@ -387,7 +387,7 @@ typedef struct  {
 	int     (*t_beep)();		/* Beep.			*/
 	int     (*t_hglt)();		/* "Highlight" video mode.	*/
 	int     (*t_nrml)();		/* normal video mode.		*/
-	int	(*t_pend)();		/* input chars pending		*/
+	int     (*t_pend)();		/* input chars pending		*/
 }       TERM;
 
 extern	int	logit;			/* mb: log keystrokes		*/
