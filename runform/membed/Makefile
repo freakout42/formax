@@ -4,6 +4,7 @@ CFLAGS+=-Wno-missing-braces
 SRC=buffer.c cursor.c display.c files.c line.c random.c search.c term.c window.c word.c help.c main.c
 OBJ=$(patsubst %.c,%.o,$(SRC))
 OBE=$(patsubst %.c,%.e,$(SRC))
+OBO=$(patsubst %.c,%.e.o,$(SRC))
 
 all: libmex.a
 
@@ -13,7 +14,8 @@ mex: main.o $(OBJ)
 	$(CC) -o $@ $(LDFLAGS) $(OBJ) $(LIBS)
 
 libmex.a: $(OBE)
-	$(AR) rcs $@ $(OBE)
+	for O in $(OBE); do mv $$O $$O.o; done
+	$(AR) rcs $@ $(OBO)
 
 $(SRC):	ed.h curkeys.h
 
