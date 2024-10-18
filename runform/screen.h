@@ -2,22 +2,22 @@
 class Screen {
 public:
   Screen();
-	int init();
+  int init();
   void createwindow(int y, int x, int py, int px);
   void deletewindow();
   void refr();
   void redraw();
-	void closedisplay();
+  void closedisplay();
   void wmov(int y, int x);
-	void wera();
-	void wbox();
-	char *msg(int num);
+  void wera();
+  void wbox();
+  char *msg(int num);
   int setattributs(int attrib);
   void writes(int y, int x, char *str);
   void writef(int y, int x, int colcode, int width, const char *format, ...);
   void toggle();
   int wgetc();
-	int getkb();
+  int getkb();
   int sedit(char *toe, int pos, ftype fty, int len);
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
   int ysiz;

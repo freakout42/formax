@@ -167,14 +167,19 @@ switch_mode(MOD_UPDATE);
 if (CR > 0) {
   CR += ri;
   if (CR > CB.q->rows) {
-    MSG(MSG_LAST);
+    if (ri == 1) MSG(MSG_LAST);
     CR = CB.q->rows;
   }
   if (CR < 1) {
-    MSG(MSG_FIRST);
+    if (ri == -1) MSG(MSG_FIRST);
     CR = 1;
   }
-fwindow();
+  if (abs(ri) > 1) {
+    CB.toprec += ri;
+    if (CB.toprec > CB.q->rows - CB.norec) CB.toprec = CB.q->rows - CB.norec;
+    if (CB.toprec < 1) CB.toprec = 1;
+  }
+  fwindow();
 }
 return 0;
 }
@@ -182,8 +187,7 @@ return 0;
 /* adjust the top row in multiple rows blocks */
 void Function::fwindow() {
 if (CB.norec > 1) {
-       if (CR >= CB.toprec && CR < CB.toprec + CB.norec) ;
-  else if (CR <  CB.toprec)            CB.toprec = CR;
+       if (CR <  CB.toprec)            CB.toprec = CR;
   else if (CR >= CB.toprec + CB.norec) CB.toprec = CR - CB.norec + 1;
 } else {
   CB.toprec = CR;
