@@ -20,6 +20,7 @@ public:
   int wait();
   void working();
   int message(int num, const char *pnt);
+  int index;
 protected:
   int vwpy0;
   int vwpx0;

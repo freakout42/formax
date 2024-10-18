@@ -174,10 +174,20 @@ if (CR > 0) {
     MSG(MSG_FIRST);
     CR = 1;
   }
-CB.toprec = CB.norec > 1 ? 1 : CR;
+fwindow();
 }
 return 0;
 }
+
+/* adjust the top row in multiple rows blocks */
+void Function::fwindow() {
+if (CB.norec > 1) {
+       if (CR >= CB.toprec && CR < CB.toprec + CB.norec) ;
+  else if (CR <  CB.toprec)            CB.toprec = CR;
+  else if (CR >= CB.toprec + CB.norec) CB.toprec = CR - CB.norec + 1;
+} else {
+  CB.toprec = CR;
+} }
 
 /* EDITING */
 int Function::insert_record() {
@@ -187,6 +197,7 @@ if (CM == MOD_UPDATE || CM == MOD_QUERY) {
 } else {
   MSG(MSG_QUERYM);
 }
+fwindow();
 return 0;
 }
 
@@ -348,6 +359,7 @@ if (yesno(s)) {
   CB.destroy(CR);
   clear_record();
 } else switch_mode(MOD_UPDATE);
+fwindow();
 return 0;
 }
 

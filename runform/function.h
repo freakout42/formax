@@ -32,6 +32,7 @@ private:
   int fpaste();
   int fmove(int bi, int fi);
   int fmover(int bi, int ri);
+  void fwindow();
   int ftoggle();
   int fincrement(int ival);
   int fedit(int pos);

@@ -66,7 +66,7 @@ return (fieldtype==FTY_INT && lowvalue==0 && highvalue==1) ? FTY_BOOL : fieldtyp
 void Field::show() {
 int cur, color, outline, outrec;
 const char *outcell;
-if (displaylen > 0)
+if (CP.index == pageindex && displaylen > 0)
   for (outline = line; outline < line + block.norec; outline++) {
     outcell = NULL;
     outrec = block.toprec + outline - line;
@@ -80,7 +80,7 @@ if (displaylen > 0)
     cur = index == F(curfield);
     cur = cur && (outcell ? outline == line : outrec == block.currentrec);
     if (cur) color = COL_CURRENT;
-    if (block.rmode != MOD_QUERY && outrec != block.currentrec) color = COL_DATA;
+    if (block.index != CB.index || block.rmode != MOD_QUERY && outrec != block.currentrec) color = COL_DATA;
     if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
     page.writef(outline, col, color, displaylen, "%.*s", displaylen, outcell);
     if (cur) page.wmov(outline, col);

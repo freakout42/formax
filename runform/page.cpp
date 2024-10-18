@@ -11,6 +11,7 @@ vwpy0   = pag->n(rix, 5);
 vwpx0   = pag->n(rix, 6);
 popup   = pag->n(rix, 7);
 border  = pag->n(rix, 8);
+index   = rix - 1;
 return 0;
 }
 

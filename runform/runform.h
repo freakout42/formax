@@ -98,8 +98,9 @@ extern Record dbconn[5];
 extern Screen y;
 extern Form *f;
 #define F(method) f->method
-#define CB F(b)[F(curblock)]
 #define CF F(l)[F(curfield)]
+#define CB F(b)[F(curblock)]
+#define CP F(p)[CF.pageindex]
 #define CR CB.currentrec
 #define CM CB.rmode
 #define CV *CF.valuep()

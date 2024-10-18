@@ -6,6 +6,7 @@ public:
   char column[SMLSIZE];
   int sequencenum;
   int blockindex;
+  int pageindex;
   int trg_postchange;
   char querywhere[MEDSIZE];
   int basetable;
@@ -25,7 +26,6 @@ public:
 private:
   int line;
   int col;
-  int pageindex;
   int validate(char **c, char *buf);
   ftype fldtype();
   ftype fieldtype;
