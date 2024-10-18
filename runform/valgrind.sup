@@ -1,5 +1,17 @@
 # setlocale called in runform.cpp
 {
+   <setlocale2>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:_nl_normalize_codeset
+   fun:_nl_load_locale_from_archive
+   fun:_nl_find_locale
+   fun:setlocale
+   obj:/home/axel/p/formax/runform/runform
+   fun:(below main)
+}
+{
    <setlocale>
    Memcheck:Leak
    match-leak-kinds: definite
