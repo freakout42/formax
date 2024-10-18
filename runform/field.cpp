@@ -39,6 +39,8 @@ let(helptext,   fld->v(rix,25));
 field_id      = fld->n(rix,26);
 empty(queryhuman);
 empty(querywhere);
+empty(currentval);
+trg_postchange = -1;
 sequencenum = bs[blockindex].addattribute(rix-1, this);
 index = rix - 1;
 return 0;

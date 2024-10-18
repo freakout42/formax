@@ -6,6 +6,7 @@ public:
   char column[SMLSIZE];
   int sequencenum;
   int blockindex;
+  int trg_postchange;
   char querywhere[MEDSIZE];
   int basetable;
   int isprimarykey;
@@ -30,6 +31,7 @@ private:
   ftype fieldtype;
   int fieldlen;
   char queryhuman[SMLSIZE];
+  char currentval[SMLSIZE];
   int displaylen;
   int queryable;
   int updateable;

@@ -97,7 +97,10 @@ trgtyp = trg->n(rix, 2);
 map_id = trg->n(rix, 3);
 index = rix - 1;
 fieldindex = -1;
-forall(field) if (fldi(i).field_id == trgfld) fieldindex = i;
+forall(field) if (fldi(i).field_id == trgfld) {
+  fieldindex = i;
+  if (trgtyp == TRT_POSTCHANGE) fldi(i).trg_postchange = index;
+}
 return map->getbody(map_id, body, sizeof(body));
 }
 
