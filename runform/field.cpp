@@ -217,13 +217,20 @@ switch(CM) {
   }
   break;
  case MOD_QUERY:
-  pressed = F(p)[PGE_STATUS].sedit(queryhuman, pos<FED_SPECIAL ? -1 : pos, FTY_ALL, SMLSIZE);
-  colquery(queryhuman, querywhere, column, querycharm, 0);
+  let(a, queryhuman);
+  pressed = F(p)[PGE_STATUS].sedit(a, pos<FED_SPECIAL ? -1 : pos, FTY_ALL, SMLSIZE);
+  setcond(a);
   break;
  case MOD_DELETE:
   break;
 }
 pressed = pressed==KEY_ENTER ? KEF_NXTFLD : F(mapkey)(pressed);
 return pressed;
+}
+
+/* set the query condition in human form */
+void Field::setcond(char *cond) {
+let(queryhuman, cond);
+colquery(queryhuman, querywhere, column, querycharm, 0);
 }
 

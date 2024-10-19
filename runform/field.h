@@ -9,6 +9,8 @@ public:
   int pageindex;
   int trg_postchange;
   char querywhere[MEDSIZE];
+  char queryhuman[SMLSIZE];
+  char currentval[SMLSIZE];
   int basetable;
   int isprimarykey;
   int enterable;
@@ -18,6 +20,7 @@ public:
   void clear();
   int toggle(char *val);
   int increment(char *val, int ival);
+  void setcond(char *cond);
   int edit(int pos);
   int noedit();
   void show();
@@ -30,8 +33,6 @@ private:
   ftype fldtype();
   ftype fieldtype;
   int fieldlen;
-  char queryhuman[SMLSIZE];
-  char currentval[SMLSIZE];
   int displaylen;
   int queryable;
   int updateable;
