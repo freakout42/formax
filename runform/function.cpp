@@ -105,6 +105,16 @@ notrunning = triggern(TRT_ENTERFORM);
 return 0;
 }
 
+/* make a new record the current one
+int Function::enter_the_form() {
+int i;
+    if (color == COL_CURRENT && trg_postchange > -1 && !strcmp(currentval, outcell)) {
+      u.etrigger(trg_postchange);
+      let(currentval, outcell);
+    }
+}
+*/
+
 int Function::refresh_screen() {
 F(needredraw) = 1;
 return 0;
@@ -394,14 +404,22 @@ return -1;
  * javascript should always return number see below
  */
 char *Function::trigger(int tid) {
-static int injstrigger = 0;
 int i;
+char *s;
+s = ((i = qtrigger(tid)) > -1) ? etrigger(i) : NULL;
+return s;
+}
+
+/* raw trigger call NULL..notfound "..string [0-9]..number [^"0-9]..error
+ * javascript should always return number see below
+ */
+char *Function::etrigger(int tid) {
+static int injstrigger = 0;
 char *s;
 s = NULL;
 if (injstrigger) return s;
-if ((i = qtrigger(tid)) > -1) {
   injstrigger = 1;
-    s = F(r)[i].jsexec();
+    s = F(r)[tid].jsexec();
     if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
@@ -409,7 +427,6 @@ if ((i = qtrigger(tid)) > -1) {
       notrunning = -1;
     }
   injstrigger = 0;
-}
 return s;
 }
 

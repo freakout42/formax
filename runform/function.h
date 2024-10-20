@@ -12,6 +12,7 @@ public:
   int previous_record();
   int exec_query();
   int edittrg(char *buf);
+  char *etrigger(int tid);
 protected:
 private:
   int notrunning;
