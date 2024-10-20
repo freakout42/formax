@@ -1,3 +1,4 @@
+#include <stdio.h>
 /* all processing centers around events.
  * Put simply, events are things that occur when a form is exeecuted.
  * formax knows about events and handles them by executing functions.
@@ -112,8 +113,9 @@ char *pkval;
 CR = rid;
 pkfldi = CB.primarykeys[0];
 pkval = *fldi(pkfldi).valuep();
-if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERRECORD, pkfldi)) > -1 && CV && !strcmp(fldi(pkfldi).currentval, pkval)) {
-  u.etrigger(i);
+//fprintf(stderr,"%d %d :%s: :%s:\n",CB.prikeycnt,qtrigger(TRT_ENTERECORD, pkfldi),CV ? CV : "(null)",fldi(pkfldi).currentval);
+if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERECORD, pkfldi)) > -1 && CV && strcmp(fldi(pkfldi).currentval, pkval)) {
+  etrigger(i);
   let(fldi(pkfldi).currentval, pkval);
 } }
 

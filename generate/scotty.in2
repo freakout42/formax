@@ -102,8 +102,8 @@ CREATE TABLE triggers
 INSERT INTO triggers VALUES(1,0,0,1008,1008);
 INSERT INTO triggers VALUES(2,0,0,1009,1009);
 INSERT INTO triggers VALUES(3,0,0,1010,1010);
-INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,0,1000,2001);
-INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,1,1016,2002);
+INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,0,91000,2002);
+INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (1,9,1016,2001);
 CREATE TABLE maps
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    page_id INTEGER NOT NULL DEFAULT 1,

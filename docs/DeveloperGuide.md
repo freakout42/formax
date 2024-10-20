@@ -373,6 +373,8 @@ On success next_item() is fired to move to the next field.
 | COPY       | Key  | CTRL('C') F2     | Action  | 1009   |
 | PASTE      | Key  | CTRL('V') F3     | Setting | 1010   |
 | POSTQUERY  | App  | execute_query()  | Setting | 1011   |
+| POSTCHANGE | App  | ?                | Setting | 1011   |
+| ENTERECORD | App  | execute_query()  | Setting | 1011   |
 
 ## Trigger Table
 

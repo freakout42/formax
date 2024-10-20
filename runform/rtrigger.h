@@ -14,7 +14,7 @@
 #define TRT_PREVBLOCK  1013
 #define TRT_EXEQUERY   1014
 #define TRT_POSTCHANGE 1015
-#define TRT_ENTERRECORD 1016
+#define TRT_ENTERECORD 1016
 #ifndef BEGINSQL
 /* trigger configuration */
 class rTrigger: public Record {
