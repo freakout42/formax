@@ -19,10 +19,11 @@ private:
   int changed;
   int edittrgtyp;
   int editrigger(int tid);
-  int qtrigger(int tid);
+  int qtrigger(int tid, int fid);
   char *trigger(int tid);
   int triggern(int tid);
   int enter_the_form();
+  void enter_record(int rid);
   int refresh_screen();
   int help_item();
   int keys_help();

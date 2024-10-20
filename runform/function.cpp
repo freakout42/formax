@@ -105,15 +105,17 @@ notrunning = triggern(TRT_ENTERFORM);
 return 0;
 }
 
-/* make a new record the current one
-int Function::enter_the_form() {
-int i;
-    if (color == COL_CURRENT && trg_postchange > -1 && !strcmp(currentval, outcell)) {
-      u.etrigger(trg_postchange);
-      let(currentval, outcell);
-    }
-}
-*/
+/* make a new record the current one */
+void Function::enter_record(int rid) {
+int i, pkfldi;
+char *pkval;
+CR = rid;
+pkfldi = CB.primarykeys[0];
+pkval = *fldi(pkfldi).valuep();
+if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERRECORD, pkfldi)) > -1 && CV && !strcmp(fldi(pkfldi).currentval, pkval)) {
+  u.etrigger(i);
+  let(fldi(pkfldi).currentval, pkval);
+} }
 
 int Function::refresh_screen() {
 F(needredraw) = 1;
@@ -167,6 +169,7 @@ return 0;
 
 /* move from record to record */
 int Function::fmover(int bi, int ri) {
+int newcr;
 switch (CM) {
  case MOD_QUERY:  return 0;                                                         break;
  case MOD_UPDATE:                                                                   break;
@@ -174,21 +177,23 @@ switch (CM) {
  case MOD_DELETE: if (!yesno(MSG(MSG_DIRTY))) destroy_record();                     break;
 }
 switch_mode(MOD_UPDATE);
-if (CR > 0) {
-  CR += ri;
-  if (CR > CB.q->rows) {
+newcr = CR;
+if (newcr > 0) {
+  newcr += ri;
+  if (newcr > CB.q->rows) {
     if (ri == 1) MSG(MSG_LAST);
-    CR = CB.q->rows;
+    newcr = CB.q->rows;
   }
-  if (CR < 1) {
+  if (newcr < 1) {
     if (ri == -1) MSG(MSG_FIRST);
-    CR = 1;
+    newcr = 1;
   }
   if (abs(ri) > 1) {
     CB.toprec += ri;
     if (CB.toprec > CB.q->rows - CB.norec) CB.toprec = CB.q->rows - CB.norec;
     if (CB.toprec < 1) CB.toprec = 1;
   }
+  enter_record(newcr);
   fwindow();
 }
 return 0;
@@ -249,7 +254,7 @@ if (CM != MOD_UPDATE) return 0;
 int Function::ftoggle() {
 int editmode;
 edittrgtyp = TRT_EDITFIELD;
-editmode = qtrigger(edittrgtyp) > -1 ? FED_TRIGGER : FED_TOGGLE;
+editmode = qtrigger(edittrgtyp,CFi) > -1 ? FED_TRIGGER : FED_TOGGLE;
 changed = fedit(editmode);
 return changed==KEF_CANCEL ? 0 : changed;
 }
@@ -351,7 +356,7 @@ if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
       }
       F(curfield) = cf;
     }
-    CR = 1;
+    enter_record(1);
     switch_mode(MOD_UPDATE);
   } else {
     return insert_record();
@@ -379,7 +384,7 @@ return 0;
 
 int Function::clear_record() {
 CB.q->splice(-CR);
-if (CR > CB.q->rows) CR = CB.q->rows;
+if (CR > CB.q->rows) enter_record(CB.q->rows);
 if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query(&CB); 
 return 0;
 }
@@ -387,15 +392,15 @@ return 0;
 /* TRIGGER */
 int Function::editrigger(int tid) {
 int i;
-if ((i = qtrigger(tid)) > -1) F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
+if ((i = qtrigger(tid,CFi)) > -1) F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
 return 0;
 }
 
 /* search for trigger */
-int Function::qtrigger(int tid) {
+int Function::qtrigger(int tid, int fid) {
 int i;
 forall(trigger)
-  if ((F(r)[i].trgfld == 0 || F(r)[i].trgfld == CF.field_id) && F(r)[i].trgtyp == tid)
+  if ((F(r)[i].trgfld == 0 || F(r)[i].trgfld == fldi(fid).field_id) && F(r)[i].trgtyp == tid)
     return i;
 return -1;
 }
@@ -406,7 +411,7 @@ return -1;
 char *Function::trigger(int tid) {
 int i;
 char *s;
-s = ((i = qtrigger(tid)) > -1) ? etrigger(i) : NULL;
+s = ((i = qtrigger(tid,CFi)) > -1) ? etrigger(i) : NULL;
 return s;
 }
 
