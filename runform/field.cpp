@@ -76,11 +76,12 @@ if (CP.index == pageindex && displaylen > 0)
      case MOD_INSERT: color = COL_NEWREC;  break;
      case MOD_DELETE: color = COL_DELETED; break;
      case MOD_UPDATE: color = COL_FIELD;   break;
+     default:         color = COL_DATA;
     }
     cur = index == F(curfield);
     cur = cur && (outcell ? outline == line : outrec == block.currentrec);
     if (cur) color = COL_CURRENT;
-    if (block.index != CB.index || block.rmode != MOD_QUERY && outrec != block.currentrec) color = COL_DATA;
+    if (block.index != CB.index || (block.rmode != MOD_QUERY && outrec != block.currentrec)) color = COL_DATA;
     if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
     page.writef(outline, col, color, displaylen, "%.*s", displaylen, outcell);
     if (cur) page.wmov(outline, col);
