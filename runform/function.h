@@ -12,16 +12,18 @@ public:
   int previous_record();
   int exec_query();
   int edittrg(char *buf);
+  char *etrigger(int tid);
 protected:
 private:
   int notrunning;
   int changed;
   int edittrgtyp;
   int editrigger(int tid);
-  int qtrigger(int tid);
+  int qtrigger(int tid, int fid);
   char *trigger(int tid);
   int triggern(int tid);
   int enter_the_form();
+  void enter_record(int rid);
   int refresh_screen();
   int help_item();
   int keys_help();
@@ -32,6 +34,7 @@ private:
   int fpaste();
   int fmove(int bi, int fi);
   int fmover(int bi, int ri);
+  void fwindow();
   int ftoggle();
   int fincrement(int ival);
   int fedit(int pos);

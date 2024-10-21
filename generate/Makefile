@@ -12,8 +12,11 @@ editform: adjfield formax.frm field.frm trigger.frm
 	rm -f $@
 	sqlite3 $@ <$<
 
-scotty.inp: testform makeform
-	./testform >$@
+scotty.inp: scotty.in2
+	cp scotty.in2 $@
+
+#scotty.inp: testform makeform
+#	./testform >$@
 
 formax.sql: formax.frm
 	sqlite3 formax.frm .dump >$@

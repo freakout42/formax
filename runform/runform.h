@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "1.9.1"
+#define VERSION "2.0.0"
 extern char odbcversion[];
 extern char cursesversion[];
 extern char about[];
@@ -85,8 +85,8 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 
 /* misc helper macros */
 #define str(s) #s
-#define max(x, y)	(((x) < (y)) ? (y) : (x))
-#define min(x, y)	(((x) < (y)) ? (x) : (y))
+#define max(x, y) (((x) < (y)) ? (y) : (x))
+#define min(x, y) (((x) < (y)) ? (x) : (y))
 #define let(target,source) letstrncpy(target, source, sizeof(target)-1)
 #define t(target) target, sizeof(target)
 #define empty(strp) *strp = '\0'
@@ -98,9 +98,12 @@ extern Record dbconn[5];
 extern Screen y;
 extern Form *f;
 #define F(method) f->method
-#define CB F(b)[F(curblock)]
-#define CF F(l)[F(curfield)]
-#define CR CB.currentrecord
+#define CFi F(curfield)
+#define CBi F(curblock)
+#define CF F(l)[CFi]
+#define CB F(b)[CBi]
+#define CP F(p)[CF.pageindex]
+#define CR CB.currentrec
 #define CM CB.rmode
 #define CV *CF.valuep()
 #define LK F(lastkey)

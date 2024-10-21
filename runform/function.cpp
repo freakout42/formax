@@ -1,4 +1,6 @@
 /* all processing centers around events.
+#include <stdio.h>
+fprintf(stderr,"CBi,CM,CR %d %d %d\n",CBi,CM,CR);
  * Put simply, events are things that occur when a form is exeecuted.
  * formax knows about events and handles them by executing functions.
  * Note that during processing, events are usually nested.
@@ -105,6 +107,19 @@ notrunning = triggern(TRT_ENTERFORM);
 return 0;
 }
 
+/* make a new record the current one */
+void Function::enter_record(int rid) {
+int i, pkfldi;
+char *pkval;
+CR = rid;
+pkfldi = CB.primarykeys[0];
+pkval = *fldi(pkfldi).valuep();
+/* need single primary key field and trigger for it and value has changed */
+if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERECORD, pkfldi)) > -1 && pkval && strcmp(fldi(pkfldi).currentval, pkval)) {
+  etrigger(i);
+  let(fldi(pkfldi).currentval, pkval);
+} }
+
 int Function::refresh_screen() {
 F(needredraw) = 1;
 return 0;
@@ -157,6 +172,7 @@ return 0;
 
 /* move from record to record */
 int Function::fmover(int bi, int ri) {
+int newcr;
 switch (CM) {
  case MOD_QUERY:  return 0;                                                         break;
  case MOD_UPDATE:                                                                   break;
@@ -164,33 +180,51 @@ switch (CM) {
  case MOD_DELETE: if (!yesno(MSG(MSG_DIRTY))) destroy_record();                     break;
 }
 switch_mode(MOD_UPDATE);
-if (CB.currentrecord > 0) {
-  CB.currentrecord += ri;
-  if (CB.currentrecord > CB.q->rows) {
-    MSG(MSG_LAST);
-    CB.currentrecord = CB.q->rows;
+newcr = CR;
+if (newcr > 0) {
+  newcr += ri;
+  if (newcr > CB.q->rows) {
+    if (ri == 1) MSG(MSG_LAST);
+    newcr = CB.q->rows;
   }
-  if (CB.currentrecord < 1) {
-    MSG(MSG_FIRST);
-    CB.currentrecord = 1;
+  if (newcr < 1) {
+    if (ri == -1) MSG(MSG_FIRST);
+    newcr = 1;
   }
+  if (abs(ri) > 1) {
+    CB.toprec += ri;
+    if (CB.toprec > CB.q->rows - CB.norec) CB.toprec = CB.q->rows - CB.norec;
+    if (CB.toprec < 1) CB.toprec = 1;
+  }
+  enter_record(newcr);
+  fwindow();
 }
 return 0;
 }
+
+/* adjust the top row in multiple rows blocks */
+void Function::fwindow() {
+if (CB.norec > 1) {
+       if (CR <  CB.toprec)            CB.toprec = CR;
+  else if (CR >= CB.toprec + CB.norec) CB.toprec = CR - CB.norec + 1;
+} else {
+  CB.toprec = CR;
+} }
 
 /* EDITING */
 int Function::insert_record() {
 if (CM == MOD_UPDATE || CM == MOD_QUERY) {
-  CB.q->splice(CB.currentrecord++);
+  CB.q->splice(CR++);
   switch_mode(MOD_INSERT);
 } else {
   MSG(MSG_QUERYM);
 }
+fwindow();
 return 0;
 }
 
 int Function::create_record() {
-if (CB.insert(CB.currentrecord)) MSG1(MSG_SQL, CB.sqlcmd);
+if (CB.insert(CR)) MSG1(MSG_SQL, CB.sqlcmd);
 switch_mode(MOD_UPDATE);
 return 0;
 }
@@ -223,7 +257,7 @@ if (CM != MOD_UPDATE) return 0;
 int Function::ftoggle() {
 int editmode;
 edittrgtyp = TRT_EDITFIELD;
-editmode = qtrigger(edittrgtyp) > -1 ? FED_TRIGGER : FED_TOGGLE;
+editmode = qtrigger(edittrgtyp,CFi) > -1 ? FED_TRIGGER : FED_TOGGLE;
 changed = fedit(editmode);
 return changed==KEF_CANCEL ? 0 : changed;
 }
@@ -250,7 +284,7 @@ switch(CM) {
   changed = CF.edit(pos);
   if (changed != KEF_CANCEL)
     if (CM == MOD_UPDATE && CF.basetable)
-      if (CB.update(CB.currentrecord, CF.sequencenum))
+      if (CB.update(CR, CF.sequencenum))
         MSG1(MSG_SQL, CB.sqlcmd);
   break;
  case MOD_DELETE:
@@ -284,7 +318,8 @@ return 0;
 
 int Function::enter_query(Block *blk) {
 blk->clear();
-blk->currentrecord = 0;
+blk->currentrec = 0;
+blk->toprec = 1;
 if (blk == &CB) {
   switch_mode(MOD_QUERY);
   F(dirty) = 0;
@@ -318,15 +353,16 @@ if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
       for (j=0; j<CB.q->rows; j++) {
         for (k=0; k<tfn; k++) {
           F(curfield) = triggerdfields[k];
-          CB.currentrecord = j + 1;
+          CR = j + 1;
           fedit(FED_TRIGGER);
         }
       }
       F(curfield) = cf;
     }
-    CB.currentrecord = 1;
+    enter_record(1);
     switch_mode(MOD_UPDATE);
   } else {
+    CR = 0;
     return insert_record();
   }
 }
@@ -343,15 +379,16 @@ int s;
 s = KEY_ENTER;
 if (deleprompt) s = MSG(MSG_DELASK);
 if (yesno(s)) {
-  CB.destroy(CB.currentrecord);
+  CB.destroy(CR);
   clear_record();
 } else switch_mode(MOD_UPDATE);
+fwindow();
 return 0;
 }
 
 int Function::clear_record() {
-CB.q->splice(-CB.currentrecord);
-if (CB.currentrecord > CB.q->rows) CB.currentrecord = CB.q->rows;
+CB.q->splice(-CR);
+if (CR > CB.q->rows) enter_record(CB.q->rows);
 if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query(&CB); 
 return 0;
 }
@@ -359,15 +396,15 @@ return 0;
 /* TRIGGER */
 int Function::editrigger(int tid) {
 int i;
-if ((i = qtrigger(tid)) > -1) F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
+if ((i = qtrigger(tid,CFi)) > -1) F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
 return 0;
 }
 
 /* search for trigger */
-int Function::qtrigger(int tid) {
+int Function::qtrigger(int tid, int fid) {
 int i;
 forall(trigger)
-  if ((F(r)[i].trgfld == 0 || F(r)[i].trgfld == CF.field_id) && F(r)[i].trgtyp == tid)
+  if ((F(r)[i].trgfld == 0 || F(r)[i].trgfld == fldi(fid).field_id) && F(r)[i].trgtyp == tid)
     return i;
 return -1;
 }
@@ -376,14 +413,22 @@ return -1;
  * javascript should always return number see below
  */
 char *Function::trigger(int tid) {
-static int injstrigger = 0;
 int i;
+char *s;
+s = ((i = qtrigger(tid,CFi)) > -1) ? etrigger(i) : NULL;
+return s;
+}
+
+/* raw trigger call NULL..notfound "..string [0-9]..number [^"0-9]..error
+ * javascript should always return number see below
+ */
+char *Function::etrigger(int tid) {
+static int injstrigger = 0;
 char *s;
 s = NULL;
 if (injstrigger) return s;
-if ((i = qtrigger(tid)) > -1) {
   injstrigger = 1;
-    s = F(r)[i].jsexec();
+    s = F(r)[tid].jsexec();
     if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
@@ -391,7 +436,6 @@ if ((i = qtrigger(tid)) > -1) {
       notrunning = -1;
     }
   injstrigger = 0;
-}
 return s;
 }
 

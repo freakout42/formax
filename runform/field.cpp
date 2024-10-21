@@ -39,6 +39,8 @@ let(helptext,   fld->v(rix,25));
 field_id      = fld->n(rix,26);
 empty(queryhuman);
 empty(querywhere);
+empty(currentval);
+trg_postchange = -1;
 sequencenum = bs[blockindex].addattribute(rix-1, this);
 index = rix - 1;
 return 0;
@@ -61,17 +63,28 @@ return (fieldtype==FTY_INT && lowvalue==0 && highvalue==1) ? FTY_BOOL : fieldtyp
 }
 
 /* display the field according to mode */
-void Field::show(int cur) {
-int color;
-switch(block.rmode) {
- case MOD_QUERY:  color = COL_QUERY;  break;
- case MOD_INSERT: color = COL_NEWREC; break;
- case MOD_DELETE: color = COL_DELETED; break;
- default:         color = COL_FIELD;
-}
-if (cur && block.rmode != MOD_DELETE) color = COL_CURRENT;
-if (displaylen > 0) page.writef(line, col, color, displaylen, "%.*s", displaylen, block.rmode==MOD_QUERY ? queryhuman : *valuep());
-if (cur) page.wmov(line, col);
+void Field::show() {
+int cur, color, outline, outrec;
+const char *outcell;
+if (CP.index == pageindex && displaylen > 0)
+  for (outline = line; outline < line + block.norec; outline++) {
+    outcell = NULL;
+    outrec = block.toprec + outline - line;
+    switch(block.rmode) {
+     case MOD_QUERY:  outcell = outline==line ? queryhuman : "";
+                      color = COL_QUERY;   break;
+     case MOD_INSERT: color = COL_NEWREC;  break;
+     case MOD_DELETE: color = COL_DELETED; break;
+     case MOD_UPDATE: color = COL_FIELD;   break;
+    }
+    cur = index == F(curfield);
+    cur = cur && (outcell ? outline == line : outrec == block.currentrec);
+    if (cur) color = COL_CURRENT;
+    if (block.index != CB.index || block.rmode != MOD_QUERY && outrec != block.currentrec) color = COL_DATA;
+    if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
+    page.writef(outline, col, color, displaylen, "%.*s", displaylen, outcell);
+    if (cur) page.wmov(outline, col);
+  }
 }
 
 /* clear field content */
@@ -88,7 +101,7 @@ if (CM == MOD_QUERY) {
 
 /* the current field value */
 char **Field::valuep() {
-return valuep(block.currentrecord);
+return valuep(block.currentrec);
 }
 
 /* field value any row */
@@ -204,13 +217,20 @@ switch(CM) {
   }
   break;
  case MOD_QUERY:
-  pressed = F(p)[PGE_STATUS].sedit(queryhuman, pos<FED_SPECIAL ? -1 : pos, FTY_ALL, SMLSIZE);
-  colquery(queryhuman, querywhere, column, querycharm, 0);
+  let(a, queryhuman);
+  pressed = F(p)[PGE_STATUS].sedit(a, pos<FED_SPECIAL ? -1 : pos, FTY_ALL, SMLSIZE);
+  setcond(a);
   break;
  case MOD_DELETE:
   break;
 }
 pressed = pressed==KEY_ENTER ? KEF_NXTFLD : F(mapkey)(pressed);
 return pressed;
+}
+
+/* set the query condition in human form */
+void Field::setcond(char *cond) {
+let(queryhuman, cond);
+colquery(queryhuman, querywhere, column, querycharm, 0);
 }
 

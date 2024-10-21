@@ -16,7 +16,8 @@ public:
   int primarykeys[NPRIKEY];
   char *cn(int c);
   fmode rmode;
-  int currentrecord;
+  int currentrec;
+  int toprec;
   int bdirty;
   int sequence; // % 10 is blockindex for connection
   int index;

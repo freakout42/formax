@@ -39,6 +39,22 @@ if (fldvaluep) let(a, fldvaluep);
 return js_mkstr(js, a, strlen(a)+1);
 }
 
+/* set query conditions for field
+ * setquery("block.field", "condition")
+ */
+static jsval_t j_setquery(struct js *js, jsval_t *args, int nargs) {
+int fldn;
+char *selector;
+char *condition;
+if (nargs == 2) {
+  selector  = js_getstr(js, args[0], NULL);
+  condition = js_getstr(js, args[1], NULL);
+  fldn = F(qfield)(selector);
+  if (fldn >= 0) fldi(fldn).setcond(condition);
+}
+return js_mknum(0);
+}
+
 /* String() number to string */
 static jsval_t j_tostring(struct js *js, jsval_t *args, int nargs) {
 double number;
@@ -86,6 +102,7 @@ if (!javascript) {
   JSEXE(previous_record,previous_record);
   JSEXE(exec_query,exec_query);
   JSEXE($,snub);
+  JSEXE(setquery,setquery);
   JSEXE(String,tostring);
   JSEXE(Message,message);
   JSEXE(SQL,sql);
@@ -97,7 +114,10 @@ trgtyp = trg->n(rix, 2);
 map_id = trg->n(rix, 3);
 index = rix - 1;
 fieldindex = -1;
-forall(field) if (fldi(i).field_id == trgfld) fieldindex = i;
+forall(field) if (fldi(i).field_id == trgfld) {
+  fieldindex = i;
+  if (trgtyp == TRT_POSTCHANGE) fldi(i).trg_postchange = index;
+}
 return map->getbody(map_id, body, sizeof(body));
 }
 
