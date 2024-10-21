@@ -9,6 +9,6 @@ ifeq (test,$(MAKECMDGOALS))
   CFLAGS=-g -O0 $(LINTING)
 else
   SUBTARGET=all
-  CFLAGS=-O3 -DNDEBUG $(LINTING)
+  CFLAGS=-O3 -DNDEBUG -fstack-protector $(LINTING)
 endif
 CXXFLAGS=$(CFLAGS)
