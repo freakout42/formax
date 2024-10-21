@@ -13,10 +13,12 @@ interactive and keyboard driven. Any terminal with a
 terminfo (ncurses) database is supported with usable
 function keys and color support.
 
-The system is enterprise-ready. Security, reliability, cost
-and operational excellence are fully covered and the
-important properties for developers - performance and
+The system is enterprise-ready. Security, reliability
+and operational excellence are fulfilled outstandingly.
+The important properties for developers - performance and
 sustainability are on top with C++ and open source.
+And costs are on the very cheap side with zero licenses
+and minimal operational necessary effort.
 
 Terms
 =====
@@ -201,6 +203,27 @@ specific events. Validation is the process by which runform
 determines whether the data in an object is valid or
 correct.
 
+The following regex-operators are supported by the regular
+expression engine.
+
+  -  `.`         Dot, matches any character
+  -  `^`         Start anchor, matches beginning of string
+  -  `$`         End anchor, matches end of string
+  -  `*`         Asterisk, match zero or more (greedy)
+  -  `+`         Plus, match one or more (greedy)
+  -  `?`         Question, match zero or one (non-greedy)
+  -  `[abc]`     Character class, match if one of {'a', 'b', 'c'}
+  -  `[^abc]`   Inverted class, match if NOT one of {'a', 'b', 'c'}
+  -  `[a-zA-Z]` Character ranges, the character set of the ranges { a-z | A-Z }
+  -  `\s`       Whitespace, \t \f \r \n \v and spaces
+  -  `\S`       Non-whitespace
+  -  `\w`       Alphanumeric, [a-zA-Z0-9_]
+  -  `\W`       Non-alphanumeric
+  -  `\d`       Digits, [0-9]
+  -  `\D`       Non-digits
+
+NOTE: inverted character classes are buggy.
+
 Trigger Processing
 ------------------
 
@@ -212,9 +235,9 @@ type of trigger associated with it.
 Development
 ===========
 
-In version 1.x developing with **formax** is kind of a
+In version 2.x developing with **formax** is kind of a
 rudimentary task only supported by a simple script
-`editform`. Version 1 first attention applys to user
+`editform`. Version 2 first attention applys to user
 experience and documentation. Anything beyond layout editing
 and field properties has to be done by editing the .inp file
 and needs knowledge from the source code or adapted
@@ -266,7 +289,7 @@ as follows:
 | Low      | minimum value                                 |
 | High     | maximum value                                 |
 | Pattern  | regular expression (pcre)                     |
-| ListOfVal| title                                         |
+| ListOfVal| title not yet implemented                     |
 
 (*1) This property is adjusted by the `editform` script upon
      the field placeholders from the boilerplate text file.
@@ -368,13 +391,16 @@ On success next_item() is fired to move to the next field.
 | PREVRECORD | Key  | CTRL('P') UP     | Action  | 1004   |
 | NEXTSETREC | Key  | CTRL('W') NPAGE  | Action  | 1005   |
 | PREVSETREC | Key  | CTRL('R') PPAGE  | Action  | 1006   |
+| NEXTBLOCK  | Key  | CTRL('E') END    | Action  | 1012   |
+| PREVBLOCK  | Key  | CTRL('A') HOME   | Action  | 1013   |
 | EDITFIELD  | Key  | ' '       SPACE  | Setting | 1007   |
 | COPYREC    | Key  | CTRL('T') F4     | Setting | 1008   |
 | COPY       | Key  | CTRL('C') F2     | Action  | 1009   |
 | PASTE      | Key  | CTRL('V') F3     | Setting | 1010   |
 | POSTQUERY  | App  | execute_query()  | Setting | 1011   |
-| POSTCHANGE | App  | ?                | Setting | 1011   |
-| ENTERECORD | App  | execute_query()  | Setting | 1011   |
+| EXEQUERY   | Key  | CTRL('X') F10    | Action  | 1014   |
+| POSTCHANGE | App  | NOT YET IMPLEMEN | Setting | 1015   |
+| ENTERECORD | App  | Record navigate  | Action  | 1016   |
 
 ## Trigger Table
 
