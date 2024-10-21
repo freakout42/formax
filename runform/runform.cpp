@@ -104,8 +104,8 @@ const char *ds;
 
 /* version information and about */
 ds = __DATE__; /* :Oct 16 2024: https://formax.toarx.de/ */
-letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s %2.2s%3.3s%2.2s-%5.5s",
-  VERSION, CHARSET, odbcversion+2, cursesversion, ds+4, ds, ds+9, __TIME__);
+letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s %2.2s%3.3s%2.2s-%5.5s %d",
+  VERSION, CHARSET, odbcversion+2, cursesversion, ds+4, ds, ds+9, __TIME__, sizeof(Form));
 /* search for the sqlite3 driver */
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;

@@ -3,9 +3,9 @@
 class Form: public Record {
 public:
   Form();
-  char id[SMLSIZE];
-  char name[SMLSIZE];
-  char title[SMLSIZE];
+  char id[8];
+  char name[30];
+  char title[80];
   Qdata *e;
   int needredraw;
   Block   b[NBLOCKS];

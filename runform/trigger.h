@@ -2,8 +2,9 @@
 class Trigger {
 public:
   int map_id;
-  char body[MEDSIZE];
+  char *body;
   int init(Qdata *trg, int rix, rMap *map);
+  void rclose();
   char *jsexecdirect(char *prg, int siz);
   char *jsexec();
   int trgfld;

@@ -118,8 +118,11 @@ forall(field) if (fldi(i).field_id == trgfld) {
   fieldindex = i;
   if (trgtyp == TRT_POSTCHANGE) fldi(i).trg_postchange = index;
 }
-return map->getbody(map_id, body, sizeof(body));
+i = map->getbody(map_id, t(a));
+body = strdup(a);
+return i;
 }
+void Trigger::rclose() { free(body); }
 
 /* exec pure javascript */
 char *Trigger::jsexecdirect(char *prg, int siz) {

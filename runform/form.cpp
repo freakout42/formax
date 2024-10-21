@@ -124,8 +124,9 @@ void Form::clear() {
 int i;
 e->freed();
 delete(e);
-for (i=0; i<numblock; i++) b[i].rclose();
-for (i=0; i<numpage;  i++) p[i].destroy();
+forall(block)   b[i].rclose();
+forall(trigger) r[i].rclose();
+forall(page)    p[i].destroy();
 }
 
 /* set-up screen and pages and execute through the event dispatcher */
