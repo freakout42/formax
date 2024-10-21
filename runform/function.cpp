@@ -1,5 +1,6 @@
-#include <stdio.h>
 /* all processing centers around events.
+#include <stdio.h>
+fprintf(stderr,"CBi,CM,CR %d %d %d\n",CBi,CM,CR);
  * Put simply, events are things that occur when a form is exeecuted.
  * formax knows about events and handles them by executing functions.
  * Note that during processing, events are usually nested.
@@ -113,8 +114,8 @@ char *pkval;
 CR = rid;
 pkfldi = CB.primarykeys[0];
 pkval = *fldi(pkfldi).valuep();
-//fprintf(stderr,"%d %d :%s: :%s:\n",CB.prikeycnt,qtrigger(TRT_ENTERECORD, pkfldi),CV ? CV : "(null)",fldi(pkfldi).currentval);
-if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERECORD, pkfldi)) > -1 && CV && strcmp(fldi(pkfldi).currentval, pkval)) {
+/* need single primary key field and trigger for it and value has changed */
+if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERECORD, pkfldi)) > -1 && pkval && strcmp(fldi(pkfldi).currentval, pkval)) {
   etrigger(i);
   let(fldi(pkfldi).currentval, pkval);
 } }
@@ -361,6 +362,7 @@ if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
     enter_record(1);
     switch_mode(MOD_UPDATE);
   } else {
+    CR = 0;
     return insert_record();
   }
 }
