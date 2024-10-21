@@ -76,15 +76,20 @@ Enterprise requirements are fully accomplished:
 Status
 ======
 
-Release 1.9.0 is useable but has not matured to call it
+Release 2.0.0 is useable and has all important features to
+create non-complex forms. It has not matured enough to call it
 fully production ready. Don't hesitate to create an issue
 when in trouble or missing a feature or have found a bug or
-security problem.
+security problem but dont hesitate to start using it.
+
+The most important property "Security" is covered "hardline".
+The code is -Wall -Werror clean and send through valgrind,
+compiled with stack protection and uses almost no system
+interfaces. This aspect can be seen as production ready,
+particularly when the three factor authentication is used.
 
 Future roadmap
 --------------
- - 2.0 multi-record fields
- - 2.1 master-detail
  - 2.2 in-field editing
  - 2.5 list of values - subforms
  - 3.0 menue multiple forms
