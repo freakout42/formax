@@ -107,7 +107,7 @@
 #define WSHIFT	2	/* mb: how much to shift screen	sideways at once.
 				2 means by one half, 3 by 1/3, etc.	*/
 
-#if ST_DA
+#if defined(ST_DA) || defined(EMBEDDED)
 #define CANLOG	0
 #else
 #define CANLOG	1			/* mb: compile in logfile stuff	*/

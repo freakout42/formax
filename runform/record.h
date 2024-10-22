@@ -17,8 +17,8 @@ public:
   odrvr drv;
   char table[30];
 //  char sqlcmd[MEDSIZE];
-  char condition[MEDSIZE];
-  char whereorder[MEDSIZE];
+  char condition[SMLSIZE];
+  char whereorder[SMLSIZE];
   SQLCHAR querystr[MEDSIZE];
   char *bindv[NBINDPA];
   int connect(char *dsn);

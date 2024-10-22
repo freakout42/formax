@@ -701,6 +701,7 @@ ascii:
 	return (status);
 }
 
+#ifndef EMBEDDED
 #if (ST_DA == 0)
 void usage()
 {
@@ -780,6 +781,7 @@ void usage()
 	exit(0);
 #endif
 }
+#endif
 #endif
 
 #if ST_DA
@@ -1351,6 +1353,7 @@ return 0;
 #undef register
 #endif
 
+#ifndef EMBEDDED
 /*
  *  mb: Display another file in another window.
  *      Called only if a second filename appears in command line.
@@ -1379,6 +1382,7 @@ edmore(fname)
 		mlwrite("Error reading next file!");
 	prevwind(0,1);
 }
+#endif
 
 /*
  * Read in a key.
