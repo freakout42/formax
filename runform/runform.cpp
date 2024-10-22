@@ -131,7 +131,7 @@ form_id = 1;
 /* command-line arguments and options check and process */
 while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
   switch (i) {
-    case 'V': fprintf(stderr, "runform %s (%d)\n", about, sizeof(Form)); exit(2);
+    case 'V': fprintf(stderr, "runform %s (%d)\n", about, (int)sizeof(Form)); exit(2);
     case 'y': ypassword = optarg; break;
     case 't':
       fputs("TOTP: ", stdout);
