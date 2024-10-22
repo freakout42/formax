@@ -61,13 +61,13 @@ int Block::update(int r, int c) {
 #ifdef USEBINDVARFALSEENABLED
 if (usebindvar) {
 #endif
-letf((char*)querystr, sizeof(querystr), "update %s set %s = ? where %s = ?", table, cn(c-1), F(l[primarykeys[0]]).column);
+letf((char*)querystr, MEDSIZE, "update %s set %s = ? where %s = ?", table, cn(c-1), F(l[primarykeys[0]]).column);
 bindv[0] = q->v(r, c);
 bindv[1] = q->v(r, F(l[primarykeys[0]]).sequencenum);
 bindv[2] = NULL;
 #ifdef USEBINDVARFALSEENABLED
 } else {
-letf((char*)querystr, sizeof(querystr), "update %s set %s = '%s' where %s = '%s'", table, cn(c-1), q->v(r, c),
+letf((char*)querystr, MEDSIZE, "update %s set %s = '%s' where %s = '%s'", table, cn(c-1), q->v(r, c),
                                            F(l[primarykeys[0]]).column, q->v(r, F(l[primarykeys[0]]).sequencenum));
 bindv[0] = NULL;
 }
@@ -80,13 +80,13 @@ int Block::destroy(int r) {
 #ifdef USEBINDVARFALSEENABLED
 if (usebindvar) {
 #endif
-letf((char*)querystr, sizeof(querystr), "delete from %s where %s = ?", table, F(l[primarykeys[0]]).column);
+letf((char*)querystr, MEDSIZE, "delete from %s where %s = ?", table, F(l[primarykeys[0]]).column);
 bindv[0] = q->v(r, F(l[primarykeys[0]]).sequencenum);
 bindv[1] = NULL;
 #ifdef USEBINDVARFALSEENABLED
 } else {
-letf((char*)querystr, sizeof(querystr),
-  "delete from %s where %s = '%s'", table, F(l[primarykeys[0]]).column, q->v(r, F(l[primarykeys[0]]).sequencenum));
+letf((char*)querystr, MEDSIZE,
+  "delete from %s where %s = '%s'", table, F(l)[primarykeys[0]].column, q->v(r, F(l)[primarykeys[0]].sequencenum));
 bindv[0] = NULL;
 }
 #endif
@@ -124,10 +124,10 @@ if (usebindvar) {
 bindv[j] = NULL;
 if (drv == ODR_ORACLE) {
 //{CALL begin insert into %s (%s) values (%s) return %s into ?", table, columnslist, valueslist, }
-  letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s)", table, columnslist, valueslist);
+  letf((char*)querystr, MEDSIZE, "insert into %s (%s) values (%s)", table, columnslist, valueslist);
   if ((ret = execute())) return ret;
 } else {
-  letf((char*)querystr, sizeof(querystr), "insert into %s (%s) values (%s) returning %s", table, columnslist, valueslist, attrs);
+  letf((char*)querystr, MEDSIZE, "insert into %s (%s) values (%s) returning %s", table, columnslist, valueslist, attrs);
   if ((ret = execute())) return ret;
   if ((ret = fetch(r))) MSG(MSG_NOREC);
 }

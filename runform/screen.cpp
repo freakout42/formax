@@ -219,7 +219,7 @@ switch (fty) {
  case FTY_ALL:
  default:        legal = legalall;
 }
-return F(p[0]).getst(0, 0, 80, EDITCOLOR, toe, pos, legal, len, NULL);
+return F(p)[0].getst(0, 0, 80, EDITCOLOR, toe, pos, legal, len, NULL);
 }
 
 /* Allows the user to edit a string with only certain characters allowed

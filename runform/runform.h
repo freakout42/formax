@@ -53,10 +53,11 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #define STATUSL 0
 #define TNYSIZE 80
 #define SMLSIZE 256
-#define MEDSIZE 1024
+#define NORSIZE 512
+#define MEDSIZE 2048
 #define BIGSIZE 65536
 #define HUGSIZE 1024*1024
-#define NLINES  100
+#define NLINES  60
 #define NBLOCKS 8
 #define NFIELD1 30
 #define NFIELDS 60

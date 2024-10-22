@@ -82,6 +82,7 @@ ret = 0;
 if (dbc)
  if (stmt == NULL) {
   q = new Qdata();
+  querystr = (SQLCHAR*)malloc(MEDSIZE);
   ret = SQLAllocHandle(SQL_HANDLE_STMT, dbc, &stmt);                                           FAILEDQ(SQL_HANDLE_STMT);
  }
 return ret;
@@ -93,6 +94,7 @@ if (dbc) {
  delete(q);
  if (stmt) {
   SQLFreeHandle(SQL_HANDLE_STMT, stmt);
+  free(querystr);
   stmt = NULL;
 } } }
 
@@ -123,7 +125,6 @@ int Record::execute(SQLCHAR *sql, char *b[]) {
 SQLLEN len;
 int i;
 len = SQL_NTS;
-//let(sqlcmd, (char*)sql);
 g.logsql((char*)sql, b);
 ret = SQLPrepare(stmt, sql, SQL_NTS);                                                          FAILEDQ(SQL_HANDLE_STMT);
 for (i=0; b[i]; i++) {
@@ -151,7 +152,7 @@ if (  *where  && !(*condition)) j = letf(t(whereorder), " where %s", where);
 if (!(*where) &&   *condition)  j = letf(t(whereorder), " where %s", condition);
 if (  *where  &&   *condition)  j = letf(t(whereorder), " where (%s) AND (%s)", where, condition);
 if (  *order                 )      letf(whereorder+j, sizeof(whereorder)-j, " order by %s", order);
-letf((char*)querystr, sizeof(querystr), "select %s from %s%s", attrs, table, whereorder);
+letf((char*)querystr, MEDSIZE, "select %s from %s%s", attrs, table, whereorder);
 bindv[0] = NULL;
 if ((ret = execute())) return ret;
 empty(condition);

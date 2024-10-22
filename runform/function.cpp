@@ -99,8 +99,8 @@ return notrunning;
 /* GENERAL */
 int Function::enter_the_form() {
 int i;
-F(curblock) = 4;
-F(curfield) = CB.blockfields[0];
+CBi = 4;
+CFi = CB.blockfields[0];
 forall(block) if (i >= 4) enter_query(&F(b)[i]);
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
 notrunning = triggern(TRT_ENTERFORM);
@@ -165,11 +165,11 @@ TRIGGR0(exec_query,EXEQUERY,execute_query)
 /* move from field to field */
 int Function::fmove(int bi, int fi) {
 if (bi) {
-  F(curblock) = ((F(curblock)-4 + F(numblock)-4 + bi) % (F(numblock)-4) + 4);
-  F(curfield) = CB.blockfields[0];
+  CBi = ((CBi - 4 + F(numblock)-4 + bi) % (F(numblock)-4) + 4);
+  CFi = CB.blockfields[0];
 }
-if (fi < NFIELD1) F(curfield) = CB.blockfields[ (CF.sequencenum-1 + CB.fieldcount + fi) % CB.fieldcount ];
-else              F(curfield) = fi - NFIELD1 - 1;
+if (fi < NFIELD1) CFi = CB.blockfields[ (CF.sequencenum-1 + CB.fieldcount + fi) % CB.fieldcount ];
+else              CFi = fi - NFIELD1 - 1;
 if (CF.noedit() || !(CF.enterable)) fmove(0, fi<0 ? -1 : 1);
 return 0;
 }
@@ -349,19 +349,19 @@ if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
     forall(trigger)
       if (trgi(i).trgtyp == edittrgtyp)
         if ((k = trgi(i).fieldindex) >= 0)
-          if (fldi(k).blockindex == F(curblock))
+          if (fldi(k).blockindex == CFi)
             triggerdfields[tfn++] = trgi(i).fieldindex;
     if (tfn > 0) {
       CM = MOD_UPDATE;
-      cf = F(curfield);
+      cf = CFi;
       for (j=0; j<CB.q->rows; j++) {
         for (k=0; k<tfn; k++) {
-          F(curfield) = triggerdfields[k];
+          CFi = triggerdfields[k];
           CR = j + 1;
           fedit(FED_TRIGGER);
         }
       }
-      F(curfield) = cf;
+      CFi = cf;
     }
     enter_record(1);
     switch_mode(MOD_UPDATE);
