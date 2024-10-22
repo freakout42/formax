@@ -58,7 +58,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 #define NLINES  100
 #define NBLOCKS 8
 #define NFIELD1 30
-#define NFIELDS NBLOCKS*NFIELD1
+#define NFIELDS 60
 #define NTRIGGERS 80
 #define NPRIKEY 4
 #define NBINDPA NFIELD1

@@ -15,7 +15,7 @@ public:
   int editbuf(char *buf);
   int editmap(int pid);
   void destroy();
-  char name[SMLSIZE];
+  char name[30];
   int maps(Qdata *rmap);
   int wait();
   void working();

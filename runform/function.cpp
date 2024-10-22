@@ -396,16 +396,19 @@ return 0;
 /* TRIGGER */
 int Function::editrigger(int tid) {
 int i;
-if ((i = qtrigger(tid,CFi)) > -1) F(p)[PGE_EDITOR].editbuf(F(r)[i].body);
+if ((i = qtrigger(tid, CFi)) > -1) F(p)[PGE_EDITOR].editbuf(trgi(i).body);
 return 0;
 }
 
 /* search for trigger */
 int Function::qtrigger(int tid, int fid) {
 int i;
-forall(trigger)
-  if ((F(r)[i].trgfld == 0 || F(r)[i].trgfld == fldi(fid).field_id) && F(r)[i].trgtyp == tid)
-    return i;
+int fld_id;
+fld_id = fldi(fid).field_id;
+forall(trigger) {
+  if (trgi(i).trgtyp == tid && (trgi(i).trgfld == 0 || trgi(i).trgfld == fld_id)) return i;
+  else if (trgi(i).trgfld > fld_id) break;
+}
 return -1;
 }
 
@@ -415,7 +418,7 @@ return -1;
 char *Function::trigger(int tid) {
 int i;
 char *s;
-s = ((i = qtrigger(tid,CFi)) > -1) ? etrigger(i) : NULL;
+s = ((i = qtrigger(tid, CFi)) > -1) ? etrigger(i) : NULL;
 return s;
 }
 
@@ -428,7 +431,7 @@ char *s;
 s = NULL;
 if (injstrigger) return s;
   injstrigger = 1;
-    s = F(r)[tid].jsexec();
+    s = trgi(tid).jsexec();
     if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
