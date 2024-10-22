@@ -3,20 +3,21 @@ class Field {
 public:
   int field_id;
   int index;
-  char column[SMLSIZE];
+  char column[30];
   int sequencenum;
   int blockindex;
   int pageindex;
   int trg_postchange;
   char querywhere[SMLSIZE];
-  char queryhuman[SMLSIZE];
-  char currentval[SMLSIZE];
+  char queryhuman[TNYSIZE];
+  char *currentval;
   int basetable;
   int isprimarykey;
   int enterable;
-  char helptext[SMLSIZE];
-  char defaultval[SMLSIZE];
+  char *helptext;
+  char *defaultval;
   int init(Qdata *fld, int rix, Block *bs);
+  void rclose();
   void clear();
   int toggle(char *val);
   int increment(char *val, int ival);
@@ -44,5 +45,5 @@ private:
   int lovi_id;
   int lowvalue;
   int highvalue;
-  char validreg[80];
+  char validreg[TNYSIZE];
 };

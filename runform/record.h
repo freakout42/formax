@@ -15,8 +15,8 @@ typedef SQLSMALLINT SQLRETURN;
 class Record {
 public:
   odrvr drv;
-  char table[SMLSIZE];
-  char sqlcmd[MEDSIZE];
+  char table[30];
+//  char sqlcmd[MEDSIZE];
   char condition[MEDSIZE];
   char whereorder[MEDSIZE];
   SQLCHAR querystr[MEDSIZE];
@@ -38,9 +38,9 @@ protected:
   SQLHSTMT stmt;
   SQLSMALLINT columni;
   SQLSMALLINT querycols;
-  char prikey[SMLSIZE];
+  char prikey[TNYSIZE];
   char attrs[SMLSIZE];
-  char where[MEDSIZE];
+  char where[SMLSIZE];
   char order[SMLSIZE];
   int execute(SQLCHAR *sql, char *bndv[]);
   int complete();

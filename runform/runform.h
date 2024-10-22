@@ -51,6 +51,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
 
 /* global resource configuration */
 #define STATUSL 0
+#define TNYSIZE 80
 #define SMLSIZE 256
 #define MEDSIZE 1024
 #define BIGSIZE 65536

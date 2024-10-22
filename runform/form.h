@@ -4,8 +4,8 @@ class Form: public Record {
 public:
   Form();
   char id[8];
-  char name[30];
-  char title[80];
+  char name[TNYSIZE];
+  char title[TNYSIZE];
   Qdata *e;
   int needredraw;
   Block   b[NBLOCKS];

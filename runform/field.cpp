@@ -22,7 +22,7 @@ isprimarykey  = fld->n(rix, 8);
 fieldtype     = (ftype)fld->n(rix, 9);
 fieldlen      = fld->n(rix,10);
 basetable     = fld->n(rix,11);
-let(defaultval, fld->v(rix,12));
+defaultval    = fld->c(rix,12);
 enterable     = fld->n(rix,13);
 queryable     = fld->n(rix,14);
 updateable    = fld->n(rix,15);
@@ -35,15 +35,21 @@ lovi_id       = fld->n(rix,21);
 lowvalue      = fld->n(rix,22);
 highvalue     = fld->n(rix,23);
 let(validreg,   fld->v(rix,24));
-let(helptext,   fld->v(rix,25));
+helptext      = fld->c(rix,25);
 field_id      = fld->n(rix,26);
 empty(queryhuman);
 empty(querywhere);
-empty(currentval);
+currentval = NULL;
 trg_postchange = -1;
 sequencenum = bs[blockindex].addattribute(rix-1, this);
 index = rix - 1;
 return 0;
+}
+
+void Field::rclose() {
+  free(currentval);
+  free(defaultval);
+  free(helptext);
 }
 
 /* check whether field is editable in current mode */

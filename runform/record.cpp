@@ -123,8 +123,8 @@ int Record::execute(SQLCHAR *sql, char *b[]) {
 SQLLEN len;
 int i;
 len = SQL_NTS;
-let(sqlcmd, (char*)sql);
-g.logsql(sqlcmd, b);
+//let(sqlcmd, (char*)sql);
+g.logsql((char*)sql, b);
 ret = SQLPrepare(stmt, sql, SQL_NTS);                                                          FAILEDQ(SQL_HANDLE_STMT);
 for (i=0; b[i]; i++) {
   ret = SQLBindParameter(stmt, i+1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 0, 0, b[i], SMLSIZE, &len);

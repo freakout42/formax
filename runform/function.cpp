@@ -1,6 +1,6 @@
 /* all processing centers around events.
 #include <stdio.h>
-fprintf(stderr,"CBi,CM,CR %d %d %d\n",CBi,CM,CR);
+fprintf(stderr,"%s %s\n",*curval,pkval);
  * Put simply, events are things that occur when a form is exeecuted.
  * formax knows about events and handles them by executing functions.
  * Note that during processing, events are usually nested.
@@ -111,14 +111,18 @@ return 0;
 void Function::enter_record(int rid) {
 int i, pkfldi;
 char *pkval;
+char **curval;
 CR = rid;
+if (rid > 0) {
 pkfldi = CB.primarykeys[0];
 pkval = *fldi(pkfldi).valuep();
+curval = &fldi(pkfldi).currentval;
 /* need single primary key field and trigger for it and value has changed */
-if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERECORD, pkfldi)) > -1 && pkval && strcmp(fldi(pkfldi).currentval, pkval)) {
+if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERECORD, pkfldi)) > -1 && pkval && (!*curval || strcmp(*curval, pkval))) {
   etrigger(i);
-  let(fldi(pkfldi).currentval, pkval);
-} }
+  free(*curval);
+  *curval = strdup(pkval);
+} } }
 
 int Function::refresh_screen() {
 F(needredraw) = 1;
@@ -224,7 +228,7 @@ return 0;
 }
 
 int Function::create_record() {
-if (CB.insert(CR)) MSG1(MSG_SQL, CB.sqlcmd);
+if (CB.insert(CR)) MSG1(MSG_SQL, (char*)CB.querystr);
 switch_mode(MOD_UPDATE);
 return 0;
 }
@@ -285,7 +289,7 @@ switch(CM) {
   if (changed != KEF_CANCEL)
     if (CM == MOD_UPDATE && CF.basetable)
       if (CB.update(CR, CF.sequencenum))
-        MSG1(MSG_SQL, CB.sqlcmd);
+        MSG1(MSG_SQL, (char*)CB.querystr);
   break;
  case MOD_DELETE:
   break;
@@ -334,7 +338,7 @@ int cf;
 int triggerdfields[NFIELD1];
 int tfn;
 F(p)[PGE_STATUS].working();
-if (CB.select()) MSG1(MSG_SQL, CB.sqlcmd); else {
+if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
   if (CB.q->rows > 0) {
     /* optimized - first check for triggers
      * collect them in triggerdfields
