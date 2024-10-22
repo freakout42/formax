@@ -15,6 +15,19 @@ if (i < n-2) {
 return dest+i;
 }
 
+/* trim right padded garbade away .00 and whitespace */
+char *rtrim0white(char *str) {
+char *end;
+end = str + strspn(str, "-0123456789");
+if (*end == '.' && strspn(end, "0.") == strlen(end)) *end = '\0';
+else if (*str) {
+  end = str + strlen(str) - 1;
+  while (end > str && isspace(*end)) end--;
+  end[1] = '\0';
+}
+return str;
+}
+
 /* avoid include <stdio.h> need */
 int letf(char *target, size_t maxlen, const char *format, ...) {
 va_list args;

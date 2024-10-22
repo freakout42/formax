@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.0.0"
+#define VERSION "2.0.2"
 extern char odbcversion[];
 extern char cursesversion[];
 extern char about[];
@@ -116,6 +116,7 @@ extern Form *f;
 #define forall(item) for (i=0; i<F(num ## item); i++)
 /* helpers from version.cpp */
 extern char *letstrncpy(char *dest, const char *src, size_t n);
+extern char *rtrim0white(char *str);
 extern int yesno(int c);
 extern int isprintable(int c);
 extern int ispunctation(int c);

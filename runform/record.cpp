@@ -185,7 +185,6 @@ int Record::fetch(int row) {
 SQLRETURN s;
 SQLSMALLINT i;
 SQLLEN indicator;
-char *decimal;
 char **qp;
 char buf[HUGSIZE];
 //if (row) s = SQLMoreResults(stmt);
@@ -197,8 +196,7 @@ if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
       if (!(qp = q->w(row, i))) return 13;
       free(*qp);
       if (indicator == SQL_NULL_DATA) *qp = NULL; else {
-        decimal = buf + strspn(buf, "0123456789"); // cut trailing .00
-        if (*decimal == '.' && strspn(decimal, "0.") == strlen(decimal)) empty(decimal);
+        rtrim0white(buf);
         if (!(*qp = strdup(buf))) return 13;
       }
     }
