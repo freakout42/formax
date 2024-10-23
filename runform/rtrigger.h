@@ -15,6 +15,8 @@
 #define TRT_EXEQUERY   1014
 #define TRT_POSTCHANGE 1015
 #define TRT_ENTERECORD 1016
+#define TRL_JAVASCRIPT 0
+#define TRL_KEYMACRO   1
 #ifndef BEGINSQL
 /* trigger configuration */
 class rTrigger: public Record {

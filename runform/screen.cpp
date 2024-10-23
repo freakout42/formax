@@ -7,6 +7,7 @@
 #include "runform.h"
 
 char cursesversion[8] = NCURSES_VERSION;
+static char *macrobuffer = NULL;
 
 Screen::Screen() {
 ysiz = 0;
@@ -161,9 +162,20 @@ for (i=1; i<F(e)->rows; i++) if (F(e)->m(i,1) == num) break;
 return F(e)->v(i,3);
 }
 
+/* open a keyboard macro buffer */
+void Screen::openmacro(char *mbu) {
+macrobuffer = mbu;
+}
+
 /* get key pressed */
 int Screen::wgetc() {
-return wgetch(stdscr); // wgetch(wndw); getch();
+int i;
+while (macrobuffer) {
+  i = *macrobuffer++;
+  if (!i) macrobuffer = NULL;
+  else if (!isspace(i)) return i;
+}
+return wgetch(stdscr); /* wgetch(wndw); getch(); */
 }
 
 /* map ctrl to function keys */
@@ -385,3 +397,4 @@ mvwprintw(wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
 wmov(oldy, oldx);
 setcode(-1);
 }
+

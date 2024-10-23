@@ -151,3 +151,10 @@ progsize = cats(t(prog), body);
 return jsexecdirect(prog, progsize);
 }
 
+char *Trigger::execute() {
+switch (trglng) {
+ case TRL_JAVASCRIPT: return jsexec();   break;
+ case TRL_KEYMACRO:   y.openmacro(body); break;
+}
+return "1";
+}

@@ -1,6 +1,6 @@
 /* all processing centers around events.
 #include <stdio.h>
-fprintf(stderr,"%d %d %d %d %d %d %d %d %d\n",tid,bid,fid,i,trgi(i).trgtyp,trgi(i).trgblk,blk_id,trgi(i).trgfld,fld_id);
+fprintf(stderr,"%d %d %d %d %d %d %d %d %d %d\n",tid,bid,fid,i,trgi(i).trglng,trgi(i).trgtyp,trgi(i).trgblk,blk_id,trgi(i).trgfld,fld_id);
 fprintf(stderr,"%d\n\n",i);
  * Put simply, events are things that occur when a form is exeecuted.
  * formax knows about events and handles them by executing functions.
@@ -326,9 +326,9 @@ int Function::enter_query(Block *blk) {
 blk->clear();
 blk->currentrec = 0;
 blk->toprec = 1;
+F(dirty) = 0;
 if (blk == &CB) {
   switch_mode(MOD_QUERY);
-  F(dirty) = 0;
 } else blk->rmode = MOD_QUERY;
 return 0;
 }
@@ -433,7 +433,7 @@ if (injstrigger) return s;
 i = tid < 0 ? -tid : qtrigger(tid);
 if (i == -1) return s;
   injstrigger = 1;
-    s = trgi(i).jsexec();
+    s = trgi(i).execute();
     if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
