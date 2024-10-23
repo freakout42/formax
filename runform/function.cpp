@@ -104,7 +104,7 @@ CBi = -1;
 forall(block) if (i >= 4) enter_query(&F(b)[i]);
 CBi = 4;
 CFi = CB.blockfields[0];
-if (notrunning = triggern(TRT_ENTERFORM)) return 0;
+if ((notrunning = triggern(TRT_ENTERFORM))) return 0;
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
 return 0;
 }
