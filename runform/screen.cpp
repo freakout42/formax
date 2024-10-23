@@ -7,7 +7,7 @@
 #include "runform.h"
 
 char cursesversion[8] = NCURSES_VERSION;
-static char *macrobuffer = NULL;
+static char *macrob = NULL;
 
 Screen::Screen() {
 ysiz = 0;
@@ -164,16 +164,46 @@ return F(e)->v(i,3);
 
 /* open a keyboard macro buffer */
 void Screen::openmacro(char *mbu) {
-macrobuffer = mbu;
+macrob = mbu;
 }
 
 /* get key pressed */
 int Screen::wgetc() {
-int i;
-while (macrobuffer) {
-  i = *macrobuffer++;
-  if (!i) macrobuffer = NULL;
-  else if (!isspace(i)) return i;
+int i, j;
+while (macrob) {
+  i = *macrob++;
+  if (!i) macrob = NULL;
+  else {
+    if (i == '{') {
+      #define findkey(fky,ctl) j = strlen(#fky); if (!strncmp(macrob, #fky "}", j+1)) { macrob += j+1; return KEY_CTRL(ctl); }
+      findkey(HELP,   '@')
+      findkey(HOME,   'A')
+      findkey(LEFT,   'B')
+      findkey(COPY,   'C')
+      findkey(DELETE, 'D')
+      findkey(END,    'E')
+      findkey(RIGHT,  'F')
+      findkey(PREFLD, 'G')
+      findkey(BACKDEL,'H')
+      findkey(NXTFLD, 'I')
+      findkey(INSERT, 'J')
+      findkey(KEYHELP,'K')
+      findkey(REFRESH,'L')
+      findkey(COMMIT, 'M')
+      findkey(NXTREC, 'N')
+      findkey(INSERT, 'O')
+      findkey(PREREC, 'P')
+      findkey(PRESETR,'R')
+      findkey(COPYREC,'T')
+      findkey(LIST,   'U')
+      findkey(PASTE,  'V')
+      findkey(NXTSETR,'W')
+      findkey(QUERY,  'X')
+      findkey(QUIT,   'Y')
+      findkey(EXIT,   'Z')
+    }
+    if (!isspace(i)) return i;
+  }
 }
 return wgetch(stdscr); /* wgetch(wndw); getch(); */
 }
