@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.0.2"
+#define VERSION "2.1.0"
 extern char odbcversion[];
 extern char cursesversion[];
 extern char about[];

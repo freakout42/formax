@@ -19,7 +19,8 @@ private:
   int changed;
   int edittrgtyp;
   int editrigger(int tid);
-  int qtrigger(int tid, int fid);
+  int qtrigger(int tid);
+  int qtrigger(int tid, int bid, int fid);
   char *trigger(int tid);
   int triggern(int tid);
   int enter_the_form();

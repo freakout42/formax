@@ -109,8 +109,11 @@ if (!javascript) {
   letf(t(a), "let cb;let cf;let ci;let cr;let cv;let nav0 = %d;let v0;let v1;let v2;let v3;let clip = '0';", KEF_NAVI0);
   jsexecdirect(a, strlen(a));
 }
-trgfld = trg->n(rix, 1);
-trgtyp = trg->n(rix, 2);
+i = trg->n(rix, 1);
+if (i < 0) { trgfld = 0; trgblk = -i; } else { trgfld = i; trgblk = 0; }
+i = trg->n(rix, 2);
+trgtyp = i % 10000;
+trglng = i / 10000;
 map_id = trg->n(rix, 3);
 index = rix - 1;
 fieldindex = -1;
@@ -138,7 +141,7 @@ char *fvalue;
 char *escaped;
 int progsize;
 escaped = a;
-if (CV) for (fvalue=CV; *fvalue; fvalue++) {
+for (fvalue=CV; fvalue && *fvalue; fvalue++) {
   if (*fvalue == '\'') *escaped++ = '\\';
   *escaped++ = *fvalue;
 }
