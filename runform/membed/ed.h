@@ -133,10 +133,11 @@
 #else
 #ifdef EMBEDDED
 #define HELP    0
+#define EXTRA   0
 #else
 #define HELP    1			/* mb: compile built-in help	*/
-#endif
 #define EXTRA   1			/* mb: compile less-used stuff	*/
+#endif
 #endif					/*	(together they add ~8K)	*/
 #define CVMVAS  1			/* C-V, M-V arg. in screens.	*/
 #define CMODE	1			/* mb: Fancy C-lang features	*/

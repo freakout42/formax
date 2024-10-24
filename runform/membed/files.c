@@ -2,8 +2,6 @@
  * The routines in this file
  * handle the reading and writing of
  * disk files.
- *
- * 171105 ar ffputline must be informed about missing cr at eof and foreign mode
  */
 
 #include <stdio.h>
