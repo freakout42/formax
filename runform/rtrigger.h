@@ -15,6 +15,8 @@
 #define TRT_EXEQUERY   1014
 #define TRT_POSTCHANGE 1015
 #define TRT_ENTERECORD 1016
+#define TRL_JAVASCRIPT 0
+#define TRL_KEYMACRO   1
 #ifndef BEGINSQL
 /* trigger configuration */
 class rTrigger: public Record {
@@ -26,8 +28,8 @@ private:
 CREATE TABLE triggers
   (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id   INTEGER NOT NULL DEFAULT 1,
-   trgfld    INTEGER NOT NULL DEFAULT 0,
-   trgtyp    INTEGER NOT NULL DEFAULT 0,
+   trgfld    INTEGER NOT NULL DEFAULT 0, /* negative is block id */
+   trgtyp    INTEGER NOT NULL DEFAULT 0, /* % 10000 is type / 10000 is language 0.js 1.macro */
    page_id   INTEGER NOT NULL DEFAULT 0
   );
 INSERT INTO triggers (form_id, trgfld, trgtyp, page_id) VALUES (0,0,TRT_COPYREC,TRT_COPYREC);

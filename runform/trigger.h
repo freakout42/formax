@@ -7,8 +7,11 @@ public:
   void rclose();
   char *jsexecdirect(char *prg, int siz);
   char *jsexec();
+  char *execute();
+  int trgblk;
   int trgfld;
   int trgtyp;
+  int trglng;
   int index;
   int fieldindex;
 private:

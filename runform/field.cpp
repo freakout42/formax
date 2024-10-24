@@ -114,8 +114,9 @@ return valuep(block.currentrec);
 /* field value any row */
 char **Field::valuep(int row) {
 //static char *emptystring = "";
+static char *null0 = NULL;
 static char **val;
-val = block.q->w(row, sequencenum);
+val = block.q ? (row ? block.q->w(row, sequencenum) : &null0) : &null0;
 //if (!val || !(*val)) val = &emptystring;
 return val;
 }

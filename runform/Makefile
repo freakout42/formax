@@ -17,7 +17,7 @@ runform: $(OBJS) $(OBJA)
 
 run: runform $(EXAMPLE)
 	strip runform
-	./runform -x -g/tmp/formax.log ../generate/formax.frm ../generate/scotty.frm
+	./runform -x -g/tmp/formax.log ../generate/formax.frm ../generate/scotty.frm 2>test
 
 test: clean runform $(EXAMPLE) $(FORMAXE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \

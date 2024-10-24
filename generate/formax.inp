@@ -122,9 +122,9 @@ INSERT INTO fields VALUES(37,1,6,1,'valpatn',260,0,30,28,1,0,'',19,10,1,1,1,1,0,
 INSERT INTO fields VALUES(38,1,6,1,'help',55,0,30,49,1,0,'',6,31,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(41,1,7,1,'id',10,0,30,3,1,1,'',22,6,1,1,1,1,0,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(43,1,7,1,'trgfld',30,0,30,3,1,0,'',22,10,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(44,1,7,1,'trgtyp',40,0,30,4,1,0,'',22,14,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(45,1,7,1,'page_id',50,0,30,4,1,0,'',22,19,1,1,1,1,0,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(47,1,7,1,'body',60,0,200,56,0,0,'NULL',22,24,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(44,1,7,1,'trgtyp',40,0,30,5,1,0,'',22,14,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(45,1,7,1,'page_id',50,0,30,4,1,0,'',22,20,1,1,1,1,0,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(47,1,7,1,'body',60,0,200,55,0,0,'NULL',22,25,1,1,1,1,0,0,'',0,0,0,0,'','');
 CREATE TABLE triggers
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -184,8 +184,8 @@ INSERT INTO maps VALUES(407,4,17,' LitOfVal $32_________________ / $33 / $34');
 INSERT INTO maps VALUES(408,4,18,'      Low $35________ High $36________');
 INSERT INTO maps VALUES(409,4,19,'  Pattern $37_________________________');
 INSERT INTO maps VALUES(410,4,20,'--------------------------------------------------------------------------------');
-INSERT INTO maps VALUES(411,4,21,'===== Id  Fld Type Page [ edit body');
-INSERT INTO maps VALUES(412,4,22,'Trigr $41 $43 $44_ $45_ $47_____________________________________________________');
+INSERT INTO maps VALUES(411,4,21,'===== Id  Fld Type  Page [ edit body');
+INSERT INTO maps VALUES(412,4,22,'Trigr $41 $43 $44__ $45_ $47____________________________________________________');
 CREATE TABLE pages
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,

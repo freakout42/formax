@@ -3,6 +3,7 @@
  */
 class Block: public Record {
 public:
+  int block_id;
   int init(Qdata *blk, int rix);
   int addattribute(int att, void *fld);
   int select();
@@ -19,7 +20,7 @@ public:
   int currentrec;
   int toprec;
   int bdirty;
-  int sequence; // % 10 is blockindex for connection
+  int sequence; /* % 10 is blockindex for connection */
   int index;
 private:
 };

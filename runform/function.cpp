@@ -1,6 +1,7 @@
 /* all processing centers around events.
 #include <stdio.h>
-fprintf(stderr,"%s %s\n",*curval,pkval);
+fprintf(stderr,"%d %d %d %d %d %d %d %d %d %d\n",tid,bid,fid,i,trgi(i).trglng,trgi(i).trgtyp,trgi(i).trgblk,blk_id,trgi(i).trgfld,fld_id);
+fprintf(stderr,"%d\n\n",i);
  * Put simply, events are things that occur when a form is exeecuted.
  * formax knows about events and handles them by executing functions.
  * Note that during processing, events are usually nested.
@@ -16,6 +17,7 @@ int Function::dispatch() { /* returns notrunning 0..goon -1..quit <-1..error >0.
 F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
+  case KEF_NAVI0:           /* menu()  */
   case KEF_LIST:            /* flist() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
@@ -81,7 +83,7 @@ switch(F(lastcmd)) {
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
-  case KEF_NAVI0:    LK = MSG1(MSG_HELP, about);                              break;
+  case '?':          LK = MSG1(MSG_HELP, about);                              break;
   case '~':          LK = editrigger(TRT_EDITFIELD);                          break;
   case '[':          LK = edit_map();                                         break;
   case ' ':          LK = ftoggle();                                          break;
@@ -99,11 +101,12 @@ return notrunning;
 /* GENERAL */
 int Function::enter_the_form() {
 int i;
+CBi = -1;
+forall(block) if (i >= 4) enter_query(&F(b)[i]);
 CBi = 4;
 CFi = CB.blockfields[0];
-forall(block) if (i >= 4) enter_query(&F(b)[i]);
+if ((notrunning = triggern(TRT_ENTERFORM))) return 0;
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
-notrunning = triggern(TRT_ENTERFORM);
 return 0;
 }
 
@@ -118,8 +121,8 @@ pkfldi = CB.primarykeys[0];
 pkval = *fldi(pkfldi).valuep();
 curval = &fldi(pkfldi).currentval;
 /* need single primary key field and trigger for it and value has changed */
-if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERECORD, pkfldi)) > -1 && pkval && (!*curval || strcmp(*curval, pkval))) {
-  etrigger(i);
+if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERECORD, CBi, pkfldi)) > -1 && pkval && (!*curval || strcmp(*curval, pkval))) {
+  trigger(-i);
   free(*curval);
   *curval = strdup(pkval);
 } } }
@@ -261,7 +264,7 @@ if (CM != MOD_UPDATE) return 0;
 int Function::ftoggle() {
 int editmode;
 edittrgtyp = TRT_EDITFIELD;
-editmode = qtrigger(edittrgtyp,CFi) > -1 ? FED_TRIGGER : FED_TOGGLE;
+editmode = qtrigger(edittrgtyp) > -1 ? FED_TRIGGER : FED_TOGGLE;
 changed = fedit(editmode);
 return changed==KEF_CANCEL ? 0 : changed;
 }
@@ -324,9 +327,9 @@ int Function::enter_query(Block *blk) {
 blk->clear();
 blk->currentrec = 0;
 blk->toprec = 1;
+F(dirty) = 0;
 if (blk == &CB) {
   switch_mode(MOD_QUERY);
-  F(dirty) = 0;
 } else blk->rmode = MOD_QUERY;
 return 0;
 }
@@ -348,8 +351,8 @@ if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
     tfn = 0;
     forall(trigger)
       if (trgi(i).trgtyp == edittrgtyp)
-        if ((k = trgi(i).fieldindex) >= 0)
-          if (fldi(k).blockindex == CFi)
+        if ((k = trgi(i).fieldindex) > -1)
+          if (fldi(k).blockindex == CBi)
             triggerdfields[tfn++] = trgi(i).fieldindex;
     if (tfn > 0) {
       CM = MOD_UPDATE;
@@ -400,18 +403,21 @@ return 0;
 /* TRIGGER */
 int Function::editrigger(int tid) {
 int i;
-if ((i = qtrigger(tid, CFi)) > -1) F(p)[PGE_EDITOR].editbuf(trgi(i).body);
+if ((i = qtrigger(tid)) > -1) F(p)[PGE_EDITOR].editbuf(trgi(i).body);
 return 0;
 }
 
 /* search for trigger */
-int Function::qtrigger(int tid, int fid) {
+int Function::qtrigger(int tid) { return qtrigger(tid, CBi, CFi); }
+int Function::qtrigger(int tid, int bid, int fid) {
 int i;
-int fld_id;
+int blk_id, fld_id;
+blk_id = blki(bid).block_id;
 fld_id = fldi(fid).field_id;
 forall(trigger) {
-  if (trgi(i).trgtyp == tid && (trgi(i).trgfld == 0 || trgi(i).trgfld == fld_id)) return i;
-  else if (trgi(i).trgfld > fld_id) break;
+  if ( trgi(i).trgtyp == tid &&
+      (trgi(i).trgblk + trgi(i).trgfld == 0 || trgi(i).trgblk == blk_id || trgi(i).trgfld == fld_id)) return i;
+  else if (trgi(i).trgblk > blk_id || trgi(i).trgfld > fld_id) break;
 }
 return -1;
 }
@@ -420,22 +426,15 @@ return -1;
  * javascript should always return number see below
  */
 char *Function::trigger(int tid) {
-int i;
-char *s;
-s = ((i = qtrigger(tid, CFi)) > -1) ? etrigger(i) : NULL;
-return s;
-}
-
-/* raw trigger call NULL..notfound "..string [0-9]..number [^"0-9]..error
- * javascript should always return number see below
- */
-char *Function::etrigger(int tid) {
 static int injstrigger = 0;
+int i;
 char *s;
 s = NULL;
 if (injstrigger) return s;
+i = tid < 0 ? -tid : qtrigger(tid);
+if (i == -1) return s;
   injstrigger = 1;
-    s = trgi(tid).jsexec();
+    s = trgi(i).execute();
     if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
