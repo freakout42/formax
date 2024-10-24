@@ -184,8 +184,8 @@ INSERT INTO maps VALUES(407,4,17,' LitOfVal $32_________________ / $33 / $34');
 INSERT INTO maps VALUES(408,4,18,'      Low $35________ High $36________');
 INSERT INTO maps VALUES(409,4,19,'  Pattern $37_________________________');
 INSERT INTO maps VALUES(410,4,20,'--------------------------------------------------------------------------------');
-INSERT INTO maps VALUES(411,4,21,'===== Id  Fld Type Page [ edit body');
-INSERT INTO maps VALUES(412,4,22,'Trigr $41 $43 $44_ $45_ $47_____________________________________________________');
+INSERT INTO maps VALUES(411,4,21,'===== Id  Fld Type  Page [ edit body');
+INSERT INTO maps VALUES(412,4,22,'Trigr $41 $43 $44__ $45_ $47____________________________________________________');
 CREATE TABLE pages
   (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,

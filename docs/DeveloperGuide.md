@@ -314,64 +314,6 @@ For example a user may enter an order total that exceeds the
 customers credit limit. A trigger could be defined at this
 event point and reject such an order.
 
-Triggers in **formax** are written in JavaScript - the
-embedded engine is **elk** (See: github.com/cesanta/elk).
-
-JavaScript engine elk
----------------------
-Elk is a tiny embeddable JavaScript engine that implements a
-small but usable subset of ES6.
-
-## Supported features
-
-- Operations: all standard JS operations except:
-   - `!=`, `==`. Use strict comparison `!==`, `===`
-   - No computed member access `a[b]`
-   - No exponentiation operation `a ** b`
-- Typeof: `typeof('a') === 'string'`
-- For loop: `for (...;...;...)  ...`
-- Conditional: `if (...) ... else ...`
-- Ternary operator `a ? b : c`
-- Simple types: `let a, b, c = 12.3, d = 'a', e = null, f = true, g = false;`
-- Functions: `let f = function(x, y) { return x + y; };`
-- Objects: `let obj = {f: function(x) { return x * 2}}; obj.f(3);`
-- Every statement must end with a semicolon `;`
-- Strings are binary data chunks, not Unicode strings: `'Київ'.length === 8`
-
-## Not supported features
-
-- No `var`, no `const`. Use `let` (strict mode only)
-- No `do`, `switch`, `while`. Use `for`
-- No `=>` functions. Use `let f = function(...) {...};`
-- No arrays, closures, prototypes, `this`, `new`, `delete`
-- No standard library: no `Date`, `Regexp`, `Function`, `String`, `Number`
-
-## Variables and Functions
-
-| Name              | Purpose                              |
-|-------------------|--------------------------------------|
-| cb                | current block = table                |
-| cf                | current field = column               |
-| cr                | current record number                |
-| cv                | current field value                  |
-| nav0              | key to navigate direct to field +n   |
-| v0                | universal variable                   |
-| v1                | universal variable                   |
-| v2                | universal variable                   |
-| v3                | universal variable                   |
-| clip              | clipboard value                      |
-| next_item()       | navigate to next item/field          |
-| previous_item()   | navigate to previous item/field      |
-| next_block()      | navigate to next block               |
-| previous_block()  | navigate to previous block           |
-| next_record()     | navigate to next record              |
-| previous_record() | navigate to previous record          |
-| exec_query()      | execute query in current block       |
-| $("blk.fld"[,n])  | jQuery-like "DOM" access to fieldvals|
-| String(n)         | cast number to string (integer)      |
-| Message(text)     | message on status line               |
-| SQL(query)        | database access returns 1 value      |
-
 ## Trigger types and return values
 
 Triggers can be fired on keyboard and application events and
@@ -430,6 +372,109 @@ INSERT INTO maps (page_id, line, mtext) VALUES (1009, 1, 'clip = cv; 529;');
 INSERT INTO maps (page_id, line, mtext) VALUES (1010, 0, 'paste');
 INSERT INTO maps (page_id, line, mtext) VALUES (1010, 1, 'clip;');
 ~~~
+
+Triggers in **formax** are written for different language
+interpreters which have a interpreter id. JavaScript is 0,
+keyboard macros is 1 and menues is 2. The id is the 10000
+offset in the triggers table trgtyp column. The triggers
+table has the following columns:
+
+| Column   | Effect for runform                            |
+|----------|-----------------------------------------------|
+| Fld      | 0 all >0 field_id <0 block_id                 |
+| Type     | type is %10000 interpreter id is /10000       |
+| Page     | page_id in maps                               |
+
+JavaScript engine elk
+---------------------
+
+The embedded engine is **elk** (See: github.com/cesanta/elk).
+Elk is a tiny embeddable JavaScript engine that implements a
+small but usable subset of ES6.
+
+## Supported features
+
+- Operations: all standard JS operations except:
+   - `!=`, `==`. Use strict comparison `!==`, `===`
+   - No computed member access `a[b]`
+   - No exponentiation operation `a ** b`
+- Typeof: `typeof('a') === 'string'`
+- For loop: `for (...;...;...)  ...`
+- Conditional: `if (...) ... else ...`
+- Ternary operator `a ? b : c`
+- Simple types: `let a, b, c = 12.3, d = 'a', e = null, f = true, g = false;`
+- Functions: `let f = function(x, y) { return x + y; };`
+- Objects: `let obj = {f: function(x) { return x * 2}}; obj.f(3);`
+- Every statement must end with a semicolon `;`
+- Strings are binary data chunks, not Unicode strings: `'Київ'.length === 8`
+
+## Not supported features
+
+- No `var`, no `const`. Use `let` (strict mode only)
+- No `do`, `switch`, `while`. Use `for`
+- No `=>` functions. Use `let f = function(...) {...};`
+- No arrays, closures, prototypes, `this`, `new`, `delete`
+- No standard library: no `Date`, `Regexp`, `Function`, `String`, `Number`
+
+## Variables and Functions
+
+| Name              | Purpose                              |
+|-------------------|--------------------------------------|
+| cb                | current block = table                |
+| cf                | current field = column               |
+| cr                | current record number                |
+| cv                | current field value                  |
+| nav0              | key to navigate direct to field +n   |
+| v0                | universal variable                   |
+| v1                | universal variable                   |
+| v2                | universal variable                   |
+| v3                | universal variable                   |
+| clip              | clipboard value                      |
+| next_item()       | navigate to next item/field          |
+| previous_item()   | navigate to previous item/field      |
+| next_block()      | navigate to next block               |
+| previous_block()  | navigate to previous block           |
+| next_record()     | navigate to next record              |
+| previous_record() | navigate to previous record          |
+| exec_query()      | execute query in current block       |
+| $("blk.fld"[,n])  | jQuery-like "DOM" access to fieldvals|
+| String(n)         | cast number to string (integer)      |
+| Message(text)     | message on status line               |
+| SQL(query)        | database access returns 1 value      |
+
+Keyboard macro notation
+-----------------------
+
+A keyboard macro is simply the characters to type and the
+special keys have ids in curly braces:
+
+| Macro id  |Ctr| Key         | Action                     |
+|-----------|---|-------------|----------------------------|
+| {HELP}    | @ | F1          | Help                       |
+| {HOME}    | A | HOME        | Home / Previous block      |
+| {LEFT}    | B | LEFT        | Previous char              |
+| {COPY}    | C | F2          | Copy                       |
+| {DELETE}  | D | F7          | Delete (record)            |
+| {END}     | E | END         | End / Next block           |
+| {RIGHT}   | F | RIGHT       | Next char                  |
+| {PREFLD}  | G | BTAB        | Previous field             |
+| {BACKDEL} | H | BACKSPACE   | Backspace                  |
+| {NXTFLD}  | I | TAB         | Next field                 |
+| {INSERT}  | J | INS         | Insert toggle (record)     |
+| {KEYHELP} | K | F11         | Keyboard help              |
+| {REFRESH} | L | F12         | Refresh                    |
+| {COMMIT}  | M | ENTER       | Commit Accept              |
+| {NXTREC}  | N | DOWN        | Next record                |
+| {INSERT}  | O | F6          | Insert record              |
+| {PREREC}  | P | UP          | Previoud record            |
+| {PRESETR} | R | PPAGE       | Previous set of records    |
+| {COPYREC} | T | F4          | Copy record                |
+| {LIST}    | U | F5          | List of values             |
+| {PASTE}   | V | F3          | Paste / Copy field         |
+| {NXTSETR} | W | NPAGE       | Next set of records        |
+| {QUERY}   | X | F10         | Query                      |
+| {QUIT}    | Y | F9          | Rollback Cancel            |
+| {EXIT}    | Z | F8          | Save and exit              |
 
 ## Future
 
