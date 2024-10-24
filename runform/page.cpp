@@ -56,7 +56,7 @@ deletewindow();
 }
 
 void Page::repaint()   { if (!popup) redraw(); }
-void Page::refrnopop() { if (!popup) refr(); }
+void Page::refrnopop() { if (!popup) if (!macropointer) refr(); }
 
 /* display popup page and close after key pressed */
 int Page::showpopup() {
@@ -133,7 +133,7 @@ writef(0, 42, 0,13,  "%6d/%6d",   CR, CB.q->rows);
 writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
 writef(0, 67, COL_COMMIT,13,"%s", commit);
-refr();
+if (!macropointer) refr();
 forall(field) F(l)[i].show();
 for (i=PGE_MAIN; i<F(numpage); i++) {
   if (F(needredraw)) F(p)[i].repaint();
@@ -145,7 +145,7 @@ return LK ? LK : getkb();
 
 void Page::working() {
 writef(0, 67, COL_BUSY,13,"%s", "!! Working...");
-refr();
+if (!macropointer) refr();
 }
 
 /* display message in status line and wait for key pressed */
@@ -159,7 +159,7 @@ i = (strlen(pntst) > LINE0SIZE-9) ? strlen(pntst) - LINE0SIZE + 9 : 0;
 writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, y.msg(ern), pntst+i);
 //writef(0, 76, 0, 4, "%04d", F(lastcmd));
 wmov(0,0);
-refr();
+if (!macropointer) refr();
 return (i = getkb())==KEY_ESC ? 0 : i;
 }
 return 0;

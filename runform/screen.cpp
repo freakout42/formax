@@ -7,7 +7,7 @@
 #include "runform.h"
 
 char cursesversion[8] = NCURSES_VERSION;
-static char *macrob = NULL;
+char *macropointer = NULL;
 
 Screen::Screen() {
 ysiz = 0;
@@ -164,43 +164,43 @@ return F(e)->v(i,3);
 
 /* open a keyboard macro buffer */
 void Screen::openmacro(char *mbu) {
-macrob = mbu;
+macropointer = mbu;
 }
 
 /* get key pressed */
 int Screen::wgetc() {
-int i, j;
-while (macrob) {
-  i = *macrob++;
-  if (!i) macrob = NULL;
+int i;
+while (macropointer) {
+  i = *macropointer++;
+  if (!i) macropointer = NULL;
   else {
     if (i == '{') {
-      #define findkey(fky,ctl) j = strlen(#fky); if (!strncmp(macrob, #fky "}", j+1)) { macrob += j+1; return KEY_CTRL(ctl); }
-      findkey(HELP,   '@')
-      findkey(HOME,   'A')
-      findkey(LEFT,   'B')
-      findkey(COPY,   'C')
-      findkey(DELETE, 'D')
-      findkey(END,    'E')
-      findkey(RIGHT,  'F')
-      findkey(PREFLD, 'G')
-      findkey(BACKDEL,'H')
-      findkey(NXTFLD, 'I')
-      findkey(INSERT, 'J')
-      findkey(KEYHELP,'K')
-      findkey(REFRESH,'L')
-      findkey(COMMIT, 'M')
-      findkey(NXTREC, 'N')
-      findkey(INSERT, 'O')
-      findkey(PREREC, 'P')
-      findkey(PRESETR,'R')
-      findkey(COPYREC,'T')
-      findkey(LIST,   'U')
-      findkey(PASTE,  'V')
-      findkey(NXTSETR,'W')
-      findkey(QUERY,  'X')
-      findkey(QUIT,   'Y')
-      findkey(EXIT,   'Z')
+      #define findkey(fky,len,ctl) if (!strncmp(macropointer, #fky "}", len)) { macropointer += len; return KEY_CTRL(ctl); }
+      findkey(HELP,5,   '@')
+      findkey(HOME,5,   'A')
+      findkey(LEFT,5,   'B')
+      findkey(COPY,5,   'C')
+      findkey(DELETE,7, 'D')
+      findkey(END,4,    'E')
+      findkey(RIGHT,6,  'F')
+      findkey(PREFLD,7, 'G')
+      findkey(BACKDEL,8,'H')
+      findkey(NXTFLD,7, 'I')
+      findkey(INSERT,7, 'J')
+      findkey(KEYHELP,8,'K')
+      findkey(REFRESH,8,'L')
+      findkey(COMMIT,7, 'M')
+      findkey(NXTREC,7, 'N')
+      findkey(INSERT,7, 'O')
+      findkey(PREREC,7, 'P')
+      findkey(PRESETR,8,'R')
+      findkey(COPYREC,8,'T')
+      findkey(LIST,5,   'U')
+      findkey(PASTE,6,  'V')
+      findkey(NXTSETR,8,'W')
+      findkey(QUERY,6,  'X')
+      findkey(QUIT,5,   'Y')
+      findkey(EXIT,5,   'Z')
     }
     if (!isspace(i)) return i;
   }

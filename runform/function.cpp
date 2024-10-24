@@ -17,6 +17,7 @@ int Function::dispatch() { /* returns notrunning 0..goon -1..quit <-1..error >0.
 F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
+  case KEF_NAVI0:           /* menu()  */
   case KEF_LIST:            /* flist() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
@@ -82,7 +83,7 @@ switch(F(lastcmd)) {
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
-  case KEF_NAVI0:    LK = MSG1(MSG_HELP, about);                              break;
+  case '?':          LK = MSG1(MSG_HELP, about);                              break;
   case '~':          LK = editrigger(TRT_EDITFIELD);                          break;
   case '[':          LK = edit_map();                                         break;
   case ' ':          LK = ftoggle();                                          break;
@@ -350,8 +351,8 @@ if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
     tfn = 0;
     forall(trigger)
       if (trgi(i).trgtyp == edittrgtyp)
-        if ((k = trgi(i).fieldindex) >= 0)
-          if (fldi(k).blockindex == CFi)
+        if ((k = trgi(i).fieldindex) > -1)
+          if (fldi(k).blockindex == CBi)
             triggerdfields[tfn++] = trgi(i).fieldindex;
     if (tfn > 0) {
       CM = MOD_UPDATE;
