@@ -108,13 +108,19 @@ action (SQL) can be logged in a central database.
 
 ### Status
 
-Current v1.9.0 is stable - the generator can create a
+Current v2.1.0 is stable - the generator can create a
 single-block single-page form. You are able to create,
 retrieve, update and delete (CRUD) records in the table. The
 designer-tool is able to edit the page markup and to
 integrate the field positions and lengths into the form.
 There is also a form to maintain the field properties and
 the triggers. The rest is done by editing the .inp-file.
+
+It has all important features to create non-complex forms.
+It has not matured enough to call it fully production ready.
+Don't hesitate to create an issue when in trouble or missing
+a feature or have found a bug or security problem but dont
+hesitate to start using it.
 
 Full Forms3 functionality is a big task and depends highly
 on the community participation in the future. The database

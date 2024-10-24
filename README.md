@@ -76,7 +76,7 @@ Enterprise requirements are fully accomplished:
 Status
 ======
 
-Release 2.0.0 is useable and has all important features to
+Release 2.1.0 is useable and has all important features to
 create non-complex forms. It has not matured enough to call it
 fully production ready. Don't hesitate to create an issue
 when in trouble or missing a feature or have found a bug or
