@@ -96,7 +96,6 @@ Future roadmap
  - 3.5 transaction processing
  - cqy.y: 5 shift/reduce conflicts
  - sap-like batchinput
- - key macros
 
 Playground
 ----------
