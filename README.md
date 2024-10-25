@@ -76,16 +76,15 @@ Enterprise requirements are fully accomplished:
 Status
 ======
 
-Release 2.1.0 is useable and has all important features to
-create non-complex forms. It has not matured enough to call
-it fully production ready. Don't hesitate to create an issue
-when in trouble, have found a bug or a security problem.
-Create discussions for feature requests. Dont hesitate to
-start using it. Together we will make **formax** suit your
-needs.
+Release 2.1.0 has all important features to create
+non-complex forms. It has not matured enough to call it
+fully production ready. Create an issue when in trouble,
+have found a bug or a security problem. Create discussions
+for feature requests. Dont hesitate to start using it.
+Together we will make **formax** suit your needs.
 
-The most important property "Security" is covered "hardline".
-The code is -Wall -Werror clean and send through valgrind,
+Product security complies with current standards. The
+code is -Wall -Werror clean and send through valgrind,
 compiled with stack protection and uses almost no system
 interfaces. This aspect can be seen as production ready,
 particularly when the three factor authentication is used.
