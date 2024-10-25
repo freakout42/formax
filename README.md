@@ -77,10 +77,12 @@ Status
 ======
 
 Release 2.1.0 is useable and has all important features to
-create non-complex forms. It has not matured enough to call it
-fully production ready. Don't hesitate to create an issue
-when in trouble or missing a feature or have found a bug or
-security problem but dont hesitate to start using it.
+create non-complex forms. It has not matured enough to call
+it fully production ready. Don't hesitate to create an issue
+when in trouble, have found a bug or a security problem.
+Create discussions for feature requests. Dont hesitate to
+start using it. Together we will make **formax** suit your
+needs.
 
 The most important property "Security" is covered "hardline".
 The code is -Wall -Werror clean and send through valgrind,
