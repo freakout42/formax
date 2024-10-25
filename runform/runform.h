@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.1.0"
+#define VERSION "2.1.1"
 extern char odbcversion[];
 extern char cursesversion[];
 extern char *macropointer;
@@ -108,6 +108,7 @@ extern Form *f;
 #define CP F(p)[CF.pageindex]
 #define CR CB.currentrec
 #define CM CB.rmode
+#define CN CB.q->rows
 #define CV *CF.valuep()
 #define LK F(lastkey)
 #define MSG(n) F(p)[0].message(n, NULL)

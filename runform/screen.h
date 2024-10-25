@@ -108,3 +108,4 @@ enum { KEF_NOOP = 1, KEF_NOOP2, KEF_DEL = 127, KEF_HELP = 512,
 //            549         550         551
 };
 #define KEF_NAVI(n) (KEF_NAVI0+(n))
+#define KEF_INS     (KEY_CTRL('J'))

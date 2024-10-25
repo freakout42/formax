@@ -186,7 +186,7 @@ while (macropointer) {
       findkey(PREFLD,7, 'G')
       findkey(BACKDEL,8,'H')
       findkey(NXTFLD,7, 'I')
-      findkey(INSERT,7, 'J')
+      findkey(INS,4,    'J')
       findkey(KEYHELP,8,'K')
       findkey(REFRESH,8,'L')
       findkey(COMMIT,7, 'M')
@@ -223,7 +223,7 @@ switch(ch) {
 /* KEF_PREFLD  */  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field                 PreviousField */
 /* KEF_BACKDEL */  case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace                      DeleteBackward */
 /* KEF_NXTFLD  */  case KEY_CTRL('I'):  return KEY_TAB;        /* Next field                     NextField */
-/* KEF_INSERT  */  case KEY_CTRL('J'):  return KEY_IC;         /* Insert toggle (record)         InsertReplace InsertRecord */
+/* KEF_INSERT  *   case KEY_CTRL('J'):  return KEY_IC;       *//* Insert toggle (record)         InsertReplace InsertRecord */
 /* KEF_KEYHELP */  case KEY_CTRL('K'):  return KEY_F(11);      /* Keyboard help                  KeyHelp */
 /* KEF_REFRESH */  case KEY_CTRL('L'):  return KEY_F(12);      /* Refresh                        Refresh */
 /* KEF_COMMIT  */  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept                  Commit Select Execute */

@@ -53,6 +53,7 @@ switch(F(lastcmd)) {
     case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
     default:         LK = 0; y.toggle();                               break;
    }                                                                          break;
+  case KEF_INS:      LK = 0; y.toggle();                                      break;
   case KEF_BACKDEL:         /* fbackdel() */
   case KEF_DELETE:
    switch(CM) {
@@ -116,7 +117,7 @@ int i, pkfldi;
 char *pkval;
 char **curval;
 CR = rid;
-if (rid > 0) {
+if (CR > 0) {
 pkfldi = CB.primarykeys[0];
 pkval = *fldi(pkfldi).valuep();
 curval = &fldi(pkfldi).currentval;
@@ -190,9 +191,9 @@ switch_mode(MOD_UPDATE);
 newcr = CR;
 if (newcr > 0) {
   newcr += ri;
-  if (newcr > CB.q->rows) {
+  if (newcr > CN) {
     if (ri == 1) MSG(MSG_LAST);
-    newcr = CB.q->rows;
+    newcr = CN;
   }
   if (newcr < 1) {
     if (ri == -1) MSG(MSG_FIRST);
@@ -200,7 +201,7 @@ if (newcr > 0) {
   }
   if (abs(ri) > 1) {
     CB.toprec += ri;
-    if (CB.toprec > CB.q->rows - CB.norec) CB.toprec = CB.q->rows - CB.norec;
+    if (CB.toprec > CN - CB.norec) CB.toprec = CN - CB.norec;
     if (CB.toprec < 1) CB.toprec = 1;
   }
   enter_record(newcr);
@@ -233,6 +234,7 @@ return 0;
 int Function::create_record() {
 if (CB.insert(CR)) MSG1(MSG_SQL, (char*)CB.querystr);
 switch_mode(MOD_UPDATE);
+enter_record(CR);
 return 0;
 }
 
@@ -342,7 +344,7 @@ int triggerdfields[NFIELD1];
 int tfn;
 F(p)[PGE_STATUS].working();
 if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
-  if (CB.q->rows > 0) {
+  if (CN > 0) {
     /* optimized - first check for triggers
      * collect them in triggerdfields
      * and run them within one loop through the records
@@ -357,7 +359,7 @@ if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
     if (tfn > 0) {
       CM = MOD_UPDATE;
       cf = CFi;
-      for (j=0; j<CB.q->rows; j++) {
+      for (j=0; j<CN; j++) {
         for (k=0; k<tfn; k++) {
           CFi = triggerdfields[k];
           CR = j + 1;
@@ -395,8 +397,11 @@ return 0;
 
 int Function::clear_record() {
 CB.q->splice(-CR);
-if (CR > CB.q->rows) enter_record(CB.q->rows);
-if (CB.q->rows) switch_mode(MOD_UPDATE); else enter_query(&CB); 
+if (CN) {
+  switch_mode(MOD_UPDATE);
+  if (CR > CN) CR = CN;
+  enter_record(CR);
+} else enter_query(&CB);
 return 0;
 }
 
@@ -426,14 +431,14 @@ return -1;
  * javascript should always return number see below
  */
 char *Function::trigger(int tid) {
-static int injstrigger = 0;
+static int intrigger = 0;
 int i;
 char *s;
 s = NULL;
-if (injstrigger) return s;
+if (intrigger || macropointer) return s;
 i = tid < 0 ? -tid : qtrigger(tid);
 if (i == -1) return s;
-  injstrigger = 1;
+  intrigger = 1;
     s = trgi(i).execute();
     if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
@@ -441,7 +446,7 @@ if (i == -1) return s;
       strcpy(s, "-1");
       notrunning = -1;
     }
-  injstrigger = 0;
+  intrigger = 0;
 return s;
 }
 

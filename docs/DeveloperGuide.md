@@ -448,33 +448,33 @@ Keyboard macro notation
 A keyboard macro is simply the characters to type and the
 special keys have ids in curly braces:
 
-| Macro id  |Ctr| Key         | Action                     |
-|-----------|---|-------------|----------------------------|
-| {HELP}    | @ | F1          | Help                       |
-| {HOME}    | A | HOME        | Home / Previous block      |
-| {LEFT}    | B | LEFT        | Previous char              |
-| {COPY}    | C | F2          | Copy                       |
-| {DELETE}  | D | F7          | Delete (record)            |
-| {END}     | E | END         | End / Next block           |
-| {RIGHT}   | F | RIGHT       | Next char                  |
-| {PREFLD}  | G | BTAB        | Previous field             |
-| {BACKDEL} | H | BACKSPACE   | Backspace                  |
-| {NXTFLD}  | I | TAB         | Next field                 |
-| {INSERT}  | J | INS         | Insert toggle (record)     |
-| {KEYHELP} | K | F11         | Keyboard help              |
-| {REFRESH} | L | F12         | Refresh                    |
-| {COMMIT}  | M | ENTER       | Commit Accept              |
-| {NXTREC}  | N | DOWN        | Next record                |
-| {INSERT}  | O | F6          | Insert record              |
-| {PREREC}  | P | UP          | Previoud record            |
-| {PRESETR} | R | PPAGE       | Previous set of records    |
-| {COPYREC} | T | F4          | Copy record                |
-| {LIST}    | U | F5          | List of values             |
-| {PASTE}   | V | F3          | Paste / Copy field         |
-| {NXTSETR} | W | NPAGE       | Next set of records        |
-| {QUERY}   | X | F10         | Query                      |
-| {QUIT}    | Y | F9          | Rollback Cancel            |
-| {EXIT}    | Z | F8          | Save and exit              |
+| Macro id  |Ctrl| Key         | Action                  |
+|-----------|----|-------------|-------------------------|
+| {HELP}    | @  | F1          | Help                    |
+| {HOME}    | A  | HOME        | Home / Previous block   |
+| {LEFT}    | B  | LEFT        | Previous char           |
+| {COPY}    | C  | F2          | Copy                    |
+| {DELETE}  | D  | F7          | Delete (record)         |
+| {END}     | E  | END         | End / Next block        |
+| {RIGHT}   | F  | RIGHT       | Next char               |
+| {PREFLD}  | G  | BTAB        | Previous field          |
+| {BACKDEL} | H  | BACKSPACE   | Backspace               |
+| {NXTFLD}  | I  | TAB         | Next field              |
+| {INS}     | J  | INS         | Insert toggle           |
+| {KEYHELP} | K  | F11         | Keyboard help           |
+| {REFRESH} | L  | F12         | Refresh                 |
+| {COMMIT}  | M  | ENTER       | Commit Accept           |
+| {NXTREC}  | N  | DOWN        | Next record             |
+| {INSERT}  | O  | F6          | Insert record           |
+| {PREREC}  | P  | UP          | Previoud record         |
+| {PRESETR} | R  | PPAGE       | Previous set of records |
+| {COPYREC} | T  | F4          | Copy record             |
+| {LIST}    | U  | F5          | List of values          |
+| {PASTE}   | V  | F3          | Paste / Copy field      |
+| {NXTSETR} | W  | NPAGE       | Next set of records     |
+| {QUERY}   | X  | F10         | Query                   |
+| {QUIT}    | Y  | F9          | Rollback Cancel         |
+| {EXIT}    | Z  | F8          | Save and exit           |
 
 ## Future
 
