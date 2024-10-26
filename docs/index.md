@@ -118,9 +118,9 @@ the triggers. The rest is done by editing the .inp-file.
 
 It has all important features to create non-complex forms.
 It has not matured enough to call it fully production ready.
-Don't hesitate to create an issue when in trouble or have
-found a bug or security problem. Open a discussion when
-missing a feature. Dont hesitate to start using it.
+Create an issue when in trouble or have found a bug or
+security problem. Open a discussion when missing a feature.
+Don't hesitate to start using it.
 
 Full Forms3 functionality is a big task and depends highly
 on the community participation in the future. The database
