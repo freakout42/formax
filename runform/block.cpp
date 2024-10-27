@@ -123,7 +123,7 @@ if (usebindvar) {
   }
 }
 bindv[j] = NULL;
-if (drv == ODR_ORACLE || drv == ODR_SQLITE && sqlitevernumber < 3035000) {
+if (drv == ODR_ORACLE || (drv == ODR_SQLITE && sqlitevernumber < 3035000)) {
 //{CALL begin insert into %s (%s) values (%s) return %s into ?", table, columnslist, valueslist, }
   letf((char*)querystr, MEDSIZE, "insert into %s (%s) values (%s)", table, columnslist, valueslist);
   if ((ret = execute())) return ret;
