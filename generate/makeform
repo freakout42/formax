@@ -22,7 +22,7 @@ EOF
 if [ "$TABLE" ]; then
 cat <<EOF
 INSERT INTO pages  (form_id, seq, name) VALUES (1, 1, 'formax');
-INSERT INTO maps   (page_id, line, mtext) VALUES (4, 0, '         ');
+INSERT INTO maps   (page_id, line, mtext) VALUES (1, 0, '         ');
 INSERT INTO forms  (id, name, title) VALUES (1, '$FORM', '$TITLE');
 INSERT INTO blocks (form_id, name, seq) VALUES (1, '$TABLE', 50);
 EOF
@@ -33,7 +33,7 @@ for COLUMN; do
   FLDN=`expr $FLDN + 10`
   if [ $LINE = 1 ]; then KEY=1; else KEY=0; fi
   echo "INSERT INTO fields (seq, name, line, key) VALUES ($FLDN, '$COLUMN', $LINE, $KEY);"
-  printf "INSERT INTO maps (page_id, line, mtext) VALUES (4, $LINE, ' [$LINE]%-14s \$${LINE}__________________');\\n" $COLUMN
+  printf "INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE, ' [$LINE]%-14s \$${LINE}__________________');\\n" $COLUMN
 done
 else
 sqlite3 $FORM.frm ".dump forms"  | sed -n '/INSERT/p'

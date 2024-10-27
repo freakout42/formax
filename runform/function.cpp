@@ -84,7 +84,8 @@ switch(F(lastcmd)) {
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
-  case '?':          LK = MSG1(MSG_HELP, about);                              break;
+  case '|':          LK = MSG1(MSG_HELP, about);                              break;
+  case '?':          LK = aboutwin();                                         break;
   case '~':          LK = editrigger(TRT_EDITFIELD);                          break;
   case '[':          LK = edit_map();                                         break;
   case ' ':          LK = ftoggle();                                          break;
@@ -140,6 +141,10 @@ return 0;
 
 int Function::keys_help() {
 return F(p)[PGE_KEYHELP].showpopup();
+}
+
+int Function::aboutwin() {
+return F(p)[PGE_ABOUT].showpopup();
 }
 
 int Function::edit_map() {

@@ -24,4 +24,5 @@ CREATE TABLE pages
 INSERT INTO pages  (form_id, seq, name, ysiz, vwpy0, border) VALUES                     (0, 0, 'status', 1, 0, 0);
 INSERT INTO pages  (form_id, seq, name, ysiz, xsiz, vwpy0, vwpx0, popup, border) VALUES (0, 2, 'keyhelp', 16, 41, 2, 30, 1, 1);
 INSERT INTO pages  (form_id, seq, name, ysiz, xsiz, vwpy0, vwpx0, popup, border) VALUES (0, 3, 'editor',  21, 65, 2, 14, 1, 1);
+INSERT INTO pages  (form_id, seq, name, ysiz, xsiz, vwpy0, vwpx0, popup, border) VALUES (0, 4, 'about',   16, 41, 2, 30, 1, 1);
 #endif

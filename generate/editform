@@ -18,12 +18,12 @@ if ! cp $FORM.frm $FORM.frm.bac; then
   exit 2
 fi
 SQL="sqlite3 -batch $FORM.frm"
-$SQL "select mtext from maps where page_id = 4 order by line" >$FORM.map
+$SQL "select mtext from maps where page_id = 1 order by line" >$FORM.map
 ${EDITOR:-vi} $FORM.map
 $SQL "delete from maps where page_id = 4"
 LINE=0
 IFS=% sed "s/^/'/;s/\$/'/" $FORM.map | while read TEXT; do
-  $SQL "insert into maps (page_id, line, mtext) values (4, $LINE, $TEXT)"
+  $SQL "insert into maps (page_id, line, mtext) values (1, $LINE, $TEXT)"
   LINE=`expr $LINE + 1`
 done
 BORDER=`$SQL "select border from pages where id=4;"`

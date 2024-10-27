@@ -37,7 +37,7 @@ enum fmode         { MOD_INSERT, MOD_QUERY, MOD_UPDATE, MOD_DELETE };
 /* field types */
 enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE, FTY_BOOL };
 /* pages array index */
-enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_EXTRA };
+enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, PGE_EXTRA };
 /* field edit variants for pos parameter */
 #define FED_FEDITOR -9999 /* full screen editor */
 #define FED_TRIGGER -9998 /* trigger "editor" */

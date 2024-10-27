@@ -3,14 +3,14 @@
 
 int Page::init(Qdata *pag, int rix) {
 memset(map, 0, sizeof(map));
-page_id = pag->n(rix, 1);
-let(name, pag->v(rix, 2));
-ysiz    = pag->n(rix, 3);
-xsiz    = pag->n(rix, 4);
-vwpy0   = pag->n(rix, 5);
-vwpx0   = pag->n(rix, 6);
-popup   = pag->n(rix, 7);
-border  = pag->n(rix, 8);
+page_id = pag->n(rix, 2);
+let(name, pag->v(rix, 3));
+ysiz    = pag->n(rix, 4);
+xsiz    = pag->n(rix, 5);
+vwpy0   = pag->n(rix, 6);
+vwpx0   = pag->n(rix, 7);
+popup   = pag->n(rix, 8);
+border  = pag->n(rix, 9);
 index   = rix - 1;
 return 0;
 }
