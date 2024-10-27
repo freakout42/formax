@@ -1,7 +1,4 @@
 /* all processing centers around events.
-#include <stdio.h>
-fprintf(stderr,"%d %d %d %d %d %d %d %d %d %d\n",tid,bid,fid,i,trgi(i).trglng,trgi(i).trgtyp,trgi(i).trgblk,blk_id,trgi(i).trgfld,fld_id);
-fprintf(stderr,"%d\n\n",i);
  * Put simply, events are things that occur when a form is exeecuted.
  * formax knows about events and handles them by executing functions.
  * Note that during processing, events are usually nested.
@@ -295,6 +292,10 @@ switch(CM) {
     break;
   }
  case MOD_UPDATE:
+  if (CM == MOD_UPDATE && !*fldi(CB.primarykeys[0]).valuep()) {
+    MSG(MSG_NOPRIKEY);
+    break;
+  }
   changed = CF.edit(pos);
   if (changed != KEF_CANCEL)
     if (CM == MOD_UPDATE && CF.basetable)

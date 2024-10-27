@@ -15,6 +15,9 @@ typedef SQLSMALLINT SQLRETURN;
 class Record {
 public:
   odrvr drv;
+  char dbmsname[TNYSIZE];
+  char driver_odbc_ver[TNYSIZE];
+  char driver_ver[TNYSIZE];
   char table[TNYSIZE];
   char condition[NORSIZE];
   char whereorder[NORSIZE];

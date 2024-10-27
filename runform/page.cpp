@@ -26,10 +26,15 @@ if (page_id == PGE_ABOUT) {
   letf(t(a), "charset:    %s", CHARSET);                           map[r++] = strdup(a);
   letf(t(a), "compiler:   %s (%d)", CCOMPILER, (int)sizeof(Form)); map[r++] = strdup(a);
   letf(t(a), "compiled:   %s %5.5s", __DATE__, __TIME__);          map[r++] = strdup(a);
-  letf(t(a), "odbc inc:   %s", odbcversion+2);                     map[r++] = strdup(a);
-  letf(t(a), "odbc lib:   %s", odbcrun);                           map[r++] = strdup(a);
   letf(t(a), "sqlite inc: %s", sqliteversion);                     map[r++] = strdup(a);
   letf(t(a), "sqlite run: %s %d", sqliterun, sqlitevernumber);     map[r++] = strdup(a);
+  letf(t(a), "odbc inc:   %s", odbcversion+2);                     map[r++] = strdup(a);
+  letf(t(a), "odbc lib:   %s", odbcrun);                           map[r++] = strdup(a);
+  letf(t(a), "form odbc:  %s", dbconn[0].driver_odbc_ver);         map[r++] = strdup(a);
+  letf(t(a), "form drvr:  %s", dbconn[0].driver_ver);              map[r++] = strdup(a);
+  letf(t(a), "data base:  %s", dbconn[1].dbmsname);                map[r++] = strdup(a);
+  letf(t(a), "data odbc:  %s", dbconn[1].driver_odbc_ver);         map[r++] = strdup(a);
+  letf(t(a), "data drvr:  %s", dbconn[1].driver_ver);              map[r++] = strdup(a);
   letf(t(a), "curses inc: %s", cursesversion);                     map[r++] = strdup(a);
   letf(t(a), "curses run: %s", cursesrun);                         map[r++] = strdup(a);
 } else {
