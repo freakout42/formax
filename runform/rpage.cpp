@@ -7,10 +7,10 @@ stmt = NULL;
 if ((s = ropen())) return s;
 let(table,     "pages");
 let(prikey,    "id");
-let(attrs,     "id,name,ysiz,xsiz,vwpy0,vwpx0,popup,border");
+let(attrs,     "id,seq,name,ysiz,xsiz,vwpy0,vwpx0,popup,border");
 letf(t(where), "form_id in (0, %d)", form_id);
 let(order,     "seq");
-columni = 8;
+columni = 9;
 empty(condition);
 return 0;
 }

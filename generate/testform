@@ -1,11 +1,11 @@
 #!/bin/sh
 helpmap() {
 LINE=`expr $LINE + 1`
-echo "INSERT INTO maps (page_id, line, mtext) VALUES (4, $LINE+1, ' $1');"
+echo "INSERT INTO maps (page_id, line, mtext) VALUES (1, $LINE+1, ' $1');"
 }
 guidmap() {
 LINE=`expr $LINE + 1`
-echo "UPDATE maps set mtext = mtext || ' $1' where page_id = 4 and line = $LINE;"
+echo "UPDATE maps set mtext = mtext || ' $1' where page_id = 1 and line = $LINE;"
 }
 ARX=`pwd`/.. sh ./makeform scotty formax1 emps id ename job mgr hiredate sal comm dept_id
   cat <<EOF

@@ -50,13 +50,15 @@ rclose();
 
 /*               i  id seq desc
  * pages - page [0] 1  0   status/edit/message window
- *              [1] 4  1   working window
+ *              [1] 5  1   working window
  *              [2] 2  2   key help popup
  *              [3] 3  3   editor
+ *              [4] 4  4   about
  * INSERT INTO pages VALUES(1,1,'status',0,'',1,80,0,0,0,0,0);
  * INSERT INTO pages VALUES(2,0,'keyhelp',2,'',16,41,2,30,1,1,0);
  * INSERT INTO pages VALUES(3,0,'editor',3,'',21,65,2,14,1,1,0);
- * INSERT INTO pages VALUES(4,0,'formax',1,'',23,80,1,0,0,1,0);
+ * INSERT INTO pages VALUES(4,0,'about',4,'',16,41,2,30,1,1,0);
+ * INSERT INTO pages VALUES(5,0,'formax',1,'',23,80,1,0,0,1,0);
  */
 if (rpage.init(fid)) return 9;
 if ((s = rpage.query())) return s;

@@ -10,6 +10,7 @@
 #define MSG_NOREC    104
 #define MSG_DELASK   105
 #define MSG_QUERYM   106
+#define MSG_NOPRIKEY 107
 #define MSG_FLDPROT  200
 #define MSG_NOMATCH  201
 #define MSG_NORANGE  207
@@ -50,6 +51,7 @@ INSERT INTO errors (num, severity, etext) VALUES (MSG_NOMATCH,  2, 'Field is not
 INSERT INTO errors (num, severity, etext) VALUES (MSG_NORANGE,  2, 'Must be in range');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_RDONLY,   2, 'Form running in query-only mode. No changes');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_QUERYM,   2, 'Form running in query mode. No insert');
+INSERT INTO errors (num, severity, etext) VALUES (MSG_NOPRIKEY, 2, 'Cannot update without primary key - please requery');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_FLDFORM,  2, 'Field must be in the form');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_NOREC2,   2, 'Cannot copy field to first record');
 INSERT INTO errors (num, severity, etext) VALUES (MSG_COUNT0,   2, 'Query caused no records to be retrieved');

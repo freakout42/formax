@@ -4,6 +4,10 @@
 #include <sqlite3.h>
 #include "runform.h"
 
+char sqliteversion[8] = SQLITE_VERSION;
+const char *sqliterun = NULL;
+int sqlitevernumber;
+
 #define INSERTLOGIN   "insert into sessions (loginame, sshconn, logtime,           odbcdsn) " \
                                     "values ('%s',     '%s',    current_timestamp, '%s') returning id"
 #define INSERTLOG     "insert into logs (session_id, logtime, logtext) values (%d, current_timestamp, '%s')"
@@ -38,6 +42,8 @@ char na[4];
 char *user;
 char *conn;
 char *tmp;
+sqliterun = sqlite3_version;
+sqlitevernumber = sqlite3_libversion_number();
 char sql[SMLSIZE];
 strcpy(na, "n/a");
 user = conn = na;
