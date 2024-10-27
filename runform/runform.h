@@ -1,8 +1,13 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.1.1"
+#define VERSION "2.1.2"
 extern char odbcversion[];
+extern char odbcrun[];
 extern char cursesversion[];
+extern const char *cursesrun;
 extern char *macropointer;
+extern char sqliteversion[];
+extern const char *sqliterun;
+extern int sqlitevernumber;
 extern char about[];
 #define gnucs1(m, i, l) #m "." #i "." #l
 #define gnucs(m, i, l) gnucs1(m, i, l)

@@ -19,6 +19,20 @@ return 0;
 int Page::maps(Qdata *qma) {
 int i, r, y;
 char *t, *p;
+if (page_id == PGE_ABOUT) {
+  r = 0;
+  letf(t(a), "%s", COMPANY);                                       map[r++] = strdup(a);
+  letf(t(a), "https://formax.freakout.de v%s", VERSION);           map[r++] = strdup(a);
+  letf(t(a), "charset:    %s", CHARSET);                           map[r++] = strdup(a);
+  letf(t(a), "compiler:   %s (%d)", CCOMPILER, (int)sizeof(Form)); map[r++] = strdup(a);
+  letf(t(a), "compiled:   %s %5.5s", __DATE__, __TIME__);          map[r++] = strdup(a);
+  letf(t(a), "odbc inc:   %s", odbcversion+2);                     map[r++] = strdup(a);
+  letf(t(a), "odbc lib:   %s", odbcrun);                           map[r++] = strdup(a);
+  letf(t(a), "sqlite inc: %s", sqliteversion);                     map[r++] = strdup(a);
+  letf(t(a), "sqlite run: %s %d", sqliterun, sqlitevernumber);     map[r++] = strdup(a);
+  letf(t(a), "curses inc: %s", cursesversion);                     map[r++] = strdup(a);
+  letf(t(a), "curses run: %s", cursesrun);                         map[r++] = strdup(a);
+} else {
 for (i = 1; i <= qma->rows; i++) {
   r = qma->n(i, 1);
   if (r > NLINES) return 1;
@@ -37,7 +51,7 @@ for (i = 1; i <= qma->rows; i++) {
     }
     if (!(*t)) y = 0;
   }
-}
+} }
 return 0;
 }
 

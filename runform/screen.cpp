@@ -7,6 +7,7 @@
 #include "runform.h"
 
 char cursesversion[8] = NCURSES_VERSION;
+const char *cursesrun = NULL;
 char *macropointer = NULL;
 
 Screen::Screen() {
@@ -102,6 +103,7 @@ static struct termios otermio;
 int Screen::init() {
 struct termios termio;
 int i;
+cursesrun = curses_version();
 tcgetattr (0, &termio); /* give me all attributes */
 otermio = termio;
 termio.c_cc[VINTR] = 0; /* ctrl-c */

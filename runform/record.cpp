@@ -7,6 +7,7 @@
 
 #define odbcver(hexver) char odbcversion[8] = str(hexver)
 odbcver(ODBCVER);
+char odbcrun[TNYSIZE] = "";
 
 #define FAILEDQ(hty) if (failed(hty)) return ret
 
@@ -46,6 +47,10 @@ ret = SQLAllocEnv(&env);                                                        
 ret = SQLAllocConnect(env, &dbc);                                                              FAILEDQ(SQL_HANDLE_ENV);
 ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT); FAILEDQ(SQL_HANDLE_DBC);
 }
+if (!odbcrun[0])
+ret = SQLGetInfo(dbc, SQL_ODBC_VER,  &odbcrun,  TNYSIZE, &len);                                FAILEDQ(SQL_HANDLE_DBC);
+//SQL_DRIVER_ODBC_VER
+//SQL_DRIVER_VER
 ret = SQLGetInfo(dbc, SQL_DBMS_NAME, &dbmsname, SMLSIZE, &len);                                FAILEDQ(SQL_HANDLE_DBC);
 setdrv(dbmsname);
 #define AUTOCOMMIT (SQLPOINTER)(autocommit ? SQL_AUTOCOMMIT_ON : SQL_AUTOCOMMIT_OFF)

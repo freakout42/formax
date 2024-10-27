@@ -32,5 +32,4 @@ INSERT INTO maps (page_id, line, mtext) VALUES (2, 13, 'F12 l Refresh      End  
 INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPYREC, 1, '$(cb + "." + cf, cr - 1);');
 INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPY,    1, 'clip = cv;529;');
 INSERT INTO maps (page_id, line, mtext) VALUES (TRT_PASTE,   1, 'clip;');
-INSERT INTO maps (page_id, line, mtext) VALUES (4,  0, '**formax**                         ');
 #endif
