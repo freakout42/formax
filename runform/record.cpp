@@ -46,8 +46,8 @@ ret = SQLAllocEnv(&env);                                                        
 ret = SQLAllocConnect(env, &dbc);                                                              FAILEDQ(SQL_HANDLE_ENV);
 ret = SQLDriverConnect(dbc, NULL, (SQLCHAR*)dsn, SQL_NTS, NULL, 0, NULL, SQL_DRIVER_NOPROMPT); FAILEDQ(SQL_HANDLE_DBC);
 }
-if (!odbcrun[0])
-ret = SQLGetInfo(dbc, SQL_ODBC_VER,        &odbcrun,         TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC);
+if (!odbcrun[0]) {
+ret = SQLGetInfo(dbc, SQL_ODBC_VER,        &odbcrun,         TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC); }
 ret = SQLGetInfo(dbc, SQL_DRIVER_ODBC_VER, &driver_odbc_ver, TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC);
 ret = SQLGetInfo(dbc, SQL_DRIVER_VER,      &driver_ver,      TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC);
 ret = SQLGetInfo(dbc, SQL_DBMS_NAME,       &dbmsname,        TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC);
