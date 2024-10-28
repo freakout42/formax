@@ -76,7 +76,7 @@ Enterprise requirements are fully accomplished:
 Status
 ======
 
-Release 2.1.0 has all important features to create
+Release 2.1.3 has all important features to create
 non-complex forms. It has not matured enough to call it
 fully production ready. Create an issue when in trouble,
 have found a bug or a security problem. Create discussions
