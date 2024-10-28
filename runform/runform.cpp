@@ -43,6 +43,7 @@ Function u;
 char a[BIGSIZE];
 
 static char b64pwd[65];
+static const char *xorkey1pointer = XORKEY1;
 
 /* local primary errors before any processing */
 static void usage(int ecd) {
@@ -64,6 +65,7 @@ const char *est[] = {
   "SQL bind error",               // 15
   "logging failed",               // 16
   "screen setup failed",          // 17
+  "need new key for encryption",  // 18
 };
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
@@ -152,7 +154,8 @@ while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
     case '3': useodbcve3 = 1; break;
     case 'k': monochrome = 1; break;
     case 'c': usedefault = 1; break;
-    case 'p': pwdencrypt = 1; break;
+    case 'p': if (strlen(xorkey1pointer)!=64 || !strncmp(xorkey1pointer, "qT", 2)) usage(18);
+              pwdencrypt = 1; break;
     case 'i': squerymode = 1; break;
     case 'x': updatemode = 1; break;
     case 'b': usebindvar = 0; break;
@@ -165,7 +168,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
 }
 
 /* build the key based on the form-file and the key in version.h */
-if ((i = genxorkey(argv[optind], XORKEY1))) usage(i);
+if ((i = genxorkey(argv[optind], xorkey1pointer))) usage(i);
 
 /* generate encrypted passwords - must be root */
 if (ypassword) {
