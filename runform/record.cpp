@@ -51,6 +51,7 @@ ret = SQLGetInfo(dbc, SQL_ODBC_VER,        &odbcrun,         TNYSIZE, &len);    
 ret = SQLGetInfo(dbc, SQL_DRIVER_ODBC_VER, &driver_odbc_ver, TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC);
 ret = SQLGetInfo(dbc, SQL_DRIVER_VER,      &driver_ver,      TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC);
 ret = SQLGetInfo(dbc, SQL_DBMS_NAME,       &dbmsname,        TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC);
+ret = SQLGetInfo(dbc, SQL_DBMS_VER,        &dbmsver,         TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC);
 setdrv(dbmsname);
 #define AUTOCOMMIT (SQLPOINTER)(autocommit ? SQL_AUTOCOMMIT_ON : SQL_AUTOCOMMIT_OFF)
 ret = SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT, AUTOCOMMIT, SQL_IS_UINTEGER);                FAILEDQ(SQL_HANDLE_DBC);

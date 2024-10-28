@@ -16,6 +16,7 @@ class Record {
 public:
   odrvr drv;
   char dbmsname[TNYSIZE];
+  char dbmsver[TNYSIZE];
   char driver_odbc_ver[TNYSIZE];
   char driver_ver[TNYSIZE];
   char table[TNYSIZE];

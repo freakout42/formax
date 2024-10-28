@@ -20,13 +20,13 @@ fi
 SQL="sqlite3 -batch $FORM.frm"
 $SQL "select mtext from maps where page_id = 1 order by line" >$FORM.map
 ${EDITOR:-vi} $FORM.map
-$SQL "delete from maps where page_id = 4"
+$SQL "delete from maps where page_id = 1"
 LINE=0
 IFS=% sed "s/^/'/;s/\$/'/" $FORM.map | while read TEXT; do
   $SQL "insert into maps (page_id, line, mtext) values (1, $LINE, $TEXT)"
   LINE=`expr $LINE + 1`
 done
-BORDER=`$SQL "select border from pages where id=4;"`
+BORDER=`$SQL "select border from pages where seq=1;"`
 $ADJFIELD -$BORDER <$FORM.map | $SQL
 rm $FORM.map
 $RUNFORM $LOGGING -x $FORMAXFRM $FORM.frm

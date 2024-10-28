@@ -32,7 +32,9 @@ if (page_id == PGE_ABOUT) {
   letf(t(a), "odbc lib:   %s", odbcrun);                           map[r++] = strdup(a);
   letf(t(a), "form odbc:  %s", dbconn[0].driver_odbc_ver);         map[r++] = strdup(a);
   letf(t(a), "form drvr:  %s", dbconn[0].driver_ver);              map[r++] = strdup(a);
+  letf(t(a), "form dver:  %s", dbconn[0].dbmsver);                 map[r++] = strdup(a);
   letf(t(a), "data base:  %s", dbconn[1].dbmsname);                map[r++] = strdup(a);
+  letf(t(a), "data dver:  %s", dbconn[1].dbmsver);                 map[r++] = strdup(a);
   letf(t(a), "data odbc:  %s", dbconn[1].driver_odbc_ver);         map[r++] = strdup(a);
   letf(t(a), "data drvr:  %s", dbconn[1].driver_ver);              map[r++] = strdup(a);
   letf(t(a), "curses inc: %s", cursesversion);                     map[r++] = strdup(a);

@@ -21,6 +21,7 @@ install: bin \$(DESTDIR)\$(ARX)/bin
 	@cp -r runform \$(DESTDIR)\$(ARX)
 	@chmod -R u=rwX,g=rX,o=rX \$(DESTDIR)\$(ARX)/runform
 	@if [ -d \$(DESTDIR)/etc/profile.d ]; then cp generate/arx.sh \$(DESTDIR)/etc/profile.d; chmod 755 \$(DESTDIR)/etc/profile.d; else true; fi
+	@if [ "\$(DESTDIR)" ]; then cd \$(DESTDIR)\$(ARX); find .|cpio -o 2>/dev/null|gzip -c >\$(DESTDIR)/formax.cpio.gz; fi
 \$(DESTDIR)\$(ARX)/bin:
 	@for D in bin lib; do mkdir -m755 -p \$(DESTDIR)\$(ARX)/\$\$D; done
 generate/adjfield:
