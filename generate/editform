@@ -2,14 +2,12 @@
 if [ "`dirname $0`" = "." ]; then
   ADJFIELD=./adjfield
   RUNFORM=../runform/runform
-  FORMAXFRM=field.frm
-  TRIGGRFRM=trigger.frm
+  FORMAXFRM=formax.frm
   LOGGING=-g/tmp/formax.log
 else
   ADJFIELD=adjfield
   RUNFORM=runform
-  FORMAXFRM=${ARX:-/opt/arx}/lib/field.frm
-  TRIGGRFRM=${ARX:-/opt/arx}/lib/trigger.frm
+  FORMAXFRM=${ARX:-/opt/arx}/lib/formax.frm
   LOGGING=""
 fi
 FORM=$1
@@ -26,11 +24,10 @@ IFS=% sed "s/^/'/;s/\$/'/" $FORM.map | while read TEXT; do
   $SQL "insert into maps (page_id, line, mtext) values (1, $LINE, $TEXT)"
   LINE=`expr $LINE + 1`
 done
-BORDER=`$SQL "select border from pages where seq=1;"`
+BORDER=1 #`$SQL "select border from pages where seq=1;"`
 $ADJFIELD -$BORDER <$FORM.map | $SQL
 rm $FORM.map
 $RUNFORM $LOGGING -x $FORMAXFRM $FORM.frm
-$RUNFORM $LOGGING -x $TRIGGRFRM $FORM.frm
 $SQL .dump >$FORM.inp
 ${EDITOR:-vi} $FORM.inp
 rm $FORM.frm

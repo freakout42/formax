@@ -16,19 +16,19 @@ let(column,     fld->v(rix, 2));
 blockindex    = fld->n(rix, 3);
 pageindex     = fld->n(rix, 4);
 displaylen    = fld->n(rix, 5);
-line          = fld->n(rix, 6) + (page.border ? 1 : 0);
-col           = fld->n(rix, 7) + (page.border ? 1 : 0);
-isprimarykey  = fld->n(rix, 8);
-fieldtype     = (ftype)fld->n(rix, 9);
-fieldlen      = fld->n(rix,10);
-basetable     = fld->n(rix,11);
-defaultval    = fld->c(rix,12);
-enterable     = fld->n(rix,13);
-queryable     = fld->n(rix,14);
-updateable    = fld->n(rix,15);
-updnulable    = fld->n(rix,16);
-mandatory     = fld->n(rix,17);
-uppercase     = fld->n(rix,18);
+alignment     = fld->n(rix, 6);
+line          = fld->n(rix, 7) + (page.border ? 1 : 0);
+col           = fld->n(rix, 8) + (page.border ? 1 : 0);
+isprimarykey  = fld->n(rix, 9);
+fieldtype     = (ftype)fld->n(rix,10);
+fieldlen      = fld->n(rix,11);
+basetable     = fld->n(rix,12);
+defaultval    = fld->c(rix,13);
+enterable     = fld->n(rix,14);
+queryable     = fld->n(rix,15);
+updateable    = fld->n(rix,16);
+updnulable    = fld->n(rix,17);
+mandatory     = fld->n(rix,18);
 let(lovtitle,   fld->v(rix,19));
 lov_id        = fld->n(rix,20);
 lovi_id       = fld->n(rix,21);
@@ -57,7 +57,7 @@ int Field::noedit() {
 switch(CM) {
  case MOD_UPDATE: if (isprimarykey || !(updateable || (updnulable && *valuep()==NULL))) return 1; break;
  case MOD_QUERY:  if (!queryable)                                                       return 1; break;
- case MOD_INSERT: if (!updateable)                                                      return 1; break;
+ case MOD_INSERT: if (!(updateable || updnulable))                                      return 1; break;
  case MOD_DELETE:                                                                                 break;
 }
 return 0;
@@ -89,7 +89,7 @@ if (CP.index == pageindex && displaylen > 0)
     if (cur) color = COL_CURRENT;
     if (block.index != CB.index || (block.rmode != MOD_QUERY && outrec != block.currentrec)) color = COL_DATA;
     if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
-    page.writef(outline, col, color, displaylen, "%.*s", displaylen, outcell);
+    page.writef(outline, col, color, displaylen, "%*.*s", alignment?displaylen:0, displaylen, outcell);
     if (cur) page.wmov(outline, col);
   }
 }

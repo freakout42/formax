@@ -17,6 +17,7 @@ CREATE TABLE fields
    ftype     INTEGER NOT NULL DEFAULT 0,    /* 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE */
    len       INTEGER NOT NULL DEFAULT 30,   /* field length */
    dlen      INTEGER NOT NULL DEFAULT 20,   /* display length =0 no display */
+   align     INTEGER NOT NULL DEFAULT 0,    /* alignment =0 left =1 right */
    btab      INTEGER NOT NULL DEFAULT 1,    /* if the field is a base table field */
    key       INTEGER NOT NULL DEFAULT 0,    /* if the field is a primary key field */
    dflt      TEXT    NOT NULL DEFAULT '',   /* default value */
@@ -27,7 +28,6 @@ CREATE TABLE fields
    upd       INTEGER NOT NULL DEFAULT 1,    /* if the field can be updated */
    updnul    INTEGER NOT NULL DEFAULT 1,    /* if the field can be updated when NULL */
    mand      INTEGER NOT NULL DEFAULT 0,    /* if the field is requeried */
-   upper     INTEGER NOT NULL DEFAULT 0,    /* if the field converts to uppercase */
    lovtit    TEXT    NOT NULL DEFAULT '',   /* title for list of values */
    lov_id    INTEGER NOT NULL DEFAULT 0,    /* block for list of values */
    lovi_id   INTEGER NOT NULL DEFAULT 0,    /* page for list of values */

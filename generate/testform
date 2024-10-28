@@ -16,7 +16,7 @@ INSERT INTO fields VALUES(11,1,5,1,'loc',120,0,30,20,1,0,'',8,56,1,1,1,1,0,0,'',
 UPDATE fields set help = 'Employees last name' where id=2;
 UPDATE fields set ftype = 2, dlen = 4, len = 4, low = 7000, high = 8999, valpatn = '\d\d\d\d' where id=4;
 UPDATE fields set ftype = 4 where id=5;
-UPDATE fields set upd = 0 where id=6;
+UPDATE fields set upd = 0, dlen = 6, align = 1 where id=6;
 UPDATE fields set ftype = 2, dlen = 1, len = 1, low = 0, high = 1 where id=7;
 INSERT INTO maps (page_id, line, mtext) VALUES (2001, 1, 'next_item();0;');
 INSERT INTO maps (page_id, line, mtext) VALUES (2002, 1, 'Message("trg:10002,1101");nav0 + 3;');
