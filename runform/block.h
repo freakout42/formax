@@ -9,6 +9,7 @@ public:
   int select();
   int update(int row, int col);
   int insert(int row);
+  void filldefault(int row);
   int destroy(int r);
   int norec;
   int fieldcount;

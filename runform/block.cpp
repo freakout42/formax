@@ -95,6 +95,15 @@ if ((ret = execute())) return ret;
 return complete();
 }
 
+/* fill the empty record with default values */
+void Block::filldefault(int r) {
+int i;
+for (i=0; i<fieldcount; i++)
+  if (*fldi(i).defaultval)
+    *q->w(r, i+1) = strdup(fldi(i).defaultval);
+}
+
+/* bind the given fields and insert by sql returning the new row when supported */
 int Block::insert(int r) {
 int i, j;
 char columnslist[MEDSIZE];

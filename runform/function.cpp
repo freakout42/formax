@@ -225,6 +225,7 @@ if (CB.norec > 1) {
 int Function::insert_record() {
 if (CM == MOD_UPDATE || CM == MOD_QUERY) {
   CB.q->splice(CR++);
+  CB.filldefault(CR);
   switch_mode(MOD_INSERT);
 } else {
   MSG(MSG_QUERYM);
