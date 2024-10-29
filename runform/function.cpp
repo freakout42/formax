@@ -152,7 +152,7 @@ return (CV && (!strcmp(CF.column, "pgen") || !strcmp(CF.column, "page_id"))) ? F
 int Function::edit_file() {
 char *s;
 s = trigger(TRT_EDITFILE);
-if (*s == '"') {
+if (s && *s == '"') {
   s[strlen(s) - 1] = '\0';
   F(p)[PGE_EDITOR].editfile(s+1);
 }
