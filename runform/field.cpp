@@ -12,7 +12,10 @@
 
 int Field::init(Qdata *fld, int rix, Block *bs) {
 field_id      = fld->n(rix, 1);
+if (strcmp(fld->v(rix, 2), "user"))
 let(column,     fld->v(rix, 2));
+else
+let(column,     "\"user\"");
 blockindex    = fld->n(rix, 3);
 pageindex     = fld->n(rix, 4);
 displaylen    = fld->n(rix, 5);
