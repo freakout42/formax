@@ -85,6 +85,7 @@ switch(F(lastcmd)) {
   case '?':          LK = aboutwin();                                         break;
   case '~':          LK = editrigger(TRT_EDITFIELD);                          break;
   case '[':          LK = edit_map();                                         break;
+  case ']':          LK = edit_file();                                        break;
   case ' ':          LK = ftoggle();                                          break;
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
@@ -145,7 +146,13 @@ return F(p)[PGE_ABOUT].showpopup();
 }
 
 int Function::edit_map() {
-return CV ? F(p)[PGE_EDITOR].editmap(atoi(CV)) : 0;
+return (CV && (!strcmp(CF.column, "pgen") || !strcmp(CF.column, "page_id"))) ? F(p)[PGE_EDITOR].editmap(atoi(CV)) : 0;
+}
+
+int Function::edit_file() {
+char *s;
+if ((s = trigger(TRT_EDITFILE))) F(p)[PGE_EDITOR].editfile(s);
+return 0;
 }
 
 /* NAVIGATION */
@@ -452,6 +459,9 @@ if (i == -1) return s;
       MSG1(MSG_JS, s);
       strcpy(s, "-1");
       notrunning = -1;
+    } else {
+      s += 1;
+      s[strlen(s) - 1] = '\0';
     }
   intrigger = 0;
 return s;
