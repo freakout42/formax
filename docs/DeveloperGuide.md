@@ -343,6 +343,7 @@ On success next_item() is fired to move to the next field.
 | EXEQUERY   | Key  | CTRL('X') F10    | Action  | 1014   |
 | POSTCHANGE | App  | NOT YET IMPLEMEN | Setting | 1015   |
 | ENTERECORD | App  | Record navigate  | Action  | 1016   |
+| EDITFILE   | Key  | ']'       ]      | Action  | 1017   |
 
 ## Trigger Table
 

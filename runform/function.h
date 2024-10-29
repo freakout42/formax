@@ -30,6 +30,7 @@ private:
   int keys_help();
   int aboutwin();
   int edit_map();
+  int edit_file();
   int switch_mode(fmode mod);
   int fcopyrec();
   int fcopy();

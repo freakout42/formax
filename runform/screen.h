@@ -20,6 +20,7 @@ public:
   int getkb();
   void openmacro(char *mbu);
   int sedit(char *toe, int pos, ftype fty, int len);
+  int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
   int ysiz;
   int xsiz;

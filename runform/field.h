@@ -35,11 +35,11 @@ private:
   ftype fieldtype;
   int fieldlen;
   int displaylen;
+  int alignment;
   int queryable;
   int updateable;
   int updnulable;
   int mandatory;
-  int uppercase;
   char lovtitle[8];
   int lov_id;
   int lovi_id;
