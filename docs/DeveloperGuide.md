@@ -277,6 +277,7 @@ as follows:
 | Dlen     | display length in layout (*1)                 |
 | Type     | column type 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE |
 | Length   | column length                                 |
+| Align    | 0=left 1=right alignment                      |
 | Table    | 0=no database column 1=database column        |
 | Pkey     | primary key   - DO NOT CHANGE                 |
 | Default  | default value in Insert-Mode                  |
@@ -285,7 +286,6 @@ as follows:
 | Update   | allowed to edit in Update-Mode                |
 | UpdateNul| allowed to edit in Update-Mode when NULL      |
 | Mandatory| not NULL in Insert-Mode                       |
-| Uppercase| convert to uppercase                          |
 | Low      | minimum value                                 |
 | High     | maximum value                                 |
 | Pattern  | regular expression (pcre)                     |

@@ -91,6 +91,7 @@ categories:
     [Space] key which toggles true/false for boolean fields.
     The [+] and [-] keys increment or decrement integers.
     [.] calls the screen editor for multi line fields.
+    "]" calls the screen editor with a corresponding file.
 
  - Navigation = [Left] [Right] [Up] [Down] [PageUp] [PageDn]
                 [Home] [End] [Tab] [Backtab]

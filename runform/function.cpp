@@ -151,7 +151,11 @@ return (CV && (!strcmp(CF.column, "pgen") || !strcmp(CF.column, "page_id"))) ? F
 
 int Function::edit_file() {
 char *s;
-if ((s = trigger(TRT_EDITFILE))) F(p)[PGE_EDITOR].editfile(s);
+s = trigger(TRT_EDITFILE);
+if (*s == '"') {
+  s[strlen(s) - 1] = '\0';
+  F(p)[PGE_EDITOR].editfile(s+1);
+}
 return 0;
 }
 
@@ -459,9 +463,6 @@ if (i == -1) return s;
       MSG1(MSG_JS, s);
       strcpy(s, "-1");
       notrunning = -1;
-    } else {
-      s += 1;
-      s[strlen(s) - 1] = '\0';
     }
   intrigger = 0;
 return s;
