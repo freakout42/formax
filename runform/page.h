@@ -13,7 +13,7 @@ public:
   void repaint();
   int showpopup();
   int editbuf(char *buf);
-  void editfile(char *pth);
+  int editfile(char *pth);
   int editmap(int pid);
   void destroy();
   char name[30];

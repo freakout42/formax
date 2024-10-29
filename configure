@@ -17,7 +17,7 @@ install: bin \$(DESTDIR)\$(ARX)/bin
 	@chmod 2751            runform/runform
 	@chmod u=rw,g=r,o=r    generate/*.frm
 	@cp -p generate/makeform generate/editform generate/adjfield generate/extractsql runform/runform \$(DESTDIR)\$(ARX)/bin
-	@cp -p generate/formax.frm generate/field.frm generate/trigger.frm \$(DESTDIR)\$(ARX)/lib
+	@cp -p generate/formax.frm \$(DESTDIR)\$(ARX)/lib
 	@cp -r runform \$(DESTDIR)\$(ARX)
 	@chmod -R u=rwX,g=rX,o=rX \$(DESTDIR)\$(ARX)/runform
 	@if [ -d \$(DESTDIR)/etc/profile.d ]; then cp generate/arx.sh \$(DESTDIR)/etc/profile.d; chmod 755 \$(DESTDIR)/etc/profile.d; else true; fi

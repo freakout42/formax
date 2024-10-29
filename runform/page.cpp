@@ -102,7 +102,7 @@ tmpf = tmpcreat();
 tmput(buf);
 if (!strchr(buf, '\n')) tmput(cr);
 tmpclose(0);
-editfile(tmpf);
+s = editfile(tmpf);
 tmpopen();
 i = tmpread(buf, BIGSIZE);
 buf[i] = '\0';
@@ -112,11 +112,11 @@ return s ? KEF_NXTFLD : KEF_CANCEL;
 }
 
 /* edit a file */
-void Page::editfile(char *pth) {
+int Page::editfile(char *pth) {
 redraw();
 refr();
 F(needredraw) = 1;
-mainloop(pth, wndw);
+return mainloop(pth, wndw);
 }
 
 /* edit a map with the full screen editor */
