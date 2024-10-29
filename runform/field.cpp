@@ -219,7 +219,10 @@ switch(CM) {
      case FED_TOGGLE:  pressed = toggle(a);                   break;
      case FED_INCR:    pressed = increment(a, 1);             break;
      case FED_DECR:    pressed = increment(a, -1);            break;
-     default:          pressed = F(p)[PGE_STATUS].sedit(a, pos, fldtype(), fieldlen);
+     default:        if (displaylen == fieldlen)
+                       pressed = F(p)[pageindex].sedit(a, pos, fldtype(), fieldlen, line, col);
+                     else
+                       pressed = F(p)[PGE_STATUS].sedit(a, pos, fldtype(), fieldlen);
     }
     if (pressed != KEF_CANCEL && validate(c, a) == KEF_CANCEL) pressed = KEF_CANCEL;
   }

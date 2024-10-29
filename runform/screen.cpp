@@ -248,6 +248,9 @@ return ch;
 
 /* edit a string on the screen */
 int Screen::sedit(char *toe, int pos, ftype fty, int len) {
+return sedit(toe, pos, fty, len, 0, 0);
+}
+int Screen::sedit(char *toe, int pos, ftype fty, int len, int lin, int col) {
 char *legal;
 char legalall[] = "";
 char legalint[] = "0123456789";
@@ -263,7 +266,7 @@ switch (fty) {
  case FTY_ALL:
  default:        legal = legalall;
 }
-return F(p)[0].getst(0, 0, 80, EDITCOLOR, toe, pos, legal, len, NULL);
+return getst(lin, col, lin+col==0?80:len, EDITCOLOR, toe, pos, legal, len, NULL);
 }
 
 /* Allows the user to edit a string with only certain characters allowed
@@ -328,6 +331,7 @@ while (!done) {              /* input loop */
     sx  = x + pos;
     break;
    case KEY_IC:              /* toggle insert mode */
+   case KEY_CTRL('J'):
     toggle();
     break;
    case KEY_LEFT:            /* move left    */
