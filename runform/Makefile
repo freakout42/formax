@@ -13,7 +13,7 @@ $(OBJS): runform.h
 runform.h: curkeys.h
 
 runform: $(OBJS) $(OBJA)
-	$(CXX) $(OBJS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
+	$(CXX) $(OBJS) $(OBJA) -Wl,-rpath,/opt/arx/lib -lcurses -lsqlite3 -lodbc -o $@
 
 run: runform $(EXAMPLE)
 	strip runform
