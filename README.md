@@ -150,6 +150,10 @@ sudo make install
 . /etc/profile.d/arx.sh
 ~~~
 
+Alternatively there is a rpm-file for x64 RedHat/CentOS:
+
+    https://github.com/freakout42/formax/releases/download/v0.9.9/arx-8.62-1.x86_64.rpm
+
 Getting started
 ===============
 The following will guide you to creation, execution and
