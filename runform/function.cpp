@@ -89,6 +89,7 @@ switch(F(lastcmd)) {
   case ' ':          LK = ftoggle();                                          break;
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
+  case '>':          LK = goto_cell();                                        break;
   default:
    if (isprintable(LK))
                      LK = fedit(-1000 - LK);
@@ -231,6 +232,23 @@ if (CB.norec > 1) {
 } else {
   CB.toprec = CR;
 } }
+
+/* goto entered cell */
+int Function::goto_cell() {
+int pressed, fieldn;
+empty(a);
+pressed = F(p)[PGE_STATUS].sedit(a, 0, FTY_ALL, 30);
+if (pressed == KEY_ENTER) {
+  pressed = 0;
+  fieldn = F(qfield)(a);
+  if (fieldn != -1) {
+    CBi = fldi(fieldn).blockindex;
+    CFi = fieldn;
+    if (CF.noedit() || !(CF.enterable)) fmove(0, 1);
+  }
+}
+return pressed;
+}
 
 /* EDITING */
 int Function::insert_record() {

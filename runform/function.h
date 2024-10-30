@@ -37,6 +37,7 @@ private:
   int fpaste();
   int fmove(int bi, int fi);
   int fmover(int bi, int ri);
+  int goto_cell();
   void fwindow();
   int ftoggle();
   int fincrement(int ival);
