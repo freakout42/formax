@@ -83,7 +83,7 @@ switch(F(lastcmd)) {
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
   case '|':          LK = MSG1(MSG_HELP, about);                              break;
   case '?':          LK = aboutwin();                                         break;
-  case '~':          LK = editrigger(TRT_EDITFIELD);                          break;
+  case '=':          LK = editrigger(TRT_EDITFIELD);                          break;
   case '[':          LK = edit_map();                                         break;
   case ']':          LK = edit_file();                                        break;
   case ' ':          LK = ftoggle();                                          break;

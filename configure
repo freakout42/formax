@@ -11,7 +11,7 @@ cat >Makefile <<EOF
 ARX=/opt/arx
 all: bin
 	@echo 'you can now run "sudo make install"'
-bin: runform/runform generate/adjfield
+bin: runform/runform generate/adjfield generate/formax.frm
 install: bin \$(DESTDIR)\$(ARX)/bin
 	@chmod u=rwx,g=rx,o=rx generate/makeform generate/editform generate/adjfield generate/extractsql
 	@chmod 2751            runform/runform
@@ -24,7 +24,7 @@ install: bin \$(DESTDIR)\$(ARX)/bin
 	@if [ "\$(DESTDIR)" ]; then cd \$(DESTDIR)\$(ARX); find .|cpio -o 2>/dev/null|gzip -c >\$(DESTDIR)/formax.cpio.gz; fi
 \$(DESTDIR)\$(ARX)/bin:
 	@for D in bin lib; do mkdir -m755 -p \$(DESTDIR)\$(ARX)/\$\$D; done
-generate/adjfield:
+generate/adjfield generate/formax.frm:
 	cd generate; make
 runform/runform:
 	cd runform; make

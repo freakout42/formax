@@ -1,8 +1,6 @@
-all: editform
+all: adjfield formax.frm
 
 test: all scotty.sq3 scotty.frm formax.frm formax.sq3
-
-editform: adjfield formax.frm
 
 %.frm: %.inp
 	rm -f $@

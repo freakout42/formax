@@ -83,7 +83,7 @@ categories:
     In any other mode the Edit-Mode is started by replacing
     the fields text with the character at first position.
 
- - Special character = []()*&^%!",;: ...
+ - Special character = [(])*&^%!",;: ...
 
     Same behaviour as alphanumeric keys with the exception
     of the shifted [1-9] keys which act as speed navigation
