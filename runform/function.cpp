@@ -235,28 +235,28 @@ if (CB.norec > 1) {
 
 /* goto entered cell */
 int Function::goto_cell() {
-int pressed, fieldn, rown;
-char *colon;
-rown = 0;
+int pressed;
 let(a, "block.field:row");
 pressed = F(p)[PGE_STATUS].sedit(a, 0, FTY_ALL, 30);
-if (pressed == KEY_ENTER) {
-  if ((colon = strchr(a, ':'))) {
-    *colon = '\0';
-    rown = atoi(colon + 1);
-  }
-  fieldn = F(qfield)(a);
-  if (fieldn != -1) fgoto(fieldn, rown);
-}
+if (pressed == KEY_ENTER) fgoto(a);
 return 0; //pressed;
 }
 
-void Function::fgoto(int fld, int row) {
-CBi = fldi(fld).blockindex;
-CFi = fld;
-if (CF.noedit() || !(CF.enterable)) fmove(0, 1);
-fmover(row, 0);
+void Function::fgoto(char *sel) {
+int fieldn, rown;
+char *colon;
+rown = 0;
+if ((colon = strchr(sel, ':'))) {
+  *colon = '\0';
+  rown = atoi(colon + 1);
 }
+fieldn = F(qfield)(sel);
+if (fieldn != -1) {
+  CBi = fldi(fieldn).blockindex;
+  CFi = fieldn;
+  if (CF.noedit() || !(CF.enterable)) fmove(0, 1);
+  fmover(rown, 0);
+} }
 
 /* EDITING */
 int Function::insert_record() {

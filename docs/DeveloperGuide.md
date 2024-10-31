@@ -419,29 +419,31 @@ small but usable subset of ES6.
 
 ## Variables and Functions
 
-| Name              | Purpose                              |
-|-------------------|--------------------------------------|
-| cb                | current block = table                |
-| cf                | current field = column               |
-| cr                | current record number                |
-| cv                | current field value                  |
-| nav0              | key to navigate direct to field +n   |
-| v0                | universal variable                   |
-| v1                | universal variable                   |
-| v2                | universal variable                   |
-| v3                | universal variable                   |
-| clip              | clipboard value                      |
-| next_item()       | navigate to next item/field          |
-| previous_item()   | navigate to previous item/field      |
-| next_block()      | navigate to next block               |
-| previous_block()  | navigate to previous block           |
-| next_record()     | navigate to next record              |
-| previous_record() | navigate to previous record          |
-| exec_query()      | execute query in current block       |
-| $("blk.fld"[,n])  | jQuery-like "DOM" access to fieldvals|
-| String(n)         | cast number to string (integer)      |
-| Message(text)     | message on status line               |
-| SQL(query)        | database access returns 1 value      |
+| Name                | Purpose                              |
+|---------------------|--------------------------------------|
+| cb                  | current block = table                |
+| cf                  | current field = column               |
+| cr                  | current record number                |
+| cv                  | current field value                  |
+| nav0                | key to navigate direct to field +n   |
+| v0                  | universal variable                   |
+| v1                  | universal variable                   |
+| v2                  | universal variable                   |
+| v3                  | universal variable                   |
+| clip                | clipboard value                      |
+| next_item()         | navigate to next item/field          |
+| previous_item()     | navigate to previous item/field      |
+| next_block()        | navigate to next block               |
+| previous_block()    | navigate to previous block           |
+| next_record()       | navigate to next record              |
+| previous_record()   | navigate to previous record          |
+| exec_query()        | execute query in current block       |
+| $("blk.fld"[,n])    | jQuery-like "DOM" access to fieldvals|
+| Goto("blk.fld:row") | goto cell                            |
+| Setquery("b.f","v") | set human query condition            |
+| String(n)           | cast number to string (integer)      |
+| Message(text)       | message on status line               |
+| SQL(query)          | database access returns 1 value      |
 
 Keyboard macro notation
 -----------------------
