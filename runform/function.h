@@ -35,8 +35,9 @@ private:
   int fcopyrec();
   int fcopy();
   int fpaste();
+  void fgoto(int fld, int row);
   int fmove(int bi, int fi);
-  int fmover(int bi, int ri);
+  int fmover(int rn, int ri);
   int goto_cell();
   void fwindow();
   int ftoggle();

@@ -193,7 +193,7 @@ return 0;
 }
 
 /* move from record to record */
-int Function::fmover(int bi, int ri) {
+int Function::fmover(int rn, int ri) {
 int newcr;
 switch (CM) {
  case MOD_QUERY:  return 0;                                                         break;
@@ -202,7 +202,7 @@ switch (CM) {
  case MOD_DELETE: if (!yesno(MSG(MSG_DIRTY))) destroy_record();                     break;
 }
 switch_mode(MOD_UPDATE);
-newcr = CR;
+newcr = rn ? rn : CR;
 if (newcr > 0) {
   newcr += ri;
   if (newcr > CN) {
@@ -235,19 +235,27 @@ if (CB.norec > 1) {
 
 /* goto entered cell */
 int Function::goto_cell() {
-int pressed, fieldn;
-empty(a);
+int pressed, fieldn, rown;
+char *colon;
+rown = 0;
+let(a, "block.field:row");
 pressed = F(p)[PGE_STATUS].sedit(a, 0, FTY_ALL, 30);
 if (pressed == KEY_ENTER) {
-  pressed = 0;
-  fieldn = F(qfield)(a);
-  if (fieldn != -1) {
-    CBi = fldi(fieldn).blockindex;
-    CFi = fieldn;
-    if (CF.noedit() || !(CF.enterable)) fmove(0, 1);
+  if ((colon = strchr(a, ':'))) {
+    *colon = '\0';
+    rown = atoi(colon + 1);
   }
+  fieldn = F(qfield)(a);
+  if (fieldn != -1) fgoto(fieldn, rown);
 }
-return pressed;
+return 0; //pressed;
+}
+
+void Function::fgoto(int fld, int row) {
+CBi = fldi(fld).blockindex;
+CFi = fld;
+if (CF.noedit() || !(CF.enterable)) fmove(0, 1);
+fmover(row, 0);
 }
 
 /* EDITING */
