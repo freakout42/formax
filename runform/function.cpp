@@ -162,7 +162,7 @@ return 0;
 /* NAVIGATION */
 int Function::switch_mode(fmode mod) {
 CM = mod;
-if (CF.noedit() || !CF.enterable) fmove(0, 0);
+if (CF.noedit()) fmove(0, 0);
 return 0;
 }
 
@@ -187,7 +187,7 @@ if (bi) {
 }
 if (fi < NFIELD1) CFi = CB.blockfields[ (CF.sequencenum-1 + CB.fieldcount + fi) % CB.fieldcount ];
 else              CFi = fi - NFIELD1 - 1;
-if (CF.noedit() || !(CF.enterable)) fmove(0, fi<0 ? -1 : 1);
+if (CF.noedit()) fmove(0, fi<0 ? -1 : 1);
 return 0;
 }
 
@@ -220,6 +220,7 @@ if (newcr > 0) {
   enter_record(newcr);
   fwindow();
 }
+if (CF.noedit()) fmove(0, 0);
 return 0;
 }
 

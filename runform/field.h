@@ -13,7 +13,6 @@ public:
   char *currentval;
   int basetable;
   int isprimarykey;
-  int enterable;
   char *helptext;
   char *defaultval;
   int init(Qdata *fld, int rix, Block *bs);
@@ -34,6 +33,7 @@ private:
   ftype fldtype();
   ftype fieldtype;
   int fieldlen;
+  int decimalen;
   int displaylen;
   int alignment;
   int queryable;
