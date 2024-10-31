@@ -10,6 +10,7 @@ public:
   int previous_setrecords();
   int next_setrecords();
   int previous_record();
+  void fgoto(char *sel);
   int exec_query();
   int edittrg(char *buf);
   char *etrigger(int tid);
@@ -36,7 +37,8 @@ private:
   int fcopy();
   int fpaste();
   int fmove(int bi, int fi);
-  int fmover(int bi, int ri);
+  int fmover(int rn, int ri);
+  int goto_cell();
   void fwindow();
   int ftoggle();
   int fincrement(int ival);

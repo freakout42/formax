@@ -89,6 +89,7 @@ switch(F(lastcmd)) {
   case ' ':          LK = ftoggle();                                          break;
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
+  case '>':          LK = goto_cell();                                        break;
   default:
    if (isprintable(LK))
                      LK = fedit(-1000 - LK);
@@ -192,7 +193,7 @@ return 0;
 }
 
 /* move from record to record */
-int Function::fmover(int bi, int ri) {
+int Function::fmover(int rn, int ri) {
 int newcr;
 switch (CM) {
  case MOD_QUERY:  return 0;                                                         break;
@@ -201,7 +202,7 @@ switch (CM) {
  case MOD_DELETE: if (!yesno(MSG(MSG_DIRTY))) destroy_record();                     break;
 }
 switch_mode(MOD_UPDATE);
-newcr = CR;
+newcr = rn ? rn : CR;
 if (newcr > 0) {
   newcr += ri;
   if (newcr > CN) {
@@ -230,6 +231,31 @@ if (CB.norec > 1) {
   else if (CR >= CB.toprec + CB.norec) CB.toprec = CR - CB.norec + 1;
 } else {
   CB.toprec = CR;
+} }
+
+/* goto entered cell */
+int Function::goto_cell() {
+int pressed;
+let(a, "block.field:row");
+pressed = F(p)[PGE_STATUS].sedit(a, 0, FTY_ALL, 30);
+if (pressed == KEY_ENTER) fgoto(a);
+return 0; //pressed;
+}
+
+void Function::fgoto(char *sel) {
+int fieldn, rown;
+char *colon;
+rown = 0;
+if ((colon = strchr(sel, ':'))) {
+  *colon = '\0';
+  rown = atoi(colon + 1);
+}
+fieldn = F(qfield)(sel);
+if (fieldn != -1) {
+  CBi = fldi(fieldn).blockindex;
+  CFi = fieldn;
+  if (CF.noedit() || !(CF.enterable)) fmove(0, 1);
+  fmover(rown, 0);
 } }
 
 /* EDITING */
