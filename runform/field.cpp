@@ -92,10 +92,10 @@ if (CP.index == pageindex && displaylen > 0)
     if (cur) color = COL_CURRENT;
     if (block.index != CB.index || (block.rmode != MOD_QUERY && outrec != block.currentrec)) color = COL_DATA;
     if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
-   if (outcell && *outcell && fieldtype == FTY_FLOAT)
-    page.writef(outline, col, color, displaylen, "%*.*f", displaylen, decimalen, atof(outcell));
-   else
-    page.writef(outline, col, color, displaylen, "%*.*s", alignment?displaylen:0, displaylen, outcell);
+    if (outcell && *outcell && fieldtype == FTY_FLOAT)
+      page.writef(outline, col, color, displaylen, "%*.*f", displaylen, decimalen, atof(outcell));
+    else
+      page.writef(outline, col, color, displaylen, "%*.*s", alignment?displaylen:0, displaylen, outcell);
     if (cur) page.wmov(outline, col);
   }
 }
