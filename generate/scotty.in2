@@ -109,7 +109,7 @@ INSERT INTO maps VALUES(34,1,16,'');
 INSERT INTO maps VALUES(35,1,17,'');
 INSERT INTO maps VALUES(36,1,18,'');
 INSERT INTO maps VALUES(37,1,19,' Ctrl+k Keyboard Help - ? About');
-INSERT INTO maps VALUES(38,2001,1,'setquery("emps.dept_id",$("depts.id"));next_block();exec_query();previous_block();0;');
+INSERT INTO maps VALUES(38,2001,1,'Setquery("emps.dept_id",$("depts.id"));next_block();exec_query();previous_block();0;');
 INSERT INTO maps VALUES(39,2002,1,'Message($("depts.loc"));0;');
 INSERT INTO maps VALUES(40,2003,1,'"/etc/hosts";');
 CREATE TABLE pages

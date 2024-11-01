@@ -255,7 +255,7 @@ fieldn = F(qfield)(sel);
 if (fieldn != -1) {
   CBi = fldi(fieldn).blockindex;
   CFi = fieldn;
-  if (CF.noedit() || !(CF.enterable)) fmove(0, 1);
+  if (CF.noedit()) fmove(0, 1);
   fmover(rown, 0);
 } }
 
