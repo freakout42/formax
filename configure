@@ -1,5 +1,4 @@
 #!/bin/sh
-test -f version.h || exit 1
 rm -f Makefile
 if [ "$1" != "make" ]; then
 for MODUL in generate runform runform/colquery runform/regex runform/elk runform/crypt runform/membed; do
