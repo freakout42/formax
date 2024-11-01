@@ -289,7 +289,7 @@ int endx;                    /* end position   */
 
 done = 0;
 changed = 0;
-first = 0;
+first = -1;
 c = 0;
 if (pos == -9999) pos = -1;
 else if (pos < 0 && pos > -1000) pos += strlen(s) + 1;
@@ -317,7 +317,7 @@ while (!done) {              /* input loop */
   if ((int)strlen(so) > width && sx < endx) mvwaddch(wndw, y, endx, '>');
   wmov(y, sx);      /* move to cursor pos */
   refr();        /* show the screen */
-  switch (c = first ? first : getkb()) {     /* get pressed key  */
+  switch (c = (first > 0) ? first : getkb()) { /* get pressed key */
    case KEY_HOME:            /* go to start of field */
     pos = 0;
     sx  = x;

@@ -39,6 +39,16 @@ if (fldvaluep) let(a, fldvaluep);
 return js_mkstr(js, a, strlen(a)+1);
 }
 
+/* goto field
+ * Gotocell("block.field:row")
+ */
+static jsval_t j_gotocell(struct js *js, jsval_t *args, int nargs) {
+char *selector;
+selector  = js_getstr(js, args[0], NULL);
+u.fgoto(selector);
+return js_mknum(0);
+}
+
 /* set query conditions for field
  * setquery("block.field", "condition")
  */
@@ -102,7 +112,8 @@ if (!javascript) {
   JSEXE(previous_record,previous_record);
   JSEXE(exec_query,exec_query);
   JSEXE($,snub);
-  JSEXE(setquery,setquery);
+  JSEXE(Setquery,setquery);
+  JSEXE(Gotocell,gotocell);
   JSEXE(String,tostring);
   JSEXE(Message,message);
   JSEXE(SQL,sql);
