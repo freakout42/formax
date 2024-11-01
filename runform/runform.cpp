@@ -66,6 +66,7 @@ const char *est[] = {
   "logging failed",               // 16
   "screen setup failed",          // 17
   "need new key for encryption",  // 18
+  "wrong version of form",        // 19
 };
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
@@ -209,18 +210,24 @@ switch(dbconn[1].drv) {
 memset(dsn, 'y', MEDSIZE); // remove key from ram
 genxorkey(NULL, NULL);
 
+/* create and load the form */
+rootform = new Form();
+if ((s = rootform->fill(form_id))) usage(s==19 ? 19 : 5);
+
 /* open the screen */
 if (y.init()) usage(17);
 
-/* create, load, run and destroy the form */
-rootform = new Form();
-if (rootform->fill(form_id)) usage(5);
+/* run the form */
 if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
 rootform->clear();
+
+/* cleanup screen */
+y.closedisplay();
+
+/* destroy the form */
 delete(rootform);
 
-/* cleanup screen db connections and logger */
-y.closedisplay();
+/* cleanup db connections and logger */
 for (i=0; i<5; i++) {
   dbconn[i].rclose();
   dbconn[i].disconnect();
