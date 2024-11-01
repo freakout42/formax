@@ -9,8 +9,12 @@ VALGRINDSUP=--gen-suppressions=no #all
 all: runform
 	strip runform
 
-$(OBJS): runform.h
-runform.h: curkeys.h
+$(OBJS): version.h
+version.h: runform.h
+	git log -1 | sed -n 's/commit \(.*\)/#define GITCOMMIT "\1"/p' >$@
+runform.h: company.h curkeys.h
+company.h: arx.h
+	if [ -f $@ ]; then touch $@; else cp arx.h $@; fi
 
 runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@

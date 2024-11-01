@@ -48,6 +48,14 @@ let(title, q->v(1, 3));
 needredraw = 0;
 rclose();
 
+/* error messages */
+if (rerror.init()) return 9;
+if ((s = rerror.query())) return s;
+if (rerror.q->rows != VERMSGS) return 19;
+e = rerror.q;
+rerror.q = new Qdata();
+rerror.rclose();
+
 /*               i  id seq desc
  * pages - page [0] 1  0   status/edit/message window
  *              [1] 5  1   working window
@@ -72,13 +80,6 @@ forall(page) {
   rmap.rclose();
 }
 rpage.rclose();
-
-/* error messages */
-if (rerror.init()) return 9;
-if ((s = rerror.query())) return s;
-e = rerror.q;
-rerror.q = new Qdata();
-rerror.rclose();
 
 /* blocks 0-3 is for free queries/sql statements */
 if (rblock.init(fid)) return 9;

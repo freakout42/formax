@@ -66,6 +66,7 @@ const char *est[] = {
   "logging failed",               // 16
   "screen setup failed",          // 17
   "need new key for encryption",  // 18
+  "wrong version of form",        // 19
 };
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
@@ -112,6 +113,7 @@ letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s %2.2s%3.3s%2.2s-%5.5s",
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
 const char *drvs[] = {
+  "/opt/arx/lib/libsqlite3odbc.so",
   "/opt/sqlite/lib/libsqlite3odbc.so",
   "/usr/lib/x86_64-linux-gnu/odbc/libsqlite3odbc.so",
   "/usr/lib64/libsqlite3odbc.so"
@@ -133,7 +135,7 @@ form_id = 1;
 /* command-line arguments and options check and process */
 while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
   switch (i) {
-    case 'V': fprintf(stderr, "runform %s (%d)\n", about, (int)sizeof(Form)); exit(2);
+    case 'V': fprintf(stderr, "runform %s\n  (%d) [%s]\n", about, (int)sizeof(Form), GITCOMMIT); exit(2);
     case 'y': ypassword = optarg; break;
     case 't':
       fputs("TOTP: ", stdout);
@@ -209,18 +211,14 @@ switch(dbconn[1].drv) {
 memset(dsn, 'y', MEDSIZE); // remove key from ram
 genxorkey(NULL, NULL);
 
-/* open the screen */
-if (y.init()) usage(17);
-
-/* create, load, run and destroy the form */
 rootform = new Form();
-if (rootform->fill(form_id)) usage(5);
-if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
-rootform->clear();
+  if ((s = rootform->fill(form_id))) usage(s==19 ? 19 : 5);
+    if (y.init()) usage(17);
+      if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
+    y.closedisplay();
+  rootform->clear();
 delete(rootform);
 
-/* cleanup screen db connections and logger */
-y.closedisplay();
 for (i=0; i<5; i++) {
   dbconn[i].rclose();
   dbconn[i].disconnect();

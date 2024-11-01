@@ -21,24 +21,25 @@ int i, r, y;
 char *t, *p;
 if (page_id == PGE_ABOUT) {
   r = 0;
-  letf(t(a), "%s", COMPANY);                                       map[r++] = strdup(a);
-  letf(t(a), "https://formax.freakout.de v%s", VERSION);           map[r++] = strdup(a);
-  letf(t(a), "charset:    %s", CHARSET);                           map[r++] = strdup(a);
-  letf(t(a), "compiler:   %s (%d)", CCOMPILER, (int)sizeof(Form)); map[r++] = strdup(a);
-  letf(t(a), "compiled:   %s %5.5s", __DATE__, __TIME__);          map[r++] = strdup(a);
-  letf(t(a), "sqlite inc: %s", sqliteversion);                     map[r++] = strdup(a);
-  letf(t(a), "sqlite run: %s %d", sqliterun, sqlitevernumber);     map[r++] = strdup(a);
-  letf(t(a), "odbc inc:   %s", odbcversion+2);                     map[r++] = strdup(a);
-  letf(t(a), "odbc lib:   %s", odbcrun);                           map[r++] = strdup(a);
-  letf(t(a), "form odbc:  %s", dbconn[0].driver_odbc_ver);         map[r++] = strdup(a);
-  letf(t(a), "form drvr:  %s", dbconn[0].driver_ver);              map[r++] = strdup(a);
-  letf(t(a), "form dver:  %s", dbconn[0].dbmsver);                 map[r++] = strdup(a);
-  letf(t(a), "data base:  %s", dbconn[1].dbmsname);                map[r++] = strdup(a);
-  letf(t(a), "data dver:  %s", dbconn[1].dbmsver);                 map[r++] = strdup(a);
-  letf(t(a), "data odbc:  %s", dbconn[1].driver_odbc_ver);         map[r++] = strdup(a);
-  letf(t(a), "data drvr:  %s", dbconn[1].driver_ver);              map[r++] = strdup(a);
-  letf(t(a), "curses inc: %s", cursesversion);                     map[r++] = strdup(a);
-  letf(t(a), "curses run: %s", cursesrun);                         map[r++] = strdup(a);
+#define ABOUTLINE map[r++] = strdup(a);
+  letf(t(a), "%s", COMPANY);                                         ABOUTLINE
+  letf(t(a), "https://formax.freakout.de v%s %d", VERSION, VERMSGS); ABOUTLINE
+  letf(t(a), "charset:    %s", CHARSET);                             ABOUTLINE
+  letf(t(a), "compiler:   %s (%d)", CCOMPILER, (int)sizeof(Form));   ABOUTLINE
+  letf(t(a), "compiled:   %s %5.5s", __DATE__, __TIME__);            ABOUTLINE
+  letf(t(a), "sqlite inc: %s", sqliteversion);                       ABOUTLINE
+  letf(t(a), "sqlite run: %s %d", sqliterun, sqlitevernumber);       ABOUTLINE
+  letf(t(a), "odbc inc:   %s", odbcversion+2);                       ABOUTLINE
+  letf(t(a), "odbc lib:   %s", odbcrun);                             ABOUTLINE
+  letf(t(a), "form odbc:  %s", dbconn[0].driver_odbc_ver);           ABOUTLINE
+  letf(t(a), "form drvr:  %s", dbconn[0].driver_ver);                ABOUTLINE
+  letf(t(a), "form dver:  %s", dbconn[0].dbmsver);                   ABOUTLINE
+  letf(t(a), "data base:  %s", dbconn[1].dbmsname);                  ABOUTLINE
+  letf(t(a), "data dver:  %s", dbconn[1].dbmsver);                   ABOUTLINE
+  letf(t(a), "data odbc:  %s", dbconn[1].driver_odbc_ver);           ABOUTLINE
+  letf(t(a), "data drvr:  %s", dbconn[1].driver_ver);                ABOUTLINE
+  letf(t(a), "curses inc: %s", cursesversion);                       ABOUTLINE
+  letf(t(a), "curses run: %s", cursesrun);                           ABOUTLINE
 } else {
 for (i = 1; i <= qma->rows; i++) {
   r = qma->n(i, 1);

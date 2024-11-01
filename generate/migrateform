@@ -1,0 +1,12 @@
+#!/bin/sh
+PATH=`dirname $0`:$PATH
+FORM=$1
+cp $FORM.frm $FORM-2.frm
+sqlite3 $FORM-2.frm <<EOF >$FORM-2.inp
+.mode insert fields
+select id,form_id,blcn,pgen,name,seq,ftype,len,2,dlen,align,btab,key,dflt,line,col,query,upd,updnul,mand,lovtit,lov_id,lovi_id,low,high,valpatn,help from fields;
+drop table fields;
+`extractsql $ARX/runform/rfield.h`
+EOF
+sqlite3 $FORM-2.frm <$FORM-2.inp
+exit

@@ -108,19 +108,18 @@ action (SQL) can be logged in a central database.
 
 ### Status
 
-Current v2.1.5 is stable - the generator can create a
-single-block single-page form. You are able to create,
-retrieve, update and delete (CRUD) records in the table. The
-designer-tool is able to edit the page markup and to
-integrate the field positions and lengths into the form.
-There is also a form to maintain the field properties and
-the triggers. The rest is done by editing the .inp-file.
+**formax** has all important features to create real live
+forms. The designer-tool is able to edit the page markup and
+to integrate the field positions and lengths into the form
+visually. There is also a form to maintain the field
+properties and the triggers. The rest can be done by editing
+the .inp-file.
 
-It has all important features to create non-complex forms.
-It has not matured enough to call it fully production ready.
-Create an issue when in trouble or have found a bug or
-security problem. Open a discussion when missing a feature.
-Don't hesitate to start using it.
+It has not matured enough to call it fully production ready
+and complex triggers maybe challenging. Create an issue when
+in trouble or have found a bug or security problem. Open a
+discussion when missing a feature. Don't hesitate to start
+using it.
 
 Full Forms3 functionality is a big task and depends highly
 on the community participation in the future. The database

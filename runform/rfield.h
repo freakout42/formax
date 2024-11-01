@@ -16,6 +16,7 @@ CREATE TABLE fields
    seq       INTEGER NOT NULL DEFAULT 1,
    ftype     INTEGER NOT NULL DEFAULT 0,    /* 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE */
    len       INTEGER NOT NULL DEFAULT 30,   /* field length */
+   decl      INTEGER NOT NULL DEFAULT 2,    /* decimals length for ftype==3 float */
    dlen      INTEGER NOT NULL DEFAULT 20,   /* display length =0 no display */
    align     INTEGER NOT NULL DEFAULT 0,    /* alignment =0 left =1 right */
    btab      INTEGER NOT NULL DEFAULT 1,    /* if the field is a base table field */
@@ -23,7 +24,6 @@ CREATE TABLE fields
    dflt      TEXT    NOT NULL DEFAULT '',   /* default value */
    line      INTEGER NOT NULL DEFAULT 0,    /* page location */
    col       INTEGER NOT NULL DEFAULT 19,   /* column location */
-   enter     INTEGER NOT NULL DEFAULT 1,    /* if the field is enterable */
    query     INTEGER NOT NULL DEFAULT 1,    /* if the field can be queried */
    upd       INTEGER NOT NULL DEFAULT 1,    /* if the field can be updated */
    updnul    INTEGER NOT NULL DEFAULT 1,    /* if the field can be updated when NULL */

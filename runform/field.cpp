@@ -25,9 +25,9 @@ col           = fld->n(rix, 8) + (page.border ? 1 : 0);
 isprimarykey  = fld->n(rix, 9);
 fieldtype     = (ftype)fld->n(rix,10);
 fieldlen      = fld->n(rix,11);
-basetable     = fld->n(rix,12);
-defaultval    = fld->c(rix,13);
-enterable     = fld->n(rix,14);
+decimalen     = fld->n(rix,12);
+basetable     = fld->n(rix,13);
+defaultval    = fld->c(rix,14);
 queryable     = fld->n(rix,15);
 updateable    = fld->n(rix,16);
 updnulable    = fld->n(rix,17);
@@ -60,7 +60,7 @@ int Field::noedit() {
 switch(CM) {
  case MOD_UPDATE: if (isprimarykey || !(updateable || (updnulable && *valuep()==NULL))) return 1; break;
  case MOD_QUERY:  if (!queryable)                                                       return 1; break;
- case MOD_INSERT: if (!(updateable || updnulable))                                      return 1; break;
+ case MOD_INSERT: if (!updateable && !updnulable)                                       return 1; break;
  case MOD_DELETE:                                                                                 break;
 }
 return 0;
@@ -92,6 +92,9 @@ if (CP.index == pageindex && displaylen > 0)
     if (cur) color = COL_CURRENT;
     if (block.index != CB.index || (block.rmode != MOD_QUERY && outrec != block.currentrec)) color = COL_DATA;
     if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
+   if (outcell && *outcell && fieldtype == FTY_FLOAT)
+    page.writef(outline, col, color, displaylen, "%*.*f", displaylen, decimalen, atof(outcell));
+   else
     page.writef(outline, col, color, displaylen, "%*.*s", alignment?displaylen:0, displaylen, outcell);
     if (cur) page.wmov(outline, col);
   }
@@ -212,7 +215,7 @@ switch(CM) {
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }
   /*FALLTHRU*/
  case MOD_INSERT:
-  if (noedit() || (!enterable && pos>FED_SPECIAL)) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
+  if (noedit() && pos > FED_SPECIAL) { MSG(MSG_FLDPROT); return KEF_CANCEL; }
   if (block.q->rows) {
     c = valuep();
     if (*c) let(a, *c); else empty(a);
@@ -223,7 +226,7 @@ switch(CM) {
      case FED_INCR:    pressed = increment(a, 1);             break;
      case FED_DECR:    pressed = increment(a, -1);            break;
      default:        if (displaylen == fieldlen)
-                       pressed = F(p)[pageindex].sedit(a, pos, fldtype(), fieldlen, line, col);
+                       pressed = F(p)[pageindex].sedit(a, pos, fldtype(), fieldlen, line+CR-CB.toprec, col);
                      else
                        pressed = F(p)[PGE_STATUS].sedit(a, pos, fldtype(), fieldlen);
     }

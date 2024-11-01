@@ -1,5 +1,6 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.1.5"
+#define VERSION "2.1.7"
+#define VERMSGS 23
 extern char odbcversion[];
 extern char odbcrun[];
 extern char cursesversion[];
@@ -53,8 +54,6 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, P
 /* runform modes display names */
 #define RMODENAMES { "Insert",   "Query ",  "Update",   "Delete" }
 
-#include "../version.h"
-
 /* global resource configuration */
 #define STATUSL 0
 #define TNYSIZE 80
@@ -71,6 +70,8 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, P
 #define NPRIKEY 4
 #define NBINDPA NFIELD1
 
+#include "version.h"
+#include "company.h"
 #include <assert.h>
 #include <string.h>
 #include <ctype.h>
