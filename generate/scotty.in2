@@ -165,12 +165,15 @@ INSERT INTO fields VALUES(2,1,5,1,'ename',20,0,30,2,18,0,1,0,'',7,6,1,1,1,0,'',0
 INSERT INTO fields VALUES(3,1,5,1,'job',30,0,30,2,15,0,1,0,'CIO',7,25,1,1,1,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(4,1,5,1,'mgr',40,2,4,2,4,0,1,0,'',7,41,1,1,1,0,'',0,0,7000,8999,'\d\d\d\d','');
 INSERT INTO fields VALUES(5,1,5,1,'hiredate',50,4,30,2,10,0,1,0,'',7,46,1,1,1,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(6,1,5,1,'sal',60,0,8,2,8,1,1,0,'',7,57,1,0,1,0,'',0,0,0,0,'','');
+INSERT INTO fields VALUES(6,1,5,1,'sal',60,3,8,2,8,1,1,0,'',7,57,1,0,1,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(7,1,5,1,'comm',70,2,1,2,8,0,1,0,'',7,66,1,1,1,0,'',0,0,0,1,'','');
 INSERT INTO fields VALUES(8,1,5,1,'dept_id',80,0,30,2,2,0,1,0,'',7,75,1,1,1,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(9,1,4,1,'id',100,0,30,2,2,0,1,1,'',1,14,1,1,1,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(10,1,4,1,'dname',110,0,30,2,20,0,1,0,'',2,14,1,1,1,0,'',0,0,0,0,'','Department');
 INSERT INTO fields VALUES(11,1,4,1,'loc',120,0,30,2,30,0,1,0,'',3,14,1,1,1,0,'',0,0,0,0,'','');
+INSERT INTO sqlite_sequence VALUES('triggers',6);
+INSERT INTO sqlite_sequence VALUES('maps',40);
+INSERT INTO sqlite_sequence VALUES('pages',5);
 INSERT INTO sqlite_sequence VALUES('triggers',6);
 INSERT INTO sqlite_sequence VALUES('maps',40);
 INSERT INTO sqlite_sequence VALUES('pages',5);

@@ -76,12 +76,13 @@ Enterprise requirements are fully accomplished:
 Status
 ======
 
-Release 2.1.5 has all important features to create
-non-complex forms. It has not matured enough to call it
-fully production ready. Create an issue when in trouble,
-have found a bug or a security problem. Create discussions
-for feature requests. Dont hesitate to start using it.
-Together we will make **formax** suit your needs.
+**formax** has all important features to create real live
+forms. It has not matured enough to call it fully production
+ready and complex triggers maybe challenging. Create an
+issue when in trouble, have found a bug or a security
+problem. Create discussions for feature requests. Dont
+hesitate to start using it. Together we will make it suit
+your needs.
 
 Product security complies with current standards. The
 code is -Wall -Werror clean and send through valgrind,
