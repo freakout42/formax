@@ -12,6 +12,7 @@ char *macropointer = NULL;
 
 Screen::Screen() {
 ysiz = 0;
+cursesrun = curses_version();
 }
 
 /* curses attributes configuration array */
@@ -103,7 +104,6 @@ static struct termios otermio;
 int Screen::init() {
 struct termios termio;
 int i;
-cursesrun = curses_version();
 tcgetattr (0, &termio); /* give me all attributes */
 otermio = termio;
 termio.c_cc[VINTR] = 0; /* ctrl-c */
