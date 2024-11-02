@@ -59,10 +59,10 @@ void Field::rclose() {
 int Field::noedit() {
 switch(CM) {
  case MOD_UPDATE: if (isprimarykey || !(updateable || (updnulable &&
-                       (!*valuep() || !**valuep()))))                 return 1; break;
- case MOD_QUERY:  if (!queryable)                                     return 1; break;
- case MOD_INSERT: if (!updateable && !updnulable)                     return 1; break;
- case MOD_DELETE:                                                               break;
+                       (!*valuep() || !**valuep()))))                 return 1;
+ case MOD_QUERY:  if (!queryable)                                     return 1;
+ case MOD_INSERT: if (!updateable && !updnulable)                     return 1;
+ case MOD_DELETE:                                                     break;
 }
 return 0;
 }
