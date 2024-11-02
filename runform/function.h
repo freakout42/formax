@@ -11,6 +11,7 @@ public:
   int next_setrecords();
   int previous_record();
   void fgoto(char *sel);
+  void fsearch(char *rex);
   int exec_query();
   int edittrg(char *buf);
   char *etrigger(int tid);
@@ -39,6 +40,7 @@ private:
   int fmove(int bi, int fi);
   int fmover(int rn, int ri);
   int goto_cell();
+  int search_cell();
   void fwindow();
   int ftoggle();
   int fincrement(int ival);

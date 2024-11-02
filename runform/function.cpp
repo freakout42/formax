@@ -90,6 +90,7 @@ switch(F(lastcmd)) {
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
   case '>':          LK = goto_cell();                                        break;
+  case '<':          LK = search_cell();                                      break;
   default:
    if (isprintable(LK))
                      LK = fedit(-1000 - LK);
@@ -258,6 +259,32 @@ if (fieldn != -1) {
   if (CF.noedit()) fmove(0, 1);
   fmover(rown, 0);
 } }
+
+/* search with regex */
+int Function::search_cell() {
+int pressed;
+if (CM == MOD_UPDATE) {
+  pressed = F(p)[PGE_STATUS].sedit(CB.searchre, 0, FTY_ALL, 60);
+  if (pressed == KEY_ENTER) fsearch(CB.searchre);
+}
+return 0; //pressed;
+}
+
+void Function::fsearch(char *rex) {
+int fldn, rown;
+static char **val;
+for(rown=1; rown<=CN; rown++)
+  for(fldn=1; fldn<=CB.fieldcount; fldn++) {
+    val = CB.q->w(rown, fldn);
+    if (*val && !strcmp(*val, rex)) {
+      CFi = CB.blockfields[fldn-1];
+      CR = rown;
+      if (CF.noedit()) fmove(0, 1);
+      fmover(0, 0);
+      return;
+    }
+  }
+}
 
 /* EDITING */
 int Function::insert_record() {

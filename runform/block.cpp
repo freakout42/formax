@@ -14,6 +14,7 @@ let(prikey, blk->v(rix, 5));
 let(where,  blk->v(rix, 6));
 let(order,  blk->v(rix, 7));
 let(attrs,  "");
+let(searchre, "regex");
 fieldcount = 0;
 prikeycnt = 0;
 empty(condition);

@@ -16,6 +16,7 @@ public:
   int prikeycnt;
   int blockfields[NFIELD1]; /* array index l[] */
   int primarykeys[NPRIKEY];
+  char searchre[NORSIZE];
   char *cn(int c);
   fmode rmode;
   int currentrec;
