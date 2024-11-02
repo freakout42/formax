@@ -9,6 +9,7 @@
  * are the processes of navigation and validation.
  */
 #include "runform.h"
+#include "regex/re.h"
 
 int Function::dispatch() { /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
 F(lastcmd) = F(mapkey)(LK);
@@ -90,7 +91,7 @@ switch(F(lastcmd)) {
   case '+':          LK = fincrement(1);                                      break;
   case '-':          LK = fincrement(-1);                                     break;
   case '>':          LK = goto_cell();                                        break;
-  case '<':          LK = search_cell();                                      break;
+  case '~':          LK = search_cell();                                      break;
   default:
    if (isprintable(LK))
                      LK = fedit(-1000 - LK);
@@ -271,20 +272,33 @@ return 0; //pressed;
 }
 
 void Function::fsearch(char *rex) {
-int fldn, rown;
-static char **val;
-for(rown=1; rown<=CN; rown++)
-  for(fldn=1; fldn<=CB.fieldcount; fldn++) {
+int fldn, rown, s;
+char **val;
+char *src, *tgt;
+re_t re;
+re = re_compile(rex);
+fldn = CF.sequencenum + 1;
+for(rown=CR; rown<=CN; rown++) {
+  for(; fldn<=CB.fieldcount; fldn++) {
     val = CB.q->w(rown, fldn);
-    if (*val && !strcmp(*val, rex)) {
-      CFi = CB.blockfields[fldn-1];
-      CR = rown;
-      if (CF.noedit()) fmove(0, 1);
-      fmover(0, 0);
-      return;
+    if (*val) {
+      if (matchnocas) {
+        tgt = a;
+        for (src=*val; *src; src++) *tgt++ = tolower(*src);
+        tgt = a;
+        val = &tgt;
+      }
+      if (re_matchp(re, *val, &s) != -1) {
+        CFi = CB.blockfields[fldn-1];
+        CR = rown;
+        if (CF.noedit()) fmove(0, 1);
+        fmover(0, 0);
+        return;
+      }
     }
   }
-}
+  fldn = 1;
+} }
 
 /* EDITING */
 int Function::insert_record() {

@@ -30,6 +30,7 @@ int  querycharm  = 1;             // -h
 int  autocommit  = 1;             // -a
 int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
+int  matchnocas  = 0;             // -m
 char *ypassword  = NULL;
 char *username;
 char about[SMLSIZE];
@@ -40,7 +41,7 @@ Record dbconn[5];
 Screen y;
 Form *f;
 Function u;
-char a[BIGSIZE];
+char a[HUGSIZE];
 
 static char b64pwd[65];
 static const char *xorkey1pointer = XORKEY1;
@@ -133,7 +134,7 @@ lclocale = setlocale(LC_ALL, CHARSET);
 form_id = 1;
 
 /* command-line arguments and options check and process */
-while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
+while ((i = getopt(argc, argv, "3abcdf:g:hikl:mn:pqt:Vxy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n  (%d) [%s]\n", about, (int)sizeof(Form), GITCOMMIT); exit(2);
     case 'y': ypassword = optarg; break;
@@ -165,6 +166,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hikl:n:pqt:Vxy:")) != -1) {
     case 'a': autocommit = 0; break;
     case 'd': deleprompt = 1; break;
     case 'q': queryonlym = 1; break;
+    case 'm': matchnocas = 1; break;
     default: usage(1);
   }
 }

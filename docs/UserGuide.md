@@ -96,7 +96,7 @@ categories:
     for in all selected data.
 
  - Navigation = [Left] [Right] [Up] [Down] [PageUp] [PageDn]
-                [Home] [End] [Tab] [Backtab] [>]
+                [Home] [End] [Tab] [Backtab] [>] [~]
 
     These keys navigate through the form changing the
     current item. [Left] and [Right] move the cursor in Edit-
@@ -111,6 +111,8 @@ categories:
     next respectively previous record or set of records in
     the current block. With [>] a block.field:row can be
     entered to navigate directly to any cell in the form.
+    [~] offers entering a search pattern for scanning all
+    records data.
 
  - Function = [F1-10] [Ins] [Del] [Backspace]
 
