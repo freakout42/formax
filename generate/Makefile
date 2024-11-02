@@ -1,6 +1,6 @@
 all: adjfield formax.frm
 
-test: all scotty.sq3 scotty.frm formax.frm formax.sq3
+test: all scotty.sq3 scotty.frm formax.frm formax.sq3 depts.dbf emps.dbf
 
 %.frm: %.inp
 	rm -f $@
@@ -19,6 +19,9 @@ scotty.inp: scotty.in2
 formax.sql: formax.frm
 	sqlite3 formax.frm .dump >$@
 
+depts.dbf emps.dbf: scotty.ads
+	isql Adsf <scotty.ads >/dev/null
+
 clean:
-	rm -f *.frm* scotty.inp scotty.frm* scotty.sq3 ads_* adjfield runform formax.sq?
+	rm -f *.frm* scotty.inp scotty.frm* scotty.sq3 ads_* adjfield runform formax.sq? depts.dbf emps.dbf
 

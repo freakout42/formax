@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.1.7"
+#define VERSION "2.1.8"
 #define VERMSGS 23
 extern char odbcversion[];
 extern char odbcrun[];
@@ -162,7 +162,8 @@ extern int   querycharm;
 extern int   autocommit;
 extern int   deleprompt;
 extern int   queryonlym;
+extern int   matchnocas;
 extern char  *shiftednum;
 extern char  *username;
 extern Function u;
-extern char a[BIGSIZE];
+extern char a[HUGSIZE];

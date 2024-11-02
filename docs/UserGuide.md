@@ -92,9 +92,11 @@ categories:
     The [+] and [-] keys increment or decrement integers.
     [.] calls the screen editor for multi line fields.
     "]" calls the screen editor with a corresponding file.
+    [<] offers the input of a regular expression to search
+    for in all selected data.
 
  - Navigation = [Left] [Right] [Up] [Down] [PageUp] [PageDn]
-                [Home] [End] [Tab] [Backtab]
+                [Home] [End] [Tab] [Backtab] [>] [~]
 
     These keys navigate through the form changing the
     current item. [Left] and [Right] move the cursor in Edit-
@@ -107,7 +109,10 @@ categories:
     respectively previous enterable field in the current
     record. [Up] [Down] [PageUp] [PageDn] move the cursor to
     next respectively previous record or set of records in
-    the current block. 
+    the current block. With [>] a block.field:row can be
+    entered to navigate directly to any cell in the form.
+    [~] offers entering a search pattern for scanning all
+    records data.
 
  - Function = [F1-10] [Ins] [Del] [Backspace]
 
