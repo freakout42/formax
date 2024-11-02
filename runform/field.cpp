@@ -58,10 +58,11 @@ void Field::rclose() {
 /* check whether field is editable in current mode */
 int Field::noedit() {
 switch(CM) {
- case MOD_UPDATE: if (isprimarykey || !(updateable || (updnulable && *valuep()==NULL))) return 1; break;
- case MOD_QUERY:  if (!queryable)                                                       return 1; break;
- case MOD_INSERT: if (!updateable && !updnulable)                                       return 1; break;
- case MOD_DELETE:                                                                                 break;
+ case MOD_UPDATE: if (isprimarykey || !(updateable || (updnulable &&
+                       (!*valuep() || !**valuep()))))                 return 1; break;
+ case MOD_QUERY:  if (!queryable)                                     return 1; break;
+ case MOD_INSERT: if (!updateable && !updnulable)                     return 1; break;
+ case MOD_DELETE:                                                               break;
 }
 return 0;
 }
@@ -191,7 +192,10 @@ switch (fieldtype) {
     return KEF_CANCEL;
   }
   break;
- case FTY_FLOAT: break;
+ case FTY_FLOAT:
+  letf(t(buf2), "%.*f", decimalen, atof(buf));
+  strcpy(buf, buf2);
+  break;
  case FTY_CHAR: break;
  case FTY_ALL: break;
 }

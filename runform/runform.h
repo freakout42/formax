@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.1.7"
+#define VERSION "2.1.8"
 #define VERMSGS 23
 extern char odbcversion[];
 extern char odbcrun[];
