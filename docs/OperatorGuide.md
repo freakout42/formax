@@ -196,6 +196,10 @@ from outside is passed to ODBC with bind variables. There is
 no free SQL enterable as is was possible with original
 SQL-Forms.
 
+Job control and sending to background is prohibited by
+ignoring the interactive signal and by reassigning the
+corresponding control keys in the terminal driver.
+
 Every executed SQL-statement can be logged in a central
 database with the `-g` switch.
 
