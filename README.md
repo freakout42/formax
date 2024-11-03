@@ -152,7 +152,7 @@ sudo make install
 ~~~
 
 Alternatively there is a rpm-file for x64 RedHat/CentOS:
-https://github.com/freakout42/formax/releases/download/v0.9.9/formax-2.1.8-1.x86_64.rpm  
+https://github.com/freakout42/formax/releases/download/v0.9.9/formax-2.1.9-1.x86_64.rpm  
 
 Getting started
 ===============
