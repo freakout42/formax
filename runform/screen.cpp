@@ -1,6 +1,7 @@
 /* curses screen handling interface */
 #include <assert.h>
 #include <cstdarg>
+#include <signal.h>
 #include <termios.h>
 #include <term.h>
 #include <curses.h>
@@ -104,6 +105,7 @@ static struct termios otermio;
 int Screen::init() {
 struct termios termio;
 int i;
+signal(SIGTSTP, SIG_IGN);
 tcgetattr (0, &termio); /* give me all attributes */
 otermio = termio;
 termio.c_cc[VINTR] = 0; /* ctrl-c */
