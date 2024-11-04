@@ -6,8 +6,12 @@
 #define defkey(keyname)           defke2(#keyname, KEY_##keyname)
 
 int main() {
+defkey(ENTER)
+defkey(CANCEL)
+defkey(SUSPEND)
 defkey(BACKSPACE)
 defkey(NEXT)
+defkey(BTAB)
 defkey(UP)
 defkey(DOWN)
 defkey(RIGHT)

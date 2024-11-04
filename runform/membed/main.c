@@ -1484,8 +1484,12 @@ logok:
 					c = (CNTL | 'A');		break;
 		case KEY_IC:			/* insert/overstrike toggle */
 					c = (META | 'I');		break;
+		case KEY_CANCEL:	/* kcan cancel key */
+					c = (CNTL | 'C');		break;
 		case KEY_DC:			/* delete key */
 					c = (CNTL | 'D');		break;
+		case KEY_ENTER:		/* delete key */
+					c = (CNTL | 'M');		break;
 		case KEY_F(1):			/* F1 key, help */
 					c = (META | '?');		break;
 		case KEY_F(2):			/* F2 key, new window */
@@ -1501,10 +1505,9 @@ logok:
 		case KEY_F(7):			/* F7 search bracket */
 					c = (META | '{'); 		break;
 		case KEY_F(8):			/* F8 save/exit */
-					c = (CNTL | 'Z');		break;
 		case KEY_F(9):			/* F9 save/exit */
-					c = (CNTL | 'Z');		break;
 		case KEY_F(10):			/* F10 save/exit */
+		case KEY_SUSPEND:		/* ksus */
 					c = (CNTL | 'Z');		break;
 		}
 #endif
