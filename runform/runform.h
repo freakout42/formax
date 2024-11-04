@@ -106,6 +106,9 @@ extern Logger g;
 extern Record dbconn[5];
 extern Screen y;
 extern Form *f;
+extern Function u;
+extern char a[HUGSIZE];
+extern int lastgetch;
 #define F(method) f->method
 #define CFi F(curfield)
 #define CBi F(curblock)
@@ -165,5 +168,3 @@ extern int   queryonlym;
 extern int   matchnocas;
 extern char  *shiftednum;
 extern char  *username;
-extern Function u;
-extern char a[HUGSIZE];
