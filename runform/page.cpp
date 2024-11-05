@@ -159,7 +159,12 @@ writef(0, 33, 0, 8,  "%s",        CF.column);
 writef(0, 42, 0,13,  "%6d/%6d",   CR, CN);
 writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
+#undef DEBUGETKB
+#ifdef DEBUGETKB
+writef(0, 67, 0,   13,"%04o %5d", lastgetch, lastgetch);
+#else
 writef(0, 67, COL_COMMIT,13,"%s", commit);
+#endif
 if (!macropointer) refr();
 forall(field) F(l)[i].show();
 for (i=PGE_MAIN; i<F(numpage); i++) {

@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.1.9"
+#define VERSION "2.1.10"
 #define VERMSGS 23
 extern char odbcversion[];
 extern char odbcrun[];
@@ -106,6 +106,9 @@ extern Logger g;
 extern Record dbconn[5];
 extern Screen y;
 extern Form *f;
+extern Function u;
+extern char a[HUGSIZE];
+extern int lastgetch;
 #define F(method) f->method
 #define CFi F(curfield)
 #define CBi F(curblock)
@@ -165,5 +168,3 @@ extern int   queryonlym;
 extern int   matchnocas;
 extern char  *shiftednum;
 extern char  *username;
-extern Function u;
-extern char a[HUGSIZE];

@@ -42,6 +42,7 @@ Screen y;
 Form *f;
 Function u;
 char a[HUGSIZE];
+int lastgetch = 256;
 
 static char b64pwd[65];
 static const char *xorkey1pointer = XORKEY1;

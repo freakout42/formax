@@ -106,7 +106,9 @@ int Screen::init() {
 struct termios termio;
 int i;
 signal(SIGTSTP, SIG_IGN);
-tcgetattr (0, &termio); /* give me all attributes */
+if ((wndw = initscr()) == NULL) return 1;
+assert(wndw == stdscr);
+tcgetattr (fileno(stdin), &termio); /* give me all attributes */
 otermio = termio;
 termio.c_cc[VINTR] = 0; /* ctrl-c */
 #ifdef VDSUSP
@@ -116,9 +118,10 @@ termio.c_cc[VSUSP] = 0; /* ctrl-z */
 #ifdef VLNEXT
 termio.c_cc[VLNEXT] = 0;/* ctrl-v */
 #endif
-tcsetattr (0, TCSANOW, &termio);
-if ((wndw = initscr()) == NULL) return 1;
-assert(wndw == stdscr);
+tcsetattr (fileno(stdin), TCSANOW, &termio);
+#ifdef init_tabs
+  init_tabs = 0;
+#endif
 nonl();
 noecho();
 //cbreak();
@@ -149,7 +152,11 @@ void Screen::wmov(int y, int x) { wmove(wndw, y, x); }
 void Screen::refr() { wrefresh(wndw); }
 void Screen::noutrefr() { wnoutrefresh(wndw); }
 void Screen::redraw() { redrawwin(wndw); }
-void Screen::closedisplay() { endwin(); tcsetattr (0, TCSANOW, &otermio); }
+
+void Screen::closedisplay() {
+endwin();
+/*tcsetattr (fileno(stdin), TCSANOW, &otermio); curses takes care of resetting stty */
+}
 
 /* toggle overwrite/insert mode cursor shape not possible? */
 void Screen::toggle() {
@@ -214,12 +221,12 @@ return wgetch(stdscr); /* wgetch(wndw); getch(); */
 
 /* map ctrl to function keys */
 int Screen::getkb() {
-int ch;
-ch = wgetc();
-switch(ch) {
+lastgetch = wgetc();
+switch(lastgetch) {
 /* KEF_HELP    */  case KEY_CTRL('@'):  return KEY_F(1);       /* Help                           Help */
 /* KEF_HOME    */  case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
 /* KEF_LEFT    */  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char                  Left */
+/* kcan=^C     */  case KEY_CANCEL:
 /* KEF_COPY    */  case KEY_CTRL('C'):  return KEY_F(2);       /* Copy                           Copy */
 /* KEF_DELETE  */  case KEY_CTRL('D'):  return KEY_F(7);       /* Delete (record)                DeleteCharacter DeleteRecord */
 /* KEF_END     */  case KEY_CTRL('E'):  return KEY_END;        /* End / Next block               EndOfLine NextBlock */
@@ -243,9 +250,10 @@ switch(ch) {
 /* KEF_NXTSETR */  case KEY_CTRL('W'):  return KEY_NPAGE;      /* Next set of records            NextSetOfRecords */
 /* KEF_QUERY   */  case KEY_CTRL('X'):  return KEY_F(10);      /* Query                          EnterQuery */
 /* KEF_QUIT    */  case KEY_CTRL('Y'):  return KEY_F(9);       /* Rollback Cancel                ExitCancel */
+/* kspd=^Z     */  case KEY_SUSPEND:
 /* KEF_EXIT    */  case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit                  Exit */
  }
-return ch;
+return lastgetch;
 }
 
 /* edit a string on the screen */
