@@ -30,7 +30,7 @@ int  querycharm  = 1;             // -h
 int  autocommit  = 1;             // -a
 int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
-int  matchnocas  = 0;             // -m
+int  matchnocas  = 1;             // -m
 char *ypassword  = NULL;
 char *username;
 char about[SMLSIZE];
@@ -167,7 +167,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hikl:mn:pqt:Vxy:")) != -1) {
     case 'a': autocommit = 0; break;
     case 'd': deleprompt = 1; break;
     case 'q': queryonlym = 1; break;
-    case 'm': matchnocas = 1; break;
+    case 'm': matchnocas = 0; break;
     default: usage(1);
   }
 }
