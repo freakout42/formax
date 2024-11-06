@@ -1,3 +1,4 @@
+#include <stdio.h>
 /* workhorse object most of the action is here
  * Represent columns or data entry areas and describe
  * how the data should be displayed and validated
@@ -93,7 +94,7 @@ if (CP.index == pageindex && displaylen > 0)
     if (cur) color = COL_CURRENT;
     if (block.index != CB.index || (block.rmode != MOD_QUERY && outrec != block.currentrec)) color = COL_DATA;
     if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
-    if (outcell && *outcell && fieldtype == FTY_FLOAT)
+    if (outcell && *outcell && block.rmode != MOD_QUERY && fieldtype == FTY_FLOAT)
       page.writef(outline, col, color, displaylen, "%*.*f", displaylen, decimalen, atof(outcell));
     else
       page.writef(outline, col, color, displaylen, "%*.*s", alignment?displaylen:0, displaylen, outcell);
@@ -251,7 +252,16 @@ return pressed;
 
 /* set the query condition in human form */
 void Field::setcond(char *cond) {
+int runcharmode;
 let(queryhuman, cond);
-colquery(queryhuman, querywhere, column, querycharm, 0);
+switch (fldtype()) {
+ case FTY_CHAR:
+ case FTY_DATE:  runcharmode = 1;          break;
+ case FTY_INT:
+ case FTY_FLOAT:
+ case FTY_BOOL:  runcharmode = 0;          break;
+ case FTY_ALL:
+ default:        runcharmode = querycharm;
 }
-
+colquery(queryhuman, querywhere, column, runcharmode, 0);
+}
