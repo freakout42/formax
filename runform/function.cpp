@@ -12,6 +12,7 @@
 #include "regex/re.h"
 
 int Function::dispatch() { /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
+int undone;
 F(lastcmd) = F(mapkey)(LK);
 switch(F(lastcmd)) {
 #ifdef NOTYETIMPLEMENTED
@@ -84,16 +85,24 @@ switch(F(lastcmd)) {
   case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
   case '|':          LK = MSG1(MSG_HELP, about);                              break;
   case '?':          LK = aboutwin();                                         break;
-  case '=':          LK = editrigger(TRT_EDITFIELD);                          break;
-  case '[':          LK = edit_map();                                         break;
-  case ']':          LK = edit_file();                                        break;
-  case ' ':          LK = ftoggle();                                          break;
-  case '+':          LK = fincrement(1);                                      break;
-  case '-':          LK = fincrement(-1);                                     break;
-  case '>':          LK = goto_cell();                                        break;
-  case '~':          LK = search_cell();                                      break;
+
   default:
-   if (isprintable(LK))
+   undone = 1;
+   if (CM == MOD_UPDATE) {
+     undone = 0;
+     switch(F(lastcmd)) {
+      case '=':      LK = editrigger(TRT_EDITFIELD);                   break;
+      case '[':      LK = edit_map();                                  break;
+      case ']':      LK = edit_file();                                 break;
+      case ' ':      LK = ftoggle();                                   break;
+      case '+':      LK = fincrement(1);                               break;
+      case '-':      LK = fincrement(-1);                              break;
+      case '>':      LK = goto_cell();                                 break;
+      case '~':      LK = search_cell();                               break;
+      default:       undone = 1;
+     }
+   }
+   if (undone && isprintable(LK))
                      LK = fedit(-1000 - LK);
    else              LK = 0;
                                                                               break;

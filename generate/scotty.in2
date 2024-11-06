@@ -161,7 +161,7 @@ CREATE TABLE fields
    help TEXT NOT NULL DEFAULT ''
   );
 INSERT INTO fields VALUES(1,1,5,1,'id',10,0,30,2,4,0,1,1,'',7,1,1,1,1,0,'',0,0,0,0,'','');
-INSERT INTO fields VALUES(2,1,5,1,'ename',20,0,30,2,18,0,1,0,'',7,6,1,1,1,0,'',0,0,0,0,'','Employees last name');
+INSERT INTO fields VALUES(2,1,5,1,'ename',20,1,30,2,18,0,1,0,'',7,6,1,1,1,0,'',0,0,0,0,'','Employees last name');
 INSERT INTO fields VALUES(3,1,5,1,'job',30,0,30,2,15,0,1,0,'CIO',7,25,1,1,1,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(4,1,5,1,'mgr',40,2,4,2,4,0,1,0,'',7,41,1,1,1,0,'',0,0,7000,8999,'\d\d\d\d','');
 INSERT INTO fields VALUES(5,1,5,1,'hiredate',50,4,30,2,10,0,1,0,'',7,46,1,1,1,0,'',0,0,0,0,'','');
