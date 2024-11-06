@@ -92,7 +92,6 @@ particularly when the three factor authentication is used.
 
 Future roadmap
 --------------
- - 2.2 in-field editing
  - 2.5 list of values - subforms
  - 3.0 menue multiple forms
  - 3.5 transaction processing
@@ -152,7 +151,7 @@ sudo make install
 ~~~
 
 Alternatively there is a rpm-file for x64 RedHat/CentOS:
-https://github.com/freakout42/formax/releases/download/v2.1.9/formax-2.1.9-1.x86_64.rpm  
+https://github.com/freakout42/formax/releases/download/v2.2.0/formax-2.2.0-1.x86_64.rpm  
 
 Getting started
 ===============
