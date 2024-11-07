@@ -117,9 +117,8 @@ the .inp-file.
 
 It has not matured enough to call it fully production ready
 and complex triggers maybe challenging. Create an issue when
-in trouble or have found a bug or security problem. Open a
-discussion when missing a feature. Don't hesitate to start
-using it.
+in trouble or have found a bug or security problem or when
+missing a feature. Don't hesitate to start using it.
 
 Full Forms3 functionality is a big task and depends highly
 on the community participation in the future. The database
