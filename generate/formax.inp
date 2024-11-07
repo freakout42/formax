@@ -52,89 +52,10 @@ INSERT INTO blocks VALUES(2,0,'dual2',2,1,'id','','');
 INSERT INTO blocks VALUES(3,0,'dual3',3,1,'id','','');
 INSERT INTO blocks VALUES(4,0,'dual4',4,1,'id','','');
 INSERT INTO blocks VALUES(5,1,'forms',50,1,'id','id = ${GLOBALPKID}','');
-INSERT INTO blocks VALUES(6,1,'pages',60,1,'id','form_id = ${GLOBALPKID}','');
-INSERT INTO blocks VALUES(7,1,'blocks',70,1,'id','form_id = ${GLOBALPKID}','');
-INSERT INTO blocks VALUES(8,1,'fields',80,1,'id','form_id = ${GLOBALPKID}','');
+INSERT INTO blocks VALUES(6,1,'pages',60,1,'id','form_id = ${GLOBALPKID}','seq');
+INSERT INTO blocks VALUES(7,1,'blocks',70,1,'id','form_id = ${GLOBALPKID}','seq');
+INSERT INTO blocks VALUES(8,1,'fields',80,1,'id','form_id = ${GLOBALPKID}','blcn,seq');
 INSERT INTO blocks VALUES(9,1,'triggers',90,1,'id','form_id = ${GLOBALPKID}','');
-CREATE TABLE triggers
-  (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-   form_id INTEGER NOT NULL DEFAULT 1,
-   trgfld INTEGER NOT NULL DEFAULT 0,
-   trgtyp INTEGER NOT NULL DEFAULT 0,
-   page_id INTEGER NOT NULL DEFAULT 0
-  );
-INSERT INTO triggers VALUES(1,0,0,1008,1008);
-INSERT INTO triggers VALUES(2,0,0,1009,1009);
-INSERT INTO triggers VALUES(3,0,0,1010,1010);
-INSERT INTO triggers VALUES(4,1,47,1011,2011);
-INSERT INTO triggers VALUES(5,1,0,1000,2000);
-CREATE TABLE maps
-  (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-   page_id INTEGER NOT NULL DEFAULT 1,
-   line INTEGER NOT NULL DEFAULT 1,
-   mtext TEXT NOT NULL DEFAULT ''
-  );
-INSERT INTO maps VALUES(1,2,0,'KEY C FUNCTION     KEY   C FUNCTION');
-INSERT INTO maps VALUES(2,2,1,'Tab i NextField    ^Tab  g PrevField');
-INSERT INTO maps VALUES(3,2,2,'F1  @ Field Help   Esc   y Cancel');
-INSERT INTO maps VALUES(4,2,3,'F2  c Copy         >     f Right');
-INSERT INTO maps VALUES(5,2,4,'F3  v Paste        <     b Left');
-INSERT INTO maps VALUES(6,2,5,'F4  t Duplicate    Up    p PreviousRec');
-INSERT INTO maps VALUES(7,2,6,'F5  u ListOfVal    Down  n NextRecord');
-INSERT INTO maps VALUES(8,2,7,'F6  o Insert       Ins   j Insert');
-INSERT INTO maps VALUES(9,2,8,'F7  d Delete       Del   d Delete');
-INSERT INTO maps VALUES(10,2,9,'F8  z Exit         <--   h DeleteLast');
-INSERT INTO maps VALUES(11,2,10,'F9  y Cancel       PgUp  r PrevSetRec');
-INSERT INTO maps VALUES(12,2,11,'F10 x Query        PgDn  w NextSetRec');
-INSERT INTO maps VALUES(13,2,12,'F11 k Key Help     Home  a PrevBlock');
-INSERT INTO maps VALUES(14,2,13,'F12 l Refresh      End   e NextBlock');
-INSERT INTO maps VALUES(15,1008,1,'$(cb + "." + cf, cr - 1);');
-INSERT INTO maps VALUES(16,1009,1,'clip = cv;529;');
-INSERT INTO maps VALUES(17,1010,1,'clip;');
-INSERT INTO maps VALUES(41,2011,1,'SQL("select mtext from maps where page_id=" + $("triggers.page_id") + " and line=1;");');
-INSERT INTO maps VALUES(42,2000,0,'exec_query();next_block();exec_query();0;');
-INSERT INTO maps VALUES(250,1,0,'Form  $1_ $2______ $3__________________ Menu $4_______________/$5_______________');
-INSERT INTO maps VALUES(251,1,1,'--------------------------------------------------------------------------------');
-INSERT INTO maps VALUES(252,1,2,'Page  $48 $49_________ $54______________________ Y $50 X $51 Popup   Border $53.');
-INSERT INTO maps VALUES(253,1,3,'--------------------------------------------------------------------------------');
-INSERT INTO maps VALUES(254,1,4,'===== Id  table        Sq  Rec where                    order              =====');
-INSERT INTO maps VALUES(255,1,5,'Block $6_ $7__________ $8_ $9_ $10_____________________ $11_____________________');
-INSERT INTO maps VALUES(256,1,6,'--------------------------------------------------------------------------------');
-INSERT INTO maps VALUES(257,1,7,'===== Id  column       Blk Pag Help                                        =====');
-INSERT INTO maps VALUES(258,1,8,'Field $12 $16_________ $14 $15 $38______________________________________________');
-INSERT INTO maps VALUES(259,1,9,' Seq  $17      Type    $18 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE');
-INSERT INTO maps VALUES(260,1,10,' Line $24      Length  $19 Decimals $26');
-INSERT INTO maps VALUES(261,1,11,' Col  $25 Alig Table   $21. Pkey $22. ');
-INSERT INTO maps VALUES(262,1,12,' Dlen $20 $31. Default $23_________________');
-INSERT INTO maps VALUES(263,1,13,' Query    $27.edit in Query');
-INSERT INTO maps VALUES(264,1,14,' Update   $28.edit in Update');
-INSERT INTO maps VALUES(265,1,15,' UpdteNul $29.edit in Update if NULL');
-INSERT INTO maps VALUES(266,1,16,' Mandatry $30.must in Insert     Blk   Id');
-INSERT INTO maps VALUES(267,1,17,' ListOVal $32_________________ / $33 / $34');
-INSERT INTO maps VALUES(268,1,18,'      Low $35________ High $36________');
-INSERT INTO maps VALUES(269,1,19,'  Pattern $37_________________________');
-INSERT INTO maps VALUES(270,1,20,'--------------------------------------------------------------------------------');
-INSERT INTO maps VALUES(271,1,21,'===== Id  Fld Type  Page [ edit body');
-INSERT INTO maps VALUES(272,1,22,'Trigr $41 $43 $44__ $45_ $47____________________________________________________');
-CREATE TABLE pages
-  (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-   form_id INTEGER NOT NULL DEFAULT 1,
-   name TEXT NOT NULL DEFAULT 'page0',
-   seq INTEGER NOT NULL DEFAULT 1,
-   title TEXT NOT NULL DEFAULT '',
-   ysiz INTEGER NOT NULL DEFAULT 23,
-   xsiz INTEGER NOT NULL DEFAULT 80,
-   vwpy0 INTEGER NOT NULL DEFAULT 1,
-   vwpx0 INTEGER NOT NULL DEFAULT 0,
-   popup INTEGER NOT NULL DEFAULT 0,
-   border INTEGER NOT NULL DEFAULT 1,
-   dislv INTEGER NOT NULL DEFAULT 0
-  );
-INSERT INTO pages VALUES(1,0,'status',0,'',1,80,0,0,0,0,0);
-INSERT INTO pages VALUES(2,0,'keyhelp',2,'',16,41,2,30,1,1,0);
-INSERT INTO pages VALUES(3,0,'editor',3,'',21,65,2,14,1,1,0);
-INSERT INTO pages VALUES(4,0,'about',4,'',20,41,2,30,1,1,0);
-INSERT INTO pages VALUES(5,1,'formax',1,'',23,80,1,0,0,0,0);
 CREATE TABLE fields
   (id INTEGER PRIMARY KEY NOT NULL,
    form_id INTEGER NOT NULL DEFAULT 1,
@@ -205,45 +126,120 @@ INSERT INTO fields VALUES(41,1,8,1,'id',10,0,30,2,3,0,1,1,'',22,6,1,1,1,0,'0',''
 INSERT INTO fields VALUES(43,1,8,1,'trgfld',30,0,30,2,3,0,1,0,'',22,10,1,1,1,0,'0','',0,0,0,'','');
 INSERT INTO fields VALUES(44,1,8,1,'trgtyp',40,0,30,2,5,0,1,0,'',22,14,1,1,1,0,'0','',0,0,0,'','');
 INSERT INTO fields VALUES(45,1,8,1,'page_id',50,0,30,2,4,0,1,0,'',22,20,1,1,1,0,'0','',0,0,0,'','');
+INSERT INTO fields VALUES(46,1,5,1,'seq',15,0,30,2,3,0,1,0,'',2,10,1,1,1,0,'0','',0,0,0,'','');
 INSERT INTO fields VALUES(47,1,8,1,'body',60,0,200,2,55,0,0,0,'NULL',22,25,1,1,1,0,'',0,0,0,0,'','');
 INSERT INTO fields VALUES(48,1,5,1,'id',10,0,30,2,3,0,1,1,'',2,6,1,1,1,0,'0','',0,0,0,'','');
-INSERT INTO fields VALUES(49,1,5,1,'name',20,0,30,2,12,0,1,0,'',2,10,1,1,1,0,'0','',0,0,0,'','');
+INSERT INTO fields VALUES(49,1,5,1,'name',20,0,30,2,12,0,1,0,'',2,14,1,1,1,0,'0','',0,0,0,'','');
 INSERT INTO fields VALUES(50,1,5,1,'ysiz',30,0,30,2,3,0,1,0,'',2,51,1,1,1,0,'0','',0,0,0,'','');
 INSERT INTO fields VALUES(51,1,5,1,'xsiz',40,0,30,2,3,0,1,0,'',2,57,1,1,1,0,'0','',0,0,0,'','');
 INSERT INTO fields VALUES(52,1,5,1,'popup',50,2,1,2,1,0,1,0,'',2,67,1,1,1,0,'0','',0,0,0,'','');
 INSERT INTO fields VALUES(53,1,5,1,'border',60,2,1,2,1,0,1,0,'',2,76,1,1,1,0,'0','',0,0,0,'','');
-INSERT INTO fields VALUES(54,1,5,1,'title',25,0,30,2,25,0,1,0,'',2,23,1,1,1,0,'0','',0,0,0,'','');
+INSERT INTO fields VALUES(54,1,5,1,'title',25,0,30,2,21,0,1,0,'',2,27,1,1,1,0,'0','',0,0,0,'','');
+CREATE TABLE triggers
+  (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   form_id INTEGER NOT NULL DEFAULT 1,
+   trgfld INTEGER NOT NULL DEFAULT 0,
+   trgtyp INTEGER NOT NULL DEFAULT 0,
+   page_id INTEGER NOT NULL DEFAULT 0
+  );
+INSERT INTO triggers VALUES(1,0,0,1008,1008);
+INSERT INTO triggers VALUES(2,0,0,1009,1009);
+INSERT INTO triggers VALUES(3,0,0,1010,1010);
+INSERT INTO triggers VALUES(4,1,47,1011,2011);
+INSERT INTO triggers VALUES(5,1,0,1000,2000);
+CREATE TABLE maps
+  (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   page_id INTEGER NOT NULL DEFAULT 1,
+   line INTEGER NOT NULL DEFAULT 1,
+   mtext TEXT NOT NULL DEFAULT ''
+  );
+INSERT INTO maps VALUES(1,2,0,'KEY C FUNCTION     KEY   C FUNCTION');
+INSERT INTO maps VALUES(2,2,1,'--- - ------------ ----- - ---------');
+INSERT INTO maps VALUES(3,2,2,'Tab i NextField    ^Tab  g PrevField');
+INSERT INTO maps VALUES(4,2,3,'F1  @ Field Help   Esc   y Cancel');
+INSERT INTO maps VALUES(5,2,4,'F2  c Copy         >     f Right');
+INSERT INTO maps VALUES(6,2,5,'F3  v Paste        <     b Left');
+INSERT INTO maps VALUES(7,2,6,'F4  t Duplicate    Up    p PreviousRec');
+INSERT INTO maps VALUES(8,2,7,'F5  u ListOfVal    Down  n NextRecord');
+INSERT INTO maps VALUES(9,2,8,'F6  o Insert       Ins   j Insert');
+INSERT INTO maps VALUES(10,2,9,'F7  d Delete       Del   d Delete');
+INSERT INTO maps VALUES(11,2,10,'F8  z Exit         <--   h DeleteLast');
+INSERT INTO maps VALUES(12,2,11,'F9  y Cancel       PgUp  r PrevSetRec');
+INSERT INTO maps VALUES(13,2,12,'F10 x Query        PgDn  w NextSetRec');
+INSERT INTO maps VALUES(14,2,13,'F11 k Key Help     Home  a PrevBlock');
+INSERT INTO maps VALUES(15,2,14,'F12 l Refresh      End   e NextBlock');
+INSERT INTO maps VALUES(16,2,15,'+     Increment    -       Decrement');
+INSERT INTO maps VALUES(17,2,16,'>     Goto         ~       Search');
+INSERT INTO maps VALUES(18,2,17,'Space Toggle binary');
+INSERT INTO maps VALUES(19,1008,1,'$(cb + "." + cf, cr - 1);');
+INSERT INTO maps VALUES(20,1009,1,'clip = cv;529;');
+INSERT INTO maps VALUES(21,1010,1,'clip;');
+INSERT INTO maps VALUES(45,2011,1,'SQL("select mtext from maps where page_id=" + $("triggers.page_id") + " and line=1;");');
+INSERT INTO maps VALUES(46,2000,0,'exec_query();next_block();exec_query();0;');
+INSERT INTO maps VALUES(47,1,0,'Form  $1_ $2______ $3__________________ Menu $4_______________/$5_______________');
+INSERT INTO maps VALUES(48,1,1,'--------------------------------------------------------------------------------');
+INSERT INTO maps VALUES(49,1,2,'Page  $48 $46 $49_________ $54__________________ Y $50 X $51 Popup   Border $53.');
+INSERT INTO maps VALUES(50,1,3,'--------------------------------------------------------------------------------');
+INSERT INTO maps VALUES(51,1,4,'===== Id  table        Sq  Rec where                    order              =====');
+INSERT INTO maps VALUES(52,1,5,'Block $6_ $7__________ $8_ $9_ $10_____________________ $11_____________________');
+INSERT INTO maps VALUES(53,1,6,'--------------------------------------------------------------------------------');
+INSERT INTO maps VALUES(54,1,7,'===== Id  column       Blk Pag Help                                        =====');
+INSERT INTO maps VALUES(55,1,8,'Field $12 $16_________ $14 $15 $38______________________________________________');
+INSERT INTO maps VALUES(56,1,9,' Seq  $17      Type    $18 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE');
+INSERT INTO maps VALUES(57,1,10,' Line $24      Length  $19 Decimals $26');
+INSERT INTO maps VALUES(58,1,11,' Col  $25 Alig Table   $21. Pkey $22. ');
+INSERT INTO maps VALUES(59,1,12,' Dlen $20 $31. Default $23_________________');
+INSERT INTO maps VALUES(60,1,13,' Query    $27.edit in Query');
+INSERT INTO maps VALUES(61,1,14,' Update   $28.edit in Update');
+INSERT INTO maps VALUES(62,1,15,' UpdteNul $29.edit in Update if NULL');
+INSERT INTO maps VALUES(63,1,16,' Mandatry $30.must in Insert     Blk   Id         Ctrl+e Next Block             ');
+INSERT INTO maps VALUES(64,1,17,' ListOVal $32_________________ / $33 / $34        Ctrl+a Previous Block         ');
+INSERT INTO maps VALUES(65,1,18,'      Low $35________ High $36________            Ctrl+k Keyboard Help - ? About');
+INSERT INTO maps VALUES(66,1,19,'  Pattern $37_________________________');
+INSERT INTO maps VALUES(67,1,20,'--------------------------------------------------------------------------------');
+INSERT INTO maps VALUES(68,1,21,'===== Id  Fld Type  Page [ edit body');
+INSERT INTO maps VALUES(69,1,22,'Trigr $41 $43 $44__ $45_ $47____________________________________________________');
+CREATE TABLE pages
+  (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   form_id INTEGER NOT NULL DEFAULT 1,
+   name TEXT NOT NULL DEFAULT 'page0',
+   seq INTEGER NOT NULL DEFAULT 1,
+   title TEXT NOT NULL DEFAULT '',
+   ysiz INTEGER NOT NULL DEFAULT 23,
+   xsiz INTEGER NOT NULL DEFAULT 80,
+   vwpy0 INTEGER NOT NULL DEFAULT 1,
+   vwpx0 INTEGER NOT NULL DEFAULT 0,
+   popup INTEGER NOT NULL DEFAULT 0,
+   border INTEGER NOT NULL DEFAULT 1,
+   dislv INTEGER NOT NULL DEFAULT 0
+  );
+INSERT INTO pages VALUES(1,0,'status',0,'',1,80,0,0,0,0,0);
+INSERT INTO pages VALUES(2,0,'keyhelp',2,'',20,41,2,30,1,1,0);
+INSERT INTO pages VALUES(3,0,'editor',3,'',21,65,2,14,1,1,0);
+INSERT INTO pages VALUES(4,0,'about',4,'',20,41,2,30,1,1,0);
+INSERT INTO pages VALUES(5,1,'formax',1,'',23,80,1,0,0,0,0);
 INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',272);
+INSERT INTO sqlite_sequence VALUES('maps',69);
 INSERT INTO sqlite_sequence VALUES('pages',5);
 INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',249);
+INSERT INTO sqlite_sequence VALUES('maps',69);
 INSERT INTO sqlite_sequence VALUES('pages',5);
 INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',226);
+INSERT INTO sqlite_sequence VALUES('maps',69);
 INSERT INTO sqlite_sequence VALUES('pages',5);
 INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',203);
+INSERT INTO sqlite_sequence VALUES('maps',69);
 INSERT INTO sqlite_sequence VALUES('pages',5);
 INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',180);
+INSERT INTO sqlite_sequence VALUES('maps',69);
 INSERT INTO sqlite_sequence VALUES('pages',5);
 INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',157);
+INSERT INTO sqlite_sequence VALUES('maps',69);
 INSERT INTO sqlite_sequence VALUES('pages',5);
 INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',157);
+INSERT INTO sqlite_sequence VALUES('maps',69);
 INSERT INTO sqlite_sequence VALUES('pages',5);
 INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',134);
-INSERT INTO sqlite_sequence VALUES('pages',5);
-INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',111);
-INSERT INTO sqlite_sequence VALUES('pages',5);
-INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',88);
-INSERT INTO sqlite_sequence VALUES('pages',5);
-INSERT INTO sqlite_sequence VALUES('triggers',5);
-INSERT INTO sqlite_sequence VALUES('maps',65);
+INSERT INTO sqlite_sequence VALUES('maps',69);
 INSERT INTO sqlite_sequence VALUES('pages',5);
 COMMIT;
