@@ -31,6 +31,7 @@ int  autocommit  = 1;             // -a
 int  deleprompt  = 0;             // -d
 int  queryonlym  = 0;             // -q
 int  matchnocas  = 1;             // -m
+int  globalpkid  = 1;             // -j
 char *ypassword  = NULL;
 char *username;
 char about[SMLSIZE];
@@ -135,7 +136,7 @@ lclocale = setlocale(LC_ALL, CHARSET);
 form_id = 1;
 
 /* command-line arguments and options check and process */
-while ((i = getopt(argc, argv, "3abcdf:g:hikl:mn:pqt:Vxy:")) != -1) {
+while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqt:Vxy:")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n  (%d) [%s]\n", about, (int)sizeof(Form), GITCOMMIT); exit(2);
     case 'y': ypassword = optarg; break;
@@ -168,6 +169,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hikl:mn:pqt:Vxy:")) != -1) {
     case 'd': deleprompt = 1; break;
     case 'q': queryonlym = 1; break;
     case 'm': matchnocas = 0; break;
+    case 'j': globalpkid = atoi(optarg); break;
     default: usage(1);
   }
 }

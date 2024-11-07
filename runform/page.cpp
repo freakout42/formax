@@ -22,7 +22,7 @@ char *t, *p;
 if (page_id == PGE_ABOUT) {
   r = 0;
 #define ABOUTLINE map[r++] = strdup(a);
-  letf(t(a), "%s", COMPANY);                                         ABOUTLINE
+  letf(t(a), "%s  [%d]", COMPANY, globalpkid);                       ABOUTLINE
   letf(t(a), "https://formax.freakout.de v%s %d", VERSION, VERMSGS); ABOUTLINE
   letf(t(a), "charset:    %s", CHARSET);                             ABOUTLINE
   letf(t(a), "compiler:   %s (%d)", CCOMPILER, (int)sizeof(Form));   ABOUTLINE

@@ -48,5 +48,5 @@ $(FORMAXE):
 	cd ../generate; make clean test
 
 clean:
-	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean; ); done
+	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
 	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log /tmp/formax.log ads_* $(EXAMPLE) testelk
