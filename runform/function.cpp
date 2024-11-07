@@ -41,8 +41,15 @@ switch(F(lastcmd)) {
   case KEF_KEYHELP:  LK = keys_help();                                        break;
   case KEF_PREREC:   LK = previous_record();                                  break;
   case KEF_COPYREC:  LK = fcopyrec();                                         break;
-  case KEF_HOME:     LK = fmove(-1, 0);                                       break;
-  case KEF_END:      LK = fmove( 1, 0);                                       break;
+  case KEF_HOME:
+  case KEF_END:
+   switch(CM) {
+    case MOD_UPDATE:
+    case MOD_QUERY:                                                    break;
+    case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
+    case MOD_DELETE: LK = destroy_record();                            break;
+   }
+                     LK = fmove(F(lastcmd)==KEF_END ? 1 : -1, 0);             break;
   case KEF_COPY:     LK = fcopy();                                            break;
   case KEF_PASTE:    LK = fpaste();                                           break;
   case KEF_INSERT:
@@ -466,8 +473,7 @@ if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
     enter_record(1);
     switch_mode(MOD_UPDATE);
   } else {
-    CR = 0;
-    return insert_record();
+    MSG(MSG_COUNT0);
   }
 }
 return 0;
