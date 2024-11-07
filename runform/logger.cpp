@@ -132,4 +132,3 @@ message[k++] = '\0';
 snprintf (t(sqlquery), INSERTLOG, session, message);
 sqlite3_exec(db, sqlquery, callback, 0, NULL);
 } }
-

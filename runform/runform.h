@@ -63,7 +63,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, P
 #define BIGSIZE 65536
 #define HUGSIZE 1024*1024
 #define NLINES  60
-#define NBLOCKS 8
+#define NBLOCKS 12
 #define NFIELD1 30
 #define NFIELDS 60
 #define NTRIGGERS 80
@@ -166,5 +166,6 @@ extern int   autocommit;
 extern int   deleprompt;
 extern int   queryonlym;
 extern int   matchnocas;
+extern int   globalpkid;
 extern char  *shiftednum;
 extern char  *username;

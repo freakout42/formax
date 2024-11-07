@@ -21,7 +21,9 @@ runform: $(OBJS) $(OBJA)
 
 run: runform $(EXAMPLE)
 	strip runform
-	./runform -x -g/tmp/formax.log ../generate/formax.frm ../generate/scotty.frm 2>test
+	cp ../generate/formax.frm .
+	./runform -x -g/tmp/formax.log ../generate/formax.frm formax.frm
+	sqlite3 formax.frm .dump >../generate/formax.inp
 
 test: clean runform $(EXAMPLE) $(FORMAXE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
@@ -48,5 +50,6 @@ $(FORMAXE):
 	cd ../generate; make clean test
 
 clean:
-	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean; ); done
-	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf /tmp/odbc.log /tmp/formax.log ads_* $(EXAMPLE) testelk
+	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
+	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf \
+		/tmp/odbc.log /tmp/formax.log ads_* $(EXAMPLE) testelk formax.frm

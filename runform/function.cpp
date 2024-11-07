@@ -165,7 +165,7 @@ return F(p)[PGE_ABOUT].showpopup();
 }
 
 int Function::edit_map() {
-return (CV && (!strcmp(CF.column, "pgen") || !strcmp(CF.column, "page_id"))) ? F(p)[PGE_EDITOR].editmap(atoi(CV)) : 0;
+return (CV && !strcmp(CF.column, "seq")) ? F(p)[PGE_EDITOR].editmap(atoi(CV)) : 0;
 }
 
 int Function::edit_file() {
