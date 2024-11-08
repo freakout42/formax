@@ -189,7 +189,7 @@ if (y.ysiz > 0) { // can only display with open window
 if (pnt) pntst = pnt; else pntst = empty;
 i = (strlen(pntst) > LINE0SIZE-9) ? strlen(pntst) - LINE0SIZE + 9 : 0;
 writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, y.msg(ern), pntst+i);
-//writef(0, 76, 0, 4, "%04d", F(lastcmd));
+//writef(0, 76, 0, 4, "%04d", CK);
 wmov(0,0);
 if (!macropointer) refr();
 return (i = getkb())==KEY_ESC ? 0 : i;

@@ -13,8 +13,8 @@
 
 int Function::dispatch() { /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
 int undone;
-F(lastcmd) = F(mapkey)(LK);
-switch(F(lastcmd)) {
+CK = F(mapkey)(LK);
+switch(CK) {
 #ifdef NOTYETIMPLEMENTED
   case KEF_NAVI0:           /* menu()  */
   case KEF_LIST:            /* flist() */
@@ -49,7 +49,7 @@ switch(F(lastcmd)) {
     case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
     case MOD_DELETE: LK = destroy_record();                            break;
    }
-                     LK = fmove(F(lastcmd)==KEF_END ? 1 : -1, 0);             break;
+                     LK = fmove(CK==KEF_END ? 1 : -1, 0);             break;
   case KEF_COPY:     LK = fcopy();                                            break;
   case KEF_PASTE:    LK = fpaste();                                           break;
   case KEF_INSERT:
@@ -97,7 +97,7 @@ switch(F(lastcmd)) {
    undone = 1;
    if (CM == MOD_UPDATE) {
      undone = 0;
-     switch(F(lastcmd)) {
+     switch(CK) {
       case '=':      LK = editrigger(TRT_EDITFIELD);                   break;
       case '[':      LK = edit_map();                                  break;
       case ']':      LK = edit_file();                                 break;

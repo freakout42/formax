@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.2.2"
+#define VERSION "2.2.3"
 #define VERMSGS 23
 extern char odbcversion[];
 extern char odbcrun[];
@@ -119,6 +119,7 @@ extern int lastgetch;
 #define CM CB.rmode
 #define CN CB.q->rows
 #define CV *CF.valuep()
+#define CK F(lastcmd)
 #define LK F(lastkey)
 #define MSG(n) F(p)[0].message(n, NULL)
 #define MSG1(n,c) F(p)[0].message(n, c)
