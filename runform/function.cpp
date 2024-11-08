@@ -432,9 +432,8 @@ blk->clear();
 blk->currentrec = 0;
 blk->toprec = 1;
 F(dirty) = 0;
-if (blk == &CB) {
-  switch_mode(MOD_QUERY);
-} else blk->rmode = MOD_QUERY;
+if (blk == &CB) switch_mode(MOD_QUERY);
+else            blk->rmode = MOD_QUERY;
 return 0;
 }
 
@@ -445,6 +444,7 @@ int cf;
 int triggerdfields[NFIELD1];
 int tfn;
 F(p)[PGE_STATUS].working();
+if (CM != MOD_QUERY) enter_query(&CB);
 if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
   if (CN > 0) {
     /* optimized - first check for triggers
@@ -532,14 +532,12 @@ return -1;
  * javascript should always return number see below
  */
 char *Function::trigger(int tid) {
-static int intrigger = 0;
 int i;
 char *s;
 s = NULL;
-if (intrigger || macropointer) return s;
-i = tid < 0 ? -tid : qtrigger(tid);
-if (i == -1) return s;
-  intrigger = 1;
+if (!intrigger) { /* not nice but fast */
+  i = tid < 0 ? -tid : qtrigger(tid);
+  if (i != -1) {
     s = trgi(i).execute();
     if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
@@ -547,7 +545,8 @@ if (i == -1) return s;
       strcpy(s, "-1");
       notrunning = -1;
     }
-  intrigger = 0;
+  }
+}
 return s;
 }
 

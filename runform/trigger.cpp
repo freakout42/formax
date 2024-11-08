@@ -7,6 +7,7 @@
 #include "runform.h"
 #include "elk/elk.h"
 
+int intrigger = 0;
 static char engine[HUGSIZE];
 static struct js *javascript = NULL;
 
@@ -163,9 +164,15 @@ return jsexecdirect(prog, progsize);
 }
 
 char *Trigger::execute() {
-switch (trglng) {
- case TRL_JAVASCRIPT: return jsexec();   break;
- case TRL_KEYMACRO:   y.openmacro(body); break;
+char *status;
+status = "1";
+if (!intrigger) {
+  intrigger = 1;
+    switch (trglng) {
+     case TRL_JAVASCRIPT: status = jsexec(); break;
+     case TRL_KEYMACRO:   y.openmacro(body); break;
+    }
+  intrigger = 0;
 }
-return "1";
+return status;
 }
