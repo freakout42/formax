@@ -4,7 +4,7 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| v1.2.0  | :stable:           |
+| v2.2.0  | :production:       |
 
 ## Reporting a Vulnerability
 
