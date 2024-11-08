@@ -35,8 +35,8 @@ switch(CK) {
   case KEF_NXTFLD:   LK = next_item();                                        break;
   case KEF_PREFLD:   LK = previous_item();                                    break;
   case KEF_NXTREC:   LK = next_record();                                      break;
-  case KEF_NXTSETR:  LK = next_setrecords();                                  break;
-  case KEF_PRESETR:  LK = previous_setrecords();                              break;
+  case KEF_NXTSETR:  LK = CB.norec==1 ? KEF_END  : next_setrecords();         break;
+  case KEF_PRESETR:  LK = CR==1       ? KEF_HOME : previous_setrecords();     break;
   case KEF_HELP:     LK = help_item();                                        break;
   case KEF_KEYHELP:  LK = keys_help();                                        break;
   case KEF_PREREC:   LK = previous_record();                                  break;
