@@ -276,7 +276,9 @@ switch (fty) {
  case FTY_ALL:
  default:        legal = legalall;
 }
-return getst(lin, col, lin+col==0?80:len, EDITCOLOR, toe, pos, legal, len, NULL);
+F(p)[PGE_STATUS].writef(0, 67, COL_COMMIT,13,"   Enter-Data");
+F(p)[PGE_STATUS].refr();
+return getst(lin, col, lin+col==0 ? 67 : len, EDITCOLOR, toe, pos, legal, len, NULL);
 }
 
 /* Allows the user to edit a string with only certain characters allowed

@@ -149,8 +149,8 @@ sudo make install
 . /etc/profile.d/arx.sh
 ~~~
 
-Alternatively there is a rpm-file for x64 RedHat/CentOS:
-https://github.com/freakout42/formax/releases/download/v0.9.9/formax-current.x86_64.rpm  
+Alternatively there is a rpm-file to install:
+rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/formax-current.x86_64.rpm  
 
 Getting started
 ===============
