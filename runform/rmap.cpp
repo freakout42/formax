@@ -81,15 +81,15 @@ if (brdr == 0 || brdr == 2) { /* we are maintaining a screen page */
 }
 tmpopen();
 init(page_id);
-letf((char*)querystr, sizeof(querystr), "delete from %s where page_id = %d", table, page_id);
+letf((char*)querystr, MEDSIZE, "delete from %s where page_id = %d", table, page_id);
 bindv[0] = NULL;
 execute();
-letf((char*)querystr, sizeof(querystr), "insert into %s (page_id, line, mtext) VALUES (%d, ?, ?)", table, page_id);
+letf((char*)querystr, MEDSIZE, "insert into %s (page_id, line, mtext) VALUES (%d, ?, ?)", table, page_id);
 bindv[2] = NULL;
 for (j = brdr / 2; tmpget(lins, MEDSIZE); j++) {
   if ((i = strlen(lins)) > 1) {
     lins[i-1] = '\0';
-    letf(t(rows), "%d", j);
+    letf(t(rows), "%d", j+1);
     bindv[0] = rows;
     bindv[1] = lins;
     execute();
