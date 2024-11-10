@@ -83,6 +83,14 @@ msgtext = js_getstr(js, args[0], NULL);
 return js_mknum(MSG1(MSG_JS, msgtext));
 }
 
+/* Logger() */
+static jsval_t j_logger(struct js *js, jsval_t *args, int nargs) {
+char *msgtext;
+msgtext = js_getstr(js, args[0], NULL);
+g.logfmt("%s", msgtext);
+return js_mknum(0);
+}
+
 /* SQL() returns singlerow singlecol result */
 static jsval_t j_sql(struct js *js, jsval_t *args, int nargs) {
 char *query;
@@ -118,6 +126,7 @@ if (!javascript) {
   JSEXE(Setquery,setquery);
   JSEXE(Gotocell,gotocell);
   JSEXE(String,tostring);
+  JSEXE(Logger,logger);
   JSEXE(Message,message);
   JSEXE(SQL,sql);
   letf(t(a), "let cb;let cf;let ci;let cr;let cv;let nav0 = %d;let v0;let v1;let v2;let v3;let clip = '0';", KEF_NAVI0);
