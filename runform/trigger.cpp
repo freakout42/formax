@@ -8,9 +8,10 @@
 #include "elk/elk.h"
 
 int intrigger = 0;
-char *macropointer = NULL;
 static char engine[HUGSIZE];
 static struct js *javascript = NULL;
+char *macropointer = NULL;
+static char kbdmacro[MEDSIZE];
 
 /* examples */
 /* char *js_getstr(struct js *js, jsval_t value, size_t *len); */
@@ -176,7 +177,17 @@ switch (trglng) {
   }
   break;
  case TRL_KEYMACRO:
-  macropointer = body; /* open a keyboard macro buffer */
+  /* open a keyboard macro buffer
+  if (macropointer) {
+    ; //kbdmacro
+  } else {
+ */
+    empty(a);
+    empty(kbdmacro);
+    macropointer = kbdmacro;
+//  }
+  letstrncpy(macropointer, body, sizeof(kbdmacro) - (macropointer - kbdmacro)); 
+//  cats(macropointer, sizeof(kbdmacro) - (macropointer - kbdmacro), a);
   break;
 }
 return status;
