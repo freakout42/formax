@@ -124,7 +124,7 @@ CBi = -1;
 forall(block) if (i >= 4) enter_query(&F(b)[i]);
 CBi = 4;
 CFi = CB.blockfields[0];
-if ((notrunning = triggern(TRT_ENTERFORM))) return 0;
+if ((notrunning = triggern(TRT_ENTERFORM) > 1)) return 0;
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
 return 0;
 }
@@ -185,7 +185,7 @@ if (CF.noedit()) fmove(0, 0);
 return 0;
 }
 
-#define TRIGGRD(func,trgr,move,row,fld) int Function::func() {int i; return (i = triggern(TRT_ ## trgr)) ? i : move(row, fld); }
+#define TRIGGRD(func,trgr,move,row,fld) int Function::func() {int i; if ((i = triggern(TRT_ ## trgr))) return i; else return move(row, fld); }
 TRIGGRD(next_item,NEXTITEM,fmove,0,1)
 TRIGGRD(previous_item,PREVITEM,fmove,0,-1)
 TRIGGRD(next_block,NEXTBLOCK,fmove,1,0)

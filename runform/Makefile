@@ -20,10 +20,9 @@ runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
 
 run: runform $(EXAMPLE)
-	strip runform
 		./runform -x -g/tmp/formax.log $(EXAMPLE)
-#	./runform -x -g/tmp/formax.log ../generate/formax.frm ../generate/scotty.frm
-#	sqlite3 ../generate/scotty.frm .dump >../generate/scotty.in2
+	./runform -x -g/tmp/formax.log ../generate/formax.frm ../generate/scotty.frm
+	sqlite3 ../generate/scotty.frm .dump >../generate/scotty.in2
 #	cp ../generate/formax.frm .
 #	./runform -x -g/tmp/formax.log ../generate/formax.frm formax.frm
 #	sqlite3 formax.frm .dump >../generate/formax.inp

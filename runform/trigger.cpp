@@ -166,6 +166,7 @@ return jsexecdirect(prog, progsize);
 }
 
 char *Trigger::execute() {
+int i;
 char *status;
 status = "1";
 switch (trglng) {
@@ -177,17 +178,17 @@ switch (trglng) {
   }
   break;
  case TRL_KEYMACRO:
-  /* open a keyboard macro buffer
-  if (macropointer) {
-    ; //kbdmacro
+  /* open a keyboard macro buffer */
+  if (macropointer) {     /* macro running? */
+    let(a, macropointer); /* save the outstanding keys */
   } else {
- */
     empty(a);
     empty(kbdmacro);
     macropointer = kbdmacro;
-//  }
-  letstrncpy(macropointer, body, sizeof(kbdmacro) - (macropointer - kbdmacro)); 
-//  cats(macropointer, sizeof(kbdmacro) - (macropointer - kbdmacro), a);
+  }
+  i = sizeof(kbdmacro) - (macropointer - kbdmacro); /* remaining space in kbdmacro[] */
+  letstrncpy(macropointer, body, i);
+  cats(macropointer, i, a);
   break;
 }
 return status;
