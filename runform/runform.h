@@ -77,6 +77,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, P
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "logger.h"
 #include "qdata.h"
 #include "record.h"
@@ -169,5 +170,6 @@ extern int   deleprompt;
 extern int   queryonlym;
 extern int   matchnocas;
 extern int   globalpkid;
+extern int   watchmacro;
 extern char  *shiftednum;
 extern char  *username;

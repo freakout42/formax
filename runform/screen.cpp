@@ -9,7 +9,6 @@
 
 char cursesversion[8] = NCURSES_VERSION;
 const char *cursesrun = NULL;
-char *macropointer = NULL;
 
 Screen::Screen() {
 ysiz = 0;
@@ -173,48 +172,41 @@ for (i=1; i<F(e)->rows; i++) if (F(e)->m(i,1) == num) break;
 return F(e)->v(i,3);
 }
 
-/* open a keyboard macro buffer */
-void Screen::openmacro(char *mbu) {
-macropointer = mbu;
-}
-
-/* get key pressed */
+/* get key pressed or from macro */
+#define findkey(fky,len,ctl) if (i == '{' && !strncmp(macropointer, #fky "}", len)) { macropointer += len; i = KEY_CTRL(ctl); }
 int Screen::wgetc() {
 int i;
-while (macropointer) {
+if (macropointer) {
   i = *macropointer++;
-  if (!i) macropointer = NULL;
-  else {
     if (i == '{') {
-      #define findkey(fky,len,ctl) if (!strncmp(macropointer, #fky "}", len)) { macropointer += len; return KEY_CTRL(ctl); }
-      findkey(HELP,5,   '@')
-      findkey(HOME,5,   'A')
-      findkey(LEFT,5,   'B')
-      findkey(COPY,5,   'C')
-      findkey(DELETE,7, 'D')
-      findkey(END,4,    'E')
-      findkey(RIGHT,6,  'F')
-      findkey(PREFLD,7, 'G')
+      findkey(HELP,   5,'@')
+      findkey(HOME,   5,'A')
+      findkey(LEFT,   5,'B')
+      findkey(COPY,   5,'C')
+      findkey(DELETE, 7,'D')
+      findkey(END,    4,'E')
+      findkey(RIGHT,  6,'F')
+      findkey(PREFLD, 7,'G')
       findkey(BACKDEL,8,'H')
-      findkey(NXTFLD,7, 'I')
-      findkey(INS,4,    'J')
+      findkey(NXTFLD, 7,'I')
+      findkey(INS,    4,'J')
       findkey(KEYHELP,8,'K')
       findkey(REFRESH,8,'L')
-      findkey(COMMIT,7, 'M')
-      findkey(NXTREC,7, 'N')
-      findkey(INSERT,7, 'O')
-      findkey(PREREC,7, 'P')
+      findkey(COMMIT, 7,'M')
+      findkey(NXTREC, 7,'N')
+      findkey(INSERT, 7,'O')
+      findkey(PREREC, 7,'P')
       findkey(PRESETR,8,'R')
       findkey(COPYREC,8,'T')
-      findkey(LIST,5,   'U')
-      findkey(PASTE,6,  'V')
+      findkey(LIST,   5,'U')
+      findkey(PASTE,  6,'V')
       findkey(NXTSETR,8,'W')
-      findkey(QUERY,6,  'X')
-      findkey(QUIT,5,   'Y')
-      findkey(EXIT,5,   'Z')
+      findkey(QUERY,  6,'X')
+      findkey(QUIT,   5,'Y')
+      findkey(EXIT,   5,'Z')
     }
-    if (!isspace(i)) return i;
-  }
+  if (!(*macropointer)) macropointer = NULL;
+  return i;
 }
 return wgetch(stdscr); /* wgetch(wndw); getch(); */
 }

@@ -18,7 +18,7 @@ return 0;
 }
 
 /* extract and write to buffer */
-int rMap::getbody(int page_id, char *buf, int n) {
+int rMap::getbody(int page_id, char *buf, int n, int acr) {
 int i, m;
 init(page_id);
 empty(buf);
@@ -29,7 +29,7 @@ for (i = 1; i <= q->rows; i++) {
   if (n > 0) {
     strcpy(buf, q->v(i, 2));
     buf += m;
-    *buf++ = '\n';
+    if (acr) *buf++ = '\n';
     *buf++ = '\0';
   }
 }

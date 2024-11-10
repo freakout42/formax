@@ -8,6 +8,7 @@
 #include "elk/elk.h"
 
 int intrigger = 0;
+char *macropointer = NULL;
 static char engine[HUGSIZE];
 static struct js *javascript = NULL;
 
@@ -133,7 +134,7 @@ forall(field) if (fldi(i).field_id == trgfld) {
   fieldindex = i;
   if (trgtyp == TRT_POSTCHANGE) fldi(i).trg_postchange = index;
 }
-i = map->getbody(map_id, t(a));
+i = map->getbody(map_id, t(a), trglng==TRL_KEYMACRO ? 0 : 1);
 body = strdup(a);
 return i;
 }
@@ -166,13 +167,17 @@ return jsexecdirect(prog, progsize);
 char *Trigger::execute() {
 char *status;
 status = "1";
-if (!intrigger) {
-  intrigger = 1;
-    switch (trglng) {
-     case TRL_JAVASCRIPT: status = jsexec(); break;
-     case TRL_KEYMACRO:   y.openmacro(body); break;
-    }
-  intrigger = 0;
+switch (trglng) {
+ case TRL_JAVASCRIPT:
+  if (!intrigger) {
+    intrigger = 1; /* guard the javascript engine from recursion */
+      status = jsexec();
+    intrigger = 0;
+  }
+  break;
+ case TRL_KEYMACRO:
+  macropointer = body; /* open a keyboard macro buffer */
+  break;
 }
 return status;
 }
