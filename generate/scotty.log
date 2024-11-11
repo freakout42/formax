@@ -23,3 +23,8 @@ select line,mtext from maps where page_id = 2004 order by line
 select id,dname,loc from depts
 select id,ename,job,mgr,hiredate,sal,comm,dept_id from emps where (dept_id = '10')
 hello formax
+select id,ename,job,mgr,hiredate,sal,comm,dept_id from emps where (dept_id = '20')
+update emps set ename = 'hi' where id = '7369'
+delete from emps where id = '7566'
+select id,ename,job,mgr,hiredate,sal,comm,dept_id from emps where (sal >= 2000) AND (dept_id = '20')
+update emps set comm = '0' where id = '7788'
