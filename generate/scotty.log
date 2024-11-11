@@ -1,0 +1,25 @@
+SQL_DBMS_NAME: SQLite -> 0
+SQL_DBMS_NAME: SQLite -> 0
+select id,name,title from forms
+select num,severity,etext from errors order by num
+select id,seq,name,ysiz,xsiz,vwpy0,vwpx0,popup,border from pages where form_id in (0, 1) order by seq
+select line,mtext from maps where page_id = 0 order by line
+select line,mtext from maps where page_id = 1 order by line
+select line,mtext from maps where page_id = 2 order by line
+select line,mtext from maps where page_id = 3 order by line
+select line,mtext from maps where page_id = 4 order by line
+select id,name,seq,norec,prikey,whereand,orderby from blocks where form_id in (0, 1) order by seq
+select id,name,blcn,pgen,dlen,align,line,col,key,ftype,len,decl,btab,dflt,query,upd,updnul,mand,lovtit,lov_id,lovi_id,low,high,valpatn,help,id from fields where form_id = 1 order by seq
+select trgfld,trgtyp,page_id from triggers where form_id = 0 or form_id = 1 order by abs(trgfld)
+select line,mtext from maps where page_id = 1008 order by line
+select line,mtext from maps where page_id = 1009 order by line
+select line,mtext from maps where page_id = 1010 order by line
+select line,mtext from maps where page_id = 2005 order by line
+select line,mtext from maps where page_id = 2002 order by line
+select line,mtext from maps where page_id = 2001 order by line
+select line,mtext from maps where page_id = 2003 order by line
+select line,mtext from maps where page_id = 2006 order by line
+select line,mtext from maps where page_id = 2004 order by line
+select id,dname,loc from depts
+select id,ename,job,mgr,hiredate,sal,comm,dept_id from emps where (dept_id = '10')
+hello formax

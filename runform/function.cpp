@@ -185,7 +185,7 @@ if (CF.noedit()) fmove(0, 0);
 return 0;
 }
 
-#define TRIGGRD(func,trgr,move,row,fld) int Function::func() {int i; if ((i = triggern(TRT_ ## trgr))) return i; else return move(row, fld); }
+#define TRIGGRD(func,trgr,move,row,fld) int Function::func() {int i; return (i = triggern(TRT_ ## trgr)) ? i : move(row, fld); }
 TRIGGRD(next_item,NEXTITEM,fmove,0,1)
 TRIGGRD(previous_item,PREVITEM,fmove,0,-1)
 TRIGGRD(next_block,NEXTBLOCK,fmove,1,0)
