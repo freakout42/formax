@@ -344,6 +344,21 @@ On success next_item() is fired to move to the next field.
 | POSTCHANGE | App  | NOT YET IMPLEMEN | Setting | 1015   |
 | ENTERECORD | App  | Record navigate  | Action  | 1016   |
 | EDITFILE   | Key  | ']'       ]      | Action  | 1017   |
+| EXITFORM   | App  | exit_the_form()  | Action  | 1018   |
+| HELP       | Key  | CTRL('@') F1     | Action  | 1019   |
+
+/* KEF_LEFT    */  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char                  Left */
+/* KEF_DELETE  */  case KEY_CTRL('D'):  return KEY_F(7);       /* Delete (record)                DeleteCharacter DeleteRecord */
+/* KEF_RIGHT   */  case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char                      Right */
+/* KEF_BACKDEL */  case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace                      DeleteBackward */
+/* KEF_INSERT  *   case KEY_CTRL('J'):  return KEY_IC;       *//* Insert toggle (record)         InsertReplace InsertRecord */
+/* KEF_KEYHELP */  case KEY_CTRL('K'):  return KEY_F(11);      /* Keyboard help                  KeyHelp */
+/* KEF_REFRESH */  case KEY_CTRL('L'):  return KEY_F(12);      /* Refresh                        Refresh */
+/* KEF_COMMIT  */  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept                  Commit Select Execute */
+/* KEF_INSERT  */  case KEY_CTRL('O'):  return KEY_F(6);       /* Insert record                  InsertRecord */
+/* KEF_LIST    */  case KEY_CTRL('U'):  return KEY_F(5);       /* List of values                 List */
+/* KEF_QUIT    */  case KEY_CTRL('Y'):  return KEY_F(9);       /* Rollback Cancel                ExitCancel */
+/* KEF_EXIT    */  case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit                  Exit */
 
 ## Trigger Table
 

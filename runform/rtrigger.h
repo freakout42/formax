@@ -16,6 +16,8 @@
 #define TRT_POSTCHANGE 1015
 #define TRT_ENTERECORD 1016
 #define TRT_EDITFILE   1017
+#define TRT_EXITFORM   1018
+#define TRT_HELP       1019
 #define TRL_JAVASCRIPT 0
 #define TRL_KEYMACRO   1
 #ifndef BEGINSQL

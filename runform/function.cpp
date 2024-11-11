@@ -152,6 +152,9 @@ return 0;
 }
 
 int Function::help_item() {
+//define TRIGGRD(func,trgr,move,row,fld) int Function::func() {int i; return (i = triggern(TRT_ ## trgr)) ? i : move(row, fld); }
+int i;
+if ((i = triggern(TRT_HELP))) return i;
 MSG1(MSG_HELP,CF.helptext);
 return 0;
 }
@@ -412,7 +415,7 @@ int Function::fexit() {
     case MOD_INSERT: if (F(dirty)) create_record();                    break;
     case MOD_DELETE: LK = destroy_record();                            break;
    }
-notrunning = -1;
+if (noentermac || triggern(TRT_EXITFORM) <= 1) notrunning = -1;
 return 0;
 }
 
