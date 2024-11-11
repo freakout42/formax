@@ -10,6 +10,8 @@
 int intrigger = 0;
 static char engine[HUGSIZE];
 static struct js *javascript = NULL;
+char *macropointer = NULL;
+static char kbdmacro[MEDSIZE];
 
 /* examples */
 /* char *js_getstr(struct js *js, jsval_t value, size_t *len); */
@@ -81,6 +83,14 @@ msgtext = js_getstr(js, args[0], NULL);
 return js_mknum(MSG1(MSG_JS, msgtext));
 }
 
+/* Logger() */
+static jsval_t j_logger(struct js *js, jsval_t *args, int nargs) {
+char *msgtext;
+msgtext = js_getstr(js, args[0], NULL);
+g.logfmt("%s", msgtext);
+return js_mknum(0);
+}
+
 /* SQL() returns singlerow singlecol result */
 static jsval_t j_sql(struct js *js, jsval_t *args, int nargs) {
 char *query;
@@ -116,6 +126,7 @@ if (!javascript) {
   JSEXE(Setquery,setquery);
   JSEXE(Gotocell,gotocell);
   JSEXE(String,tostring);
+  JSEXE(Logger,logger);
   JSEXE(Message,message);
   JSEXE(SQL,sql);
   letf(t(a), "let cb;let cf;let ci;let cr;let cv;let nav0 = %d;let v0;let v1;let v2;let v3;let clip = '0';", KEF_NAVI0);
@@ -133,7 +144,7 @@ forall(field) if (fldi(i).field_id == trgfld) {
   fieldindex = i;
   if (trgtyp == TRT_POSTCHANGE) fldi(i).trg_postchange = index;
 }
-i = map->getbody(map_id, t(a));
+i = map->getbody(map_id, t(a), trglng==TRL_KEYMACRO ? 0 : 1);
 body = strdup(a);
 return i;
 }
@@ -164,15 +175,30 @@ return jsexecdirect(prog, progsize);
 }
 
 char *Trigger::execute() {
+int i;
 char *status;
 status = "1";
-if (!intrigger) {
-  intrigger = 1;
-    switch (trglng) {
-     case TRL_JAVASCRIPT: status = jsexec(); break;
-     case TRL_KEYMACRO:   y.openmacro(body); break;
-    }
-  intrigger = 0;
+switch (trglng) {
+ case TRL_JAVASCRIPT:
+  if (!intrigger) {
+    intrigger = 1; /* guard the javascript engine from recursion */
+      status = jsexec();
+    intrigger = 0;
+  }
+  break;
+ case TRL_KEYMACRO:
+  /* open a keyboard macro buffer */
+  if (macropointer) {     /* macro running? */
+    let(a, macropointer); /* save the outstanding keys */
+  } else {
+    empty(a);
+    empty(kbdmacro);
+    macropointer = kbdmacro;
+  }
+  i = sizeof(kbdmacro) - (macropointer - kbdmacro); /* remaining space in kbdmacro[] */
+  letstrncpy(macropointer, body, i);
+  cats(macropointer, i, a);
+  break;
 }
 return status;
 }

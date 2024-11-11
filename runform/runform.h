@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.2.4"
+#define VERSION "2.2.5"
 #define VERMSGS 23
 extern char odbcversion[];
 extern char odbcrun[];
@@ -77,6 +77,7 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, P
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "logger.h"
 #include "qdata.h"
 #include "record.h"
@@ -169,5 +170,7 @@ extern int   deleprompt;
 extern int   queryonlym;
 extern int   matchnocas;
 extern int   globalpkid;
+extern int   watchmacro;
+extern int   noentermac;
 extern char  *shiftednum;
 extern char  *username;

@@ -4,7 +4,7 @@
 class rMap: public Record {
 public:
   int init(int page_id);
-  int getbody(int page_id, char *buf, int n);
+  int getbody(int page_id, char *buf, int n, int acr);
   char *extract(int page_id);
   void slurp(int pid, char *tmpf, int brdr);
 };

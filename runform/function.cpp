@@ -124,7 +124,7 @@ CBi = -1;
 forall(block) if (i >= 4) enter_query(&F(b)[i]);
 CBi = 4;
 CFi = CB.blockfields[0];
-if ((notrunning = triggern(TRT_ENTERFORM))) return 0;
+if (!noentermac && (notrunning = triggern(TRT_ENTERFORM) > 1)) return 0;
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
 return 0;
 }
@@ -165,7 +165,7 @@ return F(p)[PGE_ABOUT].showpopup();
 }
 
 int Function::edit_map() {
-return (CV && !strcmp(CF.column, "seq")) ? F(p)[PGE_EDITOR].editmap(atoi(CV)) : 0;
+return (CV && (!strcmp(CF.column, "seq") || !strcmp(CF.column, "page_id"))) ? F(p)[PGE_EDITOR].editmap(atoi(CV)) : 0;
 }
 
 int Function::edit_file() {

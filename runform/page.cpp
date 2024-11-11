@@ -78,7 +78,7 @@ deletewindow();
 }
 
 void Page::repaint()   { if (!popup) redraw(); }
-void Page::refrnopop() { if (!popup) if (!macropointer) refr(); }
+void Page::refrnopop() { if (!popup) if (!macropointer || watchmacro) refr(); }
 
 /* display popup page and close after key pressed */
 int Page::showpopup() {
@@ -159,18 +159,15 @@ writef(0, 33, 0, 8,  "%s",        CF.column);
 writef(0, 42, 0,13,  "%6d/%6d",   CR, CN);
 writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
-#undef DEBUGETKB
-#ifdef DEBUGETKB
-writef(0, 67, 0,   13,"%04o %5d", lastgetch, lastgetch);
-#else
-writef(0, 67, COL_COMMIT,13,"%s", commit);
-#endif
-if (!macropointer) refr();
+if (watchmacro) writef(0, 67, 0,   13,"%04o %5d", lastgetch, lastgetch);
+else            writef(0, 67, COL_COMMIT,13,"%s", commit);
+if (!macropointer || watchmacro) refr();
 forall(field) F(l)[i].show();
 for (i=PGE_MAIN; i<F(numpage); i++) {
   if (F(needredraw)) F(p)[i].repaint();
   F(p)[i].refrnopop();
 }
+if (macropointer && watchmacro) sleep(1);
 F(needredraw) = 0;
 return LK ? LK : getkb();
 }
@@ -185,7 +182,7 @@ int Page::message(int ern, const char *pnt) {
 int i;
 static char empty[] = "";
 const char *pntst;
-if (!intrigger && y.ysiz > 0) { /* not in trigger and display has open window */
+if (!intrigger && !macropointer && y.ysiz > 0) { /* not in trigger and display has open window */
 if (pnt) pntst = pnt; else pntst = empty;
 i = (strlen(pntst) > LINE0SIZE-9) ? strlen(pntst) - LINE0SIZE + 9 : 0;
 writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, y.msg(ern), pntst+i);

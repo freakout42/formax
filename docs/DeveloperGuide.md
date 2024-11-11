@@ -443,6 +443,7 @@ small but usable subset of ES6.
 | Setquery("b.f","v") | set human query condition            |
 | String(n)           | cast number to string (integer)      |
 | Message(text)       | message on status line               |
+| Logger(text)        | message to log                       |
 | SQL(query)          | database access returns 1 value      |
 
 Keyboard macro notation

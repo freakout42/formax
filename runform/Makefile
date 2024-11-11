@@ -20,19 +20,22 @@ runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
 
 run: runform $(EXAMPLE)
-	strip runform
-	cp ../generate/formax.frm .
-	./runform -x -g/tmp/formax.log ../generate/formax.frm formax.frm
-	sqlite3 formax.frm .dump >../generate/formax.inp
+	./runform -zx $(EXAMPLE)
+#	./runform -x ../generate/formax.frm ../generate/scotty.frm
+#	sqlite3 ../generate/scotty.frm .dump >../generate/scotty.in2
+#	cp ../generate/formax.frm .
+#	./runform -x ../generate/formax.frm formax.frm
+#	sqlite3 formax.frm .dump >../generate/formax.inp
 
 test: clean runform $(EXAMPLE) $(FORMAXE)
+	rm -f /tmp/formax.log
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
-		./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
+		./runform -wx -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
+	sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
 
 curkeys.h: curkeys
 	./curkeys >$@
-
 colquery/colquery.o:
 	cd colquery; make $(SUBTARGET)
 crypt/libmd5.a:
@@ -52,4 +55,4 @@ $(FORMAXE):
 clean:
 	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
 	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf \
-		/tmp/odbc.log /tmp/formax.log ads_* $(EXAMPLE) testelk formax.frm
+		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm
