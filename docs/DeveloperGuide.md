@@ -346,19 +346,18 @@ On success next_item() is fired to move to the next field.
 | EDITFILE   | Key  | ']'       ]      | Action  | 1017   |
 | EXITFORM   | App  | exit_the_form()  | Action  | 1018   |
 | HELP       | Key  | CTRL('@') F1     | Action  | 1019   |
-
-/* KEF_LEFT    */  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char                  Left */
-/* KEF_DELETE  */  case KEY_CTRL('D'):  return KEY_F(7);       /* Delete (record)                DeleteCharacter DeleteRecord */
-/* KEF_RIGHT   */  case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char                      Right */
-/* KEF_BACKDEL */  case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace                      DeleteBackward */
-/* KEF_INSERT  *   case KEY_CTRL('J'):  return KEY_IC;       *//* Insert toggle (record)         InsertReplace InsertRecord */
-/* KEF_KEYHELP */  case KEY_CTRL('K'):  return KEY_F(11);      /* Keyboard help                  KeyHelp */
-/* KEF_REFRESH */  case KEY_CTRL('L'):  return KEY_F(12);      /* Refresh                        Refresh */
-/* KEF_COMMIT  */  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept                  Commit Select Execute */
-/* KEF_INSERT  */  case KEY_CTRL('O'):  return KEY_F(6);       /* Insert record                  InsertRecord */
-/* KEF_LIST    */  case KEY_CTRL('U'):  return KEY_F(5);       /* List of values                 List */
-/* KEF_QUIT    */  case KEY_CTRL('Y'):  return KEY_F(9);       /* Rollback Cancel                ExitCancel */
-/* KEF_EXIT    */  case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit                  Exit */
+| LEFT       | Key  | CTRL('B') LEFT   | Action  | 1020   |
+| RIGHT      | Key  | CTRL('F') RIGHT  | Action  | 1021   |
+| DELETE     | Key  | CTRL('D') DEL    | Action  | 1022   |
+| BACKDEL    | Key  | CTRL('H') BACKDEL| Action  | 1023   |
+| INS        | Key  | CTRL('J') IC     | Action  | 1024   |
+| INSERT     | Key  | CTRL('O') F6     | Action  | 1025   |
+| KEY        | Key  | CTRL('K') F11    | Action  | 1026   |
+| REFRESH    | Key  | CTRL('L') F12    | Action  | 1027   |
+| COMMIT     | Key  | CTRL('M') ENTER  | Action  | 1028   |
+| LIST       | Key  | CTRL('U') F5     | Action  | 1029   |
+| QUIT       | Key  | CTRL('Y') F9     | Action  | 1030   |
+| EXIT       | Key  | CTRL('Z') F8     | Action  | 1031   |
 
 ## Trigger Table
 
