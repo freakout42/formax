@@ -1,4 +1,3 @@
-#include <stdio.h>
 /* workhorse object most of the action is here
  * Represent columns or data entry areas and describe
  * how the data should be displayed and validated
@@ -158,7 +157,7 @@ return KEF_CANCEL;
 
 /* checks new field value with validation rules */
 int Field::validate(char **c, char *buf) {
-char *u;
+char *o;
 re_t re;
 int s;
 char buf2[SMLSIZE];
@@ -172,12 +171,12 @@ if (*validreg) {
 switch (fieldtype) {
  case FTY_DATE:
   s = colquery(buf, buf2, "q", 0, 268);
-  if (*buf2 == '{' && (u = rindex(buf2, ' ')) && u == buf2+strlen(buf2)-9) {
-    strncpy(buf, u+1, 4);
+  if (*buf2 == '{' && (o = rindex(buf2, ' ')) && o == buf2+strlen(buf2)-9) {
+    strncpy(buf, o+1, 4);
     *(buf+4) = '-';
-    strncpy(buf+5, u+5, 2);
+    strncpy(buf+5, o+5, 2);
     *(buf+7) = '-';
-    strncpy(buf+8, u+7, 2);
+    strncpy(buf+8, o+7, 2);
     *(buf+10) = '\0';
   }
   re = re_compile("^[12]\\d\\d\\d-[012]\\d-[0123]\\d$");
@@ -200,6 +199,12 @@ switch (fieldtype) {
   break;
  case FTY_CHAR: break;
  case FTY_ALL: break;
+}
+o = u.trigger(TRT_POSTCHANGE);
+if (o) switch (*o) {
+  case '0': return KEF_CANCEL;
+  case '1': break;
+  default:  letstrncpy(buf, o, sizeof(a));
 }
 if (*c) {
   if (strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);

@@ -21,9 +21,11 @@ select line,mtext from maps where page_id = 2001 order by line
 select line,mtext from maps where page_id = 2003 order by line
 select line,mtext from maps where page_id = 2006 order by line
 select line,mtext from maps where page_id = 2007 order by line
+select line,mtext from maps where page_id = 2009 order by line
 select line,mtext from maps where page_id = 2004 order by line
 select id,dname,loc from depts
 select id,ename,job,mgr,hiredate,sal,comm,dept_id from emps where (dept_id = '10')
+update depts set dname = 'nope' where id = '10'
 hello formax
 select id,ename,job,mgr,hiredate,sal,comm,dept_id from emps where (dept_id = '20')
 update emps set ename = 'hi' where id = '7369'

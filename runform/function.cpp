@@ -559,12 +559,13 @@ if (!intrigger) { /* not nice but fast */
   i = tid < 0 ? -tid : qtrigger(tid);
   if (i != -1) {
     s = trgi(i).execute();
-    if (*s != '"' && !isdigit(*s)) {
+    if (*s != '"') {
+     if (!isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
       strcpy(s, "-1");
       notrunning = -1;
-    }
+     } } else s[strlen(s++)-2] = '\0';
   }
 }
 return s;

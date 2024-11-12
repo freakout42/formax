@@ -341,7 +341,7 @@ On success next_item() is fired to move to the next field.
 | PASTE      | Key  | CTRL('V') F3     | Setting | 1010   |
 | POSTQUERY  | App  | execute_query()  | Setting | 1011   |
 | EXEQUERY   | Key  | CTRL('X') F10    | Action  | 1014   |
-| POSTCHANGE | App  | NOT YET IMPLEMEN | Setting | 1015   |
+| POSTCHANGE | App  | validate and set | Setting | 1015   |
 | ENTERECORD | App  | Record navigate  | Action  | 1016   |
 | EDITFILE   | Key  | ']'       ]      | Action  | 1017   |
 | EXITFORM   | App  | exit_the_form()  | Action  | 1018   |
