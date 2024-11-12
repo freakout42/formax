@@ -565,7 +565,11 @@ if (!intrigger) { /* not nice but fast */
       MSG1(MSG_JS, s);
       strcpy(s, "-1");
       notrunning = -1;
-     } } else s[strlen(s++)-2] = '\0';
+     } 
+    } else {
+      s[strlen(s)-2] = '\0';
+      s += 1;
+    }
   }
 }
 return s;
