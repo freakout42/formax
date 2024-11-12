@@ -16,6 +16,20 @@
 #define TRT_POSTCHANGE 1015
 #define TRT_ENTERECORD 1016
 #define TRT_EDITFILE   1017
+#define TRT_EXITFORM   1018
+#define TRT_HELP       1019
+#define TRT_LEFT       1020
+#define TRT_RIGHT      1021
+#define TRT_DELETE     1022
+#define TRT_BACKDEL    1023
+#define TRT_INS        1024
+#define TRT_INSERT     1025
+#define TRT_KEY        1026
+#define TRT_REFRESH    1027
+#define TRT_COMMIT     1028
+#define TRT_LIST       1029
+#define TRT_QUIT       1030
+#define TRT_EXIT       1031
 #define TRL_JAVASCRIPT 0
 #define TRL_KEYMACRO   1
 #ifndef BEGINSQL

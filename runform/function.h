@@ -14,7 +14,7 @@ public:
   void fsearch(char *rex);
   int exec_query();
   int edittrg(char *buf);
-  char *etrigger(int tid);
+  char *trigger(int tid);
 protected:
 private:
   int notrunning;
@@ -23,7 +23,6 @@ private:
   int editrigger(int tid);
   int qtrigger(int tid);
   int qtrigger(int tid, int bid, int fid);
-  char *trigger(int tid);
   int triggern(int tid);
   int enter_the_form();
   void enter_record(int rid);

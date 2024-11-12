@@ -11,18 +11,21 @@
 #include "runform.h"
 #include "regex/re.h"
 
+#define TRIGGRKEY(trgr) int i; if ((i = triggern(TRT_ ## trgr))) return i
+
 int Function::dispatch() { /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
 int undone;
 CK = F(mapkey)(LK);
 switch(CK) {
 #ifdef NOTYETIMPLEMENTED
   case KEF_NAVI0:           /* menu()  */
-  case KEF_LIST:            /* flist() */
 #endif
   case -1:           LK = enter_the_form();                                   break;
   case KEF_NOOP:
   case KEF_NOOP2:    LK = 0;                                                  break;
-  case KEF_REFRESH:  LK = refresh_screen();                                   break;
+  case KEF_REFRESH:
+   if (            ( LK = triggern(TRT_REFRESH) ) )                           break;
+                     LK = refresh_screen();                                   break;
   case KEF_NAVI1:    LK = fmove(0, NFIELD1+1);                                break;
   case KEF_NAVI2:    LK = fmove(0, NFIELD1+2);                                break;
   case KEF_NAVI3:    LK = fmove(0, NFIELD1+3);                                break;
@@ -37,8 +40,13 @@ switch(CK) {
   case KEF_NXTREC:   LK = next_record();                                      break;
   case KEF_NXTSETR:  LK = (CB.norec==1) ? KEF_END  : next_setrecords();       break;
   case KEF_PRESETR:  LK = (CB.norec==1 || CR==1) ? KEF_HOME : previous_setrecords(); break;
+  case KEF_LIST:            /* flist() */
+   if (            ( LK = triggern(TRT_LIST) ) )                              break;
+                     LK = 0;                                                  break;
   case KEF_HELP:     LK = help_item();                                        break;
-  case KEF_KEYHELP:  LK = keys_help();                                        break;
+  case KEF_KEYHELP:
+   if (            ( LK = triggern(TRT_KEY) ) )                               break;
+                     LK = keys_help();                                        break;
   case KEF_PREREC:   LK = previous_record();                                  break;
   case KEF_COPYREC:  LK = fcopyrec();                                         break;
   case KEF_HOME:
@@ -53,15 +61,20 @@ switch(CK) {
   case KEF_COPY:     LK = fcopy();                                            break;
   case KEF_PASTE:    LK = fpaste();                                           break;
   case KEF_INSERT:
+   if (            ( LK = triggern(TRT_INSERT) ) )                            break;
    switch(CM) {
     case MOD_UPDATE:
     case MOD_QUERY:  LK = insert_record();                             break;
     case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
     default:         LK = 0; y.toggle();                               break;
    }                                                                          break;
-  case KEF_INS:      LK = 0; y.toggle();                                      break;
+  case KEF_INS:
+   if (            ( LK = triggern(TRT_INS) ) )                               break;
+                     LK = 0; y.toggle();                                      break;
   case KEF_BACKDEL:         /* fbackdel() */
+   if (            ( LK = triggern(TRT_BACKDEL) ) )                           break;
   case KEF_DELETE:
+   if (            ( LK = triggern(TRT_DELETE) ) )                            break;
    switch(CM) {
     case MOD_QUERY:  LK = fedit(KEF_DEL);                              break;
     case MOD_UPDATE: LK = delete_record();                             break;
@@ -72,15 +85,19 @@ switch(CK) {
   case KEF_QUERY:    LK = enter_query(&CB);                                   break;
   case KEF_NAVI10:
   case KEF_COMMIT:
+   if (            ( LK = triggern(TRT_COMMIT) ) )                            break;
    switch(CM) {
     case MOD_QUERY:  LK = execute_query();                             break;
     case MOD_UPDATE: LK = enter_query(&CB);                            break;
     case MOD_INSERT: LK = F(dirty) ? create_record() : clear_record(); break;
     case MOD_DELETE: LK = destroy_record();                            break;
    }                                                                          break;
-  case KEF_EXIT:     LK = fexit();                                            break;
+  case KEF_EXIT:
+   if (            ( LK = triggern(TRT_EXIT) ) )                              break;
+                     LK = fexit();                                            break;
   case KEF_QUIT:
   case KEF_CANCEL:
+   if (            ( LK = triggern(TRT_QUIT) ) )                              break;
    switch(CM) {
     case MOD_UPDATE:
     case MOD_QUERY:  LK = fquit();                                     break;
@@ -152,6 +169,7 @@ return 0;
 }
 
 int Function::help_item() {
+TRIGGRKEY(HELP);
 MSG1(MSG_HELP,CF.helptext);
 return 0;
 }
@@ -378,6 +396,8 @@ return changed==KEF_CANCEL ? 0 : changed;
 
 /* change the field with various methods determined by pos */
 int Function::fedit(int pos) {
+if (pos ==  0) {TRIGGRKEY(RIGHT);}
+if (pos == -1) {TRIGGRKEY(LEFT);}
 changed = 0;
 switch(CM) {
  case MOD_INSERT:
@@ -412,7 +432,7 @@ int Function::fexit() {
     case MOD_INSERT: if (F(dirty)) create_record();                    break;
     case MOD_DELETE: LK = destroy_record();                            break;
    }
-notrunning = -1;
+if (noentermac || triggern(TRT_EXITFORM) <= 1) notrunning = -1;
 return 0;
 }
 
@@ -539,12 +559,13 @@ if (!intrigger) { /* not nice but fast */
   i = tid < 0 ? -tid : qtrigger(tid);
   if (i != -1) {
     s = trgi(i).execute();
-    if (*s != '"' && !isdigit(*s)) {
+    if (*s != '"') {
+     if (!isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
       strcpy(s, "-1");
       notrunning = -1;
-    }
+     } } else s[strlen(s++)-2] = '\0';
   }
 }
 return s;

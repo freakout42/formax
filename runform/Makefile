@@ -47,9 +47,9 @@ elk/elk.o:
 regex/re.o:
 	cd regex; make $(SUBTARGET)
 
-$(EXAMPLE):
+$(EXAMPLE): ../generate/scotty.in2
 	cd ../generate; make clean test
-$(FORMAXE):
+$(FORMAXE): ../generate/formax.inp
 	cd ../generate; make clean test
 
 clean:

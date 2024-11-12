@@ -341,9 +341,23 @@ On success next_item() is fired to move to the next field.
 | PASTE      | Key  | CTRL('V') F3     | Setting | 1010   |
 | POSTQUERY  | App  | execute_query()  | Setting | 1011   |
 | EXEQUERY   | Key  | CTRL('X') F10    | Action  | 1014   |
-| POSTCHANGE | App  | NOT YET IMPLEMEN | Setting | 1015   |
+| POSTCHANGE | App  | validate and set | Setting | 1015   |
 | ENTERECORD | App  | Record navigate  | Action  | 1016   |
 | EDITFILE   | Key  | ']'       ]      | Action  | 1017   |
+| EXITFORM   | App  | exit_the_form()  | Action  | 1018   |
+| HELP       | Key  | CTRL('@') F1     | Action  | 1019   |
+| LEFT       | Key  | CTRL('B') LEFT   | Action  | 1020   |
+| RIGHT      | Key  | CTRL('F') RIGHT  | Action  | 1021   |
+| DELETE     | Key  | CTRL('D') DEL    | Action  | 1022   |
+| BACKDEL    | Key  | CTRL('H') BACKDEL| Action  | 1023   |
+| INS        | Key  | CTRL('J') IC     | Action  | 1024   |
+| INSERT     | Key  | CTRL('O') F6     | Action  | 1025   |
+| KEY        | Key  | CTRL('K') F11    | Action  | 1026   |
+| REFRESH    | Key  | CTRL('L') F12    | Action  | 1027   |
+| COMMIT     | Key  | CTRL('M') ENTER  | Action  | 1028   |
+| LIST       | Key  | CTRL('U') F5     | Action  | 1029   |
+| QUIT       | Key  | CTRL('Y') F9     | Action  | 1030   |
+| EXIT       | Key  | CTRL('Z') F8     | Action  | 1031   |
 
 ## Trigger Table
 
