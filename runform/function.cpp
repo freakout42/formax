@@ -559,16 +559,11 @@ if (!intrigger) { /* not nice but fast */
   i = tid < 0 ? -tid : qtrigger(tid);
   if (i != -1) {
     s = trgi(i).execute();
-    if (*s != '"') {
-     if (!isdigit(*s)) {
+    if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
       strcpy(s, "-1");
       notrunning = -1;
-     } 
-    } else {
-      s[strlen(s)-2] = '\0';
-      s += 1;
     }
   }
 }
@@ -587,7 +582,7 @@ int Function::edittrg(char *buf) {
 int i;
 char *jsresult; /* BIGSIZE never overflows with elk's output */
 jsresult = trigger(edittrgtyp);
-if (!jsresult) { ;             /* check for trigger */
+if (!jsresult) { return 0;     /* check for trigger */
 } else if (*jsresult == '"') { /* check for output is js string */
   strcpy(buf, jsresult+1);
   i = strlen(buf) - 1;

@@ -200,11 +200,10 @@ switch (fieldtype) {
  case FTY_CHAR: break;
  case FTY_ALL: break;
 }
-o = u.trigger(TRT_POSTCHANGE);
-if (o) switch (*o) {
-  case '0': return KEF_CANCEL;
-  case '1': break;
-  default:  letstrncpy(buf, o, sizeof(a));
+u.edittrgtyp = TRT_POSTCHANGE;
+switch(u.edittrg(buf)) {
+ case 0:          break;
+ case KEF_CANCEL: return KEF_CANCEL;
 }
 if (*c) {
   if (strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);

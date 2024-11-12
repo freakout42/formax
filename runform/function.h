@@ -13,16 +13,16 @@ public:
   void fgoto(char *sel);
   void fsearch(char *rex);
   int exec_query();
+  int edittrgtyp;
   int edittrg(char *buf);
-  char *trigger(int tid);
 protected:
 private:
   int notrunning;
   int changed;
-  int edittrgtyp;
   int editrigger(int tid);
   int qtrigger(int tid);
   int qtrigger(int tid, int bid, int fid);
+  char *trigger(int tid);
   int triggern(int tid);
   int enter_the_form();
   void enter_record(int rid);
