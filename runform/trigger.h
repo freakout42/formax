@@ -6,8 +6,8 @@ public:
   int init(Qdata *trg, int rix, rMap *map);
   void rclose();
   char *jsexecdirect(char *prg, int siz);
-  char *jsexec();
-  char *execute();
+  char *jsexec(char *av0);
+  char *execute(char *av0);
   int trgblk;
   int trgfld;
   int trgtyp;

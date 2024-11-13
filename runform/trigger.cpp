@@ -26,8 +26,7 @@ int fldn;
 char *fldvaluep;
 char *selector;
 double rownumber;
-//let(a, "(null)");
-empty(a);
+char *a = "";
 selector = js_getstr(js, args[0], NULL);
 fldn = F(qfield)(selector);
 if (fldn >= 0) {
@@ -37,7 +36,7 @@ if (nargs == 2) {
 } else {
   fldvaluep = *fldi(fldn).valuep();
 }
-if (fldvaluep) let(a, fldvaluep);
+if (fldvaluep) a = fldvaluep;
 }
 return js_mkstr(js, a, strlen(a)+1);
 }
@@ -71,6 +70,7 @@ return js_mknum(0);
 /* String() number to string */
 static jsval_t j_tostring(struct js *js, jsval_t *args, int nargs) {
 double number;
+char a[SMLSIZE];
 number = js_getnum(args[0]);
 letf(t(a), "%.0f", number);
 return js_mkstr(js, a, strlen(a)+1);
@@ -94,6 +94,7 @@ return js_mknum(0);
 /* SQL() returns singlerow singlecol result */
 static jsval_t j_sql(struct js *js, jsval_t *args, int nargs) {
 char *query;
+char a[BIGSIZE];
 query = js_getstr(js, args[0], NULL);
 dbconn[1].execdirect(query);
 letf(t(a), "%s", dbconn[1].q->v(1,1));
@@ -113,6 +114,7 @@ JSEXA(exec_query)
 #define JSEXE(jsfn,func) js_set(javascript, js_glob(javascript), #jsfn, js_mkfun(j_ ## func))
 int Trigger::init(Qdata *trg, int rix, rMap *map) {
 int i;
+char a[MEDSIZE];
 if (!javascript) {
   javascript = js_create(engine, HUGSIZE);
   JSEXE(next_item,next_item);
@@ -158,8 +160,9 @@ return (char*)js_str(javascript, v);
 }
 
 /* exec javascript from trigger */
-char *Trigger::jsexec() {
+char *Trigger::jsexec(char *av0) {
 char prog[BIGSIZE];
+char a[BIGSIZE];
 char *fvalue;
 char *escaped;
 int progsize;
@@ -169,20 +172,21 @@ for (fvalue=CV; fvalue && *fvalue; fvalue++) {
   *escaped++ = *fvalue;
 }
 empty(escaped++);
-letf(t(prog), "cb = '%s'; cf = '%s'; ci = %d; cr = %d; cv = '%s';\n", CB.table, CF.column, CF.index, CR, a);
+letf(t(prog), "cb = '%s'; cf = '%s'; ci = %d; cr = %d; cv = '%s'; v0 = '%s';\n", CB.table, CF.column, CF.index, CR, a, av0);
 progsize = cats(t(prog), body);
 return jsexecdirect(prog, progsize);
 }
 
-char *Trigger::execute() {
+char *Trigger::execute(char *av0) {
 int i;
 char *status;
+char a[MEDSIZE];
 status = "1";
 switch (trglng) {
  case TRL_JAVASCRIPT:
   if (!intrigger) {
     intrigger = 1; /* guard the javascript engine from recursion */
-      status = jsexec();
+      status = jsexec(av0);
     intrigger = 0;
   }
   break;

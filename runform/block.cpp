@@ -7,6 +7,7 @@
 
 int Block::init(Qdata *blk, int rix) {
 char *globalid;
+char a[NORSIZE];
 block_id =  blk->n(rix, 1);
 let(table,  blk->v(rix, 2));
 sequence =  blk->n(rix, 3);

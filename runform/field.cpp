@@ -203,7 +203,8 @@ switch (fieldtype) {
 u.edittrgtyp = TRT_POSTCHANGE;
 switch(u.edittrg(buf)) {
  case 0:          break;
- case KEF_CANCEL: return KEF_CANCEL;
+ case KEF_NXTFLD: break;
+ default:         return KEF_CANCEL;
 }
 if (*c) {
   if (strlen(buf) > strlen(*c)) *c = (char*)realloc(*c, strlen(buf)+1);
@@ -220,6 +221,7 @@ int Field::edit(int pos) {
 int pressed;
 char **c;
 pressed = 0;
+char a[HUGSIZE];
 switch(CM) {
  case MOD_UPDATE:
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }

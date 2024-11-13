@@ -43,7 +43,6 @@ Record dbconn[5];
 Screen y;
 Form *f;
 Function u;
-char a[HUGSIZE];
 int lastgetch = 256;
 
 static char b64pwd[65];

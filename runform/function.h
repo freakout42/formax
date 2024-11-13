@@ -22,8 +22,9 @@ private:
   int editrigger(int tid);
   int qtrigger(int tid);
   int qtrigger(int tid, int bid, int fid);
-  char *trigger(int tid);
+  char *trigger(int tid, char *av0);
   int triggern(int tid);
+  int triggers(int tid, char *buf);
   int enter_the_form();
   void enter_record(int rid);
   int refresh_screen();

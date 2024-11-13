@@ -158,7 +158,7 @@ pkval = *fldi(pkfldi).valuep();
 curval = &fldi(pkfldi).currentval;
 /* need single primary key field and trigger for it and value has changed */
 if (CB.prikeycnt == 1 && (i = qtrigger(TRT_ENTERECORD, CBi, pkfldi)) > -1 && pkval && (!*curval || strcmp(*curval, pkval))) {
-  trigger(-i);
+  trigger(-i, NULL);
   free(*curval);
   *curval = strdup(pkval);
 } } }
@@ -188,7 +188,7 @@ return (CV && (!strcmp(CF.column, "seq") || !strcmp(CF.column, "page_id"))) ? F(
 
 int Function::edit_file() {
 char *s;
-s = trigger(TRT_EDITFILE);
+s = trigger(TRT_EDITFILE, NULL);
 if (s && *s == '"') {
   s[strlen(s) - 1] = '\0';
   F(p)[PGE_EDITOR].editfile(s+1);
@@ -273,6 +273,7 @@ if (CB.norec > 1) {
 /* goto entered cell */
 int Function::goto_cell() {
 int pressed;
+char a[NORSIZE];
 let(a, "block.field:row");
 pressed = F(p)[PGE_STATUS].sedit(a, 0, FTY_ALL, 30);
 if (pressed == KEY_ENTER) fgoto(a);
@@ -309,6 +310,7 @@ void Function::fsearch(char *rex) {
 int fldn, rown, s;
 char **val;
 char *src, *tgt;
+char a[HUGSIZE];
 re_t re;
 re = re_compile(rex);
 fldn = CF.sequencenum + 1;
@@ -548,17 +550,22 @@ forall(trigger) {
 return -1;
 }
 
-/* raw trigger call NULL..notfound "..string [0-9]..number [^"0-9]..error
- * javascript should always return number see below
+/* raw trigger call returns        *char   when
+ * -                               NULL    trigger not found or disabled
+ * 0;                              "0"     background executed go default action
+ * 1;                              "1"     foreground or key macro no default action
+ * nn;                             "nn"    next key action triggers only return numbers
+ * "string";                       ""str"" for setting triggers
+ * raise error;                    "-1"    javascript error
  */
-char *Function::trigger(int tid) {
+char *Function::trigger(int tid, char *av0) {
 int i;
 char *s;
 s = NULL;
 if (!intrigger) { /* not nice but fast */
   i = tid < 0 ? -tid : qtrigger(tid);
   if (i != -1) {
-    s = trgi(i).execute();
+    s = trgi(i).execute(av0);
     if (*s != '"' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
@@ -570,29 +577,34 @@ if (!intrigger) { /* not nice but fast */
 return s;
 }
 
-/* execute the trigger */
+/* execute action trigger
+ * no difference whether not or background executed =0
+ */
 int Function::triggern(int tid) {
 char *jsresult;
-jsresult = trigger(tid);
+jsresult = trigger(tid, NULL);
 return jsresult ? atoi(jsresult) : 0;
 }
 
-/* edit field with trigger */
-int Function::edittrg(char *buf) {
+/* execute setting trigger */
+int Function::triggers(int tid, char *buf) {
 int i;
 char *jsresult; /* BIGSIZE never overflows with elk's output */
-jsresult = trigger(edittrgtyp);
-if (!jsresult) { return 0;     /* check for trigger */
-} else if (*jsresult == '"') { /* check for output is js string */
+jsresult = trigger(tid, buf);
+if (!jsresult)                 { return 0; }
+else if (*jsresult == '"')     {
   strcpy(buf, jsresult+1);
   i = strlen(buf) - 1;
   assert(*(buf+i) == '\"');
   *(buf+i) = '\0';
-  return KEF_NXTFLD;
-} else if (isdigit(*jsresult)) { /* check for output is js int */
-  strcpy(buf, jsresult);
-  return KEF_NXTFLD;
+                                 return KEF_NXTFLD;
 }
-return KEF_CANCEL;
+else if (isdigit(*jsresult))   { return atoi(jsresult); }
+else                           { return KEF_CANCEL; }
+}
+
+/* edit field with trigger */
+int Function::edittrg(char *buf) {
+return triggers(edittrgtyp, buf);
 }
 

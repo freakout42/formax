@@ -19,6 +19,7 @@ return 0;
 int Page::maps(Qdata *qma) {
 int i, r, y;
 char *t, *p;
+char a[NORSIZE];
 if (page_id == PGE_ABOUT) {
   r = 0;
 #define ABOUTLINE map[r++] = strdup(a);
