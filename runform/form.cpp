@@ -10,9 +10,18 @@
 Form::Form() {
 let(table,  "forms");
 let(prikey, "id");
-let(attrs,  "id,name,title");
+let(attrs,  "id,name,title,mnugrp");
 let(order,  "id");
-columni = 3;
+columni = 4;
+}
+
+/* sign form with crypted md5 hash */
+int Form::sign(int fid, char *signature) {
+connect(dbconn[0]);
+letf((char*)querystr, MEDSIZE, "update %s set %s = ? where %s = ?", table, "mnugrp", "id");
+bindv[0] = signature;
+bindv[1] = NULL;
+return execute();
 }
 
 /* fill objects with configuation from sqlite db (.frm) */
@@ -45,6 +54,7 @@ if (q->rows != 1) return 7;
 let(id,    q->v(1, 1));
 let(name,  q->v(1, 2));
 let(title, q->v(1, 3));
+let(signt, q->v(1, 4));
 needredraw = 0;
 rclose();
 

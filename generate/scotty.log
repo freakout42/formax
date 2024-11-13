@@ -1,6 +1,6 @@
 SQL_DBMS_NAME: SQLite -> 0
 SQL_DBMS_NAME: SQLite -> 0
-select id,name,title from forms
+select id,name,title,mnugrp from forms
 select num,severity,etext from errors order by num
 select id,seq,name,ysiz,xsiz,vwpy0,vwpx0,popup,border from pages where form_id in (0, 1) order by seq
 select line,mtext from maps where page_id = 0 order by line

@@ -30,7 +30,7 @@ run: runform $(EXAMPLE)
 test: clean runform $(EXAMPLE) $(FORMAXE)
 	rm -f /tmp/formax.log
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
-		./runform -wx -g/tmp/formax.log $(EXAMPLE) 2>$@
+		./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
 	test -f $@ -a ! -s $@
 	sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
 

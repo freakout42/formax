@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,6 +40,8 @@ return toe;
 /* key is combined with forms md5 */
 int genxorkey(char *pat, char *key) {
   char *buf;
+  char *signature;
+  char insignia[] = "YyformaxyY";
   int fsize;
   FILE* f;
   struct MD5Context ctx;
@@ -52,9 +55,10 @@ int genxorkey(char *pat, char *key) {
   if ((buf = malloc(fsize + 1)) == NULL) return 13;
   if ((fread(buf, 1, fsize, f) != fsize)) return 5;
   fclose(f);
-
+  if ((signature = memmem(buf, fsize, insignia, strlen(insignia))))
+    memset(signature + 10, 'y', 64);
   MD5Init(&ctx);
-  MD5Update(&ctx, buf, fsize);
+  MD5Update(&ctx, buf+256, fsize-256);
   MD5Update(&ctx, key, 64);
   MD5Final(d, &ctx);
   memcpy(d+16, d, 16);
