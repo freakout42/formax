@@ -269,7 +269,7 @@ switch (fty) {
  default:        legal = legalall;
 }
 F(p)[PGE_STATUS].writef(0, 67, COL_COMMIT,13,"   Enter-Data");
-if (!(*macropointer) || watchmacro) F(p)[PGE_STATUS].refr();
+if (!macropointer || watchmacro) F(p)[PGE_STATUS].refr();
 return getst(lin, col, lin+col==0 ? 67 : len, EDITCOLOR, toe, pos, legal, len, NULL);
 }
 
@@ -320,7 +320,7 @@ while (!done) {              /* input loop */
   if (so > se && sx > x) mvwaddch (wndw, y, x, '<'); /* signal overfl */
   if ((int)strlen(so) > width && sx < endx) mvwaddch(wndw, y, endx, '>');
   wmov(y, sx);      /* move to cursor pos */
-  if (!(*macropointer) || watchmacro) refr();        /* show the screen */
+  if (!macropointer || watchmacro) refr();        /* show the screen */
   switch (c = (first > 0) ? first : getkb()) { /* get pressed key */
    case KEY_HOME:            /* go to start of field */
     pos = 0;
