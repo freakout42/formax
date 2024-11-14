@@ -15,15 +15,6 @@ let(order,  "id");
 columni = 4;
 }
 
-/* sign form with crypted md5 hash */
-int Form::sign(int fid, char *signature) {
-connect(dbconn[0]);
-letf((char*)querystr, MEDSIZE, "update %s set %s = ? where %s = ?", table, "mnugrp", "id");
-bindv[0] = signature;
-bindv[1] = NULL;
-return execute();
-}
-
 /* fill objects with configuation from sqlite db (.frm) */
 int Form::fill(int fid) {
 int i, s;
@@ -33,20 +24,11 @@ Form *runningform;
 runningform = f;
 f = this;
 
-/* connect all configuration tables to the form database */
-       connect(dbconn[0]);
-rerror.connect(dbconn[0]);
-rblock.connect(dbconn[0]);
-rfield.connect(dbconn[0]);
-rpage.connect(dbconn[0]);
-rmap.connect(dbconn[0]);
-rtrigger.connect(dbconn[0]);
-
 /* the form configuration itself */
+connect(dbconn[0]);
 stmt = NULL;
 if ((s = ropen())) return s;
 letf(t(where), "id = %d", fid);
-empty(where);
 empty(order);
 empty(condition);
 if ((s = query())) return s;
@@ -55,8 +37,27 @@ let(id,    q->v(1, 1));
 let(name,  q->v(1, 2));
 let(title, q->v(1, 3));
 let(signt, q->v(1, 4));
+if (pwdencrypt && strcmp(signt, runningsignature)) {
+  if (!getuid()) {
+    /* im root so sign form with crypted md5 hash */
+    letf((char*)querystr, MEDSIZE, "update %s set %s = ? where %s", table, "mnugrp", where);
+    bindv[0] = runningsignature;
+    bindv[1] = NULL;
+    execute();
+    return 21;
+  }
+  return 20;
+}
 needredraw = 0;
 rclose();
+
+/* connect all configuration tables to the form database */
+rerror.connect(dbconn[0]);
+rblock.connect(dbconn[0]);
+rfield.connect(dbconn[0]);
+rpage.connect(dbconn[0]);
+rmap.connect(dbconn[0]);
+rtrigger.connect(dbconn[0]);
 
 /* error messages */
 if (rerror.init()) return 9;

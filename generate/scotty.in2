@@ -7,7 +7,7 @@ CREATE TABLE forms
    mnunam TEXT NOT NULL DEFAULT '',
    mnugrp TEXT NOT NULL DEFAULT ''
   );
-INSERT INTO forms VALUES(1,'scotty','formax1','','');
+INSERT INTO forms VALUES(1,'scotty','formax1','','YyformaxyYzUK8KuBIvQoswErzXHeAl81CvCrgSL0KLMBK81x3gJfNQrwq4Ei9CizASvNcd4CXYyformaxyY');
 CREATE TABLE errors
   (id INTEGER PRIMARY KEY NOT NULL,
    num INTEGER NOT NULL DEFAULT 1,

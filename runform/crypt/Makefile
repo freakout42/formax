@@ -3,7 +3,7 @@ OBJECTS = md5.o base64.o xdecrypt.o totp.o sha1.o hmacsha1.o
 
 all: libmd5.a
 
-test: totp sign
+test: totp
 
 libmd5.a: $(OBJECTS)
 	$(AR) rcs $@ $(OBJECTS)

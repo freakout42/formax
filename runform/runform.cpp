@@ -46,7 +46,7 @@ Function u;
 int lastgetch = 256;
 
 static char b64pwd[65];
-static const char *xorkey1pointer = XORKEY1;
+char runningsignature[85];
 
 /* local primary errors before any processing */
 static void usage(int ecd) {
@@ -70,6 +70,8 @@ const char *est[] = {
   "screen setup failed",          // 17
   "need new key for encryption",  // 18
   "wrong version of form",        // 19
+  "signature does not match",     // 20
+  "form signed with signature",   // 21
 };
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
@@ -159,8 +161,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqt:Vwxy:z")) != -1) {
     case '3': useodbcve3 = 1; break;
     case 'k': monochrome = 1; break;
     case 'c': usedefault = 1; break;
-    case 'p': if (strlen(xorkey1pointer)!=64 || !strncmp(xorkey1pointer, "qT", 2)) usage(18);
-              pwdencrypt = 1; break;
+    case 'p': pwdencrypt = 1; break;
     case 'i': squerymode = 1; break;
     case 'x': updatemode = 1; break;
     case 'b': usebindvar = 0; break;
@@ -176,9 +177,6 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqt:Vwxy:z")) != -1) {
   }
 }
 
-/* build the key based on the form-file and the key in version.h */
-if ((i = genxorkey(argv[optind], xorkey1pointer))) usage(i);
-
 /* generate encrypted passwords - must be root */
 if (ypassword) {
   if (getuid()) usage(1);
@@ -187,6 +185,9 @@ if (ypassword) {
   printf("%s\n", xdecrypt(b64pwd, 1));
   exit(99);
 }
+
+/* build the signature of the form-file */
+if (pwdencrypt && (i = genxorkey(argv[optind], runningsignature))) usage(i);
 
 /* initialize the logger with first dsn */
 g.init(argv[optind+1]);
@@ -215,11 +216,11 @@ switch(dbconn[1].drv) {
  case ODR_ADS:    querycharm = 0; break;
  default: ;
 }
-memset(dsn, 'y', MEDSIZE); // remove key from ram
+memset(dsn, 'y', MEDSIZE); // remove pw and key from ram
 genxorkey(NULL, NULL);
 
 rootform = new Form();
-  if ((s = rootform->fill(form_id))) usage(s==19 ? 19 : 5);
+  if ((s = rootform->fill(form_id))) usage(s<19 ? 5 : s);
     if (y.init()) usage(17);
       if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
     y.closedisplay();

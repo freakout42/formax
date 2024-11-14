@@ -1,12 +1,14 @@
 #define _GNU_SOURCE
 #include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include "md5.h"
+#include "../arx.h"
 
 #define XORKEY0 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-static char xorder[] = XORKEY0;
-static char xorkey[65];
+static char xorder[65] = XORKEY0;
+static char xorkey[65] = XORKEY1;
 
 static int ordnum(int ch) {
 char *po;
@@ -37,8 +39,8 @@ if (rev) { from64tobits(buf, toe, 64); strcpy(toe, buf); }
 return toe;
 }
 
-/* key is combined with forms md5 */
-int genxorkey(char *pat, char *key) {
+/* key is in arx.h */
+int genxorkey(char *pat, char *sig) {
   char *buf;
   char *signature;
   char insignia[] = "YyformaxyY";
@@ -46,7 +48,7 @@ int genxorkey(char *pat, char *key) {
   FILE* f;
   struct MD5Context ctx;
   char d[48];
-
+  if (strlen(xorkey)!=64 || !strncmp(xorkey, "qT", 2)) pat = NULL;
   if (pat == NULL) memset(xorkey, 'y', 64); else {
   if ((f = fopen(pat, "r")) == NULL) return 4;
   fseek(f, 0, SEEK_END);
@@ -59,13 +61,16 @@ int genxorkey(char *pat, char *key) {
     memset(signature + 10, 'y', 64);
   MD5Init(&ctx);
   MD5Update(&ctx, buf+256, fsize-256);
-  MD5Update(&ctx, key, 64);
+  MD5Update(&ctx, xorkey, 64);
   MD5Final(d, &ctx);
   memcpy(d+16, d, 16);
   memcpy(d+32, d, 16);
-  to64frombits(xorkey, d, 48);
-  xorkey[64] = '\0';
+  strcpy(sig, insignia);
+  to64frombits(sig+10, d, 48);
+  strcpy(sig+74, insignia);
+  xorkey[84] = '\0';
   free(buf);
   }
   return 0;
 }
+
