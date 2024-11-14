@@ -68,7 +68,7 @@ int genxorkey(char *pat, char *sig) {
   strcpy(sig, insignia);
   to64frombits(sig+10, d, 48);
   strcpy(sig+74, insignia);
-  xorkey[84] = '\0';
+  insignia[84] = '\0';
   free(buf);
   }
   return 0;
