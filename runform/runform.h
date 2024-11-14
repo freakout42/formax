@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.2.7"
+#define VERSION "2.2.8"
 #define VERMSGS 23
 extern char odbcversion[];
 extern char odbcrun[];
@@ -171,5 +171,6 @@ extern int   matchnocas;
 extern int   globalpkid;
 extern int   watchmacro;
 extern int   noentermac;
+extern char  runningsignature[];
 extern char  *shiftednum;
 extern char  *username;

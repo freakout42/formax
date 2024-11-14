@@ -22,6 +22,7 @@ public:
   int lastcmd;
   int lastkey;
   int dirty;
+  int sign(int fid, char *signature);
   int fill(int id);
   int qfield(char *sel);
   void clear();
@@ -29,6 +30,7 @@ public:
   int mapkey(int ckey);
   void rconnect();
 private:
+  char signt[SMLSIZE];
   rError rerror;
   rBlock rblock;
   rField rfield;
@@ -41,6 +43,6 @@ CREATE TABLE forms
    name      TEXT    NOT NULL DEFAULT 'form0',
    title     TEXT    NOT NULL DEFAULT '',
    mnunam    TEXT    NOT NULL DEFAULT '',
-   mnugrp    TEXT    NOT NULL DEFAULT ''
+   mnugrp    TEXT    NOT NULL DEFAULT 'YyformaxyYABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklYnopTrstuvwxyzii23U56789+/YyformaxyY'
   );
 #endif
