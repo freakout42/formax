@@ -356,6 +356,14 @@ enter_record(CR);
 return 0;
 }
 
+/* edittrgtyp is extremly ugly and hard to understand
+ * but any other method kills the easy way field->fedit works
+ * there are many trigger which can edit the field,
+ * but there is only one central way to use the trigger method
+ * edittrgtyp is set before and when fedit comes back here
+ * for edittrg() this method knows the selected trigger type
+ */
+
 /* double pressed should copy record */
 int Function::fcopyrec() {
 if (CM != MOD_UPDATE && CM != MOD_INSERT) return 0;
@@ -366,8 +374,7 @@ if (CR > 1) {
 } else {
   MSG(MSG_NOREC2);
   return 0;
-}
-}
+} }
 
 int Function::fcopy() {
 if (CM == MOD_UPDATE && CV) return triggern(TRT_COPY);

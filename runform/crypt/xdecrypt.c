@@ -1,6 +1,5 @@
 #define _GNU_SOURCE
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include "md5.h"
@@ -10,6 +9,7 @@
 static char xorder[65] = XORKEY0;
 static char xorkey[65] = XORKEY1;
 
+/* the index of the base64 chars for shifting */
 static int ordnum(int ch) {
 char *po;
 if ((po = strchr(xorder, ch))) {
@@ -57,8 +57,8 @@ int genxorkey(char *pat, char *sig) {
   if ((buf = malloc(fsize + 1)) == NULL) return 13;
   if ((fread(buf, 1, fsize, f) != fsize)) return 5;
   fclose(f);
-  if ((signature = memmem(buf, fsize, insignia, strlen(insignia))))
-    memset(signature + 10, 'y', 64);
+  /* the checksum should not differ when the signature is y-blanked and the header is excluded */
+  if ((signature = memmem(buf, fsize, insignia, strlen(insignia)))) memset(signature + 10, 'y', 64);
   MD5Init(&ctx);
   MD5Update(&ctx, buf+256, fsize-256);
   MD5Update(&ctx, xorkey, 64);
