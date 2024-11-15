@@ -47,7 +47,7 @@ enum ftype         { FTY_ALL, FTY_CHAR, FTY_INT, FTY_FLOAT, FTY_DATE, FTY_BOOL }
 enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, PGE_EXTRA };
 /* field edit variants for pos parameter */
 #define FED_FEDITOR -9999 /* full screen editor */
-#define FED_TRIGGER -9998 /* trigger "editor" */
+#define FED_TRIGGER -10000 /* trigger "editor" */
 #define FED_TOGGLE  -9997 /* binary toggle */
 #define FED_INCR    -9996 /* increment */
 #define FED_DECR    -9995 /* decrement */

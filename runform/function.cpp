@@ -356,20 +356,11 @@ enter_record(CR);
 return 0;
 }
 
-/* edittrgtyp is extremly ugly and hard to understand
- * but any other method kills the easy way field->fedit works
- * there are many trigger which can edit the field,
- * but there is only one central way to use the trigger method
- * edittrgtyp is set before and when fedit comes back here
- * for edittrg() this method knows the selected trigger type
- */
-
 /* double pressed should copy record */
 int Function::fcopyrec() {
 if (CM != MOD_UPDATE && CM != MOD_INSERT) return 0;
 if (CR > 1) {
-  edittrgtyp = TRT_COPYREC;
-  changed = fedit(FED_TRIGGER);
+  changed = fedit(FED_TRIGGER - TRT_COPYREC);
   return changed==KEF_CANCEL ? 0 : changed;
 } else {
   MSG(MSG_NOREC2);
@@ -383,15 +374,13 @@ return 0;
 
 int Function::fpaste() {
 if (CM != MOD_UPDATE) return 0;
-  edittrgtyp = TRT_PASTE;
-  changed = fedit(FED_TRIGGER);
+  changed = fedit(FED_TRIGGER - TRT_PASTE);
   return changed==KEF_CANCEL ? 0 : changed;
 }
 
 int Function::ftoggle() {
 int editmode;
-edittrgtyp = TRT_EDITFIELD;
-editmode = qtrigger(edittrgtyp) > -1 ? FED_TRIGGER : FED_TOGGLE;
+editmode = qtrigger(TRT_EDITFIELD) > -1 ? FED_TRIGGER - TRT_EDITFIELD : FED_TOGGLE;
 changed = fedit(editmode);
 return changed==KEF_CANCEL ? 0 : changed;
 }
@@ -480,10 +469,9 @@ if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
      * collect them in triggerdfields
      * and run them within one loop through the records
      */
-    edittrgtyp = TRT_POSTQUERY;
     tfn = 0;
     forall(trigger)
-      if (trgi(i).trgtyp == edittrgtyp)
+      if (trgi(i).trgtyp == TRT_POSTQUERY)
         if ((k = trgi(i).fieldindex) > -1)
           if (fldi(k).blockindex == CBi)
             triggerdfields[tfn++] = trgi(i).fieldindex;
@@ -611,7 +599,7 @@ else                           { return KEF_CANCEL; }
 }
 
 /* edit field with trigger */
-int Function::edittrg(char *buf) {
-return triggers(edittrgtyp, buf);
+int Function::edittrg(char *buf, int typ) {
+return triggers(typ, buf);
 }
 

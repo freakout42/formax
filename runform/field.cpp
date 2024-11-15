@@ -200,8 +200,7 @@ switch (fieldtype) {
  case FTY_CHAR: break;
  case FTY_ALL: break;
 }
-u.edittrgtyp = TRT_POSTCHANGE;
-switch(u.edittrg(buf)) {
+switch(u.edittrg(buf, TRT_POSTCHANGE)) {
  case 0:          break;
  case KEF_NXTFLD: break;
  default:         return KEF_CANCEL;
@@ -233,7 +232,14 @@ switch(CM) {
     if (*c) let(a, *c); else empty(a);
     switch(pos) {
      case FED_FEDITOR: pressed = F(p)[PGE_EDITOR].editbuf(a); break;
-     case FED_TRIGGER: pressed = u.edittrg(a);                break;
+     case FED_TRIGGER - TRT_POSTQUERY:
+                       pressed = u.edittrg(a, TRT_POSTQUERY); break;
+     case FED_TRIGGER - TRT_COPYREC:
+                       pressed = u.edittrg(a, TRT_COPYREC);   break;
+     case FED_TRIGGER - TRT_PASTE:
+                       pressed = u.edittrg(a, TRT_PASTE);     break;
+     case FED_TRIGGER - TRT_EDITFIELD:
+                       pressed = u.edittrg(a, TRT_EDITFIELD); break;
      case FED_TOGGLE:  pressed = toggle(a);                   break;
      case FED_INCR:    pressed = increment(a, 1);             break;
      case FED_DECR:    pressed = increment(a, -1);            break;
