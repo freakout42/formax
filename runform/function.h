@@ -13,8 +13,7 @@ public:
   void fgoto(char *sel);
   void fsearch(char *rex);
   int exec_query();
-  int edittrgtyp;
-  int edittrg(char *buf);
+  int edittrg(char *buf, int typ);
 protected:
 private:
   int notrunning;
