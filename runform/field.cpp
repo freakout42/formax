@@ -89,7 +89,7 @@ if (CP.index == pageindex && displaylen > 0)
      default:         color = COL_DATA;
     }
     cur = index == CFi;
-    cur = cur && (outcell ? outline == line : outrec == block.currentrec);
+    cur = cur && (block.rmode != MOD_DELETE) && (outcell ? outline == line : outrec == block.currentrec);
     if (cur) color = COL_CURRENT;
     if (block.index != CB.index || (block.rmode != MOD_QUERY && outrec != block.currentrec)) color = COL_DATA;
     if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
