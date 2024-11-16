@@ -9,7 +9,7 @@
 #endif
 
 char sqliteversion[8] = SQLITE_VERSION;
-const char *sqliterun = NULL;
+const char *sqliterun = "n/a";
 int sqlitevernumber;
 
 #define INSERTLOGIN   "insert into sessions (loginame, sshconn, logtime,           odbcdsn) " \

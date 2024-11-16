@@ -2,6 +2,7 @@ include ../cflags.make
 OBJECTS = md5.o base64.o xdecrypt.o totp.o sha1.o hmacsha1.o
 
 all: libmd5.a
+small: libmd5.a
 
 test: totp
 

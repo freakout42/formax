@@ -231,7 +231,9 @@ switch(CM) {
     c = valuep();
     if (*c) let(a, *c); else empty(a);
     switch(pos) {
+#ifndef NOUSEDITOR
      case FED_FEDITOR: pressed = F(p)[PGE_EDITOR].editbuf(a); break;
+#endif
      case FED_TRIGGER - TRT_POSTQUERY:
                        pressed = u.edittrg(a, TRT_POSTQUERY); break;
      case FED_TRIGGER - TRT_COPYREC:

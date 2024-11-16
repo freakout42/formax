@@ -3,7 +3,12 @@
 #define VERMSGS 23
 
 /* optional functionality */
-#define USELOGGING 1
+#ifdef PURUNFORM
+#define NOUSEDITOR
+#define NOUSECURITY
+#else
+#define USELOGGING
+#endif
 
 extern char odbcversion[];
 extern char odbcrun[];

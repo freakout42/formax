@@ -1,7 +1,8 @@
 include cflags.make
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
-OBJA=cqerror.o colquery/colquery.o crypt/libmd5.a membed/libmex.a elk/elk.o regex/re.o
+OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
+OBJA=$(OBJB) crypt/libmd5.a membed/libmex.a
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
 FORMAXE=../generate/formax.frm ../generate/formax.sq3
 VALGRINDSUP=--gen-suppressions=no #all
@@ -15,6 +16,10 @@ version.h: runform.h
 runform.h: company.h curkeys.h
 company.h: arx.h
 	if [ -f $@ ]; then touch $@; else cp arx.h $@; fi
+
+runform0: clean $(OBJS) $(OBJA)
+	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJB) -lcurses -lodbc -o $@
+	ls -l $@
 
 runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
@@ -54,5 +59,5 @@ $(FORMAXE): ../generate/formax.inp
 
 clean:
 	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
-	rm -f *.o a.out *core.* runform curkeys curkeys.h test afiedt.buf \
+	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf \
 		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm

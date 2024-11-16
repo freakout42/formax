@@ -2,6 +2,7 @@ include ../cflags.make
 CFLAGS+=-std=c99 -I.
 
 all: re.o
+small: re.o
 
 test: testre
 

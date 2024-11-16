@@ -2,6 +2,7 @@ include ../cflags.make
 CFLAGS+=-std=c99
 
 all: elk.o
+small: elk.o
 
 test: unittest testelk elk.o
 	./unittest

@@ -7,6 +7,7 @@ YFLAGS=-d --name-prefix=cq
 LEXFLAGS=--prefix=cq
 
 all: colquery.o
+small: colquery.o
 
 test: colq
 	valgrind --quiet --leak-check=yes ./colq "2 a" 3-7 2>$@

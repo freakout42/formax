@@ -91,6 +91,7 @@ F(needredraw) = 1;
 return i==KEY_ENTER ? 0 : i;
 }
 
+#ifndef NOUSEDITOR
 /* edit a multiline buffer with the full screen editor
  * truncate carriage return from single line content
  */
@@ -137,6 +138,7 @@ F(rmap).slurp(mainloop(tmpf, wndw) ? pid : 0, tmpf, hasborder);
 F(needredraw) = 1;
 return 0;
 }
+#endif
 
 /* update the status line and the fields content
  * clear closed popups and refresh the screen
