@@ -1,4 +1,5 @@
 # MacOsX: brew install ncurses unixodbc sqliteodbc
+# Windows: MSYS2 ucrt ncurses
 CCVER=$(shell $(CC) -dumpversion | sed 's/\..*//')
 ifeq "$(CCVER)" "16"
   DISABLEWARN=-Wno-deprecated-non-prototype -Wno-invalid-source-encoding

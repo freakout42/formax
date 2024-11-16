@@ -1,11 +1,10 @@
 /* curses screen handling interface */
-#include <assert.h>
+#include "runform.h"
 #include <cstdarg>
 #include <signal.h>
 #include <termios.h>
 #include <term.h>
 #include <curses.h>
-#include "runform.h"
 
 char cursesversion[8] = NCURSES_VERSION;
 const char *cursesrun = NULL;

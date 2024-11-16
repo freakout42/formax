@@ -1,7 +1,7 @@
 /* simple ORM inspired from ActiveRecord
  * connect to ODBC DSN and allows queries
- * subclassed by the table class or
- * by dynamic table class Block
+ * subclassed by the individual table classes or
+ * by the dynamic table class Block
  */
 #ifndef __SQL_H
 typedef void * SQLHDBC;
