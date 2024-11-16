@@ -1,6 +1,10 @@
 /* runform.h - constants macros and central procedures */
 #define VERSION "2.2.9"
 #define VERMSGS 23
+
+/* optional functionality */
+#define USELOGGING 1
+
 extern char odbcversion[];
 extern char odbcrun[];
 extern char cursesversion[];
@@ -11,6 +15,7 @@ extern char sqliteversion[];
 extern const char *sqliterun;
 extern int sqlitevernumber;
 extern char about[];
+
 #define gnucs1(m, i, l) #m "." #i "." #l
 #define gnucs(m, i, l) gnucs1(m, i, l)
 #if defined(__clang__)
@@ -33,6 +38,9 @@ extern char about[];
 #define PLATFORM        "Solaris"
 #elif _AIX
 #define PLATFORM        "AIX"
+#elif _WIN32
+#define PLATFORM        "Windows"
+#undef USELOGGING
 #else
 #define PLATFORM        "generic"
 #endif
@@ -71,6 +79,9 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, P
 #define NPRIKEY 4
 #define NBINDPA NFIELD1
 
+#ifdef _WIN32
+#include "windows.h"
+#endif
 #include "version.h"
 #include "company.h"
 #include <assert.h>

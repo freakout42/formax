@@ -72,6 +72,7 @@ const char *est[] = {
   "wrong version of form",        // 19
   "signature does not match",     // 20
   "form signed with signature",   // 21
+  "no logging feature existent",  // 22
 };
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
@@ -149,7 +150,12 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqt:Vwxy:z")) != -1) {
       if (strcmp(totpdigest, totpresult)) usage(1);
       break;
     case 'f': form_id = atoi(optarg); break;
-    case 'g': if (g.setlogfile(optarg)) usage(16); break;
+    case 'g':
+#ifdef USELOGGING
+      if (g.setlogfile(optarg)) usage(16); break;
+#else
+      usage(22);
+#endif
     case 'l': let(drv, optarg); break;
     case 'n':
       #define shiftedlang(lang) if (!strcmp(optarg, #lang)) shiftednum = shifted ## lang
