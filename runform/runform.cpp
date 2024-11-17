@@ -35,6 +35,7 @@ int  watchmacro  = 0;             // -w
 int  noentermac  = 0;             // -z
 char *ypassword  = NULL;
 char *username;
+int  screenclos  = 1;
 char about[SMLSIZE];
 
 /* global form dbs screen functions and logger */
@@ -244,9 +245,10 @@ genxorkey(NULL, NULL);
 
 rootform = new Form();
   if ((s = rootform->fill(form_id))) usage(s<19 ? 5 : s);
-    if (y.init()) usage(17);
+    if ((screenclos = y.init())) usage(17);
       if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
     y.closedisplay();
+    screenclos = 1;
   rootform->clear();
 delete(rootform);
 

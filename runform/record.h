@@ -20,8 +20,8 @@ public:
   char driver_odbc_ver[TNYSIZE]; /* odbc driver version string */
   char driver_ver[TNYSIZE];      /* driver version string */
   char table[TNYSIZE];           /* table name */
-  char condition[NORSIZE];       /* default where clause */
-  char whereorder[NORSIZE];      /* default order clause */
+  char condition[NORSIZE];       /* where clause */
+  char whereorder[NORSIZE];      /* default where / order clause */
   SQLCHAR *querystr;             /* full sql query */
   char *bindv[NBINDPA];          /* array of bind variables - all char* */
   int connect(char *dsn);        /* connect table to dsn */
@@ -29,32 +29,31 @@ public:
   int commit();                  /* commit transaction */
   int rollback();                /* rollback transaction */
   void disconnect();             /* disconnect from dsn */
-  int ropen();
-  void rclose();
-  int clear();
-  int query();
-  int execdirect(char *sql);
-  int execute();
+  int ropen();                   /* open the table */
+  void rclose();                 /* close the table */
+  int clear();                   /* clear current row */
+  int query();                   /* select rows on current condition */
+  int execute();                 /* execute build query */
+  int execdirect(char *sql);     /* sql direct */
   Qdata *q;
 protected:
-  SQLRETURN ret;
+  SQLRETURN ret;                 /* odbc parameters */
   SQLHSTMT stmt;
   SQLSMALLINT columni;
   SQLSMALLINT querycols;
-  char prikey[TNYSIZE];
-  char attrs[NORSIZE];
-  char where[NORSIZE];
-  char order[NORSIZE];
+  char prikey[TNYSIZE];          /* primary key column */
+  char attrs[NORSIZE];           /* column list */
+  char where[NORSIZE];           /* where clause */
+  char order[NORSIZE];           /* order clause */
   int execute(SQLCHAR *sql, char *bndv[]);
-  int complete();
-  int fetch(int row);
+  int complete();                /* cleanup select handle after execution and fetch */
+  int fetch(int row);            /* fetch select data */
 private:
-  SQLHENV env;
+  SQLHENV env;                   /* odbc parameters */
   SQLHDBC dbc;
   SQLUSMALLINT moreresults;
-  void setdrv(char *dbmsname);
-  int failed(SQLSMALLINT hty);
-  int succeeded(SQLRETURN s);
-  int fetchall();
+  void setdrv(char *dbmsname);   /* get database vendor type */
+  int failed(SQLSMALLINT hty);   /* odbc fail processing */
+  int succeeded(SQLRETURN s);    /* odbc success processing */
+  int fetchall();                /* fetch all select data */
 };
-

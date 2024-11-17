@@ -3,34 +3,33 @@ class Screen {
 public:
   Screen();
   int init();
+  void closedisplay();
+  void wmov(int y, int x);
+  void writef(int y, int x, int colcode, int width, const char *format, ...);
+  void toggle();
+  int sedit(char *toe, int pos, ftype fty, int len);
+  int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
+protected:
+  WINDOW *wndw;
+  int ysiz;
+  int xsiz;
   void createwindow(int y, int x, int py, int px);
   void deletewindow();
   void refr();
+  void noutrefr();
   void redraw();
-  void closedisplay();
-  void wmov(int y, int x);
   void wera();
   void wbox();
   char *msg(int num);
-  int setattributs(int attrib);
   void writes(int y, int x, char *str);
-  void writef(int y, int x, int colcode, int width, const char *format, ...);
-  void toggle();
-  int wgetc();
   int getkb();
-  void openmacro(char *mbu);
-  int sedit(char *toe, int pos, ftype fty, int len);
-  int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
-  int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
-  int ysiz;
-  int xsiz;
-protected:
-  WINDOW *wndw;
-  void noutrefr();
 private:
   void setcolor(int pairi);
   void uncolor(int pairi);
   void setcode(int colcode);
+  int setattributs(int attrib);
+  int wgetc();
+  int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
 };
 
 #define TYPEM  0x1fu
