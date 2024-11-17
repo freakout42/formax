@@ -11,8 +11,7 @@ small: colquery.o
 
 test: colq
 	valgrind --quiet --leak-check=yes ./colq "2 a" 3-7 2>$@
-	test -f $@
-	test -s $@ || true
+	@test -f $@ -a ! -s $@
 
 colq: colq.c colquery.o colquery.h yyerror.o
 	$(CC) $(CFLAGS) -DYYDEBUG colq.c colquery.o yyerror.o -o $@
@@ -26,7 +25,7 @@ colquery0.o: colquery.c colquery.h colq.h
 cql.o: cql.l cqy.o
 	$(LEX) $(LEXFLAGS) cql.l
 	sed 's/YYcqwrap/yywrap/g' <lex.cq.c >cql.c
-	: patch -p0 <cql.c.patch
+	@: patch -p0 <cql.c.patch
 	$(CC) $(CFLAGS) -c cql.c
 
 cqy.c colq.h: cqy.y

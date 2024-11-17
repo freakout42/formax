@@ -16,8 +16,6 @@ public:
   char *helptext;           /* text to be displayed for help */
   char *defaultval;         /* default value for insert new records and query where clause */
   int init(Qdata *fld, int rix, Block *bs);
-  void rclose();
-  void clear();
   int toggle(char *val);    /* toggle a binary field between true and false */
   int increment(char *val, int ival); /* increment and decrement integer field */
   void setcond(char *cond); /* set the query condition in human form */
@@ -26,24 +24,26 @@ public:
   void show();              /* format the field for display */
   char **valuep();          /* current rows field value pointer */
   char **valuep(int row);   /* rows field value pointer */
+  void destroy();
+  void clear();
 private:
-  int line;
-  int col;
-  int validate(char **c, char *buf);
-  ftype fldtype();
-  ftype fieldtype;
-  int fieldlen;
-  int decimalen;
-  int displaylen;
-  int alignment;
-  int queryable;
-  int updateable;
-  int updnulable;
-  int mandatory;
-  char lovtitle[8];
-  int lov_id;
-  int lovi_id;
-  int lowvalue;
-  int highvalue;
-  char validreg[TNYSIZE];
+  int line;                 /* y position on window starting 0 */
+  int col;                  /* x position on window starting 0 */
+  int validate(char **c, char *buf); /* validate the edited new value */
+  ftype fldtype();          /* more detailed field type */
+  ftype fieldtype;          /* static field type */
+  int fieldlen;             /* field byte length */
+  int decimalen;            /* decimal places for float type */
+  int displaylen;           /* display length on window */
+  int alignment;            /* display alignment =0 left =1 right */
+  int queryable;            /* if the field can be queried */
+  int updateable;           /* if the field can be updated */
+  int updnulable;           /* if the field can be updated when NULL */
+  int mandatory;            /* if the field value is requeried */
+  char lovtitle[8];         /* title for list of values */
+  int lov_id;               /* block id for list of values */
+  int lovi_id;              /* page id for list of values */
+  int lowvalue;             /* low range value */
+  int highvalue;            /* high range value */
+  char validreg[TNYSIZE];   /* validation regex pattern */
 };

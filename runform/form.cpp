@@ -139,8 +139,8 @@ int i;
 e->freed();
 delete(e);
 forall(block)   b[i].rclose();
-forall(field)   l[i].rclose();
-forall(trigger) r[i].rclose();
+forall(field)   l[i].destroy();
+forall(trigger) r[i].destroy();
 forall(page)    p[i].destroy();
 }
 

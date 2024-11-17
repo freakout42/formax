@@ -15,20 +15,20 @@ typedef SQLSMALLINT SQLRETURN;
 class Record {
 public:
   odrvr drv;
-  char dbmsname[TNYSIZE];
-  char dbmsver[TNYSIZE];
-  char driver_odbc_ver[TNYSIZE];
-  char driver_ver[TNYSIZE];
-  char table[TNYSIZE];
-  char condition[NORSIZE];
-  char whereorder[NORSIZE];
-  SQLCHAR *querystr;
-  char *bindv[NBINDPA];
-  int connect(char *dsn);
-  int connect(Record r);
-  int commit();
-  int rollback();
-  void disconnect();
+  char dbmsname[TNYSIZE];        /* database vendor string */
+  char dbmsver[TNYSIZE];         /* database version string */
+  char driver_odbc_ver[TNYSIZE]; /* odbc driver version string */
+  char driver_ver[TNYSIZE];      /* driver version string */
+  char table[TNYSIZE];           /* table name */
+  char condition[NORSIZE];       /* default where clause */
+  char whereorder[NORSIZE];      /* default order clause */
+  SQLCHAR *querystr;             /* full sql query */
+  char *bindv[NBINDPA];          /* array of bind variables - all char* */
+  int connect(char *dsn);        /* connect table to dsn */
+  int connect(Record r);         /* connect table to another record instance dsn */
+  int commit();                  /* commit transaction */
+  int rollback();                /* rollback transaction */
+  void disconnect();             /* disconnect from dsn */
   int ropen();
   void rclose();
   int clear();

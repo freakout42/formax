@@ -4,7 +4,7 @@ public:
   int map_id;
   char *body;
   int init(Qdata *trg, int rix, rMap *map);
-  void rclose();
+  void destroy();
   char *jsexecdirect(char *prg, int siz);
   char *jsexec(char *av0);
   char *execute(char *av0);

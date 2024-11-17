@@ -49,7 +49,7 @@ index = rix - 1;
 return 0;
 }
 
-void Field::rclose() {
+void Field::destroy() {
   free(currentval);
   free(defaultval);
   free(helptext);
