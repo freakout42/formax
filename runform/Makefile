@@ -33,11 +33,12 @@ run: runform $(EXAMPLE)
 #	sqlite3 formax.frm .dump >../generate/formax.inp
 
 test: clean runform $(EXAMPLE) $(FORMAXE)
-	rm -f /tmp/formax.log
+	@rm -f /tmp/formax.log
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
 		./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
-	test -f $@ -a ! -s $@
+	@test -f $@ -a ! -s $@
 	sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
+	@echo -e "\033[0;32mOk\\033[0m"
 
 curkeys.h: curkeys
 	./curkeys >$@

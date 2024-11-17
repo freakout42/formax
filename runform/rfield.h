@@ -10,10 +10,10 @@ private:
 CREATE TABLE fields
   (id        INTEGER PRIMARY KEY NOT NULL,
    form_id   INTEGER NOT NULL DEFAULT 1,
-   blcn      INTEGER NOT NULL DEFAULT 4,
-   pgen      INTEGER NOT NULL DEFAULT 1,
-   name      TEXT    NOT NULL DEFAULT 'field0',
-   seq       INTEGER NOT NULL DEFAULT 1,
+   blcn      INTEGER NOT NULL DEFAULT 4,    /* index of block array b[] */
+   pgen      INTEGER NOT NULL DEFAULT 1,    /* index of field array l[] */
+   name      TEXT    NOT NULL DEFAULT '',   /* column name of table */
+   seq       INTEGER NOT NULL DEFAULT 1,    /* sequence and reference for trigger */
    ftype     INTEGER NOT NULL DEFAULT 0,    /* 0:ALL 1:CHAR 2:INT 3:FLOAT 4:DATE */
    len       INTEGER NOT NULL DEFAULT 30,   /* field length */
    decl      INTEGER NOT NULL DEFAULT 2,    /* decimals length for ftype==3 float */

@@ -31,6 +31,7 @@ return 0;
 
 /* the fields correspond to the columns of the table
  * we keep lists for the fields in the block => blockfields
+ * returns the array index in blockfields
  */
 int Block::addattribute(int att, void *fld) {
 Field *l;

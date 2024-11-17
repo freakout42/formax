@@ -1,6 +1,6 @@
 /* runform.cpp main and os interfaces except curses and odbc */
 
-#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikpqxV] [-n lg]\n" \
+#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikmpqwxz] [-n lg]\n" \
   " [-f formid ] [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...\n"
 
 #include <stdio.h>
@@ -72,7 +72,7 @@ const char *est[] = {
   "wrong version of form",        // 19
   "signature does not match",     // 20
   "form signed with signature",   // 21
-  "feature not disabled",         // 22
+  "feature was disabled",         // 22
 };
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
