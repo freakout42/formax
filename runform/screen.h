@@ -3,10 +3,10 @@ class Screen {
 public:
   Screen();
   int init();
-  void closedisplay();
-  void wmov(int y, int x);
+  void closedisplay();     /* end curses mode and return to stdio */
+  void wmov(int y, int x); /* move to window position */
+  void toggle();           /* toggle insert replace mode */
   void writef(int y, int x, int colcode, int width, const char *format, ...);
-  void toggle();
   int sedit(char *toe, int pos, ftype fty, int len);
   int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
 protected:

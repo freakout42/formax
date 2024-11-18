@@ -130,7 +130,7 @@ return val;
 }
 
 /* toggle boolean field value between 0 and 1 */
-int Field::toggle(char *val) {
+int Field::bintoggle(char *val) {
 if (CM == MOD_UPDATE && fldtype() == FTY_BOOL) {
   if (strlen(val)==1) {
     switch (*val) {
@@ -242,7 +242,7 @@ switch(CM) {
                        pressed = u.edittrg(a, TRT_PASTE);     break;
      case FED_TRIGGER - TRT_EDITFIELD:
                        pressed = u.edittrg(a, TRT_EDITFIELD); break;
-     case FED_TOGGLE:  pressed = toggle(a);                   break;
+     case FED_TOGGLE:  pressed = bintoggle(a);                break;
      case FED_INCR:    pressed = increment(a, 1);             break;
      case FED_DECR:    pressed = increment(a, -1);            break;
      default:        if (displaylen == fieldlen)

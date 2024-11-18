@@ -16,7 +16,7 @@ public:
   char *helptext;           /* text to be displayed for help */
   char *defaultval;         /* default value for insert new records and query where clause */
   int init(Qdata *fld, int rix, Block *bs);
-  int toggle(char *val);    /* toggle a binary field between true and false */
+  int bintoggle(char *val); /* toggle a binary field between true and false */
   int increment(char *val, int ival); /* increment and decrement integer field */
   void setcond(char *cond); /* set the query condition in human form */
   int edit(int pos);        /* edit field in various methods determined by pos */
