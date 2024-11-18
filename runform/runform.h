@@ -112,8 +112,8 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, P
 
 /* misc helper macros */
 #define str(s) #s
-#define max(x, y) (((x) < (y)) ? (y) : (x))
-#define min(x, y) (((x) < (y)) ? (x) : (y))
+#define imax(x, y) (((x) < (y)) ? (y) : (x))
+#define imin(x, y) (((x) < (y)) ? (x) : (y))
 #define let(target,source) letstrncpy(target, source, sizeof(target)-1)
 #define t(target) target, sizeof(target)
 #define empty(strp) *strp = '\0'

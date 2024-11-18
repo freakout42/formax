@@ -1,10 +1,10 @@
 /* curses screen handling interface */
-#include "runform.h"
 #include <cstdarg>
 #include <signal.h>
 #include <termios.h>
 #include <term.h>
 #include <curses.h>
+#include "runform.h"
 
 char cursesversion[8] = NCURSES_VERSION;
 const char *cursesrun = NULL;
@@ -331,7 +331,7 @@ while (!done) {              /* input loop */
 #if (KEY_LL != KEY_END)
    case KEY_END:             /* go to end of field */
 #endif
-    pos = min (len, max-1);
+    pos = imin (len, max-1);
     sx  = x + pos;
     break;
    case KEY_IC:              /* toggle insert mode */
