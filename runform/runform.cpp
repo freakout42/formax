@@ -161,7 +161,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqt:Vwxy:z")) != -1) {
     case 'f': form_id = atoi(optarg); break;
     case 'g':
 #ifdef USELOGGING
-      if (g.setlogfile(optarg)) usage(16); break;
+      if (g.setlogfile(optarg)) { usage(16); } break;
 #else
       usage(22);
 #endif
