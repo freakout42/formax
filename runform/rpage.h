@@ -11,8 +11,8 @@ CREATE TABLE pages
   (id        INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
    form_id   INTEGER NOT NULL DEFAULT 1,
    name      TEXT    NOT NULL DEFAULT 'page0',
-   seq       INTEGER NOT NULL DEFAULT 1,
-   title     TEXT    NOT NULL DEFAULT '',
+   seq       INTEGER NOT NULL DEFAULT 1,    /* page_id is also the foreign key in maps for the boilerplate */
+   title     TEXT    NOT NULL DEFAULT '',   /* name not used yet */
    ysiz      INTEGER NOT NULL DEFAULT 23,   /* heigth of page */
    xsiz      INTEGER NOT NULL DEFAULT 80,   /* width of page */
    vwpy0     INTEGER NOT NULL DEFAULT 1,    /* y coordinate of view position on page */

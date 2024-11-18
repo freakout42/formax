@@ -3,39 +3,37 @@
 class Form: public Record {
 public:
   Form();
-  char id[8];
-  char name[TNYSIZE];
-  char title[TNYSIZE];
-  Qdata *e;
-  int needredraw;
-  Block   b[NBLOCKS];
-  Field   l[NFIELDS];
-  Page    p[NBLOCKS];
-  Trigger r[NTRIGGERS];
-  rMap    rmap;
-  int numblock;
-  int numfield;
-  int numpage;
-  int numtrigger;
-  int curblock;
-  int curfield;
-  int lastcmd;
-  int lastkey;
-  int dirty;
-  int sign(int fid, char *signature);
-  int fill(int id);
-  int qfield(char *sel);
-  void clear();
-  int run();
-  int mapkey(int ckey);
-  void rconnect();
+  char id[8];           /* form_id currently always ==1 */
+  char name[TNYSIZE];   /* not used yet */
+  char title[TNYSIZE];  /* not used yet */
+  Qdata *e;             /* error messages sql return in memory */
+  int needredraw;       /* screen redraw flag */
+  Block   b[NBLOCKS];   /* in memory block array */
+  Field   l[NFIELDS];   /* in memory field array */
+  Page    p[NBLOCKS];   /* in memory page array */
+  Trigger r[NTRIGGERS]; /* in memory trigger array */
+  rMap    rmap;         /* maps table is open */
+  int numblock;         /* number of blocks */
+  int numfield;         /* number of fields */
+  int numpage;          /* number of pages */
+  int numtrigger;       /* number of triggers */
+  int curblock;         /* current block index */
+  int curfield;         /* current field index */
+  int lastcmd;          /* current key pressed */
+  int lastkey;          /* last key to copy to next key from function */
+  int dirty;            /* block is dirty */
+  int fill(int id);     /* fill the form from configuration database */
+  int qfield(char *sel); /* search for field by selector */
+  void clear();         /* clear the form */
+  int run();            /* run the form */
+  int mapkey(int ckey); /* map curses keys to application key codes */
 private:
-  char signt[SMLSIZE];
-  rError rerror;
-  rBlock rblock;
-  rField rfield;
-  rPage rpage;
-  rTrigger rtrigger;
+  char signt[SMLSIZE];  /* crypto signature */
+  rError rerror;        /* errors table */
+  rBlock rblock;        /* blocks table */
+  rField rfield;        /* fields table */
+  rPage rpage;          /* pages table */
+  rTrigger rtrigger;    /* triggers table */
 };
 #else
 CREATE TABLE forms
@@ -43,6 +41,7 @@ CREATE TABLE forms
    name      TEXT    NOT NULL DEFAULT 'form0',
    title     TEXT    NOT NULL DEFAULT '',
    mnunam    TEXT    NOT NULL DEFAULT '',
+                        /* is used for crypto signature */
    mnugrp    TEXT    NOT NULL DEFAULT 'YyformaxyYABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklYnopTrstuvwxyzii23U56789+/YyformaxyY'
   );
 #endif

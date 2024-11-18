@@ -10,26 +10,27 @@ public:
   int sedit(char *toe, int pos, ftype fty, int len);
   int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
 protected:
-  int ysiz;
-  int xsiz;
+  int ysiz;                /* window horizontal size */
+  int xsiz;                /* window vertical size */
   void createwindow(int y, int x, int py, int px);
-  void deletewindow();
-  void refr();
-  void noutrefr();
-  void redraw();
-  void wera();
-  void wbox();
-  int fulledit(char *pth);
-  char *msg(int num);
-  void writes(int y, int x, char *str);
-  int getkb();
+  void deletewindow();     /* destroy window from curses */
+  void refr();             /* refresh window to physical screen */
+  void noutrefr();         /* curses wnoutrefresh() optimized update */
+  void redraw();           /* full redraw the physical screen */
+  void wera();             /* erase window */
+  void wbox();             /* draw a box around window */
+  int fulledit(char *pth); /* full screen editor within a window */
+  char *msg(int num);      /* get message string by id */
+  void writes(int y, int x, char *str); /* write string to window */
+  int getkb();             /* get next keycode from macro or terminal */
 private:
-  WINDOW *wndw;
-  void setcolor(int pairi);
-  void uncolor(int pairi);
-  void setcode(int colcode);
-  int setattributs(int attrib);
-  int wgetc();
+  WINDOW *wndw;            /* curses window structure */
+  void setcolor(int pairi); /* change to a predefined color */
+  void uncolor(int pairi); /* change back to uncolored */
+  void setcode(int colcode); /* change to color/attribute combination */
+  int setattributs(int attrib); /* change to attribute */
+  int wgetc();             /* get key from physical keyboard */
+                           /* get string from window */
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
 };
 
@@ -76,11 +77,6 @@ typedef struct attrel {
   int foreg;
   int backg;
 } attrel;
-
-//int mcode2att(int colcode);
-//void mcolor0(void);
-//void setcolor(int pairi);
-//void uncolor(int pairi);
 
 //CSI  Ps SP q
 //ESC[2 q

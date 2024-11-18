@@ -105,15 +105,3 @@ target[i+1] = '\0';
 return 0;
 }
 
-/* not online
-int debugf(char *format, ...) {
-va_list args;
-int n;
-va_start (args, format);
-n = vfprintf(stderr, format, args);
-fputc('\n', stderr);
-va_end (args);
-return n+1;
-}
- */
-

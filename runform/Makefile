@@ -37,7 +37,7 @@ test: clean runform $(EXAMPLE) $(FORMAXE)
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
 		./runform -x -g/tmp/formax.log $(EXAMPLE) 2>$@
 	@test -f $@ -a ! -s $@
-	sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
+	@sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
 	@echo -e "\033[0;32mOk\\033[0m"
 
 curkeys.h: curkeys
@@ -61,4 +61,4 @@ $(FORMAXE): ../generate/formax.inp
 clean:
 	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
 	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf \
-		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm
+		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h

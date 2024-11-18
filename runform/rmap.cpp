@@ -1,5 +1,5 @@
 /* multiline text maps
- * page boilerplates and trigger text (not yet)
+ * page boilerplates and trigger text
  */
 #include "runform.h"
 
