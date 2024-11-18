@@ -1,4 +1,5 @@
 # MacOsX: brew install ncurses unixodbc sqliteodbc
+# Windows: MSYS2 ucrt ncurses
 CCVER=$(shell $(CC) -dumpversion | sed 's/\..*//')
 ifeq "$(CCVER)" "16"
   DISABLEWARN=-Wno-deprecated-non-prototype -Wno-invalid-source-encoding
@@ -10,6 +11,11 @@ LINTING=-Wall -Werror -Wno-write-strings $(DISABLEWARN)
 ifeq (test,$(MAKECMDGOALS))
   SUBTARGET=test
   CFLAGS=-g -O0 $(LINTING)
+else ifeq (runform0,$(MAKECMDGOALS))
+  SUBTARGET=small
+  CFLAGS=-Os -DPURUNFORM -DNDEBUG $(LINTING)
+else ifeq (small,$(MAKECMDGOALS))
+  CFLAGS=-Os -DNDEBUG $(LINTING)
 else
   SUBTARGET=all
   CFLAGS=-O3 -DNDEBUG $(STACKPROTECTION) $(LINTING)

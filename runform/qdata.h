@@ -2,6 +2,9 @@
  * simple malloc'd **char array (d)
  * of malloc'd strings or NULL when empty/null
  * preallocation in 10 fold intervals
+ * the w() method can access unallocated rows
+ * in this case more rows are malloc'ed
+ * the count for new rows increases by factor 10
  */
 class Qdata {
 public:

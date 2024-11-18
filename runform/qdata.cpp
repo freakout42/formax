@@ -3,11 +3,11 @@
  */
 #include "runform.h"
 
-/* int takes care about the allocation for the fields/columns */
+/* init takes care about the allocation for the fields/columns */
 Qdata::Qdata() { allocatedrows = 0; }
 Qdata::~Qdata() { freed(); }
 
-/* allocate the pointer array for 2 rows */
+/* first allocate the pointer array for 2 rows */
 int Qdata::alloc(int coln) {
 if (allocatedrows) freed();
 rows = 0;
@@ -45,8 +45,9 @@ free(d);
 allocatedrows = 0;
 } }
 
-/* return a valid pointer for new query-column data
- * reallocation factorize allocatedrows by 10 for performance
+/* return a valid pointer
+ * for new query-column reallocation on overflow
+ * reallocation factorizes allocatedrows by 10 for performance
  */
 char **Qdata::w(int row, int col) {
 int i;

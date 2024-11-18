@@ -1,5 +1,8 @@
 #ifndef BEGINSQL
-/* block configuration */
+/* block configuration
+ * the dual blocks 1-4 are present in all forms form_id=0
+ * and hold the database connection info in the Record
+ */
 class rBlock: public Record {
 public:
   int init(int form_id);

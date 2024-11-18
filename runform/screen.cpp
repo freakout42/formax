@@ -1,11 +1,10 @@
 /* curses screen handling interface */
-#include <assert.h>
+#include "runform.h"
 #include <cstdarg>
 #include <signal.h>
 #include <termios.h>
 #include <term.h>
 #include <curses.h>
-#include "runform.h"
 
 char cursesversion[8] = NCURSES_VERSION;
 const char *cursesrun = NULL;
@@ -151,6 +150,7 @@ void Screen::wmov(int y, int x) { wmove(wndw, y, x); }
 void Screen::refr() { wrefresh(wndw); }
 void Screen::noutrefr() { wnoutrefresh(wndw); }
 void Screen::redraw() { redrawwin(wndw); }
+int  Screen::fulledit(char *pth) { return mainloop(pth, wndw); }
 
 void Screen::closedisplay() {
 endwin();

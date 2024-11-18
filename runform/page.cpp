@@ -91,6 +91,7 @@ F(needredraw) = 1;
 return i==KEY_ENTER ? 0 : i;
 }
 
+#ifndef NOUSEDITOR
 /* edit a multiline buffer with the full screen editor
  * truncate carriage return from single line content
  */
@@ -118,7 +119,7 @@ int Page::editfile(char *pth) {
 redraw();
 refr();
 F(needredraw) = 1;
-return mainloop(pth, wndw);
+return fulledit(pth);
 }
 
 /* edit a map with the full screen editor */
@@ -133,10 +134,11 @@ if (pid < NBLOCKS) {
   pid = F(p)[pid].page_id;
 }
 tmpf = F(rmap).extract(pid);
-F(rmap).slurp(mainloop(tmpf, wndw) ? pid : 0, tmpf, hasborder);
+F(rmap).slurp(fulledit(tmpf) ? pid : 0, tmpf, hasborder);
 F(needredraw) = 1;
 return 0;
 }
+#endif
 
 /* update the status line and the fields content
  * clear closed popups and refresh the screen
@@ -183,10 +185,10 @@ int Page::message(int ern, const char *pnt) {
 int i;
 static char empty[] = "";
 const char *pntst;
-if (!intrigger && !macropointer && y.ysiz > 0) { /* not in trigger and display has open window */
+if (!intrigger && !macropointer && !screenclos) { /* not in trigger and display has open window */
 if (pnt) pntst = pnt; else pntst = empty;
 i = (strlen(pntst) > LINE0SIZE-9) ? strlen(pntst) - LINE0SIZE + 9 : 0;
-writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, y.msg(ern), pntst+i);
+writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, msg(ern), pntst+i);
 //writef(0, 76, 0, 4, "%04d", CK);
 wmov(0,0);
 refr();

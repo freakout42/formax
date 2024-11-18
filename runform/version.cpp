@@ -1,7 +1,6 @@
+#include "runform.h"
 #include <cstdarg>
 #include <stdio.h>
-#include <unistd.h>
-#include "runform.h"
 
 /* optimized strncpy */
 char *letstrncpy(char *dest, const char *src, size_t n) {
@@ -41,8 +40,6 @@ return n;
 /* temporary file handling */
 static char tfp[14];
 static FILE *tf;
-
-/* temporary file handling */
 char *tmpcreat() {
 strcpy(tfp, "/tmp/fmXXXXXX");
 tf = fdopen(mkstemp(tfp), "w");
@@ -107,16 +104,4 @@ target[i] = source;
 target[i+1] = '\0';
 return 0;
 }
-
-/* not online
-int debugf(char *format, ...) {
-va_list args;
-int n;
-va_start (args, format);
-n = vfprintf(stderr, format, args);
-fputc('\n', stderr);
-va_end (args);
-return n+1;
-}
- */
 

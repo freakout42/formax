@@ -106,7 +106,6 @@ switch(CK) {
    }                                                                          break;
   case KEF_RIGHT:    LK = fedit(0);                                           break;
   case KEF_LEFT:     LK = fedit(-1);                                          break;
-  case KEF_NAVI11:   LK = fedit(FED_FEDITOR);                                 break;
   case '|':          LK = MSG1(MSG_HELP, about);                              break;
   case '?':          LK = aboutwin();                                         break;
 
@@ -115,9 +114,13 @@ switch(CK) {
    if (CM == MOD_UPDATE) {
      undone = 0;
      switch(CK) {
-      case '=':      LK = editrigger(TRT_EDITFIELD);                   break;
+#ifndef NOUSEDITOR
+      case KEF_NAVI11:
+      case '.':      LK = fedit(FED_FEDITOR);                          break;
       case '[':      LK = edit_map();                                  break;
       case ']':      LK = edit_file();                                 break;
+      case '=':      LK = editrigger(TRT_EDITFIELD);                   break;
+#endif
       case ' ':      LK = ftoggle();                                   break;
       case '+':      LK = fincrement(1);                               break;
       case '-':      LK = fincrement(-1);                              break;
@@ -182,10 +185,13 @@ int Function::aboutwin() {
 return F(p)[PGE_ABOUT].showpopup();
 }
 
+#ifndef NOUSEDITOR
 int Function::edit_map() {
 return (CV && (!strcmp(CF.column, "seq") || !strcmp(CF.column, "page_id"))) ? F(p)[PGE_EDITOR].editmap(atoi(CV)) : 0;
 }
+#endif
 
+#ifndef NOUSEDITOR
 int Function::edit_file() {
 char *s;
 s = trigger(TRT_EDITFILE, NULL);
@@ -195,6 +201,7 @@ if (s && *s == '"') {
 }
 return 0;
 }
+#endif
 
 /* NAVIGATION */
 int Function::switch_mode(fmode mod) {
@@ -524,11 +531,13 @@ return 0;
 }
 
 /* TRIGGER */
+#ifndef NOUSEDITOR
 int Function::editrigger(int tid) {
 int i;
 if ((i = qtrigger(tid)) > -1) F(p)[PGE_EDITOR].editbuf(trgi(i).body);
 return 0;
 }
+#endif
 
 /* search for trigger */
 int Function::qtrigger(int tid) { return qtrigger(tid, CBi, CFi); }

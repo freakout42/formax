@@ -165,10 +165,13 @@ ssh-key must be generated and an .ssh/authorized created:
 
     command="/usr/local/bin/formax",no-X11-forwarding,no-agent-forwarding ssh-rsa AAAA...
 
-In `/usr/local/bin/formax` having mode 755:
+In `/usr/local/bin/formax` having mode 755 - watch for the
+`exec` in front of the runform call which kills the shell
+and makes it impossible to return to an os prompt:
+
 ~~~
 #!/bin/sh
-/opt/formax/bin/runform -g/tmp/formax.log \
+exec /opt/formax/bin/runform -g/tmp/formax.log \
   /opt/formax/lib/scotty.frm dbuser:dbpass@dbdsn
 exit
 ~~~

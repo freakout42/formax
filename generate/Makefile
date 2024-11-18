@@ -13,8 +13,8 @@ test: all scotty.sq3 scotty.frm formax.frm formax.sq3 depts.dbf emps.dbf
 scotty.inp: scotty.in2
 	cp scotty.in2 $@
 
-#scotty.inp: testform makeform
-#	./testform >$@
+scotty.in1: testform makeform
+	./testform >$@
 
 formax.sql: formax.frm
 	sqlite3 formax.frm .dump >$@

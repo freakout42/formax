@@ -150,7 +150,7 @@ i = map->getbody(map_id, t(a), trglng==TRL_KEYMACRO ? 0 : 1);
 body = strdup(a);
 return i;
 }
-void Trigger::rclose() { free(body); }
+void Trigger::destroy() { free(body); }
 
 /* exec pure javascript */
 char *Trigger::jsexecdirect(char *prg, int siz) {

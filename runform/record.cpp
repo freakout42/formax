@@ -1,9 +1,9 @@
 /* record.cpp calls ODBC and
  * provides an interface in an ORM style like rails active-record
  */
+#include "runform.h"
 #include <sql.h>
 #include <sqlext.h>
-#include "runform.h"
 
 #define odbcver(hexver) char odbcversion[8] = str(hexver)
 odbcver(ODBCVER);

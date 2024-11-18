@@ -7,6 +7,7 @@ OBE=$(patsubst %.c,%.e,$(SRC))
 OBO=$(patsubst %.c,%.e.o,$(SRC))
 
 all: libmex.a
+small: libmex.a
 
 test: libmex.a mex
 

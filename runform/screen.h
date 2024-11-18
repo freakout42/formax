@@ -3,34 +3,35 @@ class Screen {
 public:
   Screen();
   int init();
-  void createwindow(int y, int x, int py, int px);
-  void deletewindow();
-  void refr();
-  void redraw();
-  void closedisplay();
-  void wmov(int y, int x);
-  void wera();
-  void wbox();
-  char *msg(int num);
-  int setattributs(int attrib);
-  void writes(int y, int x, char *str);
+  void closedisplay();     /* end curses mode and return to stdio */
+  void wmov(int y, int x); /* move to window position */
+  void toggle();           /* toggle insert replace mode */
   void writef(int y, int x, int colcode, int width, const char *format, ...);
-  void toggle();
-  int wgetc();
-  int getkb();
-  void openmacro(char *mbu);
   int sedit(char *toe, int pos, ftype fty, int len);
   int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
-  int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
-  int ysiz;
-  int xsiz;
 protected:
-  WINDOW *wndw;
-  void noutrefr();
+  int ysiz;                /* window horizontal size */
+  int xsiz;                /* window vertical size */
+  void createwindow(int y, int x, int py, int px);
+  void deletewindow();     /* destroy window from curses */
+  void refr();             /* refresh window to physical screen */
+  void noutrefr();         /* curses wnoutrefresh() optimized update */
+  void redraw();           /* full redraw the physical screen */
+  void wera();             /* erase window */
+  void wbox();             /* draw a box around window */
+  int fulledit(char *pth); /* full screen editor within a window */
+  char *msg(int num);      /* get message string by id */
+  void writes(int y, int x, char *str); /* write string to window */
+  int getkb();             /* get next keycode from macro or terminal */
 private:
-  void setcolor(int pairi);
-  void uncolor(int pairi);
-  void setcode(int colcode);
+  WINDOW *wndw;            /* curses window structure */
+  void setcolor(int pairi); /* change to a predefined color */
+  void uncolor(int pairi); /* change back to uncolored */
+  void setcode(int colcode); /* change to color/attribute combination */
+  int setattributs(int attrib); /* change to attribute */
+  int wgetc();             /* get key from physical keyboard */
+                           /* get string from window */
+  int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
 };
 
 #define TYPEM  0x1fu
@@ -76,11 +77,6 @@ typedef struct attrel {
   int foreg;
   int backg;
 } attrel;
-
-//int mcode2att(int colcode);
-//void mcolor0(void);
-//void setcolor(int pairi);
-//void uncolor(int pairi);
 
 //CSI  Ps SP q
 //ESC[2 q

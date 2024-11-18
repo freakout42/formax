@@ -1,5 +1,6 @@
 /* dynamic table setup from config data
  * or free access without sql-hassle
+ * the block class instances correspond with a table of the form
  */
 class Block: public Record {
 public:

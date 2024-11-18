@@ -1,6 +1,8 @@
 #include "rtrigger.h"
 #ifndef BEGINSQL
-/* map configuration */
+/* map configuration and default maps for standard popup pages
+ * and standard trigger code
+ */
 class rMap: public Record {
 public:
   int init(int page_id);

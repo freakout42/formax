@@ -1,6 +1,15 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.2.9"
+#define VERSION "2.2.10"
 #define VERMSGS 23
+
+/* optional functionality */
+#ifdef PURUNFORM
+#define NOUSEDITOR
+#define NOUSECURITY
+#else
+#define USELOGGING
+#endif
+
 extern char odbcversion[];
 extern char odbcrun[];
 extern char cursesversion[];
@@ -11,6 +20,7 @@ extern char sqliteversion[];
 extern const char *sqliterun;
 extern int sqlitevernumber;
 extern char about[];
+
 #define gnucs1(m, i, l) #m "." #i "." #l
 #define gnucs(m, i, l) gnucs1(m, i, l)
 #if defined(__clang__)
@@ -33,6 +43,9 @@ extern char about[];
 #define PLATFORM        "Solaris"
 #elif _AIX
 #define PLATFORM        "AIX"
+#elif _WIN32
+#define PLATFORM        "Windows"
+#undef USELOGGING
 #else
 #define PLATFORM        "generic"
 #endif
@@ -71,6 +84,9 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, P
 #define NPRIKEY 4
 #define NBINDPA NFIELD1
 
+#ifdef _WIN32
+#include "windows.h"
+#endif
 #include "version.h"
 #include "company.h"
 #include <assert.h>
@@ -150,7 +166,7 @@ extern "C" {
 int genxorkey(char *frm, const char *key);
 char *xdecrypt(char *toe, int rev);
 int res4key(char *key);
-int mainloop(char *buf, WINDOW *scr);
+int mainloop(char *pth, WINDOW *scr);
 }
 
 /* global varibles mostly command line options */
@@ -174,3 +190,4 @@ extern int   noentermac;
 extern char  runningsignature[];
 extern char  *shiftednum;
 extern char  *username;
+extern int   screenclos;

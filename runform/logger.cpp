@@ -1,11 +1,15 @@
 /* logging sql engine via sqlite3 lib - not odbc */
 #include <cstdarg>
 #include <stdio.h>
-#include <sqlite3.h>
 #include "runform.h"
+#ifdef USELOGGING
+#include <sqlite3.h>
+#else
+#define SQLITE_VERSION "n/a"
+#endif
 
 char sqliteversion[8] = SQLITE_VERSION;
-const char *sqliterun = NULL;
+const char *sqliterun = "n/a";
 int sqlitevernumber;
 
 #define INSERTLOGIN   "insert into sessions (loginame, sshconn, logtime,           odbcdsn) " \
@@ -26,17 +30,22 @@ int sqlitevernumber;
                       ")"
 
 static int session = -1;
+#ifdef USELOGGING
 static char message[MEDSIZE];
 static char sqlquery[MEDSIZE*2];
+#endif
 
+#ifdef USELOGGING
 /* the only read is for the session id from the returning clause of _INSERTLOGIN */
 static int callback(void *NotUsed, int argc, char **argv, char **azColName){
 if (session == 0 && argc == 1) session = atoi(argv[0]);
 return 0;
 }
+#endif
 
 /* create the tables when not existing */
 void Logger::init(char *dsn) {
+#ifdef USELOGGING
 int rc;
 char na[4];
 char *user;
@@ -62,12 +71,16 @@ switch (session) {
         sqlite3_exec(db, CREATELOGS,    callback, 0, NULL);
   }
   break;
-} }
+}
+#endif
+}
 
 /* cleanup logging */
 void Logger::lclose() {
+#ifdef USELOGGING
 if (*logpath) sqlite3_close(db);
 session = 0;
+#endif
 }
 
 /* set the path to the sqlite3 logfile */
@@ -81,6 +94,7 @@ return 0;
  * try to make the inserted sql working with cut/paste
  */
 void Logger::logfmt(const char *format, ...) {
+#ifdef USELOGGING
 va_list args;
 char *apostrophe;
 if (*logpath) {
@@ -91,13 +105,16 @@ snprintf (t(sqlquery), INSERTLOG, session, message);
 sqlite3_exec(db, sqlquery, callback, 0, NULL);
 //vfprintf(stderr, format, args);
 va_end (args);
-} }
+}
+#endif
+}
 
 /* must escape apostrophes and interpolate the bind variables
  * apostrophies in bind strings have to be quad repeated
  * so that the queries can be executed by cut and paste
  */
 void Logger::logsql(char *sql, char *bnd[]) {
+#ifdef USELOGGING
 int i, j, k;
 int l1, m1, n1;
 char *r1;
@@ -131,4 +148,7 @@ while (sql[i] && k < m1) {
 message[k++] = '\0';
 snprintf (t(sqlquery), INSERTLOG, session, message);
 sqlite3_exec(db, sqlquery, callback, 0, NULL);
-} }
+}
+#endif
+}
+
