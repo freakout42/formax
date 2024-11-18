@@ -150,6 +150,7 @@ void Screen::wmov(int y, int x) { wmove(wndw, y, x); }
 void Screen::refr() { wrefresh(wndw); }
 void Screen::noutrefr() { wnoutrefresh(wndw); }
 void Screen::redraw() { redrawwin(wndw); }
+int  Screen::fulledit(char *pth) { return mainloop(pth, wndw); }
 
 void Screen::closedisplay() {
 endwin();

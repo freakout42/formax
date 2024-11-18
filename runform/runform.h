@@ -166,7 +166,7 @@ extern "C" {
 int genxorkey(char *frm, const char *key);
 char *xdecrypt(char *toe, int rev);
 int res4key(char *key);
-int mainloop(char *buf, WINDOW *scr);
+int mainloop(char *pth, WINDOW *scr);
 }
 
 /* global varibles mostly command line options */

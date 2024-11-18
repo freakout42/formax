@@ -115,6 +115,7 @@ switch(CK) {
      undone = 0;
      switch(CK) {
 #ifndef NOUSEDITOR
+      case KEF_NAVI11:
       case '.':      LK = fedit(FED_FEDITOR);                          break;
       case '[':      LK = edit_map();                                  break;
       case ']':      LK = edit_file();                                 break;

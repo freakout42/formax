@@ -10,7 +10,6 @@ public:
   int sedit(char *toe, int pos, ftype fty, int len);
   int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
 protected:
-  WINDOW *wndw;
   int ysiz;
   int xsiz;
   void createwindow(int y, int x, int py, int px);
@@ -20,10 +19,12 @@ protected:
   void redraw();
   void wera();
   void wbox();
+  int fulledit(char *pth);
   char *msg(int num);
   void writes(int y, int x, char *str);
   int getkb();
 private:
+  WINDOW *wndw;
   void setcolor(int pairi);
   void uncolor(int pairi);
   void setcode(int colcode);
