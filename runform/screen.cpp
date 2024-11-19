@@ -1,6 +1,6 @@
 /* curses screen handling interface */
 #include <cstdarg>
-#include <signal.h>
+#include <unistd.h>
 #include <termios.h>
 #include <term.h>
 #include <curses.h>
@@ -103,9 +103,18 @@ static struct termios otermio;
 int Screen::init() {
 struct termios termio;
 int i;
-signal(SIGTSTP, SIG_IGN);
+#ifdef ISNOTWORKING
+FILE *fd;
+SCREEN *scr;
+if (redirectd) {
+  if (!(fd = fopen(redirectd, "w"))) return 1;
+  scr = newterm(NULL, fd, stdin);
+  set_term(scr);
+  wndw = stdscr;
+} else {
+#endif
 if ((wndw = initscr()) == NULL) return 1;
-assert(wndw == stdscr);
+/*assert(wndw == stdscr);*/
 tcgetattr (fileno(stdin), &termio); /* give me all attributes */
 otermio = termio;
 termio.c_cc[VINTR] = 0; /* ctrl-c */
@@ -127,7 +136,7 @@ keypad(stdscr,TRUE);
 if (has_colors() && !monochrome) {
   start_color();
   for (i=0; i<COL_UNDEF; i++) {
-    assert(attrels[i].ccode == i);
+/*  assert(attrels[i].ccode == i); */
     init_pair(i, attrels[i].foreg, attrels[i].backg);
   }
 if (usedefault) use_default_colors();
@@ -150,6 +159,7 @@ void Screen::wmov(int y, int x) { wmove(wndw, y, x); }
 void Screen::refr() { wrefresh(wndw); }
 void Screen::noutrefr() { wnoutrefresh(wndw); }
 void Screen::redraw() { redrawwin(wndw); }
+void Screen::wsleep(int sec) { sleep(sec); }
 int  Screen::fulledit(char *pth) { return mainloop(pth, wndw); }
 
 void Screen::closedisplay() {

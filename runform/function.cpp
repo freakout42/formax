@@ -599,7 +599,7 @@ if (!jsresult)                 { return 0; }
 else if (*jsresult == '"')     {
   strcpy(buf, jsresult+1);
   i = strlen(buf) - 1;
-  assert(*(buf+i) == '\"');
+/*assert(*(buf+i) == '\"');*/
   *(buf+i) = '\0';
                                  return KEF_NXTFLD;
 }

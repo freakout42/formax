@@ -89,11 +89,10 @@ enum upage         { PGE_STATUS, PGE_MAIN, PGE_KEYHELP, PGE_EDITOR, PGE_ABOUT, P
 #endif
 #include "version.h"
 #include "company.h"
-#include <assert.h>
+/*#include <assert.h>*/
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include "logger.h"
 #include "qdata.h"
 #include "record.h"
@@ -190,4 +189,6 @@ extern int   noentermac;
 extern char  runningsignature[];
 extern char  *shiftednum;
 extern char  *username;
+extern char  *redirectd;
 extern int   screenclos;
+extern int   callinguid;

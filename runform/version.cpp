@@ -1,6 +1,7 @@
 #include "runform.h"
 #include <cstdarg>
 #include <stdio.h>
+#include <unistd.h>
 
 /* optimized strncpy */
 char *letstrncpy(char *dest, const char *src, size_t n) {

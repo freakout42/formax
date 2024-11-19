@@ -38,7 +38,7 @@ let(name,  q->v(1, 2));
 let(title, q->v(1, 3));
 let(signt, q->v(1, 4));
 if (pwdencrypt && strcmp(signt, runningsignature)) {
-  if (!getuid()) {
+  if (callinguid) {
     /* im root so sign form with crypted md5 hash */
     letf((char*)querystr, MEDSIZE, "update %s set %s = ? where %s", table, "mnugrp", where);
     bindv[0] = runningsignature;

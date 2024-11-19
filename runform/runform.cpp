@@ -4,6 +4,8 @@
   " [-f formid ] [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...\n"
 
 #include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
 #include <locale.h>
 #include "runform.h"
 
@@ -33,9 +35,11 @@ int  matchnocas  = 1;             // -m
 int  globalpkid  = 1;             // -j
 int  watchmacro  = 0;             // -w
 int  noentermac  = 0;             // -z
+char *redirectd  = NULL;
 char *ypassword  = NULL;
 char *username;
 int  screenclos  = 1;
+int  callinguid  = -1;
 char about[SMLSIZE];
 
 /* global form dbs screen functions and logger */
@@ -116,7 +120,9 @@ char totpresult[8];
 Form *rootform;
 const char *ds;
 
-/* version information and about */
+/* version information and about and other runtime information */
+signal(SIGTSTP, SIG_IGN);
+callinguid = getuid();
 ds = __DATE__; /* :Oct 16 2024: https://formax.toarx.de/ */
 letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s %2.2s%3.3s%2.2s-%5.5s",
   VERSION, CHARSET, odbcversion+2, cursesversion, ds+4, ds, ds+9, __TIME__);
@@ -144,7 +150,7 @@ lclocale = setlocale(LC_ALL, CHARSET);
 form_id = 1;
 
 /* command-line arguments and options check and process */
-while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqt:Vwxy:z")) != -1) {
+while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqr:t:Vwxy:z")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n  (%d) [%s]\n", about, (int)sizeof(Form), GITCOMMIT); exit(2);
     case 'y': ypassword = optarg; break;
@@ -193,13 +199,14 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqt:Vwxy:z")) != -1) {
     case 'm': matchnocas = 0; break;
     case 'z': noentermac = 1; break;
     case 'j': globalpkid = atoi(optarg); break;
+    case 'r': redirectd  = optarg; break;
     default: usage(1);
   }
 }
 
 /* generate encrypted passwords - must be root */
 if (ypassword) {
-  if (getuid()) usage(1);
+  if (callinguid) usage(1);
   let(b64pwd, ypassword);
   printf("%s\n", xdecrypt(b64pwd, 0));
   printf("%s\n", xdecrypt(b64pwd, 1));
