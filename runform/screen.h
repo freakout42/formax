@@ -19,6 +19,7 @@ protected:
   void redraw();           /* full redraw the physical screen */
   void wera();             /* erase window */
   void wbox();             /* draw a box around window */
+  int wadds(char *str);    /* write string to window */
   void wsleep(int sec);    /* sleep sec seconds */
   int fulledit(char *pth); /* full screen editor within a window */
   char *msg(int num);      /* get message string by id */

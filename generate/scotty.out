@@ -1,0 +1,1071 @@
+ DepartmentID                                     Ctrl+e for Employee Details
+ Department
+ Location
+ Id   Name                                    Mngr Hired      Salary   Com DI
+ ---- ----------------------- --------------- ---- ---------- -------- --- --
+ Ctrl+k Keyboard Help - ? About
+KEY C FUNCTION     KEY   C FUNCTION
+--- - ------------ ----- - ---------
+Tab i NextField    ^Tab  g PrevField
+F1  @ Field Help   Esc   y Cancel
+F2  c Copy         >     f Right
+F3  v Paste        <     b Left
+F4  t Duplicate    Up    p PreviousRec
+F5  u ListOfVal    Down  n NextRecord
+F6  o Insert       Ins   j Insert
+F7  d Delete       Del   d Delete
+F8  z Exit         <--   h DeleteLast
+F9  y Cancel       PgUp  r PrevSetRec
+F10 x Query        PgDn  w NextSetRec
+F11 k Key Help     Home  a PrevBlock
+F12 l Refresh      End   e NextBlock
++     Increment    -       Decrement
+>     Goto         ~       Search
+Space Toggle binary
+/ARX cleanware  [1]
+https://formax.freakout.de v2.2.11 23
+charset:    en_US.iso885915
+compiler:   GCC-3.4.6 (109304)
+sqlite inc: 3.47.0
+sqlite run: 3.47.0 3047000
+odbc inc:   0380
+odbc lib:   03.52
+form odbc:  03.00
+form drvr:  0.99991
+form dver:  3.47.0
+data base:  SQLite
+data dver:  3.47.0
+data odbc:  03.00
+data drvr:  0.99991
+curses inc: 5.2
+curses run: ncurses 5.2.20020406
+!! Working...
+!! Working...
+ 1
+scotty
+axel
+depts
+dname
+     1/     4
+Update
+Ins
+  Enter-Query
+7782
+7839
+7934
+CLARK
+KING
+MILLER
+MANAGER
+PRESIDENT
+CLERK
+7839
+7782
+1981-06-09
+1981-11-17
+1982-01-23
+ 2450.00
+ 5000.00
+ 1300.00
+0
+1
+0
+10
+10
+10
+10
+ACCOUNTING
+NEW YORK
+   Enter-Data
+ 1
+scotty
+axel
+depts
+dname
+     1/     4
+Update
+Ins
+  Enter-Query
+7782
+7839
+7934
+CLARK
+KING
+MILLER
+MANAGER
+PRESIDENT
+CLERK
+7839
+7782
+1981-06-09
+1981-11-17
+1982-01-23
+ 2450.00
+ 5000.00
+ 1300.00
+0
+1
+0
+10
+10
+10
+10
+nope
+NEW YORK
+ 1
+scotty
+axel
+depts
+dname
+     1/     4
+Update
+Ins
+  Enter-Query
+7782
+7839
+7934
+CLARK
+KING
+MILLER
+MANAGER
+PRESIDENT
+CLERK
+7839
+7782
+1981-06-09
+1981-11-17
+1982-01-23
+ 2450.00
+ 5000.00
+ 1300.00
+0
+1
+0
+10
+10
+10
+10
+nope
+NEW YORK
+ 1
+scotty
+axel
+depts
+dname
+     1/     4
+Update
+Ins
+  Enter-Query
+7782
+7839
+7934
+CLARK
+KING
+MILLER
+MANAGER
+PRESIDENT
+CLERK
+7839
+7782
+1981-06-09
+1981-11-17
+1982-01-23
+ 2450.00
+ 5000.00
+ 1300.00
+0
+1
+0
+10
+10
+10
+10
+nope
+NEW YORK
+!! Working...
+ 1
+scotty
+axel
+depts
+dname
+     2/     4
+Update
+Ins
+  Enter-Query
+7369
+7566
+7788
+7876
+7902
+MC'SMITH
+JONES
+SCOTT
+ADAMS
+FORD
+CLERK
+MANAGER
+ANALYST
+CLERK
+ANALYST
+9702
+7839
+7566
+7788
+7566
+1980-12-17
+1981-04-02
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 2975.00
+ 3000.00
+ 1100.00
+ 3000.00
+0
+0
+1
+1
+0
+20
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+depts
+loc
+     2/     4
+Update
+Ins
+  Enter-Query
+7369
+7566
+7788
+7876
+7902
+MC'SMITH
+JONES
+SCOTT
+ADAMS
+FORD
+CLERK
+MANAGER
+ANALYST
+CLERK
+ANALYST
+9702
+7839
+7566
+7788
+7566
+1980-12-17
+1981-04-02
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 2975.00
+ 3000.00
+ 1100.00
+ 3000.00
+0
+0
+1
+1
+0
+20
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+depts
+loc
+     2/     4
+Update
+Ins
+  Enter-Query
+7369
+7566
+7788
+7876
+7902
+MC'SMITH
+JONES
+SCOTT
+ADAMS
+FORD
+CLERK
+MANAGER
+ANALYST
+CLERK
+ANALYST
+9702
+7839
+7566
+7788
+7566
+1980-12-17
+1981-04-02
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 2975.00
+ 3000.00
+ 1100.00
+ 3000.00
+0
+0
+1
+1
+0
+20
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+depts
+loc
+     2/     4
+Update
+Ins
+  Enter-Query
+7369
+7566
+7788
+7876
+7902
+MC'SMITH
+JONES
+SCOTT
+ADAMS
+FORD
+CLERK
+MANAGER
+ANALYST
+CLERK
+ANALYST
+9702
+7839
+7566
+7788
+7566
+1980-12-17
+1981-04-02
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 2975.00
+ 3000.00
+ 1100.00
+ 3000.00
+0
+0
+1
+1
+0
+20
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+ename
+     1/     5
+Update
+Ins
+  Enter-Query
+7369
+7566
+7788
+7876
+7902
+MC'SMITH
+JONES
+SCOTT
+ADAMS
+FORD
+CLERK
+MANAGER
+ANALYST
+CLERK
+ANALYST
+9702
+7839
+7566
+7788
+7566
+1980-12-17
+1981-04-02
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 2975.00
+ 3000.00
+ 1100.00
+ 3000.00
+0
+0
+1
+1
+0
+20
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+   Enter-Data
+ 1
+scotty
+axel
+emps
+ename
+     1/     5
+Update
+Ins
+  Enter-Query
+7369
+7566
+7788
+7876
+7902
+hi
+JONES
+SCOTT
+ADAMS
+FORD
+CLERK
+MANAGER
+ANALYST
+CLERK
+ANALYST
+9702
+7839
+7566
+7788
+7566
+1980-12-17
+1981-04-02
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 2975.00
+ 3000.00
+ 1100.00
+ 3000.00
+0
+0
+1
+1
+0
+20
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+job
+     1/     5
+Update
+Ins
+  Enter-Query
+7369
+7566
+7788
+7876
+7902
+hi
+JONES
+SCOTT
+ADAMS
+FORD
+CLERK
+MANAGER
+ANALYST
+CLERK
+ANALYST
+9702
+7839
+7566
+7788
+7566
+1980-12-17
+1981-04-02
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 2975.00
+ 3000.00
+ 1100.00
+ 3000.00
+0
+0
+1
+1
+0
+20
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+job
+     2/     5
+Update
+Ins
+  Enter-Query
+7369
+7566
+7788
+7876
+7902
+hi
+JONES
+SCOTT
+ADAMS
+FORD
+CLERK
+MANAGER
+ANALYST
+CLERK
+ANALYST
+9702
+7839
+7566
+7788
+7566
+1980-12-17
+1981-04-02
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 2975.00
+ 3000.00
+ 1100.00
+ 3000.00
+0
+0
+1
+1
+0
+20
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+job
+     2/     5
+Delete
+Ins
+Delete-Record
+7369
+7566
+7788
+7876
+7902
+hi
+JONES
+SCOTT
+ADAMS
+FORD
+CLERK
+MANAGER
+ANALYST
+CLERK
+ANALYST
+9702
+7839
+7566
+7788
+7566
+1980-12-17
+1981-04-02
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 2975.00
+ 3000.00
+ 1100.00
+ 3000.00
+0
+0
+1
+1
+0
+20
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+job
+     2/     4
+Update
+Ins
+  Enter-Query
+7369
+7788
+7876
+7902
+hi
+SCOTT
+ADAMS
+FORD
+CLERK
+ANALYST
+CLERK
+ANALYST
+9702
+7566
+7788
+7566
+1980-12-17
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 3000.00
+ 1100.00
+ 3000.00
+0
+1
+1
+0
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+ename
+     2/     4
+Update
+Ins
+  Enter-Query
+7369
+7788
+7876
+7902
+hi
+SCOTT
+ADAMS
+FORD
+CLERK
+ANALYST
+CLERK
+ANALYST
+9702
+7566
+7788
+7566
+1980-12-17
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 3000.00
+ 1100.00
+ 3000.00
+0
+1
+1
+0
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+ename
+     2/     4
+Update
+Ins
+  Enter-Query
+7369
+7788
+7876
+7902
+hi
+SCOTT
+ADAMS
+FORD
+CLERK
+ANALYST
+CLERK
+ANALYST
+9702
+7566
+7788
+7566
+1980-12-17
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 3000.00
+ 1100.00
+ 3000.00
+0
+1
+1
+0
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+job
+     2/     4
+Update
+Ins
+  Enter-Query
+7369
+7788
+7876
+7902
+hi
+SCOTT
+ADAMS
+FORD
+CLERK
+ANALYST
+CLERK
+ANALYST
+9702
+7566
+7788
+7566
+1980-12-17
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 3000.00
+ 1100.00
+ 3000.00
+0
+1
+1
+0
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+job
+     2/     4
+Update
+Ins
+  Enter-Query
+7369
+7788
+7876
+7902
+hi
+SCOTT
+ADAMS
+FORD
+CLERK
+SCOTT
+CLERK
+ANALYST
+9702
+7566
+7788
+7566
+1980-12-17
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 3000.00
+ 1100.00
+ 3000.00
+0
+1
+1
+0
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+mgr
+     2/     4
+Update
+Ins
+  Enter-Query
+7369
+7788
+7876
+7902
+hi
+SCOTT
+ADAMS
+FORD
+CLERK
+SCOTT
+CLERK
+ANALYST
+9702
+7566
+7788
+7566
+1980-12-17
+1987-04-19
+1987-05-23
+1981-12-03
+  (null)
+ 3000.00
+ 1100.00
+ 3000.00
+0
+1
+1
+0
+20
+20
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+mgr
+     0/     0
+Query
+Ins
+Execute-Query
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+hiredate
+     0/     0
+Query
+Ins
+Execute-Query
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+sal
+     0/     0
+Query
+Ins
+Execute-Query
+20
+20
+RESEARCH
+DALLAS
+   Enter-Data
+ 1
+scotty
+axel
+emps
+sal
+     0/     0
+Query
+Ins
+Execute-Query
+>2000
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+comm
+     0/     0
+Query
+Ins
+Execute-Query
+>2000
+20
+20
+RESEARCH
+DALLAS
+!! Working...
+ 1
+scotty
+axel
+emps
+comm
+     1/     2
+Update
+Ins
+  Enter-Query
+7788
+7902
+SCOTT
+FORD
+SCOTT
+ANALYST
+7566
+7566
+1987-04-19
+1981-12-03
+ 3000.00
+ 3000.00
+1
+0
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+comm
+     1/     2
+Update
+Ins
+  Enter-Query
+7788
+7902
+SCOTT
+FORD
+SCOTT
+ANALYST
+7566
+7566
+1987-04-19
+1981-12-03
+ 3000.00
+ 3000.00
+0
+0
+20
+20
+20
+RESEARCH
+DALLAS
+ 1
+scotty
+axel
+emps
+comm
+     1/     2
+Update
+Ins
+  Enter-Query
+7788
+7902
+SCOTT
+FORD
+SCOTT
+ANALYST
+7566
+7566
+1987-04-19
+1981-12-03
+ 3000.00
+ 3000.00
+0
+0
+20
+20
+20
+RESEARCH
+DALLAS

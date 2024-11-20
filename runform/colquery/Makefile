@@ -29,7 +29,7 @@ cql.o: cql.l cqy.o
 	$(CC) $(CFLAGS) -c cql.c
 
 cqy.c colq.h: cqy.y
-	$(YACC) $(YFLAGS) cqy.y
+	$(YACC) $(YFLAGS) cqy.y 2>&1
 	@if [ -f y.tab.c ];   then mv y.tab.c   cqy.c;  fi
 	@if [ -f y.tab.h ];   then mv y.tab.h   colq.h; fi
 	@if [ -f cqy.tab.c ]; then mv cqy.tab.c cqy.c;  fi
