@@ -6,6 +6,8 @@
 #include <curses.h>
 #include "runform.h"
 
+#define nocurses(ret) if (screenclos) return ret
+
 char cursesversion[8] = NCURSES_VERSION;
 const char *cursesrun = NULL;
 
@@ -58,18 +60,21 @@ return attrels[colcode].cattr;
 
 /* curses set attribute */
 void Screen::setcolor(int pairi) {
+nocurses();
 if (!monochrome && (attrels[pairi].foreg || attrels[pairi].backg))
   wattron(wndw, COLOR_PAIR(pairi));
 }
 
 /* curses unset attribute */
 void Screen::uncolor(int pairi) {
+nocurses();
 if (!monochrome && (attrels[pairi].foreg || attrels[pairi].backg))
   wattroff(wndw, COLOR_PAIR(pairi));
 }
 
 /* high level colcode to curses setting */
 void Screen::setcode(int colcode) {
+nocurses();
 static int runningcolcode;
 int color;
 if (colcode == -1) {
@@ -87,6 +92,7 @@ if (colcode == -1) {
 } }
 
 int Screen::setattributs(int attrib) {
+nocurses(attrib);
 if (attrib & A_REVERSE) {
   if (enter_reverse_mode == NULL) /* terminal has no reverse mode */
     attrib |= A_STANDOUT;         /* use standout instead */
@@ -103,16 +109,17 @@ static struct termios otermio;
 int Screen::init() {
 struct termios termio;
 int i;
-#ifdef ISNOTWORKING
+if (redirectd) {
+/* fail with valgrind
 FILE *fd;
 SCREEN *scr;
-if (redirectd) {
   if (!(fd = fopen(redirectd, "w"))) return 1;
   scr = newterm(NULL, fd, stdin);
   set_term(scr);
   wndw = stdscr;
+ */
+  return 1;
 } else {
-#endif
 if ((wndw = initscr()) == NULL) return 1;
 /*assert(wndw == stdscr);*/
 tcgetattr (fileno(stdin), &termio); /* give me all attributes */
@@ -144,25 +151,27 @@ if (usedefault) use_default_colors();
 refr();
 getmaxyx(stdscr, ysiz, xsiz);
 return 0;
-}
+} }
 
 /* wrapper for curses functions */
 void Screen::createwindow(int y, int x, int py, int px) {
+nocurses();
 wndw = newwin(y, x, py, px);
 wattrset(wndw, A_NORMAL);
 wattron(wndw, COLOR_PAIR(0));
 }
-void Screen::deletewindow() { wera(); delwin(wndw); }
-void Screen::wera() { werase(wndw); }
-void Screen::wbox() { box(wndw, 0, 0); }
-void Screen::wmov(int y, int x) { wmove(wndw, y, x); }
-void Screen::refr() { wrefresh(wndw); }
-void Screen::noutrefr() { wnoutrefresh(wndw); }
-void Screen::redraw() { redrawwin(wndw); }
-void Screen::wsleep(int sec) { sleep(sec); }
-int  Screen::fulledit(char *pth) { return mainloop(pth, wndw); }
+void Screen::deletewindow() { nocurses(); wera(); delwin(wndw); }
+void Screen::wera() { nocurses(); werase(wndw); }
+void Screen::wbox() { nocurses(); box(wndw, 0, 0); }
+void Screen::wmov(int y, int x) { nocurses(); wmove(wndw, y, x); }
+void Screen::refr() { nocurses(); wrefresh(wndw); }
+void Screen::noutrefr() { nocurses(); wnoutrefresh(wndw); }
+void Screen::redraw() { nocurses(); redrawwin(wndw); }
+void Screen::wsleep(int sec) { nocurses(); sleep(sec); }
+int  Screen::fulledit(char *pth) { nocurses(0); return mainloop(pth, wndw); }
 
 void Screen::closedisplay() {
+nocurses();
 endwin();
 /*tcsetattr (fileno(stdin), TCSANOW, &otermio); curses takes care of resetting stty */
 }
@@ -218,6 +227,7 @@ if (macropointer) {
   if (!(*macropointer)) macropointer = NULL;
   return i;
 }
+if (screenclos) return KEY_CTRL('Z');
 return wgetch(stdscr); /* wgetch(wndw); getch(); */
 }
 
@@ -269,6 +279,7 @@ char legalint[] = "0123456789";
 char legalbool[] = "01";
 char legalfloat[] = "0123456789.";
 char legaldate[] = "0123456789./-";
+if (screenclos) return KEY_ESC;
 switch (fty) {
  case FTY_DATE:  legal = legaldate;  break;
  case FTY_INT:   legal = legalint;   break;
@@ -441,10 +452,13 @@ vsnprintf (s, sizeof(s), format, args);
 va_end (args);
 if (width < MEDSIZE) s[width] = '\0';
 if ((crp = strchr(s, '\n'))) strncpy(crp, "...", sizeof(s) - (crp - s));
+if (screenclos) {
+;
+} else {
 setcode(colcode);
 getyx(wndw, oldy, oldx);
 mvwprintw(wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
 wmov(oldy, oldx);
 setcode(-1);
-}
+} }
 
