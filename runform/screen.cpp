@@ -168,6 +168,7 @@ void Screen::refr() { nocurses(); wrefresh(wndw); }
 void Screen::noutrefr() { nocurses(); wnoutrefresh(wndw); }
 void Screen::redraw() { nocurses(); redrawwin(wndw); }
 void Screen::wsleep(int sec) { nocurses(); sleep(sec); }
+int  Screen::wadds(char *str) { nocurses(OK); return waddstr(wndw, str); }
 int  Screen::fulledit(char *pth) { nocurses(0); return mainloop(pth, wndw); }
 
 void Screen::closedisplay() {
@@ -279,7 +280,6 @@ char legalint[] = "0123456789";
 char legalbool[] = "01";
 char legalfloat[] = "0123456789.";
 char legaldate[] = "0123456789./-";
-if (screenclos) return KEY_ESC;
 switch (fty) {
  case FTY_DATE:  legal = legaldate;  break;
  case FTY_INT:   legal = legalint;   break;
@@ -336,7 +336,7 @@ while (!done) {              /* input loop */
   snprintf(t(tmp), "%-*.*s", width, width, so);
   tmp[width] = '\0';         /* cut to width   */
   while ((tp = strchr(tmp,'\t')) != NULL) *tp = ' '; /* tab erase */
-  waddstr(wndw, tmp);        /* paint out string */
+  wadds(tmp);                /* paint out string */
   if (pos==-1) break;        /* done if only paint */
   if (so > se && sx > x) mvwaddch (wndw, y, x, '<'); /* signal overfl */
   if ((int)strlen(so) > width && sx < endx) mvwaddch(wndw, y, endx, '>');
@@ -400,7 +400,7 @@ while (!done) {              /* input loop */
     snprintf(t(tmp), "%-*.*s", width, width, s);
     tmp[width] = '\0';
     while ((tp = strchr(tmp,'\t')) != NULL) *tp = ' ';
-    waddstr(wndw, tmp);
+    wadds(tmp);
     changed = FALSE;
     done = TRUE;
     break;
