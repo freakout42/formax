@@ -23,7 +23,6 @@ F12 l Refresh      End   e NextBlock
 >     Goto         ~       Search
 Space Toggle binary
 /ARX cleanware  [1]
-https://formax.freakout.de v2.2.11 23
 charset:    en_US.iso885915
 compiler:   GCC-3.4.6 (109304)
 sqlite inc: 3.47.0

@@ -36,12 +36,20 @@ run: runform $(EXAMPLE)
 RUNMODE=-r/dev/null
 test: clean runform $(EXAMPLE) $(FORMAXE)
 	@rm -f /tmp/formax.log
+	@cp ../generate/scotty.sq3 .
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
-		./runform $(RUNMODE) -x -g/tmp/formax.log $(EXAMPLE) 2>$@ | grep -v 'compiled:' >out
+		./runform $(RUNMODE) -x -g/tmp/formax.log $(EXAMPLE) 2>$@ | \
+			grep -v -e'formax.freakout.de' -e'compiled:' >out
 	@test -f $@ -a ! -s $@
 	@sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
 	@diff ../generate/scotty.out out
 	@rm -f out
+	@rm -f /tmp/formax.log
+	@mv scotty.sq3 ../generate
+	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
+		./runform -w -x -g/tmp/formax.log $(EXAMPLE) 2>$@
+	@test -f $@ -a ! -s $@
+	@sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
 	@echo -e "\033[0;32mOk\\033[0m"
 
 curkeys.h: curkeys
