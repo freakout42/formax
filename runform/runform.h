@@ -150,6 +150,7 @@ extern int yesno(int c);
 extern int isprintable(int c);
 extern int ispunctation(int c);
 extern int letf(char *target, size_t maxlen, const char *format, ...);
+extern void prnf(char *str);
 extern int cats(char *target, size_t maxlen, const char *source);
 extern int catc(char *target, size_t maxlen, char source);
 extern int debugf(char *format, ...);

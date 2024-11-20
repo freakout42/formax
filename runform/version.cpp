@@ -15,7 +15,7 @@ if (i < n-2) {
 return dest+i;
 }
 
-/* trim right padded garbade away .00 and whitespace */
+/* trim right padded garbage away .00 and whitespace */
 char *rtrim0white(char *str) {
 char *end;
 end = str + strspn(str, "-0123456789");
@@ -36,6 +36,11 @@ va_start (args, format);
 n = vsnprintf (target, maxlen, format, args);
 va_end (args);
 return n;
+}
+
+void prnf(char *str) {
+rtrim0white(str);
+if (!(str[0] == '\0' || (str[0] == ' ' && str[1] == '\0'))) printf("%s\n", str);
 }
 
 /* temporary file handling */

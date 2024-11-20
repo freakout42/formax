@@ -120,7 +120,7 @@ SCREEN *scr;
  */
   return 1;
 } else {
-if ((wndw = initscr()) == NULL) return 1;
+if ((wndw = initscr()) == NULL) return 1; else screenclos = 0;
 /*assert(wndw == stdscr);*/
 tcgetattr (fileno(stdin), &termio); /* give me all attributes */
 otermio = termio;
@@ -453,7 +453,7 @@ va_end (args);
 if (width < MEDSIZE) s[width] = '\0';
 if ((crp = strchr(s, '\n'))) strncpy(crp, "...", sizeof(s) - (crp - s));
 if (screenclos) {
-;
+  prnf(s);
 } else {
 setcode(colcode);
 getyx(wndw, oldy, oldx);
