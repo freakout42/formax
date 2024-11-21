@@ -1,6 +1,6 @@
 /* builds curkeys.h for using keys macros KEY_* no need to include curses.h */
 #include <stdio.h>
-#include <curses.h>
+#include <ncurses/ncurses.h>
 
 #define defke3(keyname, keyvalue) printf("#define KEY_%s %s\n", keyname, #keyvalue);
 #define defke2(keyname, keyvalue) defke3(keyname, keyvalue)

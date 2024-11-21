@@ -1,0 +1,24 @@
+SRCS=$(wildcard *.cpp)
+OBJS=$(patsubst %.cpp,%.o,$(SRCS))
+OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
+CXXFLAGS=-DPURUNFORM -DNCURSES_STATIC
+
+all: runform
+
+$(OBJS): runform.h
+runform.h: company.h curkeys.h
+company.h: arx.h
+	cp arx.h $@
+
+runform: $(OBJS) $(OBJB)
+	$(CXX) $(OBJS) $(OBJB) -lncurses -lodbc32 -o $@
+
+curkeys.h: curkeys
+	./curkeys >$@
+
+colquery/colquery.o:
+	cd colquery; make all
+
+clean:
+	rm -f *.o runform $(OBJB)
+

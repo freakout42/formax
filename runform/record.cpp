@@ -30,6 +30,7 @@ g.logfmt("SQL_DBMS_NAME: %s -> %d", dbmsname, drv);
  */
 int Record::connect(char *dsn) {
 SQLSMALLINT len;
+SQLPOINTER sqlautocommit;
 if (!dsn) {
   dbc = NULL;
   stmt = NULL;
@@ -53,8 +54,8 @@ ret = SQLGetInfo(dbc, SQL_DRIVER_VER,      &driver_ver,      TNYSIZE, &len);    
 ret = SQLGetInfo(dbc, SQL_DBMS_NAME,       &dbmsname,        TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC);
 ret = SQLGetInfo(dbc, SQL_DBMS_VER,        &dbmsver,         TNYSIZE, &len);                   FAILEDQ(SQL_HANDLE_DBC);
 setdrv(dbmsname);
-#define AUTOCOMMIT (SQLPOINTER)(autocommit ? SQL_AUTOCOMMIT_ON : SQL_AUTOCOMMIT_OFF)
-ret = SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT, AUTOCOMMIT, SQL_IS_UINTEGER);                FAILEDQ(SQL_HANDLE_DBC);
+if (autocommit) sqlautocommit = (void*)SQL_AUTOCOMMIT_ON; else sqlautocommit = (void*)SQL_AUTOCOMMIT_OFF;
+ret = SQLSetConnectAttr(dbc, SQL_ATTR_AUTOCOMMIT, sqlautocommit, SQL_IS_UINTEGER);             FAILEDQ(SQL_HANDLE_DBC);
 ret = SQLGetFunctions(dbc, SQL_API_SQLMORERESULTS, &moreresults );                             FAILEDQ(SQL_HANDLE_DBC);
 stmt = NULL;
 return ret;
