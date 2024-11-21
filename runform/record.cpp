@@ -192,7 +192,7 @@ SQLRETURN s;
 SQLSMALLINT i;
 SQLLEN indicator;
 char **qp;
-char buf[HUGSIZE];
+char buf[BIGSIZE];
 //if (row) s = SQLMoreResults(stmt);
 if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
   if (!row) row = q->rows++ + 1;

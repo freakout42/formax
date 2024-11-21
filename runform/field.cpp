@@ -220,7 +220,7 @@ int Field::edit(int pos) {
 int pressed;
 char **c;
 pressed = 0;
-char a[HUGSIZE];
+char a[BIGSIZE];
 switch(CM) {
  case MOD_UPDATE:
   if (isprimarykey) { MSG(MSG_EDITKEY); return KEF_CANCEL; }

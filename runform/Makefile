@@ -21,6 +21,7 @@ runform0: clean $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJB) -lcurses -lodbc -o $@
 	ls -l $@
 
+# -Wl,--print-map
 runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
 
@@ -38,11 +39,13 @@ test: clean runform $(EXAMPLE)
 	@diff ../generate/scotty.out out
 	@rm -f out
 	@rm -f /tmp/formax.log
-	@mv scotty.sq3 ../generate
+	@cp scotty.sq3 ../generate
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
 		./runform -w -x -g/tmp/formax.log $(EXAMPLE) 2>$@
 	@test -f $@ -a ! -s $@
 	@sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
+	@mv scotty.sq3 ../generate
+	./runform -zx -g/tmp/formax.log $(EXAMPLE)
 	@echo -e "\033[0;32mOk\\033[0m"
 
 curkeys.h: curkeys

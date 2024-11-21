@@ -126,7 +126,7 @@ switch(CK) {
       case '+':      LK = fincrement(1);                               break;
       case '-':      LK = fincrement(-1);                              break;
       case '>':      LK = goto_cell();                                 break;
-      case '~':      LK = search_cell();                               break;
+      case '<':      LK = search_cell();                               break;
       default:       undone = 1;
      }
    }
@@ -281,10 +281,8 @@ if (CB.norec > 1) {
 /* goto entered cell */
 int Function::goto_cell() {
 int pressed;
-char a[NORSIZE];
-let(a, "block.field:row");
-pressed = F(p)[PGE_STATUS].sedit(a, 0, FTY_ALL, 30);
-if (pressed == KEY_ENTER) fgoto(a);
+pressed = F(p)[PGE_STATUS].sedit(CB.gotoselector, 0, FTY_ALL, 30);
+if (pressed == KEY_ENTER) fgoto(CB.gotoselector);
 return 0; //pressed;
 }
 
@@ -318,8 +316,15 @@ void Function::fsearch(char *rex) {
 int fldn, rown, s;
 char **val;
 char *src, *tgt;
-char a[HUGSIZE];
 re_t re;
+char a[BIGSIZE];
+#ifdef USEALLOCATEDA
+char *a;
+if (!(a = (char*)malloc(HUGSIZE))) {
+  MSG(MSG_ALLOC);
+  notrunning = -1;
+}
+#endif
 re = re_compile(rex);
 fldn = CF.sequencenum + 1;
 for(rown=CR; rown<=CN; rown++) {
@@ -333,16 +338,22 @@ for(rown=CR; rown<=CN; rown++) {
         val = &tgt;
       }
       if (re_matchp(re, *val, &s) != -1) {
+#ifdef USEALLOCATEDA
+        free(a);
+#endif
         CFi = CB.blockfields[fldn-1];
-        CR = rown;
         if (CF.noedit()) fmove(0, 1);
-        fmover(0, 0);
+        fmover(rown, 0);
         return;
       }
     }
   }
   fldn = 1;
-} }
+}
+#ifdef USEALLOCATEDA
+free(a);
+#endif
+}
 
 /* EDITING */
 int Function::insert_record() {

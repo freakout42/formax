@@ -21,6 +21,7 @@ if ((globalid = strstr(where, "${GLOBALPKID}"))) {
 }
 let(order,  blk->v(rix, 7));
 let(attrs,  "");
+let(gotoselector, "block.field:row");
 let(searchre, "regex");
 fieldcount = 0;
 prikeycnt = 0;
