@@ -24,21 +24,14 @@ runform0: clean $(OBJS) $(OBJA)
 runform: $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
 
-run: runform $(EXAMPLE)
+run: runform $(EXAMPLE) $(FORMAXE)
 	./runform -zx $(EXAMPLE)
-#	./runform -x ../generate/formax.frm ../generate/scotty.frm
-#	sqlite3 ../generate/scotty.frm .dump >../generate/scotty.in2
-#	cp ../generate/formax.frm .
-#	./runform -x ../generate/formax.frm formax.frm
-#	sqlite3 formax.frm .dump >../generate/formax.inp
 
-#RUNMODE=-w
-RUNMODE=-r/dev/null
-test: clean runform $(EXAMPLE) $(FORMAXE)
+test: clean runform $(EXAMPLE)
 	@rm -f /tmp/formax.log
 	@cp ../generate/scotty.sq3 .
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
-		./runform $(RUNMODE) -x -g/tmp/formax.log $(EXAMPLE) 2>$@ | \
+		./runform -r -x -g/tmp/formax.log $(EXAMPLE) 2>$@ | \
 			grep -v -e'formax.freakout.de' -e'compiled:' >out
 	@test -f $@ -a ! -s $@
 	@sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
@@ -73,4 +66,4 @@ $(FORMAXE): ../generate/formax.inp
 clean:
 	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
 	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf \
-		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h
+		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out scotty.sq3

@@ -109,18 +109,7 @@ static struct termios otermio;
 int Screen::init() {
 struct termios termio;
 int i;
-if (redirectd) {
-/* fail with valgrind
-FILE *fd;
-SCREEN *scr;
-  if (!(fd = fopen(redirectd, "w"))) return 1;
-  scr = newterm(NULL, fd, stdin);
-  set_term(scr);
-  wndw = stdscr;
- */
-  return 1;
-} else {
-if ((wndw = initscr()) == NULL) return 1; else screenclos = 0;
+if ((wndw = initscr()) == NULL) return 1;
 /*assert(wndw == stdscr);*/
 tcgetattr (fileno(stdin), &termio); /* give me all attributes */
 otermio = termio;
@@ -148,10 +137,10 @@ if (has_colors() && !monochrome) {
   }
 if (usedefault) use_default_colors();
 } else monochrome = 1;
-refr();
+wrefresh(wndw);
 getmaxyx(stdscr, ysiz, xsiz);
 return 0;
-} }
+}
 
 /* wrapper for curses functions */
 void Screen::createwindow(int y, int x, int py, int px) {
@@ -228,7 +217,11 @@ if (macropointer) {
   if (!(*macropointer)) macropointer = NULL;
   return i;
 }
-if (screenclos) return KEY_CTRL('Z');
+if (screenclos) {
+  i = getchar();
+  if (i == EOF) return 'q';
+  return i;
+}
 return wgetch(stdscr); /* wgetch(wndw); getch(); */
 }
 

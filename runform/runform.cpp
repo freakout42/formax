@@ -21,21 +21,21 @@ char *lclocale;
 int  firststart  = 1;
 int  insertmode  = 1;
 int  useodbcve3  = 0;             // -3
-int  monochrome  = 0;             // -k
-int  usedefault  = 0;             // -c
-int  pwdencrypt  = 0;             // -p
-int  squerymode  = 0;             // -i
-int  updatemode  = 0;             // -x
-int  usebindvar  = 1;             // -b
-int  querycharm  = 1;             // -h
 int  autocommit  = 1;             // -a
+int  usebindvar  = 1;             // -b
+int  usedefault  = 0;             // -c
 int  deleprompt  = 0;             // -d
-int  queryonlym  = 0;             // -q
-int  matchnocas  = 1;             // -m
+int  querycharm  = 1;             // -h
+int  squerymode  = 0;             // -i
 int  globalpkid  = 1;             // -j
+int  monochrome  = 0;             // -k
+int  matchnocas  = 1;             // -m
+int  pwdencrypt  = 0;             // -p
+int  queryonlym  = 0;             // -q
+int  redirected  = 0;             // -r
 int  watchmacro  = 0;             // -w
+int  updatemode  = 0;             // -x
 int  noentermac  = 0;             // -z
-char *redirectd  = NULL;
 char *ypassword  = NULL;
 char *username;
 int  screenclos  = 1;
@@ -150,7 +150,7 @@ lclocale = setlocale(LC_ALL, CHARSET);
 form_id = 1;
 
 /* command-line arguments and options check and process */
-while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqr:t:Vwxy:z")) != -1) {
+while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqrt:Vwxy:z")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n  (%d) [%s]\n", about, (int)sizeof(Form), GITCOMMIT); exit(2);
     case 'y': ypassword = optarg; break;
@@ -198,8 +198,8 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqr:t:Vwxy:z")) != -1) {
     case 'w': watchmacro = 1; break;
     case 'm': matchnocas = 0; break;
     case 'z': noentermac = 1; break;
+    case 'r': redirected = 1; break;
     case 'j': globalpkid = atoi(optarg); break;
-    case 'r': redirectd  = optarg; break;
     default: usage(1);
   }
 }
@@ -252,7 +252,7 @@ genxorkey(NULL, NULL);
 
 rootform = new Form();
   if ((s = rootform->fill(form_id))) usage(s<19 ? 5 : s);
-    if ((screenclos = y.init()) && !redirectd) usage(17);
+    if (!redirected) if ((screenclos = y.init())) usage(17);
       if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
     y.closedisplay();
     screenclos = 1;

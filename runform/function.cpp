@@ -110,6 +110,7 @@ switch(CK) {
   case '?':          LK = aboutwin();                                         break;
 
   default:
+   if (redirected && CK == 'q') { notrunning = -1;                            break; }
    undone = 1;
    if (CM == MOD_UPDATE) {
      undone = 0;

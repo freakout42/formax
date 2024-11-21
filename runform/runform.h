@@ -190,6 +190,6 @@ extern int   noentermac;
 extern char  runningsignature[];
 extern char  *shiftednum;
 extern char  *username;
-extern char  *redirectd;
+extern int   redirected;
 extern int   screenclos;
 extern int   callinguid;
