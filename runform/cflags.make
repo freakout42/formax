@@ -4,7 +4,11 @@ CCVER=$(shell $(CC) -dumpversion | sed 's/\..*//')
 ifeq "$(CCVER)" "16"
   DISABLEWARN=-Wno-deprecated-non-prototype -Wno-invalid-source-encoding
 endif
-ifneq "$(CCVER)" "3"
+ifeq "$(CCVER)" "3"
+ifeq (run,$(MAKECMDGOALS))
+  CXX=g++4
+endif
+else
   STACKPROTECTION=-fstack-protector
 endif
 LINTING=-Wall -Werror -Wno-write-strings $(DISABLEWARN)
@@ -19,5 +23,6 @@ else ifeq (small,$(MAKECMDGOALS))
 else
   SUBTARGET=all
   CFLAGS=-O3 -DNDEBUG $(STACKPROTECTION) $(LINTING)
+  CLDFLAGS=$(STACKPROTECTION)
 endif
 CXXFLAGS=$(CFLAGS)
