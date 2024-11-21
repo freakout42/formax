@@ -21,4 +21,5 @@ colquery/colquery.o:
 
 clean:
 	rm -f *.o runform $(OBJB)
+	for SUB in colquery elk regex; do cd $$SUB; make clean; cd ..; done
 
