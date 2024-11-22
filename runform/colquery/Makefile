@@ -4,6 +4,7 @@ LDFLAGS=-r
 YACC=bison
 YFLAGS=-d --name-prefix=cq
 # -Wno-conflicts-sr
+LEX=flex
 LEXFLAGS=--prefix=cq
 
 all: colquery.o

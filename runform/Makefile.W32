@@ -1,3 +1,4 @@
+CC=gcc
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
@@ -17,9 +18,9 @@ curkeys.h: curkeys
 	./curkeys >$@
 
 colquery/colquery.o:
-	cd colquery; make all
+	cd colquery; make colquery.o CC=gcc
 
 clean:
 	rm -f *.o runform $(OBJB)
-	for SUB in colquery elk regex; do cd $$SUB; make clean; cd ..; done
+	for SUB in colquery elk regex; do cd $$SUB; make clean CC=gcc; cd ..; done
 

@@ -9,7 +9,9 @@ ifeq (run,$(MAKECMDGOALS))
   CXX=g++4
 endif
 else
+ifneq "$(CCVER)" "6"
   STACKPROTECTION=-fstack-protector
+endif
 endif
 LINTING=-Wall -Werror -Wno-write-strings $(DISABLEWARN)
 ifeq (test,$(MAKECMDGOALS))
