@@ -131,6 +131,8 @@ termio.c_cc[VSUSP] = 0; /* ctrl-z */
 termio.c_cc[VLNEXT] = 0;/* ctrl-v */
 #endif
 tcsetattr (fileno(stdin), TCSANOW, &termio);
+#else
+raw();
 #endif
 #ifdef init_tabs
   init_tabs = 0;
