@@ -80,7 +80,7 @@ Status
 forms. It has not matured enough to call it fully production
 ready and complex triggers maybe challenging. Create an
 issue when in trouble, have found a bug or a security
-problem or for a feature requests. Dont hesitate to start
+problem or for a feature request. Dont hesitate to start
 using it. Together we will make it suit your needs.
 
 Product security complies with current standards. The
