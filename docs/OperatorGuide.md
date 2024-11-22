@@ -91,6 +91,22 @@ sudo yum -y install sqlite
 rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-0.9998-1.x86_64.rpm
 ~~~
 
+Install on Windows
+==================
+
+For running **formax** on Windows you have to install the
+sqlite3 odbc driver with this installation exe:
+
+    https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc.exe
+
+Copy the precompiles binaries to C:\Windows\System32 :
+
+    https://github.com/freakout42/formax/releases/download/v0.9.9/runform.exe
+    https://github.com/freakout42/formax/releases/download/v0.9.9/libncursesw6.dll
+
+Now runform.exe can be run from the cmd or powershell prompt
+from console or the windows terminal.
+
 Build
 =====
 
