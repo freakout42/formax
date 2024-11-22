@@ -131,6 +131,9 @@ ds = __DATE__; /* :Oct 16 2024: https://formax.toarx.de/ */
 letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s %2.2s%3.3s%2.2s-%5.5s",
   VERSION, CHARSET, odbcversion+2, cursesversion, ds+4, ds, ds+9, __TIME__);
 /* search for the sqlite3 driver */
+#ifdef WIN32
+char drv[SMLSIZE] = "SQLite3 ODBC Driver";
+#else
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
 const char *drvs[] = {
@@ -145,10 +148,13 @@ for (i=0; i<3; i++) {
     strcpy(drv, drvs[i]);
   }
 }
+#endif
 
 /* user and charset environment */
+#ifdef WIN32
+username = getenv("USERNAME");
+#else
 username = getenv("USER");
-#ifndef WIN32
 setenv("LC_ALL", CHARSET, 1);
 #endif
 lclocale = setlocale(LC_ALL, CHARSET);

@@ -5,7 +5,7 @@
 #include <termios.h>
 #include <term.h>
 #endif
-#include <ncurses/ncurses.h>
+#include <curses.h>
 #include "runform.h"
 
 #define nocurses(ret) if (screenclos) return ret

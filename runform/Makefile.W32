@@ -2,7 +2,7 @@ CC=gcc
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
-CXXFLAGS=-DPURUNFORM -DNCURSES_STATIC
+CXXFLAGS=-DPURUNFORM -DNCURSES_STATIC -Iinclude -Iinclude/ncursesw
 
 all: runform
 
@@ -12,10 +12,11 @@ company.h: arx.h
 	cp arx.h $@
 
 runform: $(OBJS) $(OBJB)
-	$(CXX) $(OBJS) $(OBJB) -lncurses -lodbc32 -o $@
+	$(CXX) $(OBJS) $(OBJB) lib/libncursesw.dll.a -lodbc32 -o $@
 
-curkeys.h: curkeys
-	./curkeys >$@
+curkeys.h: curkeys.c
+	$(CC) $(CXXFLAGS) curkeys.c -o curkeys.exe
+	./curkeys.exe >$@
 
 colquery/colquery.o:
 	cd colquery; make colquery.o CC=gcc
@@ -24,3 +25,8 @@ clean:
 	rm -f *.o runform $(OBJB)
 	for SUB in colquery elk regex; do cd $$SUB; make clean CC=gcc; cd ..; done
 
+# prepare
+# wget -O../../curses//ncurses-win32.zip https://invisible-island.net/datafiles/release/mingw32.zip
+# unzip ../../curses/ncurses-win32.zip
+# cp bin/libncursesw6.dll .
+# compile with msys + mingw32
