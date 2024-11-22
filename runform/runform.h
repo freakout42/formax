@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.2.13"
+#define VERSION "2.2.14"
 #define VERMSGS 23
 
 /* optional functionality */

@@ -1,8 +1,10 @@
 /* curses screen handling interface */
 #include <cstdarg>
 #include <unistd.h>
+#ifndef WIN32
 #include <termios.h>
 #include <term.h>
+#endif
 #include <curses.h>
 #include "runform.h"
 
@@ -93,6 +95,7 @@ if (colcode == -1) {
 
 int Screen::setattributs(int attrib) {
 nocurses(attrib);
+#ifndef WIN32
 if (attrib & A_REVERSE) {
   if (enter_reverse_mode == NULL) /* terminal has no reverse mode */
     attrib |= A_STANDOUT;         /* use standout instead */
@@ -101,16 +104,22 @@ if (attrib & A_BLINK) {
   if (enter_blink_mode == NULL)   /* terminal has no blink mode */
     attrib |= A_STANDOUT;         /* use standout instead */
 }
+#endif
 return wattrset(wndw, attrib);
 }
 
 /* curses init and various terminal setup magic */
+#ifndef WIN32
 static struct termios otermio;
+#endif
 int Screen::init() {
+#ifndef WIN32
 struct termios termio;
+#endif
 int i;
 if ((wndw = initscr()) == NULL) return 1;
 /*assert(wndw == stdscr);*/
+#ifndef WIN32
 tcgetattr (fileno(stdin), &termio); /* give me all attributes */
 otermio = termio;
 termio.c_cc[VINTR] = 0; /* ctrl-c */
@@ -122,6 +131,9 @@ termio.c_cc[VSUSP] = 0; /* ctrl-z */
 termio.c_cc[VLNEXT] = 0;/* ctrl-v */
 #endif
 tcsetattr (fileno(stdin), TCSANOW, &termio);
+#else
+raw();
+#endif
 #ifdef init_tabs
   init_tabs = 0;
 #endif
@@ -158,7 +170,9 @@ void Screen::noutrefr() { nocurses(); wnoutrefresh(wndw); }
 void Screen::redraw() { nocurses(); redrawwin(wndw); }
 void Screen::wsleep(int sec) { nocurses(); sleep(sec); }
 int  Screen::wadds(char *str) { nocurses(OK); return waddstr(wndw, str); }
+#ifndef NOUSEDITOR
 int  Screen::fulledit(char *pth) { nocurses(0); return mainloop(pth, wndw); }
+#endif
 
 void Screen::closedisplay() {
 nocurses();

@@ -171,7 +171,7 @@ if (*validreg) {
 switch (fieldtype) {
  case FTY_DATE:
   s = colquery(buf, buf2, "q", 0, 268);
-  if (*buf2 == '{' && (o = rindex(buf2, ' ')) && o == buf2+strlen(buf2)-9) {
+  if (*buf2 == '{' && (o = strrchr(buf2, ' ')) && o == buf2+strlen(buf2)-9) {
     strncpy(buf, o+1, 4);
     *(buf+4) = '-';
     strncpy(buf+5, o+5, 2);

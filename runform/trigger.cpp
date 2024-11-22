@@ -26,7 +26,9 @@ int fldn;
 char *fldvaluep;
 char *selector;
 double rownumber;
-char *a = "";
+char *a;
+static char nilstr = '\0';
+a = &nilstr;
 selector = js_getstr(js, args[0], NULL);
 fldn = F(qfield)(selector);
 if (fldn >= 0) {
@@ -181,7 +183,8 @@ char *Trigger::execute(char *av0) {
 int i;
 char *status;
 char a[MEDSIZE];
-status = "1";
+static char str1[2] = "1";
+status = str1;
 switch (trglng) {
  case TRL_JAVASCRIPT:
   if (!intrigger) {

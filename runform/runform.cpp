@@ -121,12 +121,19 @@ Form *rootform;
 const char *ds;
 
 /* version information and about and other runtime information */
+#ifdef WIN32
+callinguid = 202;
+#else
 signal(SIGTSTP, SIG_IGN);
 callinguid = getuid();
+#endif
 ds = __DATE__; /* :Oct 16 2024: https://formax.toarx.de/ */
 letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s %2.2s%3.3s%2.2s-%5.5s",
   VERSION, CHARSET, odbcversion+2, cursesversion, ds+4, ds, ds+9, __TIME__);
 /* search for the sqlite3 driver */
+#ifdef WIN32
+char drv[SMLSIZE] = "SQLite3 ODBC Driver";
+#else
 char drv[SMLSIZE] = "libsqlite3odbc.so";
 FILE *filesq3;
 const char *drvs[] = {
@@ -141,10 +148,15 @@ for (i=0; i<3; i++) {
     strcpy(drv, drvs[i]);
   }
 }
+#endif
 
 /* user and charset environment */
+#ifdef WIN32
+username = getenv("USERNAME");
+#else
 username = getenv("USER");
 setenv("LC_ALL", CHARSET, 1);
+#endif
 lclocale = setlocale(LC_ALL, CHARSET);
 
 form_id = 1;
@@ -205,6 +217,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqrt:Vwxy:z")) != -1) {
 }
 
 /* generate encrypted passwords - must be root */
+#ifndef NOUSECURITY
 if (ypassword) {
   if (callinguid) usage(1);
   let(b64pwd, ypassword);
@@ -213,7 +226,6 @@ if (ypassword) {
   exit(99);
 }
 
-#ifndef NOUSECURITY
 /* build the signature of the form-file */
 if (pwdencrypt && (i = genxorkey(argv[optind], runningsignature))) usage(i);
 #endif
