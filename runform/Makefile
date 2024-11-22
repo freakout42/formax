@@ -69,4 +69,5 @@ $(FORMAXE): ../generate/formax.inp
 clean:
 	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
 	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf \
-		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe
+		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe libncursesw6.dll scotty.*
+	rm -rf bin include lib

@@ -1,6 +1,11 @@
 /* curses screen handling interface */
 #include <cstdarg>
 #include <unistd.h>
+#ifndef USETERMIO
+#ifndef WIN32
+#define WIN32
+#endif
+#endif
 #ifndef WIN32
 #include <termios.h>
 #include <term.h>
@@ -95,7 +100,7 @@ if (colcode == -1) {
 
 int Screen::setattributs(int attrib) {
 nocurses(attrib);
-#ifndef WIN32
+#ifdef USETERMIO
 if (attrib & A_REVERSE) {
   if (enter_reverse_mode == NULL) /* terminal has no reverse mode */
     attrib |= A_STANDOUT;         /* use standout instead */
