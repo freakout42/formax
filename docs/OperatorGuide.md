@@ -110,7 +110,7 @@ or powershell prompt from console or the windows terminal.
 Build
 =====
 
-Fork in github and create codespace or download and extract: 
+Fork in github and create codespace or download and extract  
 https://github.com/freakout42/formax/archive/refs/heads/main.zip  
 Then do the following to build and install into `/opt/arx/`.
 Nothing outside `/opt/arx/` will be touched in any way by

@@ -69,7 +69,7 @@ $(FORMAXE): ../generate/formax.inp
 prepw32: libncursesw6.dll
 libncursesw6.dll: ../bin/ncurses-win32.zip
 	unzip ../bin/ncurses-win32.zip
-	cp bin/libncursesw6.dll .
+	cp ../bin/*.dll ../bin/*.exe .
 	sqlite3 scotty.frm <../generate/scotty.in2
 	sqlite3 scotty.sq3 <../generate/scotty.sql
 
