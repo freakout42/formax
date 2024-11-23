@@ -101,11 +101,11 @@ https://github.com/freakout42/formax/releases/download/v0.9.9/libgcc_s_dw2-1.dll
 https://github.com/freakout42/formax/releases/download/v0.9.9/libstdc++-6.dll  
 https://github.com/freakout42/formax/releases/download/v0.9.9/libncursesw6.dll  
 https://github.com/freakout42/formax/releases/download/v0.9.9/runform.exe  
-
-Install the sqlite3 odbc driver by running sqliteodbc.exe
-and copy the precompiles binaries (.exe and .dll) to
-C:\Windows\System32. Now runform.exe can be run from the cmd
-or powershell prompt from console or the windows terminal.
+Download the files into a new empty directory. Install the
+sqlite3 odbc driver by running sqliteodbc.exe. This file can
+be deleted after successfull installation. Now runform.exe
+can be executed with appropiate arguments from the cmd or
+powershell prompt from console or the windows terminal.
 
 Build
 =====
