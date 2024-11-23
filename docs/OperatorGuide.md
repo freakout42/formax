@@ -94,26 +94,24 @@ rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-
 Install on Windows
 ==================
 
-For running **formax** on Windows you have to install the
-sqlite3 odbc driver with this installation exe:
+For running **formax** on Windows you have to download 5
+files and install them accordingly:  
+https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc.exe  
+https://github.com/freakout42/formax/releases/download/v0.9.9/libgcc_s_dw2-1.dll  
+https://github.com/freakout42/formax/releases/download/v0.9.9/libstdc++-6.dll  
+https://github.com/freakout42/formax/releases/download/v0.9.9/libncursesw6.dll  
+https://github.com/freakout42/formax/releases/download/v0.9.9/runform.exe  
 
-    https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc.exe
-
-Copy the precompiles binaries to C:\Windows\System32 :
-
-    https://github.com/freakout42/formax/releases/download/v0.9.9/runform.exe
-    https://github.com/freakout42/formax/releases/download/v0.9.9/libncursesw6.dll
-
-Now runform.exe can be run from the cmd or powershell prompt
-from console or the windows terminal.
+Install the sqlite3 odbc driver by running sqliteodbc.exe
+and copy the precompiles binaries (.exe and .dll) to
+C:\Windows\System32. Now runform.exe can be run from the cmd
+or powershell prompt from console or the windows terminal.
 
 Build
 =====
 
-Fork in github and create codespace or download and extract:
-
-    https://github.com/freakout42/formax/archive/refs/heads/main.zip  
-
+Fork in github and create codespace or download and extract: 
+https://github.com/freakout42/formax/archive/refs/heads/main.zip  
 Then do the following to build and install into `/opt/arx/`.
 Nothing outside `/opt/arx/` will be touched in any way by
 the installation with the exception of /etc/profile.d/arx.sh

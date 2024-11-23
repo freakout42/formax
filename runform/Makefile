@@ -66,8 +66,18 @@ $(EXAMPLE): ../generate/scotty.in2
 $(FORMAXE): ../generate/formax.inp
 	cd ../generate; make clean test
 
+prepw32: libncursesw6.dll
+libncursesw6.dll: ../bin/ncurses-win32.zip
+	unzip ../bin/ncurses-win32.zip
+	cp bin/libncursesw6.dll .
+	sqlite3 scotty.frm <../generate/scotty.in2
+	sqlite3 scotty.sq3 <../generate/scotty.sql
+
+# wget -O../bin/ncurses-win32.zip https://invisible-island.net/datafiles/release/mingw32.zip
+# compile with msys + mingw32
+
 clean:
 	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
 	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf \
-		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe libncursesw6.dll scotty.*
+		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe *.dll scotty.*
 	rm -rf bin include lib

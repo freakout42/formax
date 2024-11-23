@@ -25,9 +25,3 @@ clean:
 	rm -f *.o runform $(OBJB)
 	for SUB in colquery elk regex; do cd $$SUB; make clean CC=gcc; cd ..; done
 
-libncursesw6.dll:
-	unzip ../bin/ncurses-win32.zip
-	cp bin/libncursesw6.dll .
-
-# wget -O../bin/ncurses-win32.zip https://invisible-island.net/datafiles/release/mingw32.zip
-# compile with msys + mingw32

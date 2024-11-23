@@ -1,12 +1,10 @@
 /* curses screen handling interface */
 #include <cstdarg>
 #include <unistd.h>
-#ifndef USETERMIO
-#ifndef WIN32
-#define WIN32
+#ifdef WIN32
+#undef USETERMIO
 #endif
-#endif
-#ifndef WIN32
+#ifdef USETERMIO
 #include <termios.h>
 #include <term.h>
 #endif
@@ -114,17 +112,17 @@ return wattrset(wndw, attrib);
 }
 
 /* curses init and various terminal setup magic */
-#ifndef WIN32
+#ifdef USETERMIO
 static struct termios otermio;
 #endif
 int Screen::init() {
-#ifndef WIN32
+#ifdef USETERMIO
 struct termios termio;
 #endif
 int i;
 if ((wndw = initscr()) == NULL) return 1;
 /*assert(wndw == stdscr);*/
-#ifndef WIN32
+#ifdef USETERMIO
 tcgetattr (fileno(stdin), &termio); /* give me all attributes */
 otermio = termio;
 termio.c_cc[VINTR] = 0; /* ctrl-c */
@@ -182,7 +180,9 @@ int  Screen::fulledit(char *pth) { nocurses(0); return mainloop(pth, wndw); }
 void Screen::closedisplay() {
 nocurses();
 endwin();
+#ifdef USETERMIO
 /*tcsetattr (fileno(stdin), TCSANOW, &otermio); curses takes care of resetting stty */
+#endif
 }
 
 /* toggle overwrite/insert mode cursor shape not possible? */
