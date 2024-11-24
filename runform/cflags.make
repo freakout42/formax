@@ -9,7 +9,9 @@ ifeq (run,$(MAKECMDGOALS))
   CXX=g++4
 endif
 else
-ifneq "$(CCVER)" "6"
+ifeq "$(CCVER)" "6"
+  CC=gcc
+else
   STACKPROTECTION=-fstack-protector
 endif
 endif

@@ -1,7 +1,7 @@
 CC=gcc
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
-OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
+OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o membed/libmex.a
 CXXFLAGS=-DPURUNFORM -DNCURSES_STATIC -Iinclude -Iinclude/ncursesw
 
 all: runform
@@ -20,6 +20,9 @@ curkeys.h: curkeys.c
 
 colquery/colquery.o:
 	cd colquery; make colquery.o CC=gcc
+
+membed/libmex.a:
+	cd membed; make libmex.a CC=gcc CFLAGS='-I../include -I../include/ncursesw'
 
 clean:
 	rm -f *.o runform $(OBJB)

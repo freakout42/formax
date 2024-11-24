@@ -23,6 +23,7 @@
 #endif
 
 #if (_WIN32 | _WIN64)
+#ifndef EMBEDDED
 #define V7      0
 #define SYS_V   0
 #define BSD     0
@@ -32,6 +33,17 @@
 #define TERMCAP 0
 #define VT100   1
 #define CURSES	0
+#else
+#define V7      1
+#define SYS_V   1
+#define BSD     0
+#define W32     0
+#define ANSI    0
+#define VT52    0
+#define TERMCAP 0
+#define VT100   0
+#define CURSES	1
+#endif
 #endif
 
 #if (HP700)
@@ -252,8 +264,10 @@
 #if (TERMC & CURSES)
 #include <curses.h>
 #include <signal.h>
+#ifndef WIN32
 #include <term.h>
 #include <termios.h>
+#endif
 #endif
 #if ! (defined(WINDOW) || defined(_CURSES_INCLUDED) || defined(_CURSES_H_) || defined(_CURSES_H) || defined(CURSES_H) || defined(__NCURSES_H))
 /*

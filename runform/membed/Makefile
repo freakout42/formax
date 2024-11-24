@@ -27,12 +27,12 @@ term.o: term.c
 	$(CC) $(CFLAGS) -I/usr/include/ncurses -c term.c
 
 curkeys.h: curkeys.c
-	$(CC) -I/usr/include/ncurses curkeys.c -o curkey2
+	$(CC) $(CFLAGS) curkeys.c -o curkey2
 	./curkey2 >$@
-	rm curkey2
+	rm -f curkey2*
 
 help.c: help_c.eng
 	cp help_c.eng $@
 
 clean:
-	rm -f *.o *.e core* mex me curkeys.h help.c curkey2 libmex.a
+	rm -f *.o *.e core* mex me curkeys.h help.c curkey2* libmex.a

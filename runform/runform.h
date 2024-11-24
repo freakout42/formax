@@ -4,7 +4,7 @@
 
 /* optional functionality */
 #ifdef PURUNFORM
-#define NOUSEDITOR
+#undef NOUSEDITOR
 #define NOUSECURITY
 #else
 #define USELOGGING
