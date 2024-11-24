@@ -36,8 +36,6 @@ data base:  SQLite
 data dver:  3.47.0
 data odbc:  03.00
 data drvr:  0.99991
-curses inc: 5.2
-curses run: ncurses 5.2.20020406
 !! Working...
 !! Working...
  1

@@ -1,3 +1,4 @@
+NCURSESVER=6.3
 include cflags.make
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
@@ -21,19 +22,18 @@ runform0: clean $(OBJS) $(OBJA)
 	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJB) -lcurses -lodbc -o $@
 	ls -l $@
 
-# -Wl,--print-map
 runform: $(OBJS) $(OBJA)
-	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJA) -lcurses -lsqlite3 -lodbc -o $@
+	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJA) $(CURSESLIB) -lsqlite3 -lodbc -o $@
 
 run: runform $(EXAMPLE) $(FORMAXE)
 	./runform -zx $(EXAMPLE)
 
-test: clean runform $(EXAMPLE)
+test: clean ncurses/include/curses.h runform $(EXAMPLE)
 	@rm -f /tmp/formax.log
 	@cp ../generate/scotty.sq3 .
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
 		./runform -r -x -g/tmp/formax.log $(EXAMPLE) 2>$@ | \
-			grep -v -e'formax.freakout.de' -e'compiled:' >out
+			grep -v -e'formax.freakout.de' -e'compiled:' -ecurses.inc: -ecurses.run: >out
 	@test -f $@ -a ! -s $@
 	@sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
 	@diff ../generate/scotty.out out
@@ -60,6 +60,16 @@ elk/elk.o:
 	cd elk; make $(SUBTARGET)
 regex/re.o:
 	cd regex; make $(SUBTARGET)
+ncurses/include/curses.h: ../bin/ncurses.tar.gz
+	tar xzf ../bin/ncurses.tar.gz
+../bin/ncurses.tar.gz: ../bin/ncurses-$(NCURSESVER).tar.gz
+	@rm -rf ncurses*
+	tar xzf ../bin/ncurses-$(NCURSESVER).tar.gz
+	mv ncurses-$(NCURSESVER) ncurses
+	cd ncurses; ./configure --prefix=/opt/ncurses --with-terminfo-dirs=/usr/lib/terminfo; make
+	tar czf $@ ncurses/include ncurses/lib/libncurses.a
+# wget -O../bin/ncurses-win32.zip            https://invisible-island.net/datafiles/release/mingw32.zip
+# wget -O../bin/ncurses-$(NCURSESVER).tar.gz https://invisible-island.net/datafiles/release/ncurses.tar.gz
 
 $(EXAMPLE): ../generate/scotty.in2
 	cd ../generate; make clean test
@@ -73,11 +83,8 @@ libncursesw6.dll: ../bin/ncurses-win32.zip
 	sqlite3 scotty.frm <../generate/scotty.in2
 	sqlite3 scotty.sq3 <../generate/scotty.sql
 
-# wget -O../bin/ncurses-win32.zip https://invisible-island.net/datafiles/release/mingw32.zip
-# compile with msys + mingw32
-
 clean:
 	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
 	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf \
 		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe *.dll scotty.*
-	rm -rf bin include lib
+	rm -rf bin include lib ncurses
