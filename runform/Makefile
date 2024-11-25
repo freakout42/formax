@@ -76,12 +76,14 @@ $(EXAMPLE): ../generate/scotty.in2
 $(FORMAXE): ../generate/formax.inp
 	cd ../generate; make clean test
 
-prepw32: libncursesw6.dll
-libncursesw6.dll: ../bin/ncurses-win32.zip
-	unzip ../bin/ncurses-win32.zip
-	cp ../bin/*.dll ../bin/*.exe .
+prepw32: scotty.sq3
+scotty.sq3:
 	sqlite3 scotty.frm <../generate/scotty.in2
 	sqlite3 scotty.sq3 <../generate/scotty.sql
+
+libncursesw6.dll: ../bin/ncurses-win32.zip scotty.sq3
+	unzip ../bin/ncurses-win32.zip
+	cp ../bin/*.dll ../bin/*.exe .
 
 clean:
 	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done

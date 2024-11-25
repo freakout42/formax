@@ -2,7 +2,10 @@ CC=gcc
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o membed/libmex.a
-CXXFLAGS=-DPURUNFORM -DNCURSES_STATIC -Iinclude -Iinclude/ncursesw
+# ncurses/lib/libncurses.a
+CXXFLAGS=-DPURUNFORM -DNCURSES_STATIC -Incurses
+# -Incurses/include
+#CXXFLAGS=-DPURUNFORM -DNCURSES_STATIC -Iinclude -Iinclude/ncursesw
 
 all: runform
 
@@ -12,7 +15,8 @@ company.h: arx.h
 	cp arx.h $@
 
 runform: $(OBJS) $(OBJB)
-	$(CXX) $(OBJS) $(OBJB) lib/libncursesw.dll.a -lodbc32 -o $@
+	$(CXX) $(OBJS) $(OBJB) -lodbc32 -lncurses -o $@
+#	$(CXX) $(OBJS) $(OBJB) lib/libncursesw.dll.a -lodbc32 -o $@
 
 curkeys.h: curkeys.c
 	$(CC) $(CXXFLAGS) curkeys.c -o curkeys.exe
@@ -22,9 +26,27 @@ colquery/colquery.o:
 	cd colquery; make colquery.o CC=gcc
 
 membed/libmex.a:
-	cd membed; make libmex.a CC=gcc CFLAGS='-I../include -I../include/ncursesw'
+	cd membed; make libmex.a CC=gcc CFLAGS='-DNCURSES_STATIC -Incurses'
 
 clean:
 	rm -f *.o runform $(OBJB)
 	for SUB in colquery elk regex; do cd $$SUB; make clean CC=gcc; cd ..; done
 
+# tar xzf ../bin/ncurses-6.3.tar.gz
+# msys mingw32 cd ncurses
+#$ ./configure \
+#    --prefix=/mingw \
+#    --without-cxx-binding \
+#    --without-ada \
+#    --enable-warnings \
+#    --enable-assertions \
+#    --enable-reentrant \
+#    --with-debug \
+#    --with-normal \
+#    --disable-home-terminfo \
+#    --enable-sp-funcs \
+#    --enable-term-driver \
+#    --enable-interop
+#$ make
+# msys2 mingw32
+# pacman -S mingw-w64-i686-toolchain make
