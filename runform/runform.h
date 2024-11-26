@@ -1,10 +1,10 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.2.14"
+#define VERSION "2.2.15"
 #define VERMSGS 23
 
 /* optional functionality */
 #ifdef PURUNFORM
-#define NOUSEDITOR
+#undef NOUSEDITOR
 #define NOUSECURITY
 #else
 #define USELOGGING

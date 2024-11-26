@@ -1,11 +1,10 @@
 # TERM="#win32con"
 CC=gcc
+CURSESINC=-I/mingw32/include/ncurses
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
-OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
-# membed/libmex.a
-CXXFLAGS=-DPURUNFORM -DNCURSES_STATIC
-# -Incurses/include
+OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o membed/libmex.a
+CXXFLAGS=-DPURUNFORM -DNCURSES_STATIC $(CURSESINC)
 
 all: runform.exe
 
@@ -34,7 +33,7 @@ colquery/colquery.o:
 	cd colquery; make colquery.o CC=gcc
 
 membed/libmex.a:
-	cd membed; make libmex.a CC=gcc CFLAGS='-DNCURSES_STATIC'
+	cd membed; make libmex.a CC=gcc CFLAGS='-DNCURSES_STATIC $(CURSESINC)'
 
 clean:
 	rm -f *.o *.exe $(OBJB) company.h curkeys.h
@@ -57,7 +56,7 @@ ncurses/include/curses.h: ../bin/ncurses-6.5.tar.gz
 #  --enable-sp-funcs \
 #  --enable-term-driver \
 #  --disable-interop
-
+#
 # msys2 mingw32
 # pacman -S mingw-w64-i686-toolchain make bison flex
 # Please note that it is also necessary to set this environment variable:

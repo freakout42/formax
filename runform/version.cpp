@@ -44,10 +44,14 @@ if (!(str[0] == '\0' || (str[0] == ' ' && str[1] == '\0'))) printf("%s\n", str);
 }
 
 /* temporary file handling */
-static char tfp[14];
+static char tfp[TNYSIZE];
 static FILE *tf;
 char *tmpcreat() {
-strcpy(tfp, "/tmp/fmXXXXXX");
+#ifdef WIN32
+strncpy(tfp, "C:\\Windows\\Temp\\fmXXXXXX", TNYSIZE-1);
+#else
+strncpy(tfp, "/tmp/fmXXXXXX", TNYSIZE-1);
+#endif
 tf = fdopen(mkstemp(tfp), "w");
 return tfp;
 }
