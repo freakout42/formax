@@ -2,8 +2,8 @@ NCURSESVER=6.3
 include cflags.make
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
-OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
-OBJA=$(OBJB) crypt/libmd5.a membed/libmex.a
+OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o membed/libmex.a
+OBJA=$(OBJB) crypt/libmd5.a
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
 FORMAXE=../generate/formax.frm ../generate/formax.sq3
 VALGRINDSUP=--gen-suppressions=no #all
@@ -28,7 +28,7 @@ runform: $(OBJS) $(OBJA)
 run: runform $(EXAMPLE) $(FORMAXE)
 	./runform -zx $(EXAMPLE)
 
-test: clean ncurses/include/curses.h runform $(EXAMPLE)
+test: clean runform $(EXAMPLE)
 	@rm -f /tmp/formax.log
 	@cp ../generate/scotty.sq3 .
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \

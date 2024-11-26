@@ -19,8 +19,7 @@ LINTING=-Wall -Werror -Wno-write-strings $(DISABLEWARN)
 CURSESLIB=-lcurses
 ifeq (test,$(MAKECMDGOALS))
   SUBTARGET=test
-  CFLAGS=-g -O0 $(LINTING) -Incurses/include
-  CURSESLIB=ncurses/lib/libncurses.a
+  CFLAGS=-g -O0 $(LINTING)
 else ifeq (runform0,$(MAKECMDGOALS))
   SUBTARGET=small
   CFLAGS=-Os -DPURUNFORM -DNDEBUG $(LINTING)
