@@ -48,28 +48,16 @@ ncurses/include/curses.h: ../bin/ncurses-6.5.tar.gz
 	mv ncurses-6.5-20241123 ncurses
 
 # export MINGW_ROOT=/C/MinGW
-./configure \
-  --prefix=/opt/ncurses \
-  --without-libtool \
-  --disable-home-terminfo \
-  --enable-database \
-  --disable-termcap \
-  --enable-sp-funcs \
-  --enable-term-driver \
-  --disable-interop
-exit
-** Configuration summary for NCURSES 6.3 20211021:
+#./configure \
+#  --prefix=/opt/ncurses \
+#  --without-libtool \
+#  --disable-home-terminfo \
+#  --enable-database \
+#  --disable-termcap \
+#  --enable-sp-funcs \
+#  --enable-term-driver \
+#  --disable-interop
 
-       extended funcs: yes
-       xterm terminfo: xterm-new
-
-        bin directory: /MinGW/bin
-        lib directory: /MinGW/lib
-    include directory: /MinGW/include/ncurses
-        man directory: /MinGW/share/man
-  using fallback-list: ms-terminal
-
-** Include-directory is not in a standard location
 # msys2 mingw32
 # pacman -S mingw-w64-i686-toolchain make bison flex
 # Please note that it is also necessary to set this environment variable:
