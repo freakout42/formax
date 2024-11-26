@@ -94,18 +94,14 @@ rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-
 Install on Windows
 ==================
 
-For running **formax** on Windows you have to download 5
-files and install them accordingly:  
+For running **formax** on Windows you have to download 2 files
+and install them accordingly:  
 https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc.exe  
-https://github.com/freakout42/formax/releases/download/v0.9.9/libgcc_s_dw2-1.dll  
-https://github.com/freakout42/formax/releases/download/v0.9.9/libstdc++-6.dll  
-https://github.com/freakout42/formax/releases/download/v0.9.9/libncursesw6.dll  
 https://github.com/freakout42/formax/releases/download/v0.9.9/runform.exe  
-Download the files into a new empty directory. Install the
-sqlite3 odbc driver by running sqliteodbc.exe. This file can
-be deleted after successfull installation. Now runform.exe
-can be executed with appropiate arguments from the cmd or
-powershell prompt from console or the windows terminal.
+Install the sqlite3 odbc driver by running sqliteodbc.exe once.
+This file can be deleted after successfull installation.
+Now runform.exe can be executed with appropiate arguments from
+the cmd or powershell prompt from a console or the windows terminal.
 
 Build
 =====
