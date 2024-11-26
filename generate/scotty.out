@@ -25,15 +25,15 @@ Space Toggle binary
 /ARX cleanware  [1]
 charset:    en_US.iso885915
 compiler:   GCC-3.4.6 (115448)
-sqlite inc: 3.47.0
-sqlite run: 3.47.0 3047000
+sqlite inc: 3.47.1
+sqlite run: 3.47.1 3047001
 odbc inc:   0380
 odbc lib:   03.52
 form odbc:  03.00
 form drvr:  0.99991
-form dver:  3.47.0
+form dver:  3.47.1
 data base:  SQLite
-data dver:  3.47.0
+data dver:  3.47.1
 data odbc:  03.00
 data drvr:  0.99991
 !! Working...
