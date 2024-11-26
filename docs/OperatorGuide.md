@@ -96,8 +96,8 @@ Install on Windows
 
 For running **formax** on Windows you have to download 2 files
 and install them accordingly:  
-https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc.exe  
-https://github.com/freakout42/formax/releases/download/v0.9.9/runform.exe  
+    https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc.exe  
+    https://github.com/freakout42/formax/releases/download/v0.9.9/runform.exe  
 Install the sqlite3 odbc driver by running sqliteodbc.exe once.
 This file can be deleted after successfull installation.
 Now runform.exe can be executed with appropiate arguments from
