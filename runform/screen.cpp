@@ -135,6 +135,9 @@ termio.c_cc[VLNEXT] = 0;/* ctrl-v */
 #endif
 tcsetattr (fileno(stdin), TCSANOW, &termio);
 #else
+#ifdef WIN32
+meta(stdscr, TRUE);
+#endif
 raw();
 #endif
 #ifdef init_tabs
@@ -239,9 +242,11 @@ if (macropointer) {
 if (screenclos) {
   i = getchar();
   if (i == EOF) return 'q';
-  return i;
+} else {
+  i = wgetch(stdscr); /* wgetch(wndw); getch(); */
+  if (i < 0) i = 256 + i;
 }
-return wgetch(stdscr); /* wgetch(wndw); getch(); */
+return i;
 }
 
 /* map ctrl to function keys */
