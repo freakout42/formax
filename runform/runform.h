@@ -193,3 +193,4 @@ extern char  *username;
 extern int   redirected;
 extern int   screenclos;
 extern int   callinguid;
+extern int   usepoorman; 

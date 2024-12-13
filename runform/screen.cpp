@@ -169,7 +169,11 @@ wattron(wndw, COLOR_PAIR(0));
 }
 void Screen::deletewindow() { nocurses(); wera(); delwin(wndw); }
 void Screen::wera() { nocurses(); werase(wndw); }
-void Screen::wbox() { nocurses(); box(wndw, 0, 0); }
+void Screen::wbox() {
+nocurses();
+if (usepoorman) wborder(wndw, '|', '|', '-', '-', '+', '+', '+', '+');
+else            box(wndw, 0, 0);
+}
 void Screen::wmov(int y, int x) { nocurses(); wmove(wndw, y, x); }
 void Screen::refr() { nocurses(); wrefresh(wndw); }
 void Screen::noutrefr() { nocurses(); wnoutrefresh(wndw); }

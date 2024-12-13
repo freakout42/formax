@@ -17,6 +17,8 @@ if ! flex --version 2>/dev/null; then
     sudo apt-get -y install libsqliteodbc
     sudo apt-get -y install libncurses5-dev
     sudo apt-get -y install flex
+#   sudo apt-get -y install gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 wine64
+#   x86_64-w64-mingw32-gcc -g -o hello hello.c
   fi
 fi
 ./configure clean

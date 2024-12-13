@@ -1,6 +1,6 @@
 /* runform.cpp main and os interfaces except curses and odbc */
 
-#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikmpqwxz] [-n lg]\n" \
+#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikmopqwxz] [-n lg]\n" \
   " [-f formid ] [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...\n"
 
 #include <stdio.h>
@@ -30,6 +30,7 @@ int  squerymode  = 0;             // -i
 int  globalpkid  = 1;             // -j
 int  monochrome  = 0;             // -k
 int  matchnocas  = 1;             // -m
+int  usepoorman  = 0;             // -o
 int  pwdencrypt  = 0;             // -p
 int  queryonlym  = 0;             // -q
 int  redirected  = 0;             // -r
@@ -162,7 +163,7 @@ lclocale = setlocale(LC_ALL, CHARSET);
 form_id = 1;
 
 /* command-line arguments and options check and process */
-while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqrt:Vwxy:z")) != -1) {
+while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrt:Vwxy:z")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n  (%d) [%s]\n", about, (int)sizeof(Form), GITCOMMIT); exit(2);
     case 'y': ypassword = optarg; break;
@@ -206,6 +207,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:pqrt:Vwxy:z")) != -1) {
     case 'h': querycharm = 0; break;
     case 'a': autocommit = 0; break;
     case 'd': deleprompt = 1; break;
+    case 'o': usepoorman = 1; break;
     case 'q': queryonlym = 1; break;
     case 'w': watchmacro = 1; break;
     case 'm': matchnocas = 0; break;
