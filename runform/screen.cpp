@@ -1,3 +1,4 @@
+//#include <assert.h>
 /* curses screen handling interface */
 #include <cstdarg>
 #include <unistd.h>
@@ -116,14 +117,21 @@ return wattrset(wndw, attrib);
 static struct termios otermio;
 #endif
 int Screen::init() {
+int i;
 #ifdef USETERMIO
 struct termios termio;
+#ifdef TABDLY_NOTUSED
+tcgetattr (fileno(stdin), &termio);
+termio.c_oflag &= (~TABDLY)|TAB0;
+tcsetattr (fileno(stdin), TCSANOW, &termio);
 #endif
-int i;
+#endif
+setenv("NCURSES_NO_HARD_TABS", "1", 1);
 if ((wndw = initscr()) == NULL) return 1;
 /*assert(wndw == stdscr);*/
 #ifdef USETERMIO
 tcgetattr (fileno(stdin), &termio); /* give me all attributes */
+/*assert(O_TABDLY(termio) == TAB0);*/
 otermio = termio;
 termio.c_cc[VINTR] = 0; /* ctrl-c */
 #ifdef VDSUSP
@@ -139,9 +147,6 @@ tcsetattr (fileno(stdin), TCSANOW, &termio);
 meta(stdscr, TRUE);
 #endif
 raw();
-#endif
-#ifdef init_tabs
-  init_tabs = 0;
 #endif
 nonl();
 noecho();
