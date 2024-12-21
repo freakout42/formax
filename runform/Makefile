@@ -33,7 +33,7 @@ test: clean runform $(EXAMPLE)
 	@cp ../generate/scotty.sq3 .
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
 		./runform -r -x -g/tmp/formax.log $(EXAMPLE) 2>$@ | \
-			grep -v -e'formax.freakout.de' -e'compiled:' -ecurses.inc: -ecurses.run: >out
+			grep -v -e'formax.freakout.de' -e'compiled:' -ecurses.inc: -ecurses.run: -esqlite -edver: >out
 	@test -f $@ -a ! -s $@
 	@sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
 	@diff ../generate/scotty.out out
