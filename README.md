@@ -7,7 +7,7 @@ with curses as the terminal interface, ODBC for universal
 database access and JavaScript for the trigger language. The
 result is the most efficient solution possible for the end
 user. The applications can be build with minimal effort
-using a nocode approach.\
+using the nocode approach from Oracle Forms.\
 Click on the image for a non technical description:
 
 [![formax](https://formax.freakout.de/assets/logo.jpg "formax")](https://formax.freakout.de/ "formax")
