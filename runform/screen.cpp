@@ -126,7 +126,9 @@ termio.c_oflag &= (~TABDLY)|TAB0;
 tcsetattr (fileno(stdin), TCSANOW, &termio);
 #endif
 #endif
+#ifndef WIN32
 setenv("NCURSES_NO_HARD_TABS", "1", 1);
+#endif
 if ((wndw = initscr()) == NULL) return 1;
 /*assert(wndw == stdscr);*/
 #ifdef USETERMIO
