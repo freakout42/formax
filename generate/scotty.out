@@ -24,7 +24,6 @@ F12 l Refresh      End   e NextBlock
 Space Toggle binary
 /ARX cleanware  [1]
 charset:    en_US.iso885915
-compiler:   GCC-3.4.6 (115448)
 odbc inc:   0380
 odbc lib:   03.52
 form odbc:  03.00
