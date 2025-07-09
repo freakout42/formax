@@ -16,7 +16,12 @@ else
 endif
 endif
 LINTING=-Wall -Werror -Wno-write-strings $(DISABLEWARN)
-CURSESLIB=-lcurses
+ifneq (,$(wildcard /usr/include/ncursesw/curses.h))
+  CURSESVARANT := ncursesw
+else
+  CURSESVARANT := ncurses
+endif
+CURSESLIB=-l$(CURSESVARANT)
 ifeq (test,$(MAKECMDGOALS))
   SUBTARGET=test
   CFLAGS=-g -O0 $(LINTING)

@@ -19,7 +19,7 @@ company.h: arx.h
 	if [ -f $@ ]; then touch $@; else cp arx.h $@; fi
 
 runform0: clean $(OBJS) $(OBJA)
-	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJB) -lcurses -lodbc -o $@
+	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJB) $(CURSESLIB) -lodbc -o $@
 	ls -l $@
 
 runform: $(OBJS) $(OBJA)
@@ -60,7 +60,7 @@ elk/elk.o:
 	cd elk; make $(SUBTARGET)
 regex/re.o:
 	cd regex; make $(SUBTARGET)
-ncurses/include/curses.h: ../bin/ncurses.tar.gz
+$(CURSESVARANT)/include/curses.h: ../bin/ncurses.tar.gz
 	tar xzf ../bin/ncurses.tar.gz
 ../bin/ncurses.tar.gz: ../bin/ncurses-$(NCURSESVER).tar.gz
 	@rm -rf ncurses*

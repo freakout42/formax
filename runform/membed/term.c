@@ -123,6 +123,9 @@ struct  termio  nstate;
  * finds the terminal, then assigns a channel to it
  * and sets it raw. On CPM it is a no-op.
  */
+#if CURSES
+int cur_utf8 = 0;
+#endif
 int ttopen()
 {
 #if	VMS
@@ -222,6 +225,12 @@ term.t_nrow = csbi.srWindow.Bottom - csbi.srWindow.Top;
   int y, x, y1, x1;
 #ifndef WIN32
 	struct termios t;
+#endif
+
+#ifdef UTF8
+  char *lclocale;
+  if ((lclocale = setlocale(LC_ALL, "")) == NULL) lclocale = setlocale(LC_ALL, CHARSET);
+  cur_utf8 = lclocale ? strstr(lclocale, "UTF-8") != NULL : 0;
 #endif
 
 if (windw1 == NULL) {
@@ -395,6 +404,16 @@ int ttputc(c)
 #endif
 #if	V7
 #if	CURSES
+#ifdef UTF8
+  cchar_t d;
+  wchar_t e[2];
+if (cur_utf8) {
+  e[0] = to_ucpoint(c);
+  e[1] = '\0';
+  setcchar(&d, e, 0, 0, NULL);
+	wadd_wch(windw1, &d);
+} else
+#endif
 	waddch(windw1, c);
 #else
 	fputc(c, stdout);
@@ -559,7 +578,15 @@ int ttgetc()
 #if	CURSES
 	int ch;
 
-	ch = getch();
+#ifdef UTF8
+wint_t keypress = { 0 };
+if (cur_utf8) ch = (get_wch(&keypress) == KEY_CODE_YES) ? keypress : to_latin9(keypress);
+else
+#endif
+ch = getch();
+#ifdef WIN32
+if (ch < 0) ch = 256 + ch;
+#endif
 #ifdef hpux
 	/* hp-emulation returns a "RETURN" after every function-key! */
 	if (hpterm && ch>=KEY_F(0) && ch<=KEY_F(12))

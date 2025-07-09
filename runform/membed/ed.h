@@ -1,4 +1,4 @@
-/* $Id: ed.h,v 1.54 2024/11/27 12:16:41 axel Exp $
+/* $Id: ed.h,v 1.55 2025/07/08 11:55:03 axel Exp $
  * This file is the general header file for
  * all parts of the MicroEMACS display editor. It contains
  * definitions used by everyone, and it contains the stuff
@@ -8,7 +8,9 @@
  * which were changed to char.
  * um: for UN*X System V set the defines V7 ``and'' SYS_V to 1 !!
  */
-#define VERSION "6.7"
+#define VERSION "7.0"
+
+#define _XOPEN_SOURCE_EXTENDED 1
 
 #if (VT100)
 #define V7      1			/* V7 UN*X or Coherent          */
@@ -263,6 +265,18 @@
 
 #if (TERMC & CURSES)
 #include <curses.h>
+#include <string.h>
+#include <wchar.h>
+#include <locale.h>
+#ifdef NCURSES_WACS
+#define UTF8
+#define CURVARIANT w
+#define CHARSET "en_US.UTF-8"
+#else
+#define CURVARIANT n
+#define CHARSET "en_US.iso885915"
+#endif
+
 #include <signal.h>
 #ifndef WIN32
 #include <term.h>
@@ -280,6 +294,7 @@
  * terms of decoupling, the full blown redisplay is just too
  * expensive to run for every input character. 
  */
+extern int cur_utf8;
 typedef struct  WINDOW {
 	struct  WINDOW *w_wndp;		/* Next window			*/
 	struct  BUFFER *w_bufp;		/* Buffer displayed in window	*/
@@ -520,3 +535,8 @@ int getccol(int bflg);
 int forwpage(int f, int n);
 int tnewline(int f, int n);
 int forwdel(int f, int n);
+
+unsigned int to_latin9(const unsigned int code);
+unsigned int to_ucpoint(const unsigned int code);
+int to_utf8(char *buf, int nbuf);
+int to_utf16(char *buf, int nbuf);

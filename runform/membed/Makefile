@@ -1,7 +1,7 @@
 include ../cflags.make
-LIBS=-lcurses
+LIBS=-l$(CURSESVARANT)
 CFLAGS+=-Wno-missing-braces
-SRC=buffer.c cursor.c display.c files.c line.c random.c search.c term.c window.c word.c help.c main.c
+SRC=utf82iso885915.c buffer.c cursor.c display.c files.c line.c random.c search.c term.c window.c word.c help.c main.c
 OBJ=$(patsubst %.c,%.o,$(SRC))
 OBE=$(patsubst %.c,%.e,$(SRC))
 OBO=$(patsubst %.c,%.e.o,$(SRC))
@@ -24,7 +24,7 @@ $(SRC):	ed.h curkeys.h
 	$(CC) $(CFLAGS) -DEMBEDDED -c $< -o $@
 
 term.o: term.c
-	$(CC) $(CFLAGS) -I/usr/include/ncurses -c term.c
+	$(CC) $(CFLAGS) -I/usr/include/$(CURSESVARANT) -c term.c
 
 curkeys.h: curkeys.c
 	$(CC) $(CFLAGS) curkeys.c -o curkey2
