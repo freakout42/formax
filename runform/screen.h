@@ -26,6 +26,8 @@ protected:
   void writes(int y, int x, char *str); /* write string to window */
   int getkb();             /* get next keycode from macro or terminal */
 private:
+  char *lclocale;          /* locale info */
+  int cur_utf8;            /* UTF8 && CHARSET~utf8/i */
   WINDOW *wndw;            /* curses window structure */
   void setcolor(int pairi); /* change to a predefined color */
   void uncolor(int pairi); /* change back to uncolored */

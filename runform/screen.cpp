@@ -1,3 +1,4 @@
+#define _XOPEN_SOURCE_EXTENDED 1
 //#include <assert.h>
 /* curses screen handling interface */
 #include <cstdarg>
@@ -12,6 +13,7 @@
 
 #include <curses.h>
 #ifdef NCURSES_WACS
+#include <locale.h>
 #define UTF8
 #define CURVARIANT 'w'
 #ifndef CHARSET
@@ -35,7 +37,40 @@ char cursesrun[32];
 
 Screen::Screen() {
 ysiz = 0;
+cur_utf8 = 0;
 sprintf(cursesrun, "%s-%c", curses_version(), CURVARIANT);
+#ifdef UTF8
+/* user and charset environment */
+#ifdef WIN32
+/* username = getenv("USERNAME");
+ * #define ISO_8859_15_CP 28605
+ * if (IsValidCodePage(ISO_8859_15_CP) == 0) return NULL;
+ * SetConsoleCP(ISO_8859_15_CP);
+ * SetConsoleOutputCP(ISO_8859_15_CP);
+ */
+SetConsoleCP(CP_UTF8);
+SetConsoleOutputCP(CP_UTF8);
+lclocale = CHARSET;
+if ((lclocale = setlocale(LC_ALL, ".UTF-8")) == NULL) lclocale = setlocale(LC_ALL, CHARSET);
+cur_utf8 = 1;
+stdinHandle = GetStdHandle(STD_INPUT_HANDLE);
+SetConsoleMode(stdinHandle, 0); /* ENABLE_WINDOW_INPUT); */
+#else
+/* #define ISO_8859_15_CP "en_US.iso885915"
+ * setenv("LC_ALL", ISO_8859_15_CP, 1);
+ * setenv("LANG", ISO_8859_15_CP, 1);
+ * setenv("LC_ALL", CHARSET, 1);
+ * username = getenv("USER");
+ */
+/* ESC % @ */
+if ((lclocale = setlocale(LC_ALL, "")) == NULL)
+  if ((lclocale = setlocale(LC_ALL, CHARSET)) == NULL)
+    lclocale = setlocale(LC_ALL, "C");
+cur_utf8 = strstr(lclocale, "UTF") || strstr(lclocale, "utf");
+#endif
+strcat(cursesrun, "=");
+strcat(cursesrun, cur_utf8 ? "1" : "0");
+#endif
 }
 
 /* curses attributes configuration array */
