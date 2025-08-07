@@ -299,6 +299,7 @@ int ffropen(char *fn)
 
 static	int		longline;
 static	int		foreignformat;
+static	int		noiso885915ucode;
 
 /*
  * Open a file for writing.
@@ -509,7 +510,14 @@ int ffgetline(char buf[], int nbuf)
 		return (FIOEOF);
 	}
 
-  if (cur_utf8) to_utf16(buf, nbuf);
+  if (cur_utf8) if (to_utf16(buf, nbuf) < 0)
+		if (!noiso885915ucode) {
+				t = mlyesno("File has non-mappable chars: loosing - REALLY EDIT");
+				mlerase();
+				if (!t) return (FIOERR);
+				mlwrite("File has non-mappable chars: loosing");
+        noiso885915ucode = TRUE;
+				}
 
 	return (FIOSUC);
 }
@@ -537,6 +545,7 @@ int readin(char fname[])
 
 	longline = FALSE;
 	foreignformat = FALSE;
+	noiso885915ucode = FALSE;
 	s = ffropen(fname);
 	if (s == FIOERR)
 		mlwrite("Error opening file");
@@ -629,9 +638,9 @@ int readin(char fname[])
  */
 int ffputline(char buf[], int nbuf, int closeit)
 {
-	register int    i, c;
+  int i, c;
 
-  if (cur_utf8) nbuf = to_utf8(buf, nbuf);
+  if (cur_utf8 ^ ((curbp->b_flag&BFUTF8)==BFUTF8)) nbuf = to_utf8(buf, nbuf);
 	c = 0;				/* in case nbuf==0 */
 	for (i=0; i<nbuf; ++i) {
 #if BFILES

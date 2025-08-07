@@ -1,38 +1,53 @@
-include ../cflags.make
-LIBS=-l$(CURSESVARANT)
-CFLAGS+=-Wno-missing-braces
-SRC=utf82iso885915.c buffer.c cursor.c display.c files.c line.c random.c search.c term.c window.c word.c help.c main.c
-OBJ=$(patsubst %.c,%.o,$(SRC))
-OBE=$(patsubst %.c,%.e,$(SRC))
-OBO=$(patsubst %.c,%.e.o,$(SRC))
+# Makefile for MEX on Unix
 
-all: libmex.a
-small: libmex.a
+ifneq (,$(wildcard /usr/lib/libncursesw.a)$(wildcard /usr/include/ncursesw/curses.h))
+  CURSESVARANT := ncursesw
+else
+  CURSESVARANT := ncurses
+endif
 
-test: libmex.a mex
+ifneq (,$(wildcard /usr/lib64/libtinfow.so.6))
+  TINFOLIB := -ltinfow
+else
+  TINFOLIB := 
+endif
+
+CFLAGS=-Os -w
+# -Os -w
+# -Wall -Wextra -Wno-unused-parameter
+# -w
+# -g -O0
+LIBS=-l$(CURSESVARANT) $(TINFOLIB)
+SRC=utf82iso885915.c buffer.c cursor.c display.c files.c line.c random.c search.c term.c window.c word.c main.c
+OBJ=utf82iso885915.o buffer.o cursor.o display.o files.o line.o random.o search.o term.o window.o word.o help.o
+
+all: mex libmex.a
 
 mex: main.o $(OBJ)
-	$(CC) -o $@ $(LDFLAGS) $(OBJ) $(LIBS)
+	$(CC) -o $@ $(LDFLAGS) main.o $(OBJ) $(LIBS)
+	strip $@
 
-libmex.a: $(OBE)
-	for O in $(OBE); do mv $$O $$O.o; done
-	$(AR) rcs $@ $(OBO)
+libmex.a: mainloop.o $(OBJ)
+	$(AR) rcs $@ mainloop.o $(OBJ)
 
-$(SRC):	ed.h curkeys.h
+$(SRC):	ed.h
 
-%.e: %.c
-	$(CC) $(CFLAGS) -DEMBEDDED -c $< -o $@
+main.o: main.c curkeys.h
+	$(CC) $(CFLAGS) -Wno-missing-braces -c main.c
 
-term.o: term.c
+mainloop.o: main.c curkeys.h
+	$(CC) $(CFLAGS) -DEMBEDDED -Wno-missing-braces -c main.c -o $@
+
+term.o: term.c ed.h
 	$(CC) $(CFLAGS) -I/usr/include/$(CURSESVARANT) -c term.c
 
 curkeys.h: curkeys.c
-	$(CC) $(CFLAGS) curkeys.c -o curkey2
+	$(CC) -I/usr/include/$(CURSESVARANT) curkeys.c -o curkey2
 	./curkey2 >$@
-	rm -f curkey2*
+	rm curkey2
 
 help.c: help_c.eng
 	cp help_c.eng $@
 
 clean:
-	rm -f *.o *.e core* mex me curkeys.h help.c curkey2* libmex.a
+	rm -f *.o core* mex me curkeys.h help.c curkey2 libmex.a mex.exe *.EXE *.OBJ HELP.C

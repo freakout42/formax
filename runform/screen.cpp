@@ -23,7 +23,7 @@
 #endif
 #else
 #define CURVARIANT 'n'
-//#define CHARSET "en_US.iso885915"
+/* #define CHARSET "en_US.iso885915" comes from company.h */
 #endif
 
 #include "runform.h"
