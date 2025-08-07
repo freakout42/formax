@@ -9,17 +9,33 @@
 #include <termios.h>
 #include <term.h>
 #endif
+
 #include <curses.h>
+#ifdef NCURSES_WACS
+#define UTF8
+#define CURVARIANT 'w'
+#ifndef CHARSET
+#ifdef WIN32
+#define CHARSET "English_United States.65001"
+#else
+#define CHARSET "en_US.UTF-8"
+#endif
+#endif
+#else
+#define CURVARIANT 'n'
+//#define CHARSET "en_US.iso885915"
+#endif
+
 #include "runform.h"
 
 #define nocurses(ret) if (screenclos) return ret
 
 char cursesversion[8] = NCURSES_VERSION;
-const char *cursesrun = NULL;
+char cursesrun[32];
 
 Screen::Screen() {
 ysiz = 0;
-cursesrun = curses_version();
+sprintf(cursesrun, "%s-%c", curses_version(), CURVARIANT);
 }
 
 /* curses attributes configuration array */

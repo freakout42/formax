@@ -13,7 +13,7 @@
 extern char odbcversion[];
 extern char odbcrun[];
 extern char cursesversion[];
-extern const char *cursesrun;
+extern char cursesrun[];
 extern int intrigger;
 extern char *macropointer;
 extern char sqliteversion[];
