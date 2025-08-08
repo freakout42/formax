@@ -33,6 +33,7 @@ private:
   void uncolor(int pairi); /* change back to uncolored */
   void setcode(int colcode); /* change to color/attribute combination */
   int setattributs(int attrib); /* change to attribute */
+  int mapctrl(int code);   /* map ctrl-keys to curses KEY_* */
   int wgetc();             /* get key from physical keyboard */
                            /* get string from window */
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);

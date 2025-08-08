@@ -266,12 +266,16 @@ return F(e)->v(i,3);
 }
 
 /* get key pressed or from macro */
-#define findkey(fky,len,ctl) if (i == '{' && !strncmp(macropointer, #fky "}", len)) { macropointer += len; i = KEY_CTRL(ctl); }
+#define findkey(fky,len,ctl) if (ch == '{' && !strncmp(macropointer, #fky "}", len)) { macropointer += len; ch = KEY_CTRL(ctl); }
 int Screen::wgetc() {
-int i;
+int ch;
+int keycode;
+#ifdef UTF8
+wint_t keypress = { 0 };
+#endif
 if (macropointer) {
-  i = *macropointer++;
-    if (i == '{') {
+  ch = *macropointer++;
+    if (ch == '{') {
       findkey(HELP,   5,'@')
       findkey(HOME,   5,'A')
       findkey(LEFT,   5,'B')
@@ -299,52 +303,130 @@ if (macropointer) {
       findkey(EXIT,   5,'Z')
     }
   if (!(*macropointer)) macropointer = NULL;
-  return i;
+  return ch;
 }
 if (screenclos) {
-  i = getchar();
-  if (i == EOF) return 'q';
+  ch = getchar();
+  if (ch == EOF) return 'q';
 } else {
-  i = wgetch(stdscr); /* wgetch(wndw); getch(); */
-  if (i < 0) i = 256 + i;
+/* ncurses legacy
+ *  i = wgetch(stdscr); // wgetch(wndw); getch(); /
+ *  if (i < 0) i = 256 + i;
+ */
+#ifdef UTF8
+if (cur_utf8) {
+#ifdef WIN32
+  DWORD n = 0;
+  int uc, sc, ck;
+  ch = 0;
+  INPUT_RECORD ir[1];
+  while ( ch == 0) {
+    ReadConsoleInputW(stdinHandle, ir, 1, &n);
+    if (ir[0].EventType & KEY_EVENT) {
+     if (ir[0].Event.KeyEvent.bKeyDown) {
+      sc = ir[0].Event.KeyEvent.wVirtualScanCode;
+      ck = ir[0].Event.KeyEvent.dwControlKeyState;
+      uc = ir[0].Event.KeyEvent.uChar.UnicodeChar;
+      if (uc == 0) {
+       if (!(ck & (SHIFT_PRESSED | LEFT_CTRL_PRESSED | RIGHT_CTRL_PRESSED | LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED )))
+        if (sc != ':') {
+          keycode = -1;
+          switch (sc) {
+            case 0x3B: ch = KEY_F(1); break;
+            case 0x3C: ch = KEY_F(2); break;
+            case 0x3D: ch = KEY_F(3); break;
+            case 0x3E: ch = KEY_F(4); break;
+            case 0x3F: ch = KEY_F(5); break;
+            case 0x40: ch = KEY_F(6); break;
+            case 0x41: ch = KEY_F(7); break;
+            case 0x42: ch = KEY_F(8); break;
+            case 0x43: ch = KEY_F(9); break;
+            case 0x44: ch = KEY_F(10); break;
+            case 0x45: ch = KEY_F(11); break;
+            case 0x46: ch = KEY_F(12); break;
+            case 0x47: ch = KEY_HOME; break;
+            case 0x48: ch = KEY_UP; break;
+            case 0x49: ch = KEY_PPAGE; break;
+            case 0x4B: ch = KEY_LEFT; break;
+            case 0x4D: ch = KEY_RIGHT; break;
+            case 0x4F: ch = KEY_END; break;
+            case 0x50: ch = KEY_DOWN; break;
+            case 0x51: ch = KEY_NPAGE; break;
+            case 0x52: ch = KEY_IC; break;
+            case 0x53: ch = KEY_DC; break;
+          }
+        }
+      } else {
+       if (uc == '\t' && (ck & SHIFT_PRESSED)) {
+        keycode = -1;
+        ch = KEY_BTAB;
+       } else {
+        keycode = 1;
+        ch = uc;
+       }
+      }
+     }
+    }
+  }
+#else
+keycode = (get_wch(&keypress) == KEY_CODE_YES) ? -1 : 1;
+ch = keypress;
+#endif /* WIN32 */
+} else
+#endif /* UTF8 */
+{
+ch = wgetch (stdscr);
+keycode = ch > 255 ? -1 : 1;
 }
-return i;
+#ifndef UTF8
+#ifdef WIN32
+if (ch < 0) ch = 256 + ch;
+#endif
+#endif
+}
+return ch * keycode;
+}
+
+/* map ctrl to function keys */
+int Screen::mapctrl(int code) {
+switch(code) {
+/* KEF_HELP    */  case KEY_CTRL('@'):  return -KEY_F(1);       /* Help                           Help */
+/* KEF_HOME    */  case KEY_CTRL('A'):  return -KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
+/* KEF_LEFT    */  case KEY_CTRL('B'):  return -KEY_LEFT;       /* Previous char                  Left */
+/* kcan=^C     */  case -KEY_CANCEL:
+/* KEF_COPY    */  case KEY_CTRL('C'):  return -KEY_F(2);       /* Copy                           Copy */
+/* KEF_DELETE  */  case KEY_CTRL('D'):  return -KEY_F(7);       /* Delete (record)                DeleteCharacter DeleteRecord */
+/* KEF_END     */  case KEY_CTRL('E'):  return -KEY_END;        /* End / Next block               EndOfLine NextBlock */
+/* KEF_RIGHT   */  case KEY_CTRL('F'):  return -KEY_RIGHT;      /* Next char                      Right */
+/* KEF_PREFLD  */  case KEY_CTRL('G'):  return -KEY_BTAB;       /* Previous field                 PreviousField */
+/* KEF_BACKDEL */  case KEY_CTRL('H'):  return -KEY_BACKSPACE;  /* Backspace                      DeleteBackward */
+/* KEF_NXTFLD  */  case KEY_CTRL('I'):  return  KEY_TAB;        /* Next field                     NextField */
+/* KEF_INSERT  *   case KEY_CTRL('J'):  return -KEY_IC;       *//* Insert toggle (record)         InsertReplace InsertRecord */
+/* KEF_KEYHELP */  case KEY_CTRL('K'):  return -KEY_F(11);      /* Keyboard help                  KeyHelp */
+/* KEF_REFRESH */  case KEY_CTRL('L'):  return -KEY_F(12);      /* Refresh                        Refresh */
+/* KEF_COMMIT  */  case KEY_CTRL('M'):  return -KEY_ENTER;      /* Commit Accept                  Commit Select Execute */
+/* KEF_NXTREC  */  case KEY_CTRL('N'):  return -KEY_DOWN;       /* Next record                    Down NextRecord */
+/* KEF_INSERT  */  case KEY_CTRL('O'):  return -KEY_F(6);       /* Insert record                  InsertRecord */
+/* KEF_PREREC  */  case KEY_CTRL('P'):  return -KEY_UP;         /* Previoud record                PreviousRecord */
+//                 case KEY_CTRL('Q'):  return -KEY_F(?);       /* ?                              ? */
+/* KEF_PRESETR */  case KEY_CTRL('R'):  return -KEY_PPAGE;      /* Previous set of records        PreviousSetOfRecords */
+//                 case KEY_CTRL('S'):  return -KEY_F(?);       /* ?                              ? */
+/* KEF_COPYREC */  case KEY_CTRL('T'):  return -KEY_F(4);       /* Copy record                    DuplicateRecord */
+/* KEF_LIST    */  case KEY_CTRL('U'):  return -KEY_F(5);       /* List of values                 List */
+/* KEF_PASTE   */  case KEY_CTRL('V'):  return -KEY_F(3);       /* Paste / Copy field             DuplicateField Paste */
+/* KEF_NXTSETR */  case KEY_CTRL('W'):  return -KEY_NPAGE;      /* Next set of records            NextSetOfRecords */
+/* KEF_QUERY   */  case KEY_CTRL('X'):  return -KEY_F(10);      /* Query                          EnterQuery */
+/* KEF_QUIT    */  case KEY_CTRL('Y'):  return -KEY_F(9);       /* Rollback Cancel                ExitCancel */
+/* kspd=^Z     */  case -KEY_SUSPEND:
+/* KEF_EXIT    */  case KEY_CTRL('Z'):  return -KEY_F(8);       /* Save and exit                  Exit */
+                   default:             return code;
+ }
 }
 
 /* map ctrl to function keys */
 int Screen::getkb() {
 lastgetch = wgetc();
-switch(lastgetch) {
-/* KEF_HELP    */  case KEY_CTRL('@'):  return KEY_F(1);       /* Help                           Help */
-/* KEF_HOME    */  case KEY_CTRL('A'):  return KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
-/* KEF_LEFT    */  case KEY_CTRL('B'):  return KEY_LEFT;       /* Previous char                  Left */
-/* kcan=^C     */  case KEY_CANCEL:
-/* KEF_COPY    */  case KEY_CTRL('C'):  return KEY_F(2);       /* Copy                           Copy */
-/* KEF_DELETE  */  case KEY_CTRL('D'):  return KEY_F(7);       /* Delete (record)                DeleteCharacter DeleteRecord */
-/* KEF_END     */  case KEY_CTRL('E'):  return KEY_END;        /* End / Next block               EndOfLine NextBlock */
-/* KEF_RIGHT   */  case KEY_CTRL('F'):  return KEY_RIGHT;      /* Next char                      Right */
-/* KEF_PREFLD  */  case KEY_CTRL('G'):  return KEY_BTAB;       /* Previous field                 PreviousField */
-/* KEF_BACKDEL */  case KEY_CTRL('H'):  return KEY_BACKSPACE;  /* Backspace                      DeleteBackward */
-/* KEF_NXTFLD  */  case KEY_CTRL('I'):  return KEY_TAB;        /* Next field                     NextField */
-/* KEF_INSERT  *   case KEY_CTRL('J'):  return KEY_IC;       *//* Insert toggle (record)         InsertReplace InsertRecord */
-/* KEF_KEYHELP */  case KEY_CTRL('K'):  return KEY_F(11);      /* Keyboard help                  KeyHelp */
-/* KEF_REFRESH */  case KEY_CTRL('L'):  return KEY_F(12);      /* Refresh                        Refresh */
-/* KEF_COMMIT  */  case KEY_CTRL('M'):  return KEY_ENTER;      /* Commit Accept                  Commit Select Execute */
-/* KEF_NXTREC  */  case KEY_CTRL('N'):  return KEY_DOWN;       /* Next record                    Down NextRecord */
-/* KEF_INSERT  */  case KEY_CTRL('O'):  return KEY_F(6);       /* Insert record                  InsertRecord */
-/* KEF_PREREC  */  case KEY_CTRL('P'):  return KEY_UP;         /* Previoud record                PreviousRecord */
-//                 case KEY_CTRL('Q'):  return KEY_F(?);       /* ?                              ? */
-/* KEF_PRESETR */  case KEY_CTRL('R'):  return KEY_PPAGE;      /* Previous set of records        PreviousSetOfRecords */
-//                 case KEY_CTRL('S'):  return KEY_F(?);       /* ?                              ? */
-/* KEF_COPYREC */  case KEY_CTRL('T'):  return KEY_F(4);       /* Copy record                    DuplicateRecord */
-/* KEF_LIST    */  case KEY_CTRL('U'):  return KEY_F(5);       /* List of values                 List */
-/* KEF_PASTE   */  case KEY_CTRL('V'):  return KEY_F(3);       /* Paste / Copy field             DuplicateField Paste */
-/* KEF_NXTSETR */  case KEY_CTRL('W'):  return KEY_NPAGE;      /* Next set of records            NextSetOfRecords */
-/* KEF_QUERY   */  case KEY_CTRL('X'):  return KEY_F(10);      /* Query                          EnterQuery */
-/* KEF_QUIT    */  case KEY_CTRL('Y'):  return KEY_F(9);       /* Rollback Cancel                ExitCancel */
-/* kspd=^Z     */  case KEY_SUSPEND:
-/* KEF_EXIT    */  case KEY_CTRL('Z'):  return KEY_F(8);       /* Save and exit                  Exit */
- }
+if (lastgetch < '@') lastgetch = mapctrl(lastgetch);
 return lastgetch;
 }
 

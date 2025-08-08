@@ -5,5 +5,6 @@
  */
 #define XORKEY1 "qTYaqw8zhU3UYT73hiohenUSsio85uibEWd72672JdQwfnytomHomU0Ny6euIIu7"
 #ifndef CHARSET
-#define CHARSET "en_US.iso885915"
+//#define CHARSET "en_US.iso885915"
+#define CHARSET "en_US.UTF-8"
 #endif

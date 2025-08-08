@@ -23,7 +23,6 @@ F12 l Refresh      End   e NextBlock
 >     Goto         ~       Search
 Space Toggle binary
 /ARX cleanware  [1]
-charset:    en_US.iso885915
 odbc inc:   0380
 odbc lib:   03.52
 form odbc:  03.00
