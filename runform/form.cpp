@@ -172,36 +172,36 @@ int Form::mapkey(int ckey) {
 int ck;
 ck = ispunctation(ckey);
 switch(ck) {                                  /* C */
-  case KEY_F(1):       return KEF_HELP;       /* @      fhelp */
-  case KEY_F(2):       return KEF_COPY;       /* c      fcopy */
-  case KEY_F(3):       return KEF_PASTE;      /* v      fpaste */
-  case KEY_F(4):       return KEF_COPYREC;    /* t      fcopyrec */
-  case KEY_F(5):       return KEF_LIST;       /* u      flist */
-  case KEY_F(6):       return KEF_INSERT;     /* o      create_record */
-  case KEY_F(7):       return KEF_DELETE;     /* d      delete_record */
-  case KEY_F(8):       return KEF_EXIT;       /* z      exit */
-  case KEY_F(9):       return KEF_QUIT;       /* y      cancel/quit */
-  case KEY_F(10):      return KEF_QUERY;      /* x      enter_query */
-  case KEY_F(11):      return KEF_KEYHELP;    /* k      keys_help */
-  case KEY_F(12):      return KEF_REFRESH;    /* l      frefresh */
-  case KEY_ESC:        return KEF_CANCEL;     /* esc    cancel/quit */
-  case KEY_CANCEL:     return KEF_CANCEL;     /* cancel cancel/quit */
-  case KEY_IC:         return KEF_INSERT;     /* j      create_record */
-  case KEY_HOME:       return KEF_HOME;       /* a      fhome */
-  case KEY_PPAGE:      return KEF_PRESETR;    /* r      fpresetr */
-  case KEY_DC:         return KEF_DELETE;     /* d      delete_record */
-  case KEY_LL:
-  case KEY_END:        return KEF_END;        /* e      fend */
-  case KEY_NPAGE:      return KEF_NXTSETR;    /* w      fnxtsetr */
-  case KEY_UP:         return KEF_PREREC;     /* p      fmover */
-  case KEY_LEFT:       return KEF_LEFT;       /* b      fedit */
-  case KEY_DOWN:       return KEF_NXTREC;     /* n      fmover */
-  case KEY_RIGHT:      return KEF_RIGHT;      /* f      fedit */
-  case KEY_TAB:        return KEF_NXTFLD;     /* i      fmove */
-  case KEY_BTAB:       return KEF_PREFLD;     /* g      fmove */
-  case KEY_BACKSPACE:  return KEF_BACKDEL;    /* h      fbackspace */
-  case KEY_ENTER:      return KEF_COMMIT;     /* m      execute */
-  default:             return ck;
+  case -KEY_F(1):       return KEF_HELP;       /* @      fhelp */
+  case -KEY_F(2):       return KEF_COPY;       /* c      fcopy */
+  case -KEY_F(3):       return KEF_PASTE;      /* v      fpaste */
+  case -KEY_F(4):       return KEF_COPYREC;    /* t      fcopyrec */
+  case -KEY_F(5):       return KEF_LIST;       /* u      flist */
+  case -KEY_F(6):       return KEF_INSERT;     /* o      create_record */
+  case -KEY_F(7):       return KEF_DELETE;     /* d      delete_record */
+  case -KEY_F(8):       return KEF_EXIT;       /* z      exit */
+  case -KEY_F(9):       return KEF_QUIT;       /* y      cancel/quit */
+  case -KEY_F(10):      return KEF_QUERY;      /* x      enter_query */
+  case -KEY_F(11):      return KEF_KEYHELP;    /* k      keys_help */
+  case -KEY_F(12):      return KEF_REFRESH;    /* l      frefresh */
+  case -KEY_ESC:        return KEF_CANCEL;     /* esc    cancel/quit */
+  case -KEY_CANCEL:     return KEF_CANCEL;     /* cancel cancel/quit */
+  case -KEY_IC:         return KEF_INSERT;     /* j      create_record */
+  case -KEY_HOME:       return KEF_HOME;       /* a      fhome */
+  case -KEY_PPAGE:      return KEF_PRESETR;    /* r      fpresetr */
+  case -KEY_DC:         return KEF_DELETE;     /* d      delete_record */
+  case -KEY_LL:
+  case -KEY_END:        return KEF_END;        /* e      fend */
+  case -KEY_NPAGE:      return KEF_NXTSETR;    /* w      fnxtsetr */
+  case -KEY_UP:         return KEF_PREREC;     /* p      fmover */
+  case -KEY_LEFT:       return KEF_LEFT;       /* b      fedit */
+  case -KEY_DOWN:       return KEF_NXTREC;     /* n      fmover */
+  case -KEY_RIGHT:      return KEF_RIGHT;      /* f      fedit */
+  case  KEY_TAB:        return KEF_NXTFLD;     /* i      fmove */
+  case -KEY_BTAB:       return KEF_PREFLD;     /* g      fmove */
+  case -KEY_BACKSPACE:  return KEF_BACKDEL;    /* h      fbackspace */
+  case -KEY_ENTER:      return KEF_COMMIT;     /* m      execute */
+  default:              return ck;
  }
 }
 

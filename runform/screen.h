@@ -33,7 +33,6 @@ private:
   void uncolor(int pairi); /* change back to uncolored */
   void setcode(int colcode); /* change to color/attribute combination */
   int setattributs(int attrib); /* change to attribute */
-  int mapctrl(int code);   /* map ctrl-keys to curses KEY_* */
   int wgetc();             /* get key from physical keyboard */
                            /* get string from window */
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
@@ -97,7 +96,8 @@ typedef struct attrel {
 #define A_LINECURSOR  "\033[6 q"
 
 /* application key codes get translated only for main loop switch */
-enum { KEF_NOOP = 1, KEF_NOOP2, KEF_DEL = 127, KEF_HELP = 512,
+enum { KEF_NOOP = 1, KEF_NOOP2, KEF_DEL = 127, KEF_HELP = -400,
+//                                             Help 512
        KEF_LIST, KEF_COPY, KEF_PASTE, KEF_COPYREC, KEF_QUERY, KEF_EXIT, KEF_QUIT, KEF_CANCEL,
 //     List 513       514        515          516        517       518       519         520
        KEF_HOME, KEF_LEFT, KEF_DELETE, KEF_INSERT, KEF_END, KEF_RIGHT,   KEF_PREFLD, KEF_BACKDEL, KEF_NXTFLD,

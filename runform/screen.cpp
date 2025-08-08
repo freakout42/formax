@@ -388,8 +388,9 @@ return ch * keycode;
 }
 
 /* map ctrl to function keys */
-int Screen::mapctrl(int code) {
-switch(code) {
+int Screen::getkb() {
+lastgetch = wgetc();
+if (lastgetch < ' ') switch(abs(lastgetch)) {
 /* KEF_HELP    */  case KEY_CTRL('@'):  return -KEY_F(1);       /* Help                           Help */
 /* KEF_HOME    */  case KEY_CTRL('A'):  return -KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
 /* KEF_LEFT    */  case KEY_CTRL('B'):  return -KEY_LEFT;       /* Previous char                  Left */
@@ -419,14 +420,7 @@ switch(code) {
 /* KEF_QUIT    */  case KEY_CTRL('Y'):  return -KEY_F(9);       /* Rollback Cancel                ExitCancel */
 /* kspd=^Z     */  case -KEY_SUSPEND:
 /* KEF_EXIT    */  case KEY_CTRL('Z'):  return -KEY_F(8);       /* Save and exit                  Exit */
-                   default:             return code;
  }
-}
-
-/* map ctrl to function keys */
-int Screen::getkb() {
-lastgetch = wgetc();
-if (lastgetch < '@') lastgetch = mapctrl(lastgetch);
 return lastgetch;
 }
 
@@ -504,37 +498,37 @@ while (!done) {              /* input loop */
   wmov(y, sx);      /* move to cursor pos */
   if (!macropointer || watchmacro) refr();        /* show the screen */
   switch (c = (first > 0) ? first : getkb()) { /* get pressed key */
-   case KEY_HOME:            /* go to start of field */
+   case -KEY_HOME:            /* go to start of field */
     pos = 0;
     sx  = x;
     so  = se;
     break;
-   case KEY_LL:              /* go to end of field */
-#if (KEY_LL != KEY_END)
-   case KEY_END:             /* go to end of field */
+   case -KEY_LL:              /* go to end of field */
+#if (-KEY_LL != -KEY_END)
+   case -KEY_END:             /* go to end of field */
 #endif
     pos = imin (len, max-1);
     sx  = x + pos;
     break;
-   case KEY_IC:              /* toggle insert mode */
-   case KEY_CTRL('J'):
+   case -KEY_IC:              /* toggle insert mode */
+   case -KEY_CTRL('J'):
     toggle();
     break;
-   case KEY_LEFT:            /* move left    */
+   case -KEY_LEFT:            /* move left    */
     if (pos > 0) {
       pos--;
       if (sx > x) sx--;
       else    so--;
     }
     break;
-   case KEY_RIGHT:           /* move right   */
+   case -KEY_RIGHT:           /* move right   */
     if (pos < len) {
       pos++;
       sx++;
     }
 //    else done = TRUE;
     break;
-   case KEY_BACKSPACE:      /* erase backward */
+   case -KEY_BACKSPACE:      /* erase backward */
    case KEY_CTRL('H'):
     if (pos > 0) {
       changed = TRUE;
@@ -545,7 +539,7 @@ while (!done) {              /* input loop */
       else so--;
     }
     break;
-   case KEY_DC:             /* erase current  */
+   case -KEY_DC:             /* erase current  */
     if (pos < len) {
       changed = TRUE;
       memmove(&se[pos], &se[pos + 1], len - pos);
@@ -555,8 +549,8 @@ while (!done) {              /* input loop */
     break;
    case KEY_ESC:        /* cancel editing */
    case KEY_CTRL('C'):
-   case KEY_F(9):
-   case KEY_CANCEL:
+   case -KEY_F(9):
+   case -KEY_CANCEL:
     wmove(wndw, y, x);
     snprintf(t(tmp), "%-*.*s", width, width, s);
     tmp[width] = '\0';
