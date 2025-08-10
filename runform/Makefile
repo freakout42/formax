@@ -35,8 +35,8 @@ test: clean runform $(EXAMPLE)
 		./runform -r -x -g/tmp/formax.log $(EXAMPLE) 2>$@ | \
 			grep -v -e'formax.freakout.de' -e'compile[dr]:' -ecurses.inc: -ecurses.run: -esqlite -edver: -echarset: >out
 	test -f $@ -a ! -s $@
-#	sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
-#	diff ../generate/scotty.out out
+	sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
+	diff ../generate/scotty.out out
 	@rm -f out
 	@rm -f /tmp/formax.log
 	@cp scotty.sq3 ../generate

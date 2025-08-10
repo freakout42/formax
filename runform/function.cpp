@@ -282,7 +282,7 @@ if (CB.norec > 1) {
 int Function::goto_cell() {
 int pressed;
 pressed = F(p)[PGE_STATUS].sedit(CB.gotoselector, 0, FTY_ALL, 30);
-if (pressed == KEY_ENTER) fgoto(CB.gotoselector);
+if (pressed == -KEY_ENTER) fgoto(CB.gotoselector);
 return 0; //pressed;
 }
 
@@ -307,7 +307,7 @@ int Function::search_cell() {
 int pressed;
 if (CM == MOD_UPDATE) {
   pressed = F(p)[PGE_STATUS].sedit(CB.searchre, 0, FTY_ALL, 60);
-  if (pressed == KEY_ENTER) fsearch(CB.searchre);
+  if (pressed == -KEY_ENTER) fsearch(CB.searchre);
 }
 return 0; //pressed;
 }
@@ -582,7 +582,7 @@ if (!intrigger) { /* not nice but fast */
   i = tid < 0 ? -tid : qtrigger(tid);
   if (i != -1) {
     s = trgi(i).execute(av0);
-    if (*s != '"' && !isdigit(*s)) {
+    if (*s != '"' && *s != '-' && !isdigit(*s)) {
       g.logfmt("[%d]%s", tid, s);
       MSG1(MSG_JS, s);
       strcpy(s, "-1");
@@ -615,7 +615,8 @@ else if (*jsresult == '"')     {
   *(buf+i) = '\0';
                                  return KEF_NXTFLD;
 }
-else if (isdigit(*jsresult))   { return atoi(jsresult); }
+else if ((*jsresult=='-') || isdigit(*jsresult))
+                               { return atoi(jsresult); }
 else                           { return KEF_CANCEL; }
 }
 

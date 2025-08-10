@@ -250,7 +250,7 @@ switch(CM) {
                      else
                        pressed = F(p)[PGE_STATUS].sedit(a, pos, fldtype(), fieldlen);
     }
-    if (pressed != KEF_CANCEL && validate(c, a) == KEF_CANCEL) pressed = KEF_CANCEL;
+    if (pressed != -KEF_CANCEL && validate(c, a) == -KEF_CANCEL) pressed = -KEF_CANCEL;
   }
   break;
  case MOD_QUERY:
@@ -261,7 +261,7 @@ switch(CM) {
  case MOD_DELETE:
   break;
 }
-pressed = pressed==KEY_ENTER ? KEF_NXTFLD : F(mapkey)(pressed);
+pressed = pressed==-KEY_ENTER ? KEF_NXTFLD : F(mapkey)(pressed);
 return pressed;
 }
 

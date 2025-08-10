@@ -86,7 +86,7 @@ int Page::showpopup() {
 int i;
 redraw();
 refr();
-i = getkb();
+i = getkey();
 F(needredraw) = 1;
 return i==KEY_ENTER ? 0 : i;
 }
@@ -162,7 +162,7 @@ writef(0, 33, 0, 8,  "%s",        CF.column);
 writef(0, 42, 0,13,  "%6d/%6d",   CR, CN);
 writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
-if (watchmacro) writef(0, 67, 0,   13,"%04o %5d", lastgetch, lastgetch);
+if (watchmacro) writef(0, 67, 0,   13,"%05o %6d", abs(lastgetch), lastgetch);
 else            writef(0, 67, COL_COMMIT,13,"%s", commit);
 if (!macropointer || watchmacro) refr();
 forall(field) F(l)[i].show();
@@ -172,7 +172,7 @@ for (i=PGE_MAIN; i<F(numpage); i++) {
 }
 if (macropointer && watchmacro) wsleep(1);
 F(needredraw) = 0;
-return LK ? LK : getkb();
+return LK ? LK : getkey();
 }
 
 void Page::working() {
@@ -192,7 +192,7 @@ writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, msg(ern), pntst+i);
 //writef(0, 76, 0, 4, "%04d", CK);
 wmov(0,0);
 refr();
-return (i = getkb())==KEY_ESC ? 0 : i;
+return (i = getkey())==KEY_ESC ? 0 : i;
 }
 return 0;
 }

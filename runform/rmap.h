@@ -36,6 +36,6 @@ INSERT INTO maps (page_id, line, mtext) VALUES (2, 15, '+     Increment    -    
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 16, '>     Goto         ~       Search');
 INSERT INTO maps (page_id, line, mtext) VALUES (2, 17, 'Space Toggle binary');
 INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPYREC, 1, '$(cb + "." + cf, cr - 1);');
-INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPY,    1, 'clip = cv;529;');
+INSERT INTO maps (page_id, line, mtext) VALUES (TRT_COPY,    1, 'clip = cv;-2030;');
 INSERT INTO maps (page_id, line, mtext) VALUES (TRT_PASTE,   1, 'clip;');
 #endif

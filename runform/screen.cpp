@@ -269,7 +269,7 @@ return F(e)->v(i,3);
 #define findkey(fky,len,ctl) if (ch == '{' && !strncmp(macropointer, #fky "}", len)) { macropointer += len; ch = KEY_CTRL(ctl); }
 int Screen::wgetc() {
 int ch;
-int keycode;
+int keycode = 1;
 #ifdef UTF8
 wint_t keypress = { 0 };
 #endif
@@ -389,8 +389,9 @@ return ch * keycode;
 
 /* map ctrl to function keys */
 int Screen::getkb() {
-lastgetch = wgetc();
-if (lastgetch < ' ') switch(abs(lastgetch)) {
+int ch;
+ch = wgetc();
+if (ch < ' ') switch(abs(ch)) {
 /* KEF_HELP    */  case KEY_CTRL('@'):  return -KEY_F(1);       /* Help                           Help */
 /* KEF_HOME    */  case KEY_CTRL('A'):  return -KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */
 /* KEF_LEFT    */  case KEY_CTRL('B'):  return -KEY_LEFT;       /* Previous char                  Left */
@@ -421,6 +422,12 @@ if (lastgetch < ' ') switch(abs(lastgetch)) {
 /* kspd=^Z     */  case -KEY_SUSPEND:
 /* KEF_EXIT    */  case KEY_CTRL('Z'):  return -KEY_F(8);       /* Save and exit                  Exit */
  }
+return ch;
+}
+
+/* get the fully translated key */
+int Screen::getkey() {
+lastgetch = getkb();
 return lastgetch;
 }
 
@@ -497,7 +504,7 @@ while (!done) {              /* input loop */
   if ((int)strlen(so) > width && sx < endx) mvwaddch(wndw, y, endx, '>');
   wmov(y, sx);      /* move to cursor pos */
   if (!macropointer || watchmacro) refr();        /* show the screen */
-  switch (c = (first > 0) ? first : getkb()) { /* get pressed key */
+  switch (c = (first > 0) ? first : getkey()) { /* get pressed key */
    case -KEY_HOME:            /* go to start of field */
     pos = 0;
     sx  = x;
@@ -561,10 +568,10 @@ while (!done) {              /* input loop */
     break;
    case '\'': if (!usebindvar) break;
    default:             /* char input?    */
-    if (   ((c >= ' ') && (c <= '~'))
-        || ((c >= 0x80) && (c < 0xff)) ) {
-      if (   ((legal[0] == 0)  /* legal input? */
-          || (strchr(legal, c) != NULL)) ) {
+		if ( ((c >= ' ') && (c <= '~')) || (c == '\t') || (c >= 0x80) ) {
+		    if (    ((legal[0] == 0)	/* legal input?		*/
+			 || (strchr(legal, c) != NULL)) )
+			{
         changed = TRUE;
         if (pos==0 && first) len = 0; /* erase on pos0 */
         if (len < max) {
@@ -578,7 +585,7 @@ while (!done) {              /* input loop */
         if (len < max || pos < len-1) {
           pos++;
           sx++;
-        } else {c = KEY_ENTER; done = TRUE;}
+        } else {c = KEF_COMMIT; done = TRUE;}
       } else beep();    /* no valid char  */
     } else done = TRUE;
   } /* switch */
