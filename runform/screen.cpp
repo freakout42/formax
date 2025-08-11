@@ -305,6 +305,7 @@ mvwprintw (wndw, y, x, "%-*s", w, s);
 Screen::Screen() {
 ysiz = 0;
 cur_utf8 = 0;
+cursesvariant = CURVARIANT;
 sprintf(cursesrun, "%s-%c", curses_version(), CURVARIANT);
 #ifdef UTF8
 /* user and charset environment */

@@ -10,6 +10,7 @@ public:
   int sedit(char *toe, int pos, ftype fty, int len);
   int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
   int cur_utf8;            /* UTF8 && CHARSET~utf8/i */
+  char cursesvariant;      /* ncurses:n ncursesw:w */
 protected:
   int ysiz;                /* window horizontal size */
   int xsiz;                /* window vertical size */
