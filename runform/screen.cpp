@@ -35,6 +35,277 @@
 char cursesversion[8] = NCURSES_VERSION;
 char cursesrun[32];
 
+#ifdef UTF8
+static int cur_scpy(wchar_t *t, wchar_t *s, int z) {
+int i, j;
+j = 0;
+for (i=0; i<z; i++) {
+  switch (*s) {
+    case '\t': j++; s++;
+    case '\0': *t++ = ' '; break;
+    default:   j++; *t++ = *s++;
+    }
+  }
+  *t = '\0';
+return j;
+}
+static int cur_wcpy(wchar_t *t, char *s) {
+int i, j, z;
+z = strlen(s);
+j = 0;
+for (i=0; i<z; i++) {
+  switch (*s) {
+    case '\t': j++; s++;
+    case '\0': *t++ = ' '; break;
+    default:   j++; *t++ = (unsigned char)*s++;
+    }
+  }
+  *t = '\0';
+return j;
+}
+
+static char *cur_8cpy(wchar_t *s) {
+static char t[BIGSIZE+1];
+char *y;
+for (y=t; *s; s++) *y++ = (unsigned char)*s;
+*y = '\0';
+return t;
+}
+
+static int cur_slen(wchar_t *s) { return wcslen(s); }
+
+/* Convert an UTF-8 string to UCODE
+ * All invalid sequences are ignored.
+ * Note: output == input is allowed,
+ * but   input < output < input + length is not.
+ * Output has to have room for (length+1) chars, including the trailing NUL byte.
+ */
+static int utf8_to_ucode(wchar_t *output, char *input, int length) {
+    wchar_t                   *out = output;
+    const unsigned char       *in  = (const unsigned char *)input;
+    const unsigned char *const end = (const unsigned char *)input + strlen(input);
+    unsigned int               c;
+
+    while (in < end)
+        if (*in < 128)
+            *(out++) = *(in++); /* Valid codepoint */
+        else
+        if (*in < 192)
+            break;
+/*          in++;                * 10000000 .. 10111111 are invalid */
+        else
+        if (*in < 224) {        /* 110xxxxx 10xxxxxx */
+            if (in + 1 >= end)
+                break;
+            if ((in[1] & 192U) == 128U) {
+                c =   (((unsigned int)(in[0] & 0x1FU)) << 6U)
+                    | ((unsigned int)(in[1] & 0x3FU)) ;
+                *(out++) = c;
+            }
+            in += 2;
+
+        } else
+        if (*in < 240) {        /* 1110xxxx 10xxxxxx 10xxxxxx */
+            if (in + 2 >= end)
+                break;
+            if ((in[1] & 192U) == 128U &&
+                (in[2] & 192U) == 128U) {
+                c =   (((unsigned int)(in[0] & 0x0FU)) << 12U)
+                    | (((unsigned int)(in[1] & 0x3FU)) << 6U)
+                    |  ((unsigned int)(in[2] & 0x3FU)) ;
+                *(out++) = c;
+            }
+            in += 3;
+
+        } else
+        if (*in < 248) {        /* 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx */
+            if (in + 3 >= end)
+                break;
+            if ((in[1] & 192U) == 128U &&
+                (in[2] & 192U) == 128U &&
+                (in[3] & 192U) == 128U) {
+                c =   (((unsigned int)(in[0] & 0x07U)) << 18U)
+                    | (((unsigned int)(in[1] & 0x3FU)) << 12U)
+                    | (((unsigned int)(in[2] & 0x3FU)) << 6U)
+                    |  ((unsigned int)(in[3] & 0x3FU)) ;
+                *(out++) = c;
+            }
+            in += 4;
+
+        } else
+        if (*in < 252) {        /* 111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx */
+            if (in + 4 >= end)
+                break;
+            if ((in[1] & 192U) == 128U &&
+                (in[2] & 192U) == 128U &&
+                (in[3] & 192U) == 128U &&
+                (in[4] & 192U) == 128U) {
+                c =   (((unsigned int)(in[0] & 0x03U)) << 24U)
+                    | (((unsigned int)(in[1] & 0x3FU)) << 18U)
+                    | (((unsigned int)(in[2] & 0x3FU)) << 12U)
+                    | (((unsigned int)(in[3] & 0x3FU)) << 6U)
+                    |  ((unsigned int)(in[4] & 0x3FU)) ;
+                *(out++) = c;
+            }
+            in += 5;
+
+        } else
+        if (*in < 254) {        /* 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx */
+            if (in + 5 >= end)
+                break;
+            if ((in[1] & 192U) == 128U &&
+                (in[2] & 192U) == 128U &&
+                (in[3] & 192U) == 128U &&
+                (in[4] & 192U) == 128U &&
+                (in[5] & 192U) == 128U) {
+                c =   (((unsigned int)(in[0] & 0x01U)) << 30U)
+                    | (((unsigned int)(in[1] & 0x3FU)) << 24U)
+                    | (((unsigned int)(in[2] & 0x3FU)) << 18U)
+                    | (((unsigned int)(in[3] & 0x3FU)) << 12U)
+                    | (((unsigned int)(in[4] & 0x3FU)) << 6U)
+                    |  ((unsigned int)(in[5] & 0x3FU)) ;
+                *(out++) = c;
+            }
+            in += 6;
+
+        } else
+            in++;               /* 11111110 and 11111111 are invalid */
+
+    /* Terminate the output string. */
+    *out = 0;
+
+    if (in < end) return -1;
+    else          return out - output;
+}
+
+static int utf162utf8(char* out, int c) {
+int bits;
+char *out1;
+out1 = out;
+if      (c <    0x80) {  *out++=  c;                         bits = -6; }
+else if (c <   0x800) {  *out++= ((c >>  6) & 0x1F) | 0xC0;  bits =  0; }
+else if (c < 0x10000) {  *out++= ((c >> 12) & 0x0F) | 0xE0;  bits =  6; }
+else                  {  *out++= ((c >> 18) & 0x07) | 0xF0;  bits = 12; }
+for ( ; bits >= 0; bits -= 6) *out++= ((c >> bits) & 0x3F) | 0x80;
+return out - out1;
+}
+
+static int str_w2u8(char *tgt, wchar_t *src, int siz) {
+char *t;
+wchar_t *s;
+t = tgt;
+for (s = src; *s; s++) t += utf162utf8(t, *s);
+*t = '\0';
+return t - tgt;
+}
+
+#ifdef hidden
+static int str_pos(char *s, int f, int cur_utf8) {
+char *p;
+int n, m;
+n = 0;
+m = 0;
+for (p = s; *p; p++) {
+  if (m++ >= f) break;
+  if (!cur_utf8 || (*p & 0xC0) != 0x80) n++;
+  }
+return n;
+}
+
+/* s iso or utf-8 (cur_utf8=TRUE) char[]
+ * f from pos
+ * l min size padded <0 right align
+ * z max length
+ */
+static char *str_sub(char *tg, char *s, int f, int l, int z, int cur_utf8) {
+char sv = '\0';
+char *p;
+char *q;
+int n, m, v, o, r;
+o = abs(l);
+n = 0;
+r = strlen(s);
+q = s + r;
+for (p = s; *p; p++) {
+ if (!cur_utf8 || (*p & 0xC0) != 0x80) {
+  if (n == f) q = p;
+  if (z > 0 && n >= f+z) break;
+  n++;
+ }
+}
+n -= f;
+if (z > 0) {
+  sv = *p;
+  *p = '\0';
+}
+m = strlen(q);
+v = str_pos(q, m, cur_utf8);
+if (tg==NULL && ((tg = (char*)malloc(m + 1 + o + r)) == NULL)) return NULL;
+if (o-n > 0) {
+ if (l < 0) {
+  memset(tg, ' ', o-n);
+  strcpy(tg+o-n, q);
+ } else {
+  strcpy(tg, q);
+  memset(tg+m, ' ', o-v);
+  tg[m+o-v] = '\0';
+ } } else {
+  strcpy(tg, q);
+}
+if (z > 0) *p = sv;
+return tg;
+}
+#endif
+
+#else
+static int cur_scpy(char *t, char *s, int z) {
+int i, j;
+j = 0;
+for (i=0; i<z; i++) {
+  switch (*s) {
+    case '\t': j++; s++;
+    case '\0': *t++ = ' '; break;
+    default:   j++; *t++ = *s++;
+    }
+  }
+  *t = '\0';
+return j;
+}
+
+static int cur_slen(char *s) { return strlen(s); }
+
+#endif
+
+static int str_tlen (char *s)
+{
+char *p;
+
+if (NULL == (p = strchr(s, '\0')))
+	return (0);
+for (; isspace(*s); s++);
+for (--p; (p > s) && isascii(*p) && isspace(*p);)
+	p--;
+return (p-s+1);
+}
+
+#ifdef hidden
+void cur_puts(int y, int x, char *s, int w) {
+#ifdef UTF8
+char *out = NULL;
+wchar_t t[BIGSIZE+1];
+
+if (cur_utf8) {
+  out = str_sub(out, s, 0, w, 0);
+  utf8_to_ucode(t, out, BIGSIZE);
+  move (y, x);
+  addwstr(t);
+  free(out);
+} else
+#endif
+mvprintw (y, x, "%-*s", w, s);
+}
+#endif
+
 Screen::Screen() {
 ysiz = 0;
 cur_utf8 = 0;
@@ -237,7 +508,22 @@ void Screen::refr() { nocurses(); wrefresh(wndw); }
 void Screen::noutrefr() { nocurses(); wnoutrefresh(wndw); }
 void Screen::redraw() { nocurses(); redrawwin(wndw); }
 void Screen::wsleep(int sec) { nocurses(); sleep(sec); }
-int  Screen::wadds(char *str) { nocurses(OK); return waddstr(wndw, str); }
+
+int  Screen::wadds(char *str) {
+nocurses(OK);
+return waddstr(wndw, str);
+}
+
+#ifdef UTF8
+int  Screen::wadds(wchar_t *str) {
+int status;
+nocurses(OK);
+if (cur_utf8) status = waddwstr(wndw, str);
+else status = waddstr(wndw, cur_8cpy(str));
+return status;
+}
+#endif
+
 #ifndef NOUSEDITOR
 int  Screen::fulledit(char *pth) { nocurses(0); return mainloop(pth, wndw); }
 #endif
@@ -468,26 +754,36 @@ int first;                   /* first input flag/char */
 int c;                       /* input key */
 int sx;                      /* current position x */
 int len;                     /* currrent string len  */
-char *tp;                    /* position of tab */
+int endx;                    /* end position   */
+
+#ifdef UTF8
+wchar_t se[MEDSIZE+1];
+wchar_t *so = se;            /* position in string */
+wchar_t tmp[MEDSIZE*2+1];    /* output string */
+#else
 char se[MEDSIZE];            /* my copy of string  */
 char *so;                    /* position in string */
 char tmp[MEDSIZE];           /* output string  */
-int endx;                    /* end position   */
+#endif
 
+if (strlen(s) > BIGSIZE) return(KEF_CANCEL);
 done = 0;
 changed = 0;
 first = -1;
 c = 0;
 if (pos == -9999) pos = -1;
-else if (pos < 0 && pos > -1000) pos += strlen(s) + 1;
+else if (pos < 0 && pos > -1000) pos += str_tlen(s) + 1;
 else if (pos < 0) { first = -1 * (pos + 1000); pos = 0; }
 sx = x + pos;
+#ifdef UTF8
+len = cur_utf8 ? utf8_to_ucode(se, s, BIGSIZE) : cur_wcpy(se, s);
+if (len == -1) return(KEF_CANCEL);
+#else
 len = strlen(s);
+strcpy(se, s);               /* save input string */
+#endif
 so = se;
 endx = x + width - 1;
-
-if (strlen(s) > BIGSIZE) return(KEY_ESC);
-strcpy(se, s);               /* save input string */
 setcode(colcode);            /* set color  */
 while (!done) {              /* input loop */
   if (sx-x >= width) {       /* behind end position? */
@@ -495,13 +791,11 @@ while (!done) {              /* input loop */
     so = se + pos - width + 1;
   }
   wmov(y, x);                /* move to print string */
-  snprintf(t(tmp), "%-*.*s", width, width, so);
-  tmp[width] = '\0';         /* cut to width   */
-  while ((tp = strchr(tmp,'\t')) != NULL) *tp = ' '; /* tab erase */
+  cur_scpy(tmp, so, width);  /* trim string */
   wadds(tmp);                /* paint out string */
   if (pos==-1) break;        /* done if only paint */
   if (so > se && sx > x) mvwaddch (wndw, y, x, '<'); /* signal overfl */
-  if ((int)strlen(so) > width && sx < endx) mvwaddch(wndw, y, endx, '>');
+  if (cur_slen(so) > width && sx < endx) mvwaddch(wndw, y, endx, '>');
   wmov(y, sx);      /* move to cursor pos */
   if (!macropointer || watchmacro) refr();        /* show the screen */
   switch (c = (first > 0) ? first : getkey()) { /* get pressed key */
@@ -559,9 +853,10 @@ while (!done) {              /* input loop */
    case -KEY_F(9):
    case -KEY_CANCEL:
     wmove(wndw, y, x);
-    snprintf(t(tmp), "%-*.*s", width, width, s);
-    tmp[width] = '\0';
-    while ((tp = strchr(tmp,'\t')) != NULL) *tp = ' ';
+#ifdef UTF8
+    utf8_to_ucode(se, s, BIGSIZE);
+#endif
+    cur_scpy(tmp, se, width);
     wadds(tmp);
     changed = FALSE;
     done = TRUE;
@@ -576,12 +871,12 @@ while (!done) {              /* input loop */
         if (pos==0 && first) len = 0; /* erase on pos0 */
         if (len < max) {
           if (insertmode) {
-            memmove(se+pos+1, se+pos, len - pos +1);
+            memmove(se+pos+1, se+pos, (len - pos + 1) * sizeof(wchar_t));
             *(se+pos) = ' ';
             len++;
           } else if (pos >= len) len++;
         }
-        se[pos] = (char)c;
+        se[pos] = c;
         if (len < max || pos < len-1) {
           pos++;
           sx++;
@@ -593,7 +888,14 @@ while (!done) {              /* input loop */
   se[len] = '\0';
   }
 setcode(-1);
-if (changed) strcpy(s, se);
+if (changed) {
+#ifdef UTF8
+if (cur_utf8) str_w2u8(s, se, BIGSIZE*2);
+else          strcpy(s, cur_8cpy(se));
+#else
+strcpy(s, se);
+#endif
+}
 if (chg) *chg = changed;
 return(c);
 }
@@ -615,7 +917,7 @@ va_end (args);
 if (width < MEDSIZE) s[width] = '\0';
 if ((crp = strchr(s, '\n'))) strncpy(crp, "...", sizeof(s) - (crp - s));
 if (screenclos) {
-  prnf(s);
+  if ((y + x) > 0) prnf(s);
 } else {
 setcode(colcode);
 getyx(wndw, oldy, oldx);
@@ -623,4 +925,3 @@ mvwprintw(wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
 wmov(oldy, oldx);
 setcode(-1);
 } }
-

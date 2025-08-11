@@ -9,6 +9,7 @@ public:
   void writef(int y, int x, int colcode, int width, const char *format, ...);
   int sedit(char *toe, int pos, ftype fty, int len);
   int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
+  int cur_utf8;            /* UTF8 && CHARSET~utf8/i */
 protected:
   int ysiz;                /* window horizontal size */
   int xsiz;                /* window vertical size */
@@ -20,6 +21,9 @@ protected:
   void wera();             /* erase window */
   void wbox();             /* draw a box around window */
   int wadds(char *str);    /* write string to window */
+#ifdef UTF8
+  int wadds(wchar_t *str); /* wide string to window */
+#endif
   void wsleep(int sec);    /* sleep sec seconds */
   int fulledit(char *pth); /* full screen editor within a window */
   char *msg(int num);      /* get message string by id */
@@ -27,7 +31,6 @@ protected:
   int getkey();            /* get next keycode to use lastgetch */
 private:
   char *lclocale;          /* locale info */
-  int cur_utf8;            /* UTF8 && CHARSET~utf8/i */
   WINDOW *wndw;            /* curses window structure */
   void setcolor(int pairi); /* change to a predefined color */
   void uncolor(int pairi); /* change back to uncolored */
