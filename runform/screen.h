@@ -30,6 +30,9 @@ protected:
   void writes(int y, int x, char *str); /* write string to window */
   int getkey();            /* get next keycode to use lastgetch */
 private:
+  int str_pos(char *s, int f);
+  char *str_sub(char *tg, char *s, int f, int l, int z);
+  void cur_puts(int y, int x, char *s, int w);
   char *lclocale;          /* locale info */
   WINDOW *wndw;            /* curses window structure */
   void setcolor(int pairi); /* change to a predefined color */

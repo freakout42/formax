@@ -199,8 +199,7 @@ for (s = src; *s; s++) t += utf162utf8(t, *s);
 return t - tgt;
 }
 
-#ifdef hidden
-static int str_pos(char *s, int f, int cur_utf8) {
+int Screen::str_pos(char *s, int f) {
 char *p;
 int n, m;
 n = 0;
@@ -217,7 +216,7 @@ return n;
  * l min size padded <0 right align
  * z max length
  */
-static char *str_sub(char *tg, char *s, int f, int l, int z, int cur_utf8) {
+char *Screen::str_sub(char *tg, char *s, int f, int l, int z) {
 char sv = '\0';
 char *p;
 char *q;
@@ -239,7 +238,7 @@ if (z > 0) {
   *p = '\0';
 }
 m = strlen(q);
-v = str_pos(q, m, cur_utf8);
+v = str_pos(q, m);
 if (tg==NULL && ((tg = (char*)malloc(m + 1 + o + r)) == NULL)) return NULL;
 if (o-n > 0) {
  if (l < 0) {
@@ -255,7 +254,6 @@ if (o-n > 0) {
 if (z > 0) *p = sv;
 return tg;
 }
-#endif
 
 #else
 static int cur_scpy(char *t, char *s, int z) {
@@ -288,8 +286,7 @@ for (--p; (p > s) && isascii(*p) && isspace(*p);)
 return (p-s+1);
 }
 
-#ifdef hidden
-void cur_puts(int y, int x, char *s, int w) {
+void Screen::cur_puts(int y, int x, char *s, int w) {
 #ifdef UTF8
 char *out = NULL;
 wchar_t t[BIGSIZE+1];
@@ -297,14 +294,13 @@ wchar_t t[BIGSIZE+1];
 if (cur_utf8) {
   out = str_sub(out, s, 0, w, 0);
   utf8_to_ucode(t, out, BIGSIZE);
-  move (y, x);
-  addwstr(t);
+  wmov (y, x);
+  waddwstr(wndw, t);
   free(out);
 } else
 #endif
-mvprintw (y, x, "%-*s", w, s);
+mvwprintw (wndw, y, x, "%-*s", w, s);
 }
-#endif
 
 Screen::Screen() {
 ysiz = 0;
@@ -921,7 +917,8 @@ if (screenclos) {
 } else {
 setcode(colcode);
 getyx(wndw, oldy, oldx);
-mvwprintw(wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
+//mvwprintw(wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
+cur_puts(y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, s, width);
 wmov(oldy, oldx);
 setcode(-1);
 } }
