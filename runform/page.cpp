@@ -154,7 +154,7 @@ switch (CM) {
  case MOD_DELETE: strcpy(commit,            "Delete-Record");                    break;
 }
 wera();
-writef(0,  0, 0, 1,  "%c",        y.cursesvariant=='w' ? (y.cur_utf8 ? 'w' : 'i') : 'n');
+writef(0,  0, 0, 1,  "%c",        y.cursesvariant=='w' ? (cur_utf8 ? 'w' : 'i') : 'n');
 writef(0,  2, 0, 2,  "%2s-",      F(id));
 writes(0,  5,                     F(name));
 writef(0, 16, 0, 8,  "%s",        username);
@@ -171,7 +171,7 @@ for (i=PGE_MAIN; i<F(numpage); i++) {
   if (F(needredraw)) F(p)[i].repaint();
   F(p)[i].refrnopop();
 }
-if (macropointer && watchmacro) wsleep(1);
+if (macropointer && watchmacro) wsleep(0);
 F(needredraw) = 0;
 return LK ? LK : getkey();
 }

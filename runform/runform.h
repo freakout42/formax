@@ -20,6 +20,7 @@ extern char sqliteversion[];
 extern const char *sqliterun;
 extern int sqlitevernumber;
 extern char about[];
+extern int cur_utf8; /* UTF8 && CHARSET~utf8/i */
 
 #define gnucs1(m, i, l) #m "." #i "." #l
 #define gnucs(m, i, l) gnucs1(m, i, l)

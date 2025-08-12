@@ -67,7 +67,7 @@ int to_latin9(const unsigned int code) {
 }
 
 /* Convert an UTF-8 string to ISO-8859-15 */
-size_t utf8_to_latin9(unsigned char *output, unsigned char *input, size_t length) {
+static size_t utf8_to_latin9(unsigned char *output, unsigned char *input, size_t length) {
     unsigned char             *out = (unsigned char *)output;
     const unsigned char       *in  = (const unsigned char *)input;
     const unsigned char *const end = (const unsigned char *)input + length;

@@ -97,7 +97,7 @@ if (CP.index == pageindex && displaylen > 0)
       page.writef(outline, col, color, displaylen, "%*.*f", displaylen, decimalen, atof(outcell));
     else
       page.writef(outline, col, color, displaylen,
-                  "%*.*s", (alignment && block.rmode != MOD_QUERY)?displaylen:0, displaylen, outcell);
+                  "%*.*s", (alignment && block.rmode != MOD_QUERY)?displaylen:0, displaylen, outcell ? outcell : "");
     if (cur) page.wmov(outline, col);
   }
 }

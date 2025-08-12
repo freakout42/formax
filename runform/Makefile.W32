@@ -1,6 +1,6 @@
 # TERM="#win32con"
 CC=gcc
-CURSESINC=-I/mingw32/include/ncurses
+CURSESINC=-I/mingw32/include/ncursesw
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o membed/libmex.a
@@ -21,8 +21,8 @@ runform.h: company.h curkeys.h
 company.h: arx.h
 	cp arx.h $@
 
-runform.exe: $(OBJS) $(OBJB)
-	$(CXX) $(OBJS) $(OBJB) -static -lodbc32 -lncurses -o $@
+runform.exe: $(OBJS) $(OBJB) membed/libmex.a
+	$(CXX) $(OBJS) $(OBJB) -static -lodbc32 -lncursesw -o $@
 
 curkeys.h: curkeys.c
 	$(CC) $(CXXFLAGS) curkeys.c -o curkeys.exe

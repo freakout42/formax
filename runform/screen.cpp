@@ -32,8 +32,18 @@
 
 #define nocurses(ret) if (screenclos) return ret
 
+#ifdef WIN32
+HANDLE stdinHandle;
+#endif
 char cursesversion[8] = NCURSES_VERSION;
 char cursesrun[32];
+
+int cur_utf8 =
+#ifdef UTF8
+               1;
+#else
+               0;
+#endif
 
 #ifdef UTF8
 static int cur_scpy(wchar_t *t, wchar_t *s, int z) {
@@ -199,18 +209,6 @@ for (s = src; *s; s++) t += utf162utf8(t, *s);
 return t - tgt;
 }
 
-int Screen::str_pos(char *s, int f) {
-char *p;
-int n, m;
-n = 0;
-m = 0;
-for (p = s; *p; p++) {
-  if (m++ >= f) break;
-  if (!cur_utf8 || (*p & 0xC0) != 0x80) n++;
-  }
-return n;
-}
-
 /* s iso or utf-8 (cur_utf8=TRUE) char[]
  * f from pos
  * l min size padded <0 right align
@@ -274,6 +272,18 @@ static int cur_slen(char *s) { return strlen(s); }
 
 #endif
 
+int Screen::str_pos(char *s, int f) {
+char *p;
+int n, m;
+n = 0;
+m = 0;
+for (p = s; *p; p++) {
+  if (m++ >= f) break;
+  if (!cur_utf8 || (*p & 0xC0) != 0x80) n++;
+  }
+return n;
+}
+
 static int str_tlen (char *s)
 {
 char *p;
@@ -318,7 +328,7 @@ sprintf(cursesrun, "%s-%c", curses_version(), CURVARIANT);
  */
 SetConsoleCP(CP_UTF8);
 SetConsoleOutputCP(CP_UTF8);
-lclocale = CHARSET;
+lclocale = (char*)CHARSET;
 if ((lclocale = setlocale(LC_ALL, ".UTF-8")) == NULL) lclocale = setlocale(LC_ALL, CHARSET);
 cur_utf8 = 1;
 stdinHandle = GetStdHandle(STD_INPUT_HANDLE);
@@ -771,6 +781,7 @@ c = 0;
 if (pos == -9999) pos = -1;
 else if (pos < 0 && pos > -1000) pos += str_tlen(s) + 1;
 else if (pos < 0) { first = -1 * (pos + 1000); pos = 0; }
+pos = str_pos(s, pos);
 sx = x + pos;
 #ifdef UTF8
 len = cur_utf8 ? utf8_to_ucode(se, s, BIGSIZE) : cur_wcpy(se, s);
@@ -918,7 +929,6 @@ if (screenclos) {
 } else {
 setcode(colcode);
 getyx(wndw, oldy, oldx);
-//mvwprintw(wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
 cur_puts(y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, s, width);
 wmov(oldy, oldx);
 setcode(-1);
