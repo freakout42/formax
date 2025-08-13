@@ -171,6 +171,7 @@ int mainloop(char *pth, WINDOW *scr);
 }
 
 /* global varibles mostly command line options */
+extern char *lclocale;
 extern int   useodbcve3;
 extern int   monochrome;
 extern int   usedefault;

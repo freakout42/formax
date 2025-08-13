@@ -21,9 +21,7 @@ protected:
   void wera();             /* erase window */
   void wbox();             /* draw a box around window */
   int wadds(char *str);    /* write string to window */
-#ifdef UTF8
   int wadds(wchar_t *str); /* wide string to window */
-#endif
   void wsleep(int sec);    /* sleep sec seconds */
   int fulledit(char *pth); /* full screen editor within a window */
   char *msg(int num);      /* get message string by id */
@@ -33,7 +31,6 @@ private:
   int str_pos(char *s, int f);
   char *str_sub(char *tg, char *s, int f, int l, int z);
   void cur_puts(int y, int x, char *s, int w);
-  char *lclocale;          /* locale info */
   WINDOW *wndw;            /* curses window structure */
   void setcolor(int pairi); /* change to a predefined color */
   void uncolor(int pairi); /* change back to uncolored */

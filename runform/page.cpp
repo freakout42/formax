@@ -25,7 +25,7 @@ if (page_id == PGE_ABOUT) {
 #define ABOUTLINE map[r++] = strdup(a);
   letf(t(a), "%s  [%d]", COMPANY, globalpkid);                       ABOUTLINE
   letf(t(a), "https://formax.freakout.de v%s %d", VERSION, VERMSGS); ABOUTLINE
-  letf(t(a), "charset:    %s", CHARSET);                             ABOUTLINE
+  letf(t(a), "charset:    %s", lclocale);                            ABOUTLINE
   letf(t(a), "compiler:   %s (%d)", CCOMPILER, (int)sizeof(Form));   ABOUTLINE
   letf(t(a), "compiled:   %s %5.5s", __DATE__, __TIME__);            ABOUTLINE
   letf(t(a), "sqlite inc: %s", sqliteversion);                       ABOUTLINE

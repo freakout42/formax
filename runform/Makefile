@@ -90,3 +90,6 @@ clean:
 	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf \
 		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe *.dll scotty.*
 	rm -rf bin include lib ncurses
+
+mysql:
+	./runform -z -g/tmp/formax.log ../generate/scotty.frm MySQL # from bongo sql -c

@@ -10,26 +10,8 @@
 #include <termios.h>
 #include <term.h>
 #endif
-
 #include <curses.h>
-#ifdef NCURSES_WACS
-#include <locale.h>
-#define UTF8
-#define CURVARIANT 'w'
-#ifndef CHARSET
-#ifdef WIN32
-#define CHARSET "English_United States.65001"
-#else
-#define CHARSET "en_US.UTF-8"
-#endif
-#endif
-#else
-#define CURVARIANT 'n'
-/* #define CHARSET "en_US.iso885915" comes from company.h */
-#endif
-
 #include "runform.h"
-
 #define nocurses(ret) if (screenclos) return ret
 
 #ifdef WIN32
@@ -38,14 +20,9 @@ HANDLE stdinHandle;
 char cursesversion[8] = NCURSES_VERSION;
 char cursesrun[32];
 
-int cur_utf8 =
 #ifdef UTF8
-               1;
-#else
-               0;
-#endif
+#define CURVARIANT 'w'
 
-#ifdef UTF8
 static int cur_scpy(wchar_t *t, wchar_t *s, int z) {
 int i, j;
 j = 0;
@@ -254,6 +231,8 @@ return tg;
 }
 
 #else
+#define CURVARIANT 'n'
+
 static int cur_scpy(char *t, char *s, int z) {
 int i, j;
 j = 0;
@@ -314,38 +293,9 @@ mvwprintw (wndw, y, x, "%-*s", w, s);
 
 Screen::Screen() {
 ysiz = 0;
-cur_utf8 = 0;
 cursesvariant = CURVARIANT;
 sprintf(cursesrun, "%s-%c", curses_version(), CURVARIANT);
 #ifdef UTF8
-/* user and charset environment */
-#ifdef WIN32
-/* username = getenv("USERNAME");
- * #define ISO_8859_15_CP 28605
- * if (IsValidCodePage(ISO_8859_15_CP) == 0) return NULL;
- * SetConsoleCP(ISO_8859_15_CP);
- * SetConsoleOutputCP(ISO_8859_15_CP);
- */
-SetConsoleCP(CP_UTF8);
-SetConsoleOutputCP(CP_UTF8);
-lclocale = (char*)CHARSET;
-if ((lclocale = setlocale(LC_ALL, ".UTF-8")) == NULL) lclocale = setlocale(LC_ALL, CHARSET);
-cur_utf8 = 1;
-stdinHandle = GetStdHandle(STD_INPUT_HANDLE);
-SetConsoleMode(stdinHandle, 0); /* ENABLE_WINDOW_INPUT); */
-#else
-/* #define ISO_8859_15_CP "en_US.iso885915"
- * setenv("LC_ALL", ISO_8859_15_CP, 1);
- * setenv("LANG", ISO_8859_15_CP, 1);
- * setenv("LC_ALL", CHARSET, 1);
- * username = getenv("USER");
- */
-/* ESC % @ */
-if ((lclocale = setlocale(LC_ALL, "")) == NULL)
-  if ((lclocale = setlocale(LC_ALL, CHARSET)) == NULL)
-    lclocale = setlocale(LC_ALL, "C");
-cur_utf8 = strstr(lclocale, "UTF") || strstr(lclocale, "utf");
-#endif
 strcat(cursesrun, "=");
 strcat(cursesrun, cur_utf8 ? "1" : "0");
 #endif
@@ -841,7 +791,7 @@ while (!done) {              /* input loop */
    case KEY_CTRL('H'):
     if (pos > 0) {
       changed = TRUE;
-      memmove(&se[pos - 1], &se[pos], len - pos + 1);
+      memmove(&se[pos - 1], &se[pos], (len - pos + 1) * sizeof(wchar_t));
       len--;
       pos--;
       if (sx > x) sx--;
@@ -929,6 +879,7 @@ if (screenclos) {
 } else {
 setcode(colcode);
 getyx(wndw, oldy, oldx);
+//mvwprintw(wndw, y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, "%-*s", width, s);
 cur_puts(y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, s, width);
 wmov(oldy, oldx);
 setcode(-1);

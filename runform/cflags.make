@@ -18,7 +18,7 @@ endif
 LINTING=-Wall -Werror -Wno-write-strings $(DISABLEWARN)
 ifneq (,$(wildcard /usr/include/ncursesw/curses.h))
   CURSESVARANT := ncursesw
-  CURSESINC := -I/usr/include/ncursesw
+  CURSESINC := -DUTF8 -I/usr/include/ncursesw
 else
   CURSESVARANT := ncurses
 endif
