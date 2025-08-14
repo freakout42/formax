@@ -75,10 +75,10 @@ or technology out there.
 
 #### Development
 
-The form application can be build without code by setting up
-some data in a couple of tables with minimal programming. A
-minimal form to maintain a single table with complete CRUD
-functionality can be build with a single line of code within
+The form application can be build without coding by setting
+up some data in a couple of tables with minimal programming.
+A minimal form to maintain a single table with complete CRUD
+functionality can be build with a single command line within
 two seconds. Anyways is the primary goal the efficiency of
 the end user application. Developer comfort is on second
 place.
@@ -130,6 +130,6 @@ did not extend the real application functionality.
 ### License
 
 GNU General Public License _Version 3, 29 June 2007_  
-Copyright (c) 2024, Axel K. Reinhold.  
+Copyright (c) 2025, Axel K. Reinhold.  
 All rights reserved.
 
