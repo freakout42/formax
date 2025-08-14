@@ -35,6 +35,15 @@ static char message[MEDSIZE];
 static char sqlquery[MEDSIZE*2];
 #endif
 
+void Logger::verboselog(const char *format, ...) {
+va_list args;
+if (verbose2se) {
+  va_start (args, format);
+  vfprintf (stderr, format, args);
+  va_end (args);
+  fputc('\n', stderr);
+} }
+
 #ifdef USELOGGING
 /* the only read is for the session id from the returning clause of _INSERTLOGIN */
 static int callback(void *NotUsed, int argc, char **argv, char **azColName){

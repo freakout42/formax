@@ -1,6 +1,6 @@
 /* runform.cpp main and os interfaces except curses and odbc */
 
-#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikmopqwxz] [-n lg]\n" \
+#define USAGE "runform-(%02d) %s\nusage: runform [-3abcdhikmopqvwxz] [-n lg]\n" \
   " [-f formid ] [-g logfile] [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...\n"
 
 #include <stdio.h>
@@ -35,6 +35,7 @@ int  usepoorman  = 0;             // -o
 int  pwdencrypt  = 0;             // -p
 int  queryonlym  = 0;             // -q
 int  redirected  = 0;             // -r
+int  verbose2se  = 0;             // -v
 int  watchmacro  = 0;             // -w
 int  updatemode  = 0;             // -x
 int  noentermac  = 0;             // -z
@@ -190,7 +191,7 @@ lclocale = strdup(locl);
 form_id = 1;
 
 /* command-line arguments and options check and process */
-while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrt:Vwxy:z")) != -1) {
+while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrt:Vvwxy:z")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n  (%d) [%s]\n", about, (int)sizeof(Form), GITCOMMIT); exit(2);
     case 'y': ypassword = optarg; break;
@@ -240,6 +241,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrt:Vwxy:z")) != -1) {
     case 'm': matchnocas = 0; break;
     case 'z': noentermac = 1; break;
     case 'r': redirected = 1; break;
+    case 'v': verbose2se = 1; break;
     case 'j': globalpkid = atoi(optarg); break;
     default: usage(1);
   }
@@ -264,6 +266,7 @@ g.init(argv[optind+1]);
 
 /* open the form database - sqlite3 file named .frm */
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
+g.verboselog("connect form  %s", dsn);
 if (dbconn[0].connect(dsn)) usage(4);
 
 /* check and open the database connections
@@ -275,6 +278,7 @@ for (i=0; i<4; i++) {
   if (j > i + 1) {
     let(dsn0, argv[optind+i+1]);
     parsedsn(dsn, drv, dsn0);
+    g.verboselog("connect db[%d] %s", i+1, dsn);
     if (dbconn[i+1].connect(dsn)) usage(8);
         dbconn[i+1].ropen();
   } else {

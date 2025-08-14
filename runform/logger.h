@@ -9,6 +9,7 @@ public:
   void logfmt(const char *format, ...);
   void logsql(char *sql, char *bnd[]);
   void lclose();
+  void verboselog(const char *format, ...);
 private:
   sqlite3 *db;
   char logpath[SMLSIZE];

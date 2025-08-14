@@ -200,3 +200,4 @@ extern int   redirected;
 extern int   screenclos;
 extern int   callinguid;
 extern int   usepoorman; 
+extern int   verbose2se; 
