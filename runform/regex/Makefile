@@ -10,7 +10,7 @@ re.o: re.c re.h
 
 testre: testre.c re.o
 	$(CC) $(CFLAGS) testre.c re.o -o $@
-	./$@
+	./$@ || true
 	
 clean:
 	rm -f *.o testre

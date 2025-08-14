@@ -11,13 +11,14 @@
 
 /* fast keys for different keyboard layouts for -n option */
 char shiftedus[] = "/!@#$%^&*().,";
-char shifteduk[] = "/!\"£$%^&*().,";
-char shiftedde[] = "-!\"§$%&/()=.,";
-char shiftedfr[] = "!&é\"'(-è_çá;,";
+char shifteduk[] = "/!\"$%^&*().,";
+char shiftedde[] = "-!\"$%&/()=.,";
+char shiftedfr[] = "!&'(-";
 char *shiftednum = shiftedus;
 
 /* options are global vars */
 char *lclocale;
+int  cur_utf8;
 int  firststart  = 1;
 int  insertmode  = 1;
 int  useodbcve3  = 0;             // -3
@@ -42,6 +43,7 @@ char *username;
 int  screenclos  = 1;
 int  callinguid  = -1;
 char about[SMLSIZE];
+char emptystring[1] = "";
 
 /* global form dbs screen functions and logger */
 Logger g;
@@ -120,6 +122,7 @@ char totpresult[8];
 #endif
 Form *rootform;
 const char *ds;
+char *locl;
 
 /* version information and about and other runtime information */
 #ifdef WIN32
@@ -151,14 +154,38 @@ for (i=0; i<3; i++) {
 }
 #endif
 
-/* user and charset environment */
+/* user environment */
 #ifdef WIN32
 username = getenv("USERNAME");
 #else
 username = getenv("USER");
-setenv("LC_ALL", CHARSET, 1);
 #endif
-lclocale = setlocale(LC_ALL, CHARSET);
+
+/* charset setup */
+#ifndef UTF8
+setenv("LC_ALL", CHARSET, 1);
+locl = setlocale(LC_ALL, CHARSET);
+#else
+#undef CHARSET
+#ifdef WIN32
+#define CHARSET "English_United States.65001"
+SetConsoleCP(CP_UTF8);
+SetConsoleOutputCP(CP_UTF8);
+if ((locl = setlocale(LC_ALL, ".UTF-8")) == NULL)
+  if ((locl = setlocale(LC_ALL, CHARSET)) == NULL)
+    locl = setlocale(LC_ALL, "C");
+cur_utf8 = 1;
+stdinHandle = GetStdHandle(STD_INPUT_HANDLE);
+SetConsoleMode(stdinHandle, 0); /* ENABLE_WINDOW_INPUT); */
+#else
+#define CHARSET "en_US.UTF-8"
+if ((locl = setlocale(LC_ALL, "")) == NULL)
+  if ((locl = setlocale(LC_ALL, CHARSET)) == NULL)
+    locl = setlocale(LC_ALL, "C");
+cur_utf8 = strstr(locl, "UTF") || strstr(locl, "utf");
+#endif
+#endif
+lclocale = strdup(locl);
 
 form_id = 1;
 
@@ -278,6 +305,7 @@ for (i=0; i<5; i++) {
   dbconn[i].disconnect();
 }
 g.lclose();
+free(lclocale);
 
 exit(s==-1 ? 0 : abs(s));
 }

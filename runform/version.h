@@ -1,1 +1,1 @@
-#define GITCOMMIT "3f5ea9e014a691d5a131e45bc1ccc285d3473fba"
+#define GITCOMMIT "af69f7ad3191d21e154ddbc3ccd40727a76873a5"

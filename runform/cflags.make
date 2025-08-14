@@ -16,18 +16,24 @@ else
 endif
 endif
 LINTING=-Wall -Werror -Wno-write-strings $(DISABLEWARN)
-CURSESLIB=-lcurses
+ifneq (,$(wildcard /usr/include/ncursesw/curses.h))
+  CURSESVARANT := ncursesw
+  CURSESINC := -DUTF8 -I/usr/include/ncursesw
+else
+  CURSESVARANT := ncurses
+endif
+CURSESLIB=-l$(CURSESVARANT)
 ifeq (test,$(MAKECMDGOALS))
   SUBTARGET=test
-  CFLAGS=-g -O0 $(LINTING)
+  CFLAGS=-g -O0 $(CURSESINC) $(LINTING)
 else ifeq (runform0,$(MAKECMDGOALS))
   SUBTARGET=small
-  CFLAGS=-Os -DPURUNFORM -DNDEBUG $(LINTING)
+  CFLAGS=-Os -DPURUNFORM -DNDEBUG $(CURSESINC) $(LINTING)
 else ifeq (small,$(MAKECMDGOALS))
-  CFLAGS=-Os -DNDEBUG $(LINTING)
+  CFLAGS=-Os -DNDEBUG $(CURSESINC) $(LINTING)
 else
   SUBTARGET=all
-  CFLAGS=-O3 -DNDEBUG $(STACKPROTECTION) $(LINTING)
+  CFLAGS=-O3 -DNDEBUG $(STACKPROTECTION) $(CURSESINC) $(LINTING)
   CLDFLAGS=$(STACKPROTECTION)
 endif
 CXXFLAGS=$(CFLAGS)

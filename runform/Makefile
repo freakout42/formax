@@ -19,7 +19,7 @@ company.h: arx.h
 	if [ -f $@ ]; then touch $@; else cp arx.h $@; fi
 
 runform0: clean $(OBJS) $(OBJA)
-	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJB) -lcurses -lodbc -o $@
+	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJB) $(CURSESLIB) -lodbc -o $@
 	ls -l $@
 
 runform: $(OBJS) $(OBJA)
@@ -33,10 +33,10 @@ test: clean runform $(EXAMPLE)
 	@cp ../generate/scotty.sq3 .
 	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
 		./runform -r -x -g/tmp/formax.log $(EXAMPLE) 2>$@ | \
-			grep -v -e'formax.freakout.de' -e'compile[dr]:' -ecurses.inc: -ecurses.run: -esqlite -edver: >out
-	@test -f $@ -a ! -s $@
-	@sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
-	@diff ../generate/scotty.out out
+			grep -v -e'formax.freakout.de' -e'compile[dr]:' -ecurses.inc: -ecurses.run: -esqlite -edver: -echarset: >out
+	test -f $@ -a ! -s $@
+	sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
+	diff ../generate/scotty.out out
 	@rm -f out
 	@rm -f /tmp/formax.log
 	@cp scotty.sq3 ../generate
@@ -60,7 +60,7 @@ elk/elk.o:
 	cd elk; make $(SUBTARGET)
 regex/re.o:
 	cd regex; make $(SUBTARGET)
-ncurses/include/curses.h: ../bin/ncurses.tar.gz
+$(CURSESVARANT)/include/curses.h: ../bin/ncurses.tar.gz
 	tar xzf ../bin/ncurses.tar.gz
 ../bin/ncurses.tar.gz: ../bin/ncurses-$(NCURSESVER).tar.gz
 	@rm -rf ncurses*
@@ -90,3 +90,6 @@ clean:
 	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf \
 		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe *.dll scotty.*
 	rm -rf bin include lib ncurses
+
+mysql:
+	./runform -z -g/tmp/formax.log ../generate/scotty.frm MySQLw 2>lll # from bongo sql -c

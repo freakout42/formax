@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.2.15"
+#define VERSION "2.5.0"
 #define VERMSGS 23
 
 /* optional functionality */
@@ -13,13 +13,14 @@
 extern char odbcversion[];
 extern char odbcrun[];
 extern char cursesversion[];
-extern const char *cursesrun;
+extern char cursesrun[];
 extern int intrigger;
 extern char *macropointer;
 extern char sqliteversion[];
 extern const char *sqliterun;
 extern int sqlitevernumber;
 extern char about[];
+extern int cur_utf8; /* UTF8 && CHARSET~utf8/i */
 
 #define gnucs1(m, i, l) #m "." #i "." #l
 #define gnucs(m, i, l) gnucs1(m, i, l)
@@ -170,6 +171,11 @@ int mainloop(char *pth, WINDOW *scr);
 }
 
 /* global varibles mostly command line options */
+#ifdef WIN32
+extern HANDLE stdinHandle;
+#endif
+extern char *lclocale;
+extern char  emptystring[];
 extern int   useodbcve3;
 extern int   monochrome;
 extern int   usedefault;

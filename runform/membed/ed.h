@@ -1,4 +1,4 @@
-/* $Id: ed.h,v 1.54 2024/11/27 12:16:41 axel Exp $
+/* $Id: ed.h,v 1.58 2025/07/23 14:01:29 axel Exp $
  * This file is the general header file for
  * all parts of the MicroEMACS display editor. It contains
  * definitions used by everyone, and it contains the stuff
@@ -8,7 +8,9 @@
  * which were changed to char.
  * um: for UN*X System V set the defines V7 ``and'' SYS_V to 1 !!
  */
-#define VERSION "6.7"
+#define VERSION "7.1"
+
+#define _XOPEN_SOURCE_EXTENDED 1
 
 #if (VT100)
 #define V7      1			/* V7 UN*X or Coherent          */
@@ -32,7 +34,8 @@
 #define VT52    0
 #define TERMCAP 0
 #define VT100   1
-#define CURSES	0
+#define CURSES  0
+#define UTF8    1
 #else
 #define V7      1
 #define SYS_V   1
@@ -263,12 +266,26 @@
 
 #if (TERMC & CURSES)
 #include <curses.h>
+#include <string.h>
+#include <wchar.h>
+#include <locale.h>
+#ifdef NCURSES_WACS
+#define UTF8 1
+#define CURVARIANT w
+#define CHARSET "en_US.UTF-8"
+#else
+#define CURVARIANT n
+#define CHARSET "en_US.iso885915"
+#endif
+
 #include <signal.h>
 #ifndef WIN32
 #include <term.h>
 #include <termios.h>
 #endif
 #endif
+extern int cur_utf8;
+
 #if ! (defined(WINDOW) || defined(_CURSES_INCLUDED) || defined(_CURSES_H_) || defined(_CURSES_H) || defined(CURSES_H) || defined(__NCURSES_H))
 /*
  * There is a window structure allocated for
@@ -330,6 +347,7 @@ typedef struct  BUFFER {
 #define BFEDIT  0x04			/* mb: OK to change (added)	*/
 #define BFFORE  0x08			/* ar: foreign format (added)	*/
 #define BFTAIL  0x10			/* ar: foreign short (added)	*/
+#define BFUTF8  0x20			/* ar: utf8 format   (added)	*/
 
 /*
  * The starting position of a
@@ -520,3 +538,10 @@ int getccol(int bflg);
 int forwpage(int f, int n);
 int tnewline(int f, int n);
 int forwdel(int f, int n);
+
+unsigned int to_latin9(const unsigned int code);
+unsigned int to_ucpoint(const unsigned int code);
+int to_utf8(char *buf, int nbuf);
+int to_utf16(char *buf, int nbuf);
+int utf162utf8(char* out, int c);
+int iso2ucode(unsigned char cod);

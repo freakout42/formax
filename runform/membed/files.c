@@ -19,6 +19,15 @@
 
 extern int ctrlg();
 
+#ifndef EMBEDDED
+int cur_utf8 =
+#ifdef UTF8
+               1;
+#else
+               0;
+#endif
+#endif
+
 /*
  * file fileio.c:
  *
@@ -58,8 +67,7 @@ getfsize(fn)
 #endif
 
 #if BFILES
-bputc(c)
-	register int c;
+int bputc(int c)
 {
 	if (fbpos >= ftail) {	/* RAM full, write it out */
 #if AtST
@@ -134,9 +142,8 @@ bgetc()
 
 	return (*fbpos++);
 }
-int
-bungetc(c)
-	int c;
+
+int bungetc(int c)
 {
 	oldbfc = c;
 }
@@ -145,9 +152,10 @@ bungetc(c)
 /*
  * mb: Copy a file name, possibly converting to lowercase.
  */
-void cpyfname (bname, fname)
-char    bname[];
-char    fname[];
+void cpyfname (
+char    bname[],
+char    fname[]
+)
 {
 	register char   *cp1;
 	register char   *cp2;
@@ -170,8 +178,7 @@ char    fname[];
  * mb: common code for fileread() and filevisit().
  */
 
-int
-addfile (fname)  char *fname;  {
+int addfile (char *fname) {
 	char *fnp;
 	if (nfiles < maxnfiles
 	 && (fnp=malloc(NFILEN)) != NULL) {
@@ -183,9 +190,7 @@ addfile (fname)  char *fname;  {
 }
 
 #ifndef EMBEDDED
-int choosefile(prompt, fname, flag)
-	char	*prompt, *fname;
-	int	flag;
+int choosefile(char	*prompt, char *fname, int flag)
 {
 	register char	*dflt;
 	int	s, old;
@@ -258,8 +263,7 @@ start:
 /*
  * Open a file for reading.
  */
-int ffropen(fn)
-char    *fn;
+int ffropen(char *fn)
 {
 #if BFILES
 
@@ -304,14 +308,14 @@ char    *fn;
 
 static	int		longline;
 static	int		foreignformat;
+static	int		noiso885915ucode;
 
 /*
  * Open a file for writing.
  * Return TRUE if all is well, and
  * FALSE on error (cannot create).
  */
-int ffwopen(fn)
-char    *fn;
+int ffwopen(char *fn)
 {
 #if BFILES
 #if AtST
@@ -432,10 +436,7 @@ void frclose()
 #endif
 }
 
-int
-ffgetline(buf, nbuf)
-register char   buf[];
-register int    nbuf;
+int ffgetline(char buf[], int nbuf)
 {
 	register int    c, i, t;
 
@@ -517,6 +518,16 @@ register int    nbuf;
 		}
 		return (FIOEOF);
 	}
+
+  if (cur_utf8) if (to_utf16(buf, nbuf) < 0)
+		if (!noiso885915ucode) {
+				t = mlyesno("File has non-mappable chars: loosing - REALLY EDIT");
+				mlerase();
+				if (!t) return (FIOERR);
+				mlwrite("File has non-mappable chars: loosing");
+        noiso885915ucode = TRUE;
+				}
+
 	return (FIOSUC);
 }
 
@@ -527,8 +538,7 @@ register int    nbuf;
  * Also called by the mainline, to read in a file
  * specified on the command line as an argument.
  */
-int readin(fname)
-char    fname[];
+int readin(char fname[])
 {
 	register LINE   *lp1;
 	register char	*cp;
@@ -544,6 +554,7 @@ char    fname[];
 
 	longline = FALSE;
 	foreignformat = FALSE;
+	noiso885915ucode = FALSE;
 	s = ffropen(fname);
 	if (s == FIOERR)
 		mlwrite("Error opening file");
@@ -634,14 +645,11 @@ char    fname[];
  * the free newline. Return the status.
  * Check only at the newline.
  */
-int
-ffputline(buf, nbuf, closeit)
-register char   buf[];
-register int    nbuf;
-register int    closeit;
+int ffputline(char buf[], int nbuf, int closeit)
 {
-	register int    i, c;
+  int i, c;
 
+  if (cur_utf8 ^ ((curbp->b_flag&BFUTF8)==BFUTF8)) nbuf = to_utf8(buf, nbuf);
 	c = 0;				/* in case nbuf==0 */
 	for (i=0; i<nbuf; ++i) {
 #if BFILES
@@ -686,8 +694,7 @@ register int    closeit;
  * a macro for this. Most of the grief is error
  * checking of some sort.
  */
-int writeout(fn)
-char    *fn;
+int writeout(char *fn)
 {
 	register int    s;
 	register LINE   *lp;
@@ -733,8 +740,7 @@ char    *fn;
  * Bound to "C-X C-R".   mb: added keep&insert stuff.
  */
 #ifndef EMBEDDED
-int fileread(f, n)
-	int f, n;
+int fileread(int f, int n)
 {
 	register BUFFER	*bp;
 	register int	s, ins;
@@ -781,8 +787,7 @@ int fileread(f, n)
  * mb: combined "out" portion of new & old cases,
  *	added "fileindex" stuff.
  */
-int filevisit(f, n)
-	int f, n;
+int filevisit(int f, int n)
 {
 	register BUFFER *bp;
 	char		fname[NFILEN];
@@ -852,9 +857,7 @@ out:
  * I suppose that this information could be put in
  * a better place than a line of code.
  */
-void makename(bname, fname)
-char    bname[];
-char    fname[];
+void makename(char bname[], char fname[])
 {
 	register char   *cp1;
 	register char   *cp2;
@@ -906,8 +909,7 @@ char    fname[];
  * with ITS EMACS. Bound to "C-X C-W".
  * mb: added default filename.
  */
-int filewrite(f, n)
-	int f, n;
+int filewrite(int f, int n)
 {
 	int	s;
 	char	fname[NFILEN];
@@ -938,8 +940,7 @@ int filewrite(f, n)
  * name for the buffer. Bound to "C-X C-S". May
  * get called by "C-Z".
  */
-int filesave(f, n)
-	int f, n;
+int filesave(int f, int n)
 {
 	register WINDOW *wp;
 	register int    s;
@@ -971,8 +972,7 @@ int filesave(f, n)
  * the name in the BUFFER structure, and mark the windows
  * as needing an update.
  */
-int filename(f, n)
-	int f, n;
+int filename(int f, int n)
 {
 	register WINDOW *wp;
 	char		fname[NFILEN];
@@ -1082,8 +1082,7 @@ void closelogf()
 }
 
 void
-flushlog(flag)
-	int flag;
+flushlog(int flag)
 {
 	/*int size = 0;*/
 
@@ -1101,8 +1100,7 @@ flushlog(flag)
 }
 
 int
-putlog(c)
-	int c;
+putlog(int c)
 {
 	/*int tmp;*/
 	logbuf[logfc++] = c;
@@ -1218,8 +1216,7 @@ void closelogf()
 }
 
 int
-putlog(c)
-	int c;
+putlog(int c)
 {
 	int s;
 	s = fputc (c, logfp);
@@ -1227,8 +1224,7 @@ putlog(c)
 	return (s);
 }
 
-void flushlog(flag)
-	int flag;
+void flushlog(int flag)
 {
 	if ((flag && logfc > 0) || logfc >= LOGFLUSH)
 		fflush(logfp);
@@ -1412,8 +1408,7 @@ extern	short	iochan;				/* In "termio.c"	*/
  * some (unknown) condition, you don't get one
  * free when DCL starts up.
  */
-int spawncli(f, n)
-	int f, n;
+int spawncli(int f, int n)
 {
 #if	VMS
 	if (playback == TRUE)
@@ -1542,8 +1537,7 @@ int spawncli(f, n)
  * garbage so a full repaint is done.
  * Bound to "C-X !".
  */
-int spawn(f, n)
-	int f, n;
+int spawn(int f, int n)
 {
 #if	VMS
 	register int	s;

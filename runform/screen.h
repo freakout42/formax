@@ -7,8 +7,10 @@ public:
   void wmov(int y, int x); /* move to window position */
   void toggle();           /* toggle insert replace mode */
   void writef(int y, int x, int colcode, int width, const char *format, ...);
+  void writew(int y, int x, int colcode, int width, int align, char *sval);
   int sedit(char *toe, int pos, ftype fty, int len);
   int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
+  char cursesvariant;      /* ncurses:n ncursesw:w */
 protected:
   int ysiz;                /* window horizontal size */
   int xsiz;                /* window vertical size */
@@ -20,12 +22,16 @@ protected:
   void wera();             /* erase window */
   void wbox();             /* draw a box around window */
   int wadds(char *str);    /* write string to window */
+  int wadds(wchar_t *str); /* wide string to window */
   void wsleep(int sec);    /* sleep sec seconds */
   int fulledit(char *pth); /* full screen editor within a window */
   char *msg(int num);      /* get message string by id */
   void writes(int y, int x, char *str); /* write string to window */
-  int getkb();             /* get next keycode from macro or terminal */
+  int getkey();            /* get next keycode to use lastgetch */
 private:
+  int str_pos(char *s, int f);
+  char *str_sub(char *tg, char *s, int f, int l, int z);
+  void cur_puts(int y, int x, char *s, int w);
   WINDOW *wndw;            /* curses window structure */
   void setcolor(int pairi); /* change to a predefined color */
   void uncolor(int pairi); /* change back to uncolored */
@@ -33,6 +39,7 @@ private:
   int setattributs(int attrib); /* change to attribute */
   int wgetc();             /* get key from physical keyboard */
                            /* get string from window */
+  int getkb();             /* get next keycode from macro or terminal */
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
 };
 
@@ -94,17 +101,18 @@ typedef struct attrel {
 #define A_LINECURSOR  "\033[6 q"
 
 /* application key codes get translated only for main loop switch */
-enum { KEF_NOOP = 1, KEF_NOOP2, KEF_DEL = 127, KEF_HELP = 512,
+enum { KEF_NOOP = 1, KEF_NOOP2, KEF_DEL = 127, KEF_HELP = -2047,
+//                                             Help -2047
        KEF_LIST, KEF_COPY, KEF_PASTE, KEF_COPYREC, KEF_QUERY, KEF_EXIT, KEF_QUIT, KEF_CANCEL,
-//     List 513       514        515          516        517       518       519         520
+//     List -2046   -2045      -2044        -2043      -2042     -2041     -2040       -2039
        KEF_HOME, KEF_LEFT, KEF_DELETE, KEF_INSERT, KEF_END, KEF_RIGHT,   KEF_PREFLD, KEF_BACKDEL, KEF_NXTFLD,
-//     Home 521  Left 522  Del    523  Ins    524  End 525  Right 526    Btab   527  Backspace    Tab    529
+//     Home-2038 Left-2037 Del  -2036  Ins  -2035  End-2034 Right -2033  Btab -2032  Backspac-2031 Tab -2030
        KEF_REFRESH, KEF_COMMIT, KEF_NXTREC, KEF_PREREC, KEF_PRESETR, KEF_NXTSETR, KEF_MENU, KEF_KEYHELP,
-//             530         531         532         534          535          536       537          538
+//           -2029       -2028       -2027       -2026        -2025        -2024     -2023        -2022
        KEF_NAVI0, KEF_NAVI1, KEF_NAVI2, KEF_NAVI3, KEF_NAVI4, KEF_NAVI5, KEF_NAVI6, KEF_NAVI7, KEF_NAVI8, KEF_NAVI9,
-//           539        540        541        542        543        544        545        546        547        548
+//         -2021      -2020      -2019      -2018      -2017      -2016      -2015      -2014      -2013      -2012
        KEF_NAVI10, KEF_NAVI11, KEF_NAVI12
-//            549         550         551
+//          -2011       -2010       -2009
 };
 #define KEF_NAVI(n) (KEF_NAVI0+(n))
 #define KEF_INS     (KEY_CTRL('J'))

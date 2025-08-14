@@ -5,20 +5,25 @@
  * a barely buffered fashion on the display.
  * All operating systems.
  */
-
 #define TERMC 1
 #include	"ed.h"
 
 WINDOW *windw1 = NULL;
 
-#if W32
+#if W32 || defined(WIN32)
 #include <windows.h>
 #include <stdio.h>
+#ifdef UTF8
+#include <locale.h>
+#endif
 #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
 #define ENABLE_VIRTUAL_TERMINAL_PROCESSING  0x0004
 #endif
+#if W32
+static HANDLE stdinHandle;
 static HANDLE stdoutHandle;
 static DWORD outModeInit;
+#endif
 #endif
 
 #if AtST
@@ -174,6 +179,15 @@ term.t_nrow = (getenv("LINES")   ? atoi(getenv("LINES"))   : NROW) - 1;
 #if W32
 DWORD outMode = 0;
 CONSOLE_SCREEN_BUFFER_INFO csbi;
+#ifdef UTF8
+if (cur_utf8) {
+  SetConsoleOutputCP(CP_UTF8);
+  SetConsoleCP(CP_UTF8);
+  setlocale(LC_ALL, "en_US.UTF-8");
+}
+#endif
+stdinHandle = GetStdHandle(STD_INPUT_HANDLE);
+SetConsoleMode(stdinHandle, 0); /* ENABLE_WINDOW_INPUT); */
 stdoutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 GetConsoleMode(stdoutHandle, &outMode);
 outModeInit = outMode;
@@ -222,6 +236,14 @@ term.t_nrow = csbi.srWindow.Bottom - csbi.srWindow.Top;
   int y, x, y1, x1;
 #ifndef WIN32
 	struct termios t;
+#endif
+
+#ifndef EMBEDDED
+#ifdef UTF8
+  char *lclocale;
+  if ((lclocale = setlocale(LC_ALL, "")) == NULL) lclocale = setlocale(LC_ALL, CHARSET);
+  cur_utf8 = lclocale ? strstr(lclocale, "UTF-8") != NULL : 0;
+#endif
 #endif
 
 if (windw1 == NULL) {
@@ -317,7 +339,7 @@ int ttclose()
 	ttputs ("\033f");		/* hide text cursor */
 #endif
 #if	W32
-printf("\x1b[0m");	
+printf("\x1b[0m\n");
 SetConsoleMode(stdoutHandle, outModeInit);
 #endif
 #if	MSDOS
@@ -337,6 +359,7 @@ SetConsoleMode(stdoutHandle, outModeInit);
 	stty(1, &ostate);
 #else
 #if	CURSES
+char *smcup;
 if (windw1 != stdscr) {
   delwin(windw1);
   windw1 = stdscr;
@@ -344,6 +367,11 @@ if (windw1 != stdscr) {
 } else {
   endwin();
   windw1 = NULL;
+  smcup = tigetstr("smcup");
+  if (!smcup || smcup == (char *)-1 || !*smcup) {
+    putchar('\n');
+    fflush(stdout);
+  }
   return 1;
 }
 #else
@@ -391,10 +419,28 @@ int ttputc(c)
 	putch(c);		/* Turbo C library MS-DOS call	*/
 #endif
 #if	W32
-	fputc(c, stdout);
+#ifdef UTF8
+  char e[6];
+  int i, l;
+  e[0] = c;
+  l = cur_utf8 ? to_utf8(e, 1) : 1;
+	for (i=0; i<l; i++) fputc(e[i], stdout);
+#else
+  fputc(c, stdout);
+#endif
 #endif
 #if	V7
 #if	CURSES
+#ifdef UTF8
+  cchar_t d;
+  wchar_t e[2];
+if (cur_utf8) {
+  e[0] = iso2ucode(c);
+  e[1] = '\0';
+  setcchar(&d, e, 0, 0, NULL);
+	wadd_wch(windw1, &d);
+} else
+#endif
 	waddch(windw1, c);
 #else
 	fputc(c, stdout);
@@ -542,7 +588,7 @@ int ttgetc()
 	}
 	return (c);
 #endif
-#if	(MSDOS | W32)
+#if	MSDOS
 	int k;
 
 	k = getch();
@@ -555,21 +601,121 @@ int ttgetc()
 		k -= 0x14;
 	return (FUNC | k);
 #endif
+#if	W32
+  DWORD n = 0;
+  int k, vk, ch, uc, sc, ck;
+  k = 0;
+  INPUT_RECORD ir[1];
+  while ( k == 0) {
+    ReadConsoleInputW(stdinHandle, ir, 1, &n);
+    if (ir[0].EventType & KEY_EVENT) {
+     if (ir[0].Event.KeyEvent.bKeyDown) {
+      vk = ir[0].Event.KeyEvent.wVirtualKeyCode;
+      ch = ir[0].Event.KeyEvent.uChar.AsciiChar;
+      sc = ir[0].Event.KeyEvent.wVirtualScanCode;
+      ck = ir[0].Event.KeyEvent.dwControlKeyState;
+      uc = ir[0].Event.KeyEvent.uChar.UnicodeChar;
+      if (uc == 0) {
+       if (!(ck & (SHIFT_PRESSED | LEFT_CTRL_PRESSED | RIGHT_CTRL_PRESSED | LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED )))
+        if (sc != ':') k = FUNC | sc;
+      } else {
+        k = to_latin9(uc);
+      }
+     }
+    }
+  }
+  return k;
+#endif
 #if	V7
 #if	CURSES
-	int ch;
+	int ch = 0;
+#ifdef UTF8
+#ifdef WIN32
+  extern HANDLE stdinHandle;
+  DWORD n = 0;
+  int uc, sc, ck;
+  INPUT_RECORD ir[1];
+#else
+wint_t keypress = { 0 };
+#endif
+int t;
+#endif
 
-	ch = getch();
+while (ch == 0) {
+#ifdef UTF8
+#ifdef WIN32
+    ReadConsoleInputW(stdinHandle, ir, 1, &n);
+    if (ir[0].EventType & KEY_EVENT) {
+     if (ir[0].Event.KeyEvent.bKeyDown) {
+      sc = ir[0].Event.KeyEvent.wVirtualScanCode;
+      ck = ir[0].Event.KeyEvent.dwControlKeyState;
+      uc = ir[0].Event.KeyEvent.uChar.UnicodeChar;
+      if (uc == 0) {
+       if (!(ck & (SHIFT_PRESSED | LEFT_CTRL_PRESSED | RIGHT_CTRL_PRESSED | LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED )))
+        if (sc != ':') {
+          switch (sc) {
+            case 0x3B: ch = KEY_F(1); break;
+            case 0x3C: ch = KEY_F(2); break;
+            case 0x3D: ch = KEY_F(3); break;
+            case 0x3E: ch = KEY_F(4); break;
+            case 0x3F: ch = KEY_F(5); break;
+            case 0x40: ch = KEY_F(6); break;
+            case 0x41: ch = KEY_F(7); break;
+            case 0x42: ch = KEY_F(8); break;
+            case 0x43: ch = KEY_F(9); break;
+            case 0x44: ch = KEY_F(10); break;
+            case 0x45: ch = KEY_F(11); break;
+            case 0x46: ch = KEY_F(12); break;
+            case 0x47: ch = KEY_HOME; break;
+            case 0x48: ch = KEY_UP; break;
+            case 0x49: ch = KEY_PPAGE; break;
+            case 0x4B: ch = KEY_LEFT; break;
+            case 0x4D: ch = KEY_RIGHT; break;
+            case 0x4F: ch = KEY_END; break;
+            case 0x50: ch = KEY_DOWN; break;
+            case 0x51: ch = KEY_NPAGE; break;
+            case 0x52: ch = KEY_IC; break;
+            case 0x53: ch = KEY_DC; break;
+          }
+        }
+      } else {
+       if (uc == '\t' && (ck & SHIFT_PRESSED)) {
+        ch = KEY_BTAB;
+       } else {
+        ch = to_latin9(uc);
+       }
+      }
+     }
+    }
+#else
+ch = cur_utf8 ? (get_wch(&keypress) == KEY_CODE_YES) ? keypress : to_latin9(keypress) : getch();
+#endif
+#else
+ch = getch();
+#endif /* UTF8 */
+
+#ifdef UTF8
+  if (ch == 191) {
+     t = mlyesno("Non-mappable char: loosing - ACCEPT");
+     mlerase();
+     update(TRUE);
+     if (!t) ch = 0;
+  }
+#endif
+#ifdef WIN32
+if (ch < 0) ch = 256 + ch;
+#endif
 #ifdef hpux
 	/* hp-emulation returns a "RETURN" after every function-key! */
 	if (hpterm && ch>=KEY_F(0) && ch<=KEY_F(12))
 		getch();
 #endif
+  }
 	return ch;
 #else
 	return(fgetc(stdin));
-#endif
-#endif
+#endif /* CURSES */
+#endif /* V7 */
 }
 
 /*

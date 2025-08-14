@@ -25,7 +25,7 @@ if (page_id == PGE_ABOUT) {
 #define ABOUTLINE map[r++] = strdup(a);
   letf(t(a), "%s  [%d]", COMPANY, globalpkid);                       ABOUTLINE
   letf(t(a), "https://formax.freakout.de v%s %d", VERSION, VERMSGS); ABOUTLINE
-  letf(t(a), "charset:    %s", CHARSET);                             ABOUTLINE
+  letf(t(a), "charset:    %s", lclocale);                            ABOUTLINE
   letf(t(a), "compiler:   %s (%d)", CCOMPILER, (int)sizeof(Form));   ABOUTLINE
   letf(t(a), "compiled:   %s %5.5s", __DATE__, __TIME__);            ABOUTLINE
   letf(t(a), "sqlite inc: %s", sqliteversion);                       ABOUTLINE
@@ -86,7 +86,7 @@ int Page::showpopup() {
 int i;
 redraw();
 refr();
-i = getkb();
+i = getkey();
 F(needredraw) = 1;
 return i==KEY_ENTER ? 0 : i;
 }
@@ -154,6 +154,7 @@ switch (CM) {
  case MOD_DELETE: strcpy(commit,            "Delete-Record");                    break;
 }
 wera();
+writef(0,  0, 0, 1,  "%c",        y.cursesvariant=='w' ? (cur_utf8 ? 'w' : 'i') : 'n');
 writef(0,  2, 0, 2,  "%2s-",      F(id));
 writes(0,  5,                     F(name));
 writef(0, 16, 0, 8,  "%s",        username);
@@ -162,7 +163,7 @@ writef(0, 33, 0, 8,  "%s",        CF.column);
 writef(0, 42, 0,13,  "%6d/%6d",   CR, CN);
 writef(0, 56, COL_HEADER,6,"%s",  rmodes[CM]);
 writef(0, 63, COL_HEADER,3,"%s",  (char*)(insertmode ? "Ins" : "Rep"));
-if (watchmacro) writef(0, 67, 0,   13,"%04o %5d", lastgetch, lastgetch);
+if (watchmacro) writef(0, 67, 0,   13,"%05o %6d", abs(lastgetch), lastgetch);
 else            writef(0, 67, COL_COMMIT,13,"%s", commit);
 if (!macropointer || watchmacro) refr();
 forall(field) F(l)[i].show();
@@ -172,7 +173,7 @@ for (i=PGE_MAIN; i<F(numpage); i++) {
 }
 if (macropointer && watchmacro) wsleep(1);
 F(needredraw) = 0;
-return LK ? LK : getkb();
+return LK ? LK : getkey();
 }
 
 void Page::working() {
@@ -183,16 +184,16 @@ if (!macropointer) refr();
 /* display message in status line and wait for key pressed */
 int Page::message(int ern, const char *pnt) {
 int i;
-static char empty[] = "";
+static char emptystr[] = "";
 const char *pntst;
 if (!intrigger && !macropointer && !screenclos) { /* not in trigger and display has open window */
-if (pnt) pntst = pnt; else pntst = empty;
+if (pnt) pntst = pnt; else pntst = emptystr;
 i = (strlen(pntst) > LINE0SIZE-9) ? strlen(pntst) - LINE0SIZE + 9 : 0;
 writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, msg(ern), pntst+i);
 //writef(0, 76, 0, 4, "%04d", CK);
 wmov(0,0);
 refr();
-return (i = getkb())==KEY_ESC ? 0 : i;
+return (i = getkey())==KEY_ESC ? 0 : i;
 }
 return 0;
 }

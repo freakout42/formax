@@ -1,4 +1,5 @@
 /* main.c
+ * UTF-8 with ISO-8859-1 Codes only and Fake-8859-15
  * Original code written by Dave G. Conroy,
  * substantially modified by Moshe Braner, July-December 1986.
  * Further substantial modifications by MB: January and April, 1988.
@@ -57,7 +58,7 @@ void edmore(char fname[]);
 #define DASTART	990		/* starting the DA	*/
 #define DACLOSE	991		/* closing the DA	*/
 
-char	*rcsid = "$Id: main.c,v 1.44 2024/11/27 12:16:41 axel Exp $";
+char	*rcsid = "$Id: main.c,v 1.47 2025/07/23 14:01:29 axel Exp $";
 jmp_buf loop1;
 int changedandstored;
 int	logit = LOGIT;			/* mb: log keystrokes		*/
@@ -194,6 +195,7 @@ extern  int	back_brace();
 extern  int	instog();
 extern  int	casestog();
 extern  int	fortog();
+extern  int	utftog();
 extern  int	editog();
 extern  int	visitog();
 extern  int	gotolinum();
@@ -280,6 +282,7 @@ KEYTAB  keytab[] = {
 #else
      ED|CTLX|CNTL|'S',		filesave,
 #endif
+	CTLX|CNTL|'U',		utftog,		/* ar: added */
 	CTLX|CNTL|'V',		filevisit,
      ED|CTLX|CNTL|'W',		filewrite,
 #endif
