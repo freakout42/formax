@@ -101,7 +101,7 @@ if (CP.index == pageindex && displaylen > 0)
                   "%*.*s", (alignment && block.rmode != MOD_QUERY)?displaylen:0, displaylen, outcell ? outcell : "");
 #else
       page.writew(outline, col, color, displaylen,
-                  displaylen * (alignment && block.rmode != MOD_QUERY)?-1:0, outcell ? outcell : emptystring);
+                  displaylen * ((alignment && block.rmode != MOD_QUERY) ? -1 : 0), outcell ? outcell : emptystring);
 #endif
     if (cur) page.wmov(outline, col);
   }

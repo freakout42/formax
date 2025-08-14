@@ -407,6 +407,7 @@ tcsetattr (fileno(stdin), TCSANOW, &termio);
 #endif
 #ifndef WIN32
 setenv("NCURSES_NO_HARD_TABS", "1", 1);
+setenv("NCURSES_NO_UTF8_ACS",  "1", 1);
 #endif
 if ((wndw = initscr()) == NULL) return 1;
 /*assert(wndw == stdscr);*/
