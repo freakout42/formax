@@ -238,10 +238,12 @@ term.t_nrow = csbi.srWindow.Bottom - csbi.srWindow.Top;
 	struct termios t;
 #endif
 
+#ifndef EMBEDDED
 #ifdef UTF8
   char *lclocale;
   if ((lclocale = setlocale(LC_ALL, "")) == NULL) lclocale = setlocale(LC_ALL, CHARSET);
   cur_utf8 = lclocale ? strstr(lclocale, "UTF-8") != NULL : 0;
+#endif
 #endif
 
 if (windw1 == NULL) {

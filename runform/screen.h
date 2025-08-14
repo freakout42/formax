@@ -7,6 +7,7 @@ public:
   void wmov(int y, int x); /* move to window position */
   void toggle();           /* toggle insert replace mode */
   void writef(int y, int x, int colcode, int width, const char *format, ...);
+  void writew(int y, int x, int colcode, int width, int align, char *sval);
   int sedit(char *toe, int pos, ftype fty, int len);
   int sedit(char *toe, int pos, ftype fty, int len, int col, int lin);
   char cursesvariant;      /* ncurses:n ncursesw:w */

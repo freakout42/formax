@@ -208,7 +208,7 @@ for (p = s; *p; p++) {
  }
 }
 n -= f;
-if (z > 0) {
+if (z > 0 && *p) {
   sv = *p;
   *p = '\0';
 }
@@ -226,7 +226,7 @@ if (o-n > 0) {
  } } else {
   strcpy(tg, q);
 }
-if (z > 0) *p = sv;
+if (z > 0 && sv) *p = sv;
 return tg;
 }
 
@@ -884,3 +884,21 @@ cur_puts(y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, s, width);
 wmov(oldy, oldx);
 setcode(-1);
 } }
+
+#ifdef UTF8
+void Screen::writew(int y, int x, int colcode, int width, int align, char *sval) {
+char s[MEDSIZE];
+char *crp;
+int oldy, oldx;
+str_sub(s, sval, 0, align, width);
+if ((crp = strchr(s, '\n'))) strncpy(crp, "...", sizeof(s) - (crp - s));
+if (screenclos) {
+  if ((y + x) > 0) prnf(s);
+} else {
+setcode(colcode);
+getyx(wndw, oldy, oldx);
+cur_puts(y<0 ? ysiz+y : y, x<0 ? xsiz+x : x, s, width);
+wmov(oldy, oldx);
+setcode(-1);
+} }
+#endif

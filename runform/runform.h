@@ -171,7 +171,11 @@ int mainloop(char *pth, WINDOW *scr);
 }
 
 /* global varibles mostly command line options */
+#ifdef WIN32
+extern HANDLE stdinHandle;
+#endif
 extern char *lclocale;
+extern char  emptystring[];
 extern int   useodbcve3;
 extern int   monochrome;
 extern int   usedefault;

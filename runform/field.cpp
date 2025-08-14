@@ -40,9 +40,9 @@ highvalue     = fld->n(rix,23);
 let(validreg,   fld->v(rix,24));
 helptext      = fld->c(rix,25);
 field_id      = fld->n(rix,26);
-empty(queryhuman);
-empty(querywhere);
-currentval = NULL;
+queryhuman[0] = '\0';
+querywhere[0] = '\0';
+currentval    = NULL;
 trg_postchange = -1;
 sequencenum = bs[blockindex].addattribute(rix-1, this);
 index = rix - 1;
@@ -75,13 +75,13 @@ return (fieldtype==FTY_INT && lowvalue==0 && highvalue==1) ? FTY_BOOL : fieldtyp
 /* display the field according to mode */
 void Field::show() {
 int cur, color, outline, outrec;
-const char *outcell;
+char *outcell;
 if (CP.index == pageindex && displaylen > 0)
   for (outline = line; outline < line + block.norec; outline++) {
     outcell = NULL;
     outrec = block.toprec + outline - line;
     switch(block.rmode) {
-     case MOD_QUERY:  outcell = outline==line ? queryhuman : "";
+     case MOD_QUERY:  outcell = outline==line ? queryhuman : emptystring;
                       color = COL_QUERY;   break;
      case MOD_INSERT: color = COL_NEWREC;  break;
      case MOD_DELETE: color = COL_DELETED; break;
@@ -92,12 +92,17 @@ if (CP.index == pageindex && displaylen > 0)
     cur = cur && (block.rmode != MOD_DELETE) && (outcell ? outline == line : outrec == block.currentrec);
     if (cur) color = COL_CURRENT;
     if (block.index != CB.index || (block.rmode != MOD_QUERY && outrec != block.currentrec)) color = COL_DATA;
-    if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : "";
+    if (!outcell) outcell = outrec <= block.q->rows ? *valuep(outrec) : emptystring;
     if (outcell && *outcell && block.rmode != MOD_QUERY && fieldtype == FTY_FLOAT)
       page.writef(outline, col, color, displaylen, "%*.*f", displaylen, decimalen, atof(outcell));
     else
+#ifndef UTF8
       page.writef(outline, col, color, displaylen,
                   "%*.*s", (alignment && block.rmode != MOD_QUERY)?displaylen:0, displaylen, outcell ? outcell : "");
+#else
+      page.writew(outline, col, color, displaylen,
+                  displaylen * (alignment && block.rmode != MOD_QUERY)?-1:0, outcell ? outcell : emptystring);
+#endif
     if (cur) page.wmov(outline, col);
   }
 }

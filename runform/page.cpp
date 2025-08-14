@@ -184,10 +184,10 @@ if (!macropointer) refr();
 /* display message in status line and wait for key pressed */
 int Page::message(int ern, const char *pnt) {
 int i;
-static char empty[] = "";
+static char emptystr[] = "";
 const char *pntst;
 if (!intrigger && !macropointer && !screenclos) { /* not in trigger and display has open window */
-if (pnt) pntst = pnt; else pntst = empty;
+if (pnt) pntst = pnt; else pntst = emptystr;
 i = (strlen(pntst) > LINE0SIZE-9) ? strlen(pntst) - LINE0SIZE + 9 : 0;
 writef(0, 0, 0, LINE0SIZE, "MAX-%03d %s %s", ern, msg(ern), pntst+i);
 //writef(0, 76, 0, 4, "%04d", CK);

@@ -23,6 +23,8 @@ OBJ=utf82iso885915.o buffer.o cursor.o display.o         line.o random.o search.
 
 all: mex libmex.a
 
+test: libmex.a
+
 mex: main.o $(OBJ) files.o term.o help.o
 	$(CC) -o $@ $(LDFLAGS) main.o $(OBJ) files.o term.o help.o $(LIBS)
 	strip $@

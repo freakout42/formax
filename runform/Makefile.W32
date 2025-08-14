@@ -1,6 +1,6 @@
 # TERM="#win32con"
 CC=gcc
-CURSESINC=-I/mingw32/include/ncursesw
+CURSESINC=-DUTF8 -I/mingw32/include/ncursesw
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o membed/libmex.a

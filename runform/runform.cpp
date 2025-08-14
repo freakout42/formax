@@ -43,6 +43,7 @@ char *username;
 int  screenclos  = 1;
 int  callinguid  = -1;
 char about[SMLSIZE];
+char emptystring[1] = "";
 
 /* global form dbs screen functions and logger */
 Logger g;
@@ -168,17 +169,16 @@ locl = setlocale(LC_ALL, CHARSET);
 #undef CHARSET
 #ifdef WIN32
 #define CHARSET "English_United States.65001"
-#else
-#define CHARSET "en_US.UTF-8"
-#endif
-#ifdef WIN32
 SetConsoleCP(CP_UTF8);
 SetConsoleOutputCP(CP_UTF8);
-if ((locl = setlocale(LC_ALL, ".UTF-8")) == NULL) locl = setlocale(LC_ALL, CHARSET);
+if ((locl = setlocale(LC_ALL, ".UTF-8")) == NULL)
+  if ((locl = setlocale(LC_ALL, CHARSET)) == NULL)
+    locl = setlocale(LC_ALL, "C");
 cur_utf8 = 1;
 stdinHandle = GetStdHandle(STD_INPUT_HANDLE);
 SetConsoleMode(stdinHandle, 0); /* ENABLE_WINDOW_INPUT); */
 #else
+#define CHARSET "en_US.UTF-8"
 if ((locl = setlocale(LC_ALL, "")) == NULL)
   if ((locl = setlocale(LC_ALL, CHARSET)) == NULL)
     locl = setlocale(LC_ALL, "C");
