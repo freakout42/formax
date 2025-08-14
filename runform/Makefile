@@ -92,4 +92,4 @@ clean:
 	rm -rf bin include lib ncurses
 
 mysql:
-	./runform -z -g/tmp/formax.log ../generate/scotty.frm MySQL # from bongo sql -c
+	./runform -z -g/tmp/formax.log ../generate/scotty.frm MySQLw 2>lll # from bongo sql -c

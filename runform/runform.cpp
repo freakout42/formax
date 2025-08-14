@@ -121,6 +121,7 @@ char totpresult[8];
 #endif
 Form *rootform;
 const char *ds;
+char *locl;
 
 /* version information and about and other runtime information */
 #ifdef WIN32
@@ -162,7 +163,7 @@ username = getenv("USER");
 /* charset setup */
 #ifndef UTF8
 setenv("LC_ALL", CHARSET, 1);
-lclocale = setlocale(LC_ALL, CHARSET);
+locl = setlocale(LC_ALL, CHARSET);
 #else
 #undef CHARSET
 #ifdef WIN32
@@ -173,17 +174,18 @@ lclocale = setlocale(LC_ALL, CHARSET);
 #ifdef WIN32
 SetConsoleCP(CP_UTF8);
 SetConsoleOutputCP(CP_UTF8);
-if ((lclocale = setlocale(LC_ALL, ".UTF-8")) == NULL) lclocale = setlocale(LC_ALL, CHARSET);
+if ((locl = setlocale(LC_ALL, ".UTF-8")) == NULL) locl = setlocale(LC_ALL, CHARSET);
 cur_utf8 = 1;
 stdinHandle = GetStdHandle(STD_INPUT_HANDLE);
 SetConsoleMode(stdinHandle, 0); /* ENABLE_WINDOW_INPUT); */
 #else
-if ((lclocale = setlocale(LC_ALL, "")) == NULL)
-  if ((lclocale = setlocale(LC_ALL, CHARSET)) == NULL)
-    lclocale = setlocale(LC_ALL, "C");
-cur_utf8 = strstr(lclocale, "UTF") || strstr(lclocale, "utf");
+if ((locl = setlocale(LC_ALL, "")) == NULL)
+  if ((locl = setlocale(LC_ALL, CHARSET)) == NULL)
+    locl = setlocale(LC_ALL, "C");
+cur_utf8 = strstr(locl, "UTF") || strstr(locl, "utf");
 #endif
 #endif
+lclocale = strdup(locl);
 
 form_id = 1;
 
@@ -303,6 +305,7 @@ for (i=0; i<5; i++) {
   dbconn[i].disconnect();
 }
 g.lclose();
+free(lclocale);
 
 exit(s==-1 ? 0 : abs(s));
 }
