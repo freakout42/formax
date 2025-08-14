@@ -101,10 +101,6 @@ Playground
 ----------
 You can play with an example form simply by connecting ssh
 to *formax.toarx.de* with user *scott* and password *tiger*.
-If you are using PuTTY you must set for the session:
-
-    Window->Translation->Remote character set = ISO-8859-15
-    Connection->Data->Terminal-type string = putty
 
 Install
 =======
