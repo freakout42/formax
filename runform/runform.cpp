@@ -82,6 +82,7 @@ const char *est[] = {
   "signature does not match",     // 20
   "form signed with signature",   // 21
   "feature was disabled",         // 22
+  "utf8 only with ncursesw lib",  // 23
 };
 fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
@@ -166,6 +167,7 @@ username = getenv("USER");
 #ifndef UTF8
 setenv("LC_ALL", CHARSET, 1);
 locl = setlocale(LC_ALL, CHARSET);
+if (strstr(locl, "UTF") || strstr(locl, "utf") usage(23);
 #else
 #undef CHARSET
 #ifdef WIN32
@@ -266,8 +268,8 @@ g.init(argv[optind+1]);
 
 /* open the form database - sqlite3 file named .frm */
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
-g.verboselog("connect form  %s", dsn);
 if (dbconn[0].connect(dsn)) usage(4);
+g.verboselog("connected form  %s", dsn);
 
 /* check and open the database connections
  * if simple rw-filepath use sqlite
@@ -278,9 +280,9 @@ for (i=0; i<4; i++) {
   if (j > i + 1) {
     let(dsn0, argv[optind+i+1]);
     parsedsn(dsn, drv, dsn0);
-    g.verboselog("connect db[%d] %s", i+1, dsn);
     if (dbconn[i+1].connect(dsn)) usage(8);
         dbconn[i+1].ropen();
+    g.verboselog("connected db[%d] %s", i+1, dsn);
   } else {
     dbconn[i+1].connect(NULL);
   }
@@ -298,7 +300,9 @@ genxorkey(NULL, NULL);
 rootform = new Form();
   if ((s = rootform->fill(form_id))) usage(s<19 ? 5 : s);
     if (!redirected) if ((screenclos = y.init())) usage(17);
+      g.verboselog("curses initscr");
       if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
+      g.verboselog("run form returns %d", s);
     y.closedisplay();
     screenclos = 1;
   rootform->clear();
