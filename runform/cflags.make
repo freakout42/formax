@@ -4,6 +4,9 @@ CCVER=$(shell $(CC) -dumpversion | sed 's/\..*//')
 ifeq "$(CCVER)" "16"
   DISABLEWARN=-Wno-deprecated-non-prototype -Wno-invalid-source-encoding
 endif
+ifeq "$(CCVER)" "13"
+  DISABLEWARN=-Wno-dangling-pointer
+endif
 ifeq "$(CCVER)" "3"
 ifeq (run,$(MAKECMDGOALS))
   CXX=g++4
