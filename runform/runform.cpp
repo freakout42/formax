@@ -134,8 +134,14 @@ signal(SIGTSTP, SIG_IGN);
 callinguid = getuid();
 #endif
 ds = __DATE__; /* :Oct 16 2024: https://formax.toarx.de/ */
-letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s %2.2s%3.3s%2.2s-%5.5s",
-  VERSION, CHARSET, odbcversion+2, cursesversion, ds+4, ds, ds+9, __TIME__);
+letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s-%c %2.2s%3.3s%2.2s-%5.5s",
+  VERSION, CHARSET, odbcversion+2, cursesversion,
+#ifdef UTF8
+  'w',
+#else
+  'n',
+#endif
+  ds+4, ds, ds+9, __TIME__);
 /* search for the sqlite3 driver */
 #ifdef WIN32
 char drv[SMLSIZE] = "SQLite3 ODBC Driver";
@@ -167,7 +173,7 @@ username = getenv("USER");
 #ifndef UTF8
 setenv("LC_ALL", CHARSET, 1);
 locl = setlocale(LC_ALL, CHARSET);
-if (strstr(locl, "UTF") || strstr(locl, "utf") usage(23);
+if (strstr(locl, "UTF") || strstr(locl, "utf")) usage(23);
 #else
 #undef CHARSET
 #ifdef WIN32
