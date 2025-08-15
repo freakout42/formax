@@ -1,5 +1,5 @@
 include ../cflags.make
-CFLAGS+=-std=c99
+CFLAGS+=-std=c99 -Wno-error=dangling-pointer
 
 all: elk.o
 small: elk.o
