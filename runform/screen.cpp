@@ -512,55 +512,9 @@ return F(e)->v(i,3);
 /* get key pressed */
 int getkeypressed() {
 int ch;
-ch = 'l';
-return ch;
-}
-
-/* get key pressed or from macro */
-#define findkey(fky,len,ctl) if (ch == '{' && !strncmp(macropointer, #fky "}", len)) { macropointer += len; ch = KEY_CTRL(ctl); }
-int Screen::wgetc() {
-int ch;
 int keycode = 1;
 #ifdef UTF8
 wint_t keypress = { 0 };
-#endif
-if (macropointer) {
-  ch = *macropointer++;
-    if (ch == '{') {
-      findkey(HELP,   5,'@')
-      findkey(HOME,   5,'A')
-      findkey(LEFT,   5,'B')
-      findkey(COPY,   5,'C')
-      findkey(DELETE, 7,'D')
-      findkey(END,    4,'E')
-      findkey(RIGHT,  6,'F')
-      findkey(PREFLD, 7,'G')
-      findkey(BACKDEL,8,'H')
-      findkey(NXTFLD, 7,'I')
-      findkey(INS,    4,'J')
-      findkey(KEYHELP,8,'K')
-      findkey(REFRESH,8,'L')
-      findkey(COMMIT, 7,'M')
-      findkey(NXTREC, 7,'N')
-      findkey(INSERT, 7,'O')
-      findkey(PREREC, 7,'P')
-      findkey(PRESETR,8,'R')
-      findkey(COPYREC,8,'T')
-      findkey(LIST,   5,'U')
-      findkey(PASTE,  6,'V')
-      findkey(NXTSETR,8,'W')
-      findkey(QUERY,  6,'X')
-      findkey(QUIT,   5,'Y')
-      findkey(EXIT,   5,'Z')
-    }
-  if (!(*macropointer)) macropointer = NULL;
-  return ch;
-}
-if (screenclos) {
-  ch = getchar();
-  if (ch == EOF) return 'q';
-} else {
-#ifdef UTF8
 if (cur_utf8) {
 #ifdef WIN32
   DWORD n = 0;
@@ -630,8 +584,52 @@ keycode = ch > 255 ? -1 : 1;
 if (ch < 0) ch = 256 + ch;
 #endif
 #endif
-}
 return ch * keycode;
+}
+
+/* get key pressed or from macro */
+#define findkey(fky,len,ctl) if (ch == '{' && !strncmp(macropointer, #fky "}", len)) { macropointer += len; ch = KEY_CTRL(ctl); }
+int Screen::wgetc() {
+int ch;
+if (macropointer) {
+  ch = *macropointer++;
+    if (ch == '{') {
+      findkey(HELP,   5,'@')
+      findkey(HOME,   5,'A')
+      findkey(LEFT,   5,'B')
+      findkey(COPY,   5,'C')
+      findkey(DELETE, 7,'D')
+      findkey(END,    4,'E')
+      findkey(RIGHT,  6,'F')
+      findkey(PREFLD, 7,'G')
+      findkey(BACKDEL,8,'H')
+      findkey(NXTFLD, 7,'I')
+      findkey(INS,    4,'J')
+      findkey(KEYHELP,8,'K')
+      findkey(REFRESH,8,'L')
+      findkey(COMMIT, 7,'M')
+      findkey(NXTREC, 7,'N')
+      findkey(INSERT, 7,'O')
+      findkey(PREREC, 7,'P')
+      findkey(PRESETR,8,'R')
+      findkey(COPYREC,8,'T')
+      findkey(LIST,   5,'U')
+      findkey(PASTE,  6,'V')
+      findkey(NXTSETR,8,'W')
+      findkey(QUERY,  6,'X')
+      findkey(QUIT,   5,'Y')
+      findkey(EXIT,   5,'Z')
+    }
+  if (!(*macropointer)) macropointer = NULL;
+  return ch;
+}
+if (screenclos) {
+  ch = getchar();
+  if (ch == EOF) return 'q';
+} else {
+  ch = getkeypressed();
+}
+return ch;
 }
 
 /* map ctrl to function keys */
