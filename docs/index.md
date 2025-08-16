@@ -97,9 +97,16 @@ PL/SQL as the trigger language is replaced by JavaScript.
 Enterprise requirements are fundamental for this product.
 Zero administration cost is ensured by the leightweight
 concept itself. A single executable needs to be installed
-anywhere on the PATH (Yes - One=1 file is needed). Secure
-access to the form is easily managed by setting up a
-PuTTY-session on any windows machine with zero
+anywhere on the PATH (Yes - One=1 file is needed).
+
+The credentials to access the database can be protected.
+Only 3 3rd party libraries are used and they are taken
+from the local distribution or copied into the source.
+The code is -Wall -Werror clean and send through valgrind
+when running the test suite.
+
+Secure access to the form is easily managed by setting up
+a PuTTY-session on any windows machine with zero
 administration on the client. This works securely from
 anywhere without any bandwidth requirements. With a simple
 encrypted key 2FA is for free. Even 3-factor-authentication
