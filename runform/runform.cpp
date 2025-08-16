@@ -170,29 +170,32 @@ username = getenv("USER");
 #endif
 
 /* charset setup */
+cur_utf8 = 0;
 #ifndef UTF8
-setenv("LC_ALL", CHARSET, 1);
-locl = setlocale(LC_ALL, CHARSET);
-if (strstr(locl, "UTF") || strstr(locl, "utf")) usage(23);
+#define CHARSETDEFAULT ""
 #else
 #undef CHARSET
 #ifdef WIN32
 #define CHARSET "English_United States.65001"
 SetConsoleCP(CP_UTF8);
 SetConsoleOutputCP(CP_UTF8);
-if ((locl = setlocale(LC_ALL, ".UTF-8")) == NULL)
-  if ((locl = setlocale(LC_ALL, CHARSET)) == NULL)
-    locl = setlocale(LC_ALL, "C");
-cur_utf8 = 1;
+#define CHARSETDEFAULT ".UTF-8"
 stdinHandle = GetStdHandle(STD_INPUT_HANDLE);
 SetConsoleMode(stdinHandle, 0); /* ENABLE_WINDOW_INPUT); */
+cur_utf8 = 1;
 #else
 #define CHARSET "en_US.UTF-8"
-if ((locl = setlocale(LC_ALL, "")) == NULL)
+#define CHARSETDEFAULT ""
+#endif
+#endif
+if ((locl = setlocale(LC_ALL, CHARSETDEFAULT)) == NULL)
   if ((locl = setlocale(LC_ALL, CHARSET)) == NULL)
     locl = setlocale(LC_ALL, "C");
-cur_utf8 = strstr(locl, "UTF") || strstr(locl, "utf");
-#endif
+if (!cur_utf8) {
+  cur_utf8 = strstr(locl, "UTF") || strstr(locl, "utf");
+}
+#ifndef UTF8
+if (cur_utf8) usage(23);
 #endif
 lclocale = strdup(locl);
 
