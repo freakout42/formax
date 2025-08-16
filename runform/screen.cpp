@@ -509,6 +509,13 @@ for (i=1; i<F(e)->rows; i++) if (F(e)->m(i,1) == num) break;
 return F(e)->v(i,3);
 }
 
+/* get key pressed */
+int getkeypressed() {
+int ch;
+ch = 'l';
+return ch;
+}
+
 /* get key pressed or from macro */
 #define findkey(fky,len,ctl) if (ch == '{' && !strncmp(macropointer, #fky "}", len)) { macropointer += len; ch = KEY_CTRL(ctl); }
 int Screen::wgetc() {
@@ -553,10 +560,6 @@ if (screenclos) {
   ch = getchar();
   if (ch == EOF) return 'q';
 } else {
-/* ncurses legacy
- *  i = wgetch(stdscr); // wgetch(wndw); getch(); /
- *  if (i < 0) i = 256 + i;
- */
 #ifdef UTF8
 if (cur_utf8) {
 #ifdef WIN32
@@ -619,7 +622,7 @@ ch = keypress;
 } else
 #endif /* UTF8 */
 {
-ch = wgetch (stdscr);
+ch = wgetch (stdscr); // wgetch(wndw); getch(); /
 keycode = ch > 255 ? -1 : 1;
 }
 #ifndef UTF8

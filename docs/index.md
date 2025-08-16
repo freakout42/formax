@@ -88,9 +88,9 @@ compatibility or migration utility for Oracle Forms sources.
 The source code is completely a new development of 2024.
 The database access layer OCI is replaced by ODBC, which
 opens the system to all kinds of databases. The terminal
-access layer Oracle-Terminal is replaced with ncurses which
-runs on any kind of system and terminal. PL/SQL as the
-trigger language is replaced by JavaScript.
+access layer Oracle-Terminal is replaced with ncursesw which
+runs on any kind of system and terminal and is UTF-8 raady.
+PL/SQL as the trigger language is replaced by JavaScript.
 
 #### Operations / Deployment / Security / Logging
 

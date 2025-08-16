@@ -171,7 +171,7 @@ for (i=PGE_MAIN; i<F(numpage); i++) {
   if (F(needredraw)) F(p)[i].repaint();
   F(p)[i].refrnopop();
 }
-if (macropointer && watchmacro) wsleep(1);
+if (macropointer && watchmacro) wsleep(0);
 F(needredraw) = 0;
 return LK ? LK : getkey();
 }
