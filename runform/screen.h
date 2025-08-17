@@ -24,7 +24,9 @@ protected:
   int wadds(char *str);    /* write string to window */
   int wadds(wchar_t *str); /* wide string to window */
   void wsleep(int sec);    /* sleep sec seconds */
+#ifndef NOUSEDITOR
   int fulledit(char *pth); /* full screen editor within a window */
+#endif
   char *msg(int num);      /* get message string by id */
   void writes(int y, int x, char *str); /* write string to window */
   int getkey();            /* get next keycode to use lastgetch */

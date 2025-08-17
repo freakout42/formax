@@ -12,7 +12,12 @@ else
   TINFOLIB := 
 endif
 
-CFLAGS=-O0 -Wall -Wextra -Wno-unused-parameter
+ifeq (small,$(MAKECMDGOALS))
+  CFLAGS=-Os -w
+else
+  CFLAGS=-O3 -Wall -Wextra -Wno-unused-parameter
+endif
+# -O0 -Wall -Wextra -Wno-unused-parameter
 # -Os -w
 # -O3 -Wall -Wextra -Wno-unused-parameter
 # -w
@@ -24,6 +29,8 @@ OBJ=utf82iso885915.o buffer.o cursor.o display.o         line.o random.o search.
 all: mex libmex.a
 
 test: libmex.a
+
+small: test
 
 mex: main.o $(OBJ) files.o term.o help.o
 	$(CC) -o $@ $(LDFLAGS) main.o $(OBJ) files.o term.o help.o $(LIBS)

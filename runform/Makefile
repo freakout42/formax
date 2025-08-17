@@ -2,7 +2,8 @@ NCURSESVER=6.3
 include cflags.make
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
-OBJB=cqerror.o colquery/colquery.o elk/elk.o regex/re.o membed/libmex.a
+OBJC=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
+OBJB=$(OBJC) membed/libmex.a
 OBJA=$(OBJB) crypt/libmd5.a
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
 FORMAXE=../generate/formax.frm ../generate/formax.sq3
@@ -19,7 +20,8 @@ company.h: arx.h
 	if [ -f $@ ]; then touch $@; else cp arx.h $@; fi
 
 runform0: clean $(OBJS) $(OBJA)
-	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJB) $(CURSESLIB) -lodbc -o $@
+	$(CXX) $(OBJS) $(CLDFLAGS) $(OBJC) $(CURSESLIB) -lodbc -o $@
+	strip $@
 	ls -l $@
 
 runform: $(OBJS) $(OBJA)
