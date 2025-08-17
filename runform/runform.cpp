@@ -126,22 +126,6 @@ Form *rootform;
 const char *ds;
 char *locl;
 
-/* version information and about and other runtime information */
-#ifdef WIN32
-callinguid = 202;
-#else
-signal(SIGTSTP, SIG_IGN);
-callinguid = getuid();
-#endif
-ds = __DATE__; /* :Oct 16 2024: https://formax.toarx.de/ */
-letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s-%c %2.2s%3.3s%2.2s-%5.5s",
-  VERSION, CHARSET, odbcversion+2, cursesversion,
-#ifdef UTF8
-  'w',
-#else
-  'n',
-#endif
-  ds+4, ds, ds+9, __TIME__);
 /* search for the sqlite3 driver */
 #ifdef WIN32
 char drv[SMLSIZE] = "SQLite3 ODBC Driver";
@@ -198,6 +182,23 @@ if (!cur_utf8) {
 if (cur_utf8) usage(23);
 #endif
 lclocale = strdup(locl);
+
+/* version information and about and other runtime information */
+#ifdef WIN32
+callinguid = 202;
+#else
+signal(SIGTSTP, SIG_IGN);
+callinguid = getuid();
+#endif
+ds = __DATE__; /* :Oct 16 2024: https://formax.toarx.de/ */
+letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s-%c %2.2s%3.3s%2.2s-%5.5s",
+  VERSION, lclocale, odbcversion+2, cursesversion,
+#ifdef UTF8
+  'w',
+#else
+  'n',
+#endif
+  ds+4, ds, ds+9, __TIME__);
 
 form_id = 1;
 
