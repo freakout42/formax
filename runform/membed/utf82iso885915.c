@@ -61,7 +61,7 @@ int to_utf8(char *buf, int nbuf) {
 int to_latin9(const unsigned int code) {
   int i;
   if (code < 256U) return code;
-  for (i=0; i < 128; i++) if (iso2ucodet[i] == code) { return i + 128; }
+  for (i=0; i < 128; i++) if ((unsigned)iso2ucodet[i] == code) { return i + 128; }
   if (nonisofree < MAXMAPS) { iso2ucodet[nonisofree++] = code; return nonisofree + 127; }
   else { usednoniso = -1; return 191U; } /* U+00BF = 0xBF: ? inverted */
 }
@@ -161,8 +161,7 @@ static size_t utf8_to_latin9(unsigned char *output, unsigned char *input, size_t
             }
             in += 5;
 
-        } else
-            ;
+        }
 
         if (l) *(out++) = to_latin9(l);
         l = to_latin9(c);

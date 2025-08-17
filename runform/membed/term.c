@@ -629,7 +629,9 @@ int ttgetc()
 #if	V7
 #if	CURSES
 	int ch = 0;
+#ifdef UTF8
   int keypress;
+#endif
 while (ch == 0) {
 #ifdef EMBEDDED
 extern int getkeypressed();
@@ -638,7 +640,14 @@ extern int getkeypressed();
   else ch = to_latin9(keypress);
 #else
 #ifdef UTF8
-  ch = cur_utf8 ? (get_wch(&keypress) == KEY_CODE_YES) ? keypress : to_latin9(keypress) : getch();
+  if (cur_utf8) {
+    if (get_wch(&keypress) == KEY_CODE_YES)
+                ch = keypress;
+    else
+                ch = to_latin9(keypress);
+    }
+  else
+                ch = getch();
 #else
   ch = getch();
 #ifdef WIN32

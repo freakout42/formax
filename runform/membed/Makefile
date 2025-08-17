@@ -12,9 +12,9 @@ else
   TINFOLIB := 
 endif
 
-CFLAGS=-Os -w
+CFLAGS=-O0 -Wall -Wextra -Wno-unused-parameter
 # -Os -w
-# -Wall -Wextra -Wno-unused-parameter
+# -O3 -Wall -Wextra -Wno-unused-parameter
 # -w
 # -g -O0
 LIBS=-l$(CURSESVARANT) $(TINFOLIB)
