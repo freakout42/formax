@@ -629,88 +629,37 @@ int ttgetc()
 #if	V7
 #if	CURSES
 	int ch = 0;
-#ifdef UTF8
-#ifdef WIN32
-  extern HANDLE stdinHandle;
-  DWORD n = 0;
-  int uc, sc, ck;
-  INPUT_RECORD ir[1];
-#else
-wint_t keypress = { 0 };
-#endif
-int t;
-#endif
-
+  int keypress;
 while (ch == 0) {
-#ifdef UTF8
-#ifdef WIN32
-    ReadConsoleInputW(stdinHandle, ir, 1, &n);
-    if (ir[0].EventType & KEY_EVENT) {
-     if (ir[0].Event.KeyEvent.bKeyDown) {
-      sc = ir[0].Event.KeyEvent.wVirtualScanCode;
-      ck = ir[0].Event.KeyEvent.dwControlKeyState;
-      uc = ir[0].Event.KeyEvent.uChar.UnicodeChar;
-      if (uc == 0) {
-       if (!(ck & (SHIFT_PRESSED | LEFT_CTRL_PRESSED | RIGHT_CTRL_PRESSED | LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED )))
-        if (sc != ':') {
-          switch (sc) {
-            case 0x3B: ch = KEY_F(1); break;
-            case 0x3C: ch = KEY_F(2); break;
-            case 0x3D: ch = KEY_F(3); break;
-            case 0x3E: ch = KEY_F(4); break;
-            case 0x3F: ch = KEY_F(5); break;
-            case 0x40: ch = KEY_F(6); break;
-            case 0x41: ch = KEY_F(7); break;
-            case 0x42: ch = KEY_F(8); break;
-            case 0x43: ch = KEY_F(9); break;
-            case 0x44: ch = KEY_F(10); break;
-            case 0x45: ch = KEY_F(11); break;
-            case 0x46: ch = KEY_F(12); break;
-            case 0x47: ch = KEY_HOME; break;
-            case 0x48: ch = KEY_UP; break;
-            case 0x49: ch = KEY_PPAGE; break;
-            case 0x4B: ch = KEY_LEFT; break;
-            case 0x4D: ch = KEY_RIGHT; break;
-            case 0x4F: ch = KEY_END; break;
-            case 0x50: ch = KEY_DOWN; break;
-            case 0x51: ch = KEY_NPAGE; break;
-            case 0x52: ch = KEY_IC; break;
-            case 0x53: ch = KEY_DC; break;
-          }
-        }
-      } else {
-       if (uc == '\t' && (ck & SHIFT_PRESSED)) {
-        ch = KEY_BTAB;
-       } else {
-        ch = to_latin9(uc);
-       }
-      }
-     }
-    }
+#ifdef EMBEDDED
+extern int getkeypressed();
+  keypress = getkeypressed();
+  if (keypress < 0) ch = -keypress;
+  else ch = to_latin9(keypress);
 #else
-ch = cur_utf8 ? (get_wch(&keypress) == KEY_CODE_YES) ? keypress : to_latin9(keypress) : getch();
-#endif
-#else
-ch = getch();
-#endif /* UTF8 */
-
 #ifdef UTF8
-  if (ch == 191) {
-     t = mlyesno("Non-mappable char: loosing - ACCEPT");
-     mlerase();
-     update(TRUE);
-     if (!t) ch = 0;
-  }
-#endif
+  ch = cur_utf8 ? (get_wch(&keypress) == KEY_CODE_YES) ? keypress : to_latin9(keypress) : getch();
+#else
+  ch = getch();
 #ifdef WIN32
 if (ch < 0) ch = 256 + ch;
+#endif
+#endif /* UTF8 */
+#endif /* EMBEDDED */
+}
+#ifdef UTF8
+  if (ch == 191) {
+     keypress = mlyesno("Non-mappable char: loosing - ACCEPT");
+     mlerase();
+     update(TRUE);
+     if (!keypress) ch = 0;
+  }
 #endif
 #ifdef hpux
 	/* hp-emulation returns a "RETURN" after every function-key! */
 	if (hpterm && ch>=KEY_F(0) && ch<=KEY_F(12))
 		getch();
 #endif
-  }
 	return ch;
 #else
 	return(fgetc(stdin));

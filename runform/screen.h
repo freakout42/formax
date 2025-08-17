@@ -43,6 +43,8 @@ private:
   int getst(int y, int x, int width, int att, char *s, int pos, char *legal, int max, int *chg);
 };
 
+extern "C" int getkeypressed();
+
 #define TYPEM  0x1fu
 #define BIMASK 0xc0u
 #define BOLD   0x40u
