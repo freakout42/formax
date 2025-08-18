@@ -46,6 +46,7 @@ technologies:
  - regular expressions for validation
  - freedom to choose the database provider
  - multiple differnt databases simultaneously
+ - localisation and UTF-8 support
  - full logging of all queries
  - no free SQL for the enduser
  - no operating system exits in the engine
@@ -207,4 +208,4 @@ Have fun and profit.
 License
 =======
 GNU General Public License _Version 3, 29 June 2007_  
-Copyright (c) 2024, Axel K. Reinhold. All rights reserved.
+Copyright (c) 2025, Axel K. Reinhold. All rights reserved.

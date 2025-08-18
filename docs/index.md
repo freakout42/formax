@@ -103,7 +103,7 @@ The credentials to access the database can be protected.
 Only 3 3rd party libraries are used and they are taken
 from the local distribution or copied into the source.
 The code is -Wall -Werror clean and send through valgrind
-when running the test suite.
+while running the extensive test suite.
 
 Secure access to the form is easily managed by setting up
 a PuTTY-session on any windows machine with zero
