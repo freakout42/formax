@@ -4,7 +4,9 @@
 
 /* optional functionality */
 #ifdef PURUNFORM
+#ifndef WIN32
 #define NOUSEDITOR
+#endif
 #define NOUSECURITY
 #else
 #define USELOGGING
