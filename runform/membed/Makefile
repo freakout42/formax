@@ -17,10 +17,8 @@ ifeq (small,$(MAKECMDGOALS))
 else
   CFLAGS=-O3 -Wall -Wextra -Wno-unused-parameter
 endif
-# -O0 -Wall -Wextra -Wno-unused-parameter
 # -Os -w
 # -O3 -Wall -Wextra -Wno-unused-parameter
-# -w
 # -g -O0
 LIBS=-l$(CURSESVARANT) $(TINFOLIB)
 SRC=utf82iso885915.c buffer.c cursor.c display.c files.c line.c random.c search.c term.c window.c word.c main.c
