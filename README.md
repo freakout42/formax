@@ -23,7 +23,7 @@ data in a database driven manner. The environment supplies
 builtin record creation, query, delete and update modes,
 each with its own default data manipulations. This minimizes
 the need for program code. **formax** is a "Nocode RAD". A
-fully functional (CRUD) form for a table can build within
+fully functional (CRUD) form for a table can be build within
 two seconds.
 
 The running form has an event driven interface and
@@ -85,9 +85,10 @@ problem or for a feature request. Dont hesitate to start
 using it. Together we will make it suit your needs.
 
 Product security complies with current standards. The
-code is -Wall -Werror clean and send through valgrind,
-compiled with stack protection and uses almost no system
-interfaces. This aspect can be seen as production ready,
+code is -Wall -Werror clean and send through valgrind with
+an extensive test script. It is compiled with stack
+protection and uses almost no system interfaces.
+The security aspect can be seen as production ready,
 particularly when the three factor authentication is used.
 
 Future roadmap
