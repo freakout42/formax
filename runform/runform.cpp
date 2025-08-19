@@ -277,8 +277,10 @@ if (pwdencrypt && (i = genxorkey(argv[optind], runningsignature))) usage(i);
 g.init(argv[optind+1]);
 
 /* open the form database - sqlite3 file named .frm */
-if (argv[optind]) snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
-else              usage(1);
+if (argv[optind] && (filesq3 = fopen(argv[optind], "r+"))) {
+  fclose(filesq3);
+  snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
+} else usage(1);
 if (dbconn[0].connect(dsn)) usage(4);
 g.verboselog("connected form  %s", dsn);
 
