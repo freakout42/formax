@@ -91,14 +91,6 @@ protection and uses almost no system interfaces.
 The security aspect can be seen as production ready,
 particularly when the three factor authentication is used.
 
-Future roadmap
---------------
- - 2.5 list of values - subforms
- - 3.0 menue multiple forms
- - 3.5 transaction processing
- - cqy.y: 5 shift/reduce conflicts
- - sap-like batchinput
-
 Playground
 ----------
 You can play with an example form simply by connecting ssh
