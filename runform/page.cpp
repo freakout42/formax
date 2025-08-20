@@ -67,9 +67,13 @@ return 0;
 /* associate the page with a curses window and write the boilerplate */
 void Page::create() {
 int i;
+if (!screenclos) {
 createwindow(ysiz, xsiz, vwpy0, vwpx0);
 if (border) wbox();
+}
+if (!sqlselectr) {
 for (i=0; i<NLINES; i++) if (map[i]) writes(i+(border?1:0), border?1:0, map[i]);
+}
 }
 
 void Page::destroy() {
@@ -154,6 +158,7 @@ switch (CM) {
  case MOD_DELETE: strcpy(commit,            "Delete-Record");                    break;
 }
 wera();
+if (!sqlselectr) {
 writef(0,  0, 0, 1,  "%c",        y.cursesvariant=='w' ? (cur_utf8 ? 'w' : 'i') : 'n');
 writef(0,  2, 0, 2,  "%2s-",      F(id));
 writes(0,  5,                     F(name));
@@ -173,13 +178,15 @@ for (i=PGE_MAIN; i<F(numpage); i++) {
 }
 if (macropointer && watchmacro) wsleep(1);
 F(needredraw) = 0;
+}
 return LK ? LK : getkey();
 }
 
 void Page::working() {
+if (!sqlselectr) {
 writef(0, 67, COL_BUSY,13,"%s", "!! Working...");
 if (!macropointer) refr();
-}
+} }
 
 /* display message in status line and wait for key pressed */
 int Page::message(int ern, const char *pnt) {

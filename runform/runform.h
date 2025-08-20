@@ -186,6 +186,7 @@ extern int   insertmode;
 extern int   pwdencrypt;
 extern int   squerymode;
 extern int   updatemode;
+extern int   sqlselectr;
 extern int   usebindvar;
 extern int   querycharm;
 extern int   autocommit;

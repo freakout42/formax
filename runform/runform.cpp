@@ -35,6 +35,7 @@ int  usepoorman  = 0;             // -o
 int  pwdencrypt  = 0;             // -p
 int  queryonlym  = 0;             // -q
 int  redirected  = 0;             // -r
+int  sqlselectr  = 0;             // -s
 int  verbose2se  = 0;             // -v
 int  watchmacro  = 0;             // -w
 int  updatemode  = 0;             // -x
@@ -203,7 +204,7 @@ letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s-%c %2.2s%3.3s%2.2s-%5.5s",
 form_id = 1;
 
 /* command-line arguments and options check and process */
-while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrt:Vvwxy:z")) != -1) {
+while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrst:Vvwxy:z")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n  (%d) [%s]\n", about, (int)sizeof(Form), GITCOMMIT); exit(2);
     case 'y': ypassword = optarg; break;
@@ -242,6 +243,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrt:Vvwxy:z")) != -1) {
               usage(22);
 #endif
     case 'i': squerymode = 1; break;
+    case 's': sqlselectr = 1; updatemode = 1; redirected = 1; noentermac  = 1; break;
     case 'x': updatemode = 1; break;
     case 'b': usebindvar = 0; break;
     case 'h': querycharm = 0; break;
@@ -277,6 +279,7 @@ if (pwdencrypt && (i = genxorkey(argv[optind], runningsignature))) usage(i);
 g.init(argv[optind+1]);
 
 /* open the form database - sqlite3 file named .frm */
+for (i=0; i<5; i++) dbconn[i].id = i;
 snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
 if (dbconn[0].connect(dsn)) usage(4);
 g.verboselog("connected form  %s", dsn);

@@ -39,9 +39,10 @@ return n;
 }
 
 void prnf(char *str) {
+if (sqlselectr) printf("%s", str); else {
 rtrim0white(str);
 if (!(str[0] == '\0' || (str[0] == ' ' && str[1] == '\0'))) printf("%s\n", str);
-}
+} }
 
 /* temporary file handling */
 static char tfp[TNYSIZE];

@@ -14,12 +14,14 @@ typedef SQLSMALLINT SQLRETURN;
 #endif
 class Record {
 public:
-  odrvr drv;
+  int id;                        /* connection id 0..4 */
+  odrvr drv;                     /* driver instance */
   char dbmsname[TNYSIZE];        /* database vendor string */
   char dbmsver[TNYSIZE];         /* database version string */
   char driver_odbc_ver[TNYSIZE]; /* odbc driver version string */
   char driver_ver[TNYSIZE];      /* driver version string */
   char table[TNYSIZE];           /* table name */
+  int blockfields[NFIELD1];      /* array index l[] fields/columns */
   char condition[NORSIZE];       /* where clause */
   char whereorder[NORSIZE];      /* default where / order clause */
   SQLCHAR *querystr;             /* full sql query */
@@ -35,12 +37,12 @@ public:
   int query();                   /* select rows on current condition */
   int execute();                 /* execute build query */
   int execdirect(char *sql);     /* sql direct */
-  Qdata *q;
+  Qdata *q;                      /* raw data in two dimension array */
 protected:
   SQLRETURN ret;                 /* odbc parameters */
-  SQLHSTMT stmt;
-  SQLSMALLINT columni;
-  SQLSMALLINT querycols;
+  SQLHSTMT stmt;                 /* sql statement */
+  SQLSMALLINT columni;           /* column count */
+  SQLSMALLINT querycols;         /* returned column count */
   char prikey[TNYSIZE];          /* primary key column */
   char attrs[NORSIZE];           /* column list */
   char where[NORSIZE];           /* where clause */
@@ -50,8 +52,8 @@ protected:
   int fetch(int row);            /* fetch select data */
 private:
   SQLHENV env;                   /* odbc parameters */
-  SQLHDBC dbc;
-  SQLUSMALLINT moreresults;
+  SQLHDBC dbc;                   /* odbc handle */
+  SQLUSMALLINT moreresults;      /* additional flags */
   void setdrv(char *dbmsname);   /* get database vendor type */
   int failed(SQLSMALLINT hty);   /* odbc fail processing */
   int succeeded(SQLRETURN s);    /* odbc success processing */

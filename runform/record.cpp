@@ -63,6 +63,7 @@ return ret;
 
 /* share the connection with another instance */
 int Record::connect(Record r) {
+id = r.id;
 dbc = r.dbc;
 drv = r.drv;
 moreresults = r.moreresults;
@@ -179,7 +180,17 @@ return ret;
 
 /* fetch all rows */
 int Record::fetchall() {
-int j;
+int i, j;
+if (sqlselectr && id > 0) {
+  for (i = 1; i <= columni; i++) {
+    prnf(fldi(blockfields[i]).column);
+    prnf(i == columni ? (char*)"\n" : (char*)"\t");
+  }
+  for (i = 1; i <= columni; i++) {
+    prnf("---");
+    prnf(i == columni ? (char*)"\n" : (char*)"\t");
+  }
+}
 do {
   j = fetch(0);
   if (j > 0) return j;
@@ -204,6 +215,10 @@ if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
       free(*qp);
       if (indicator == SQL_NULL_DATA) *qp = NULL; else {
         rtrim0white(buf);
+        if (sqlselectr && id > 0) {
+          prnf(buf);
+          prnf(i == columni ? (char*)"\n" : (char*)"\t");
+        }
         if (!(*qp = strdup(buf))) return 13;
       }
     }
