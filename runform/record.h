@@ -47,6 +47,7 @@ protected:
   char attrs[NORSIZE];           /* column list */
   char where[NORSIZE];           /* where clause */
   char order[NORSIZE];           /* order clause */
+  char *cn(int c);               /* column/field name */
   int execute(SQLCHAR *sql, char *bndv[]);
   int complete();                /* cleanup select handle after execution and fetch */
   int fetch(int row);            /* fetch select data */
@@ -55,6 +56,7 @@ private:
   SQLHDBC dbc;                   /* odbc handle */
   SQLUSMALLINT moreresults;      /* additional flags */
   void setdrv(char *dbmsname);   /* get database vendor type */
+  void print(int, char*);        /* print column/field data in /rdb format */
   int failed(SQLSMALLINT hty);   /* odbc fail processing */
   int succeeded(SQLRETURN s);    /* odbc success processing */
   int fetchall();                /* fetch all select data */

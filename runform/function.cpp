@@ -147,6 +147,7 @@ CBi = 4;
 CFi = CB.blockfields[0];
 if (!noentermac && (notrunning = triggern(TRT_ENTERFORM) > 1)) return 0;
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
+if (sqlselectr) notrunning = -1;
 return 0;
 }
 

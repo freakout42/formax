@@ -62,11 +62,6 @@ for (i=0; i<fieldcount; i++)
 return query();
 }
 
-/* block field column */
-char *Block::cn(int c) {
-return F(l[blockfields[c]]).column;
-}
-
 /* orm update by bind variables - disabled usebindvar=FALSE completely */
 int Block::update(int r, int c) {
 #ifdef USEBINDVARFALSEENABLED

@@ -178,18 +178,24 @@ if (drv == ODR_ORACLE) {
 return ret;
 }
 
+/* block field column */
+char *Record::cn(int c) {
+return F(l[blockfields[c]]).column;
+}
+
+/* print field */
+void Record::print(int con, char *cos) {
+if (sqlselectr) {
+  prnf(cos);
+  prnf(con == columni ? (char*)"\n" : (char*)"\t");
+} }
+
 /* fetch all rows */
 int Record::fetchall() {
 int i, j;
-if (sqlselectr && id > 0) {
-  for (i = 1; i <= columni; i++) {
-    prnf(fldi(blockfields[i]).column);
-    prnf(i == columni ? (char*)"\n" : (char*)"\t");
-  }
-  for (i = 1; i <= columni; i++) {
-    prnf("---");
-    prnf(i == columni ? (char*)"\n" : (char*)"\t");
-  }
+if (id > 0) {
+  for (i = 1; i <= columni; i++) print(i, cn(i));
+  for (i = 1; i <= columni; i++) print(i, "---");
 }
 do {
   j = fetch(0);
@@ -215,10 +221,7 @@ if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
       free(*qp);
       if (indicator == SQL_NULL_DATA) *qp = NULL; else {
         rtrim0white(buf);
-        if (sqlselectr && id > 0) {
-          prnf(buf);
-          prnf(i == columni ? (char*)"\n" : (char*)"\t");
-        }
+        if (id > 0) print(i, buf);
         if (!(*qp = strdup(buf))) return 13;
       }
     }
