@@ -126,6 +126,7 @@ char totpresult[8];
 Form *rootform;
 const char *ds;
 char *locl;
+//char *tmpath;
 
 /* search for the sqlite3 driver */
 #ifdef WIN32
@@ -280,9 +281,29 @@ g.init(argv[optind+1]);
 
 /* open the form database - sqlite3 file named .frm */
 for (i=0; i<5; i++) dbconn[i].id = i;
-snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
+#ifdef nonono
+if (sqlselectr) {
+  /* fill block/fields from args */
+  tmpath = tmpcreat();
+  tmpwrite(emptyfrm, EMPTYFRM_LEN);
+  tmpclose(0);
+  snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, tmpath);
+} else {
+#endif
+if (argv[optind] && (filesq3 = fopen(argv[optind], "r+"))) {
+  fclose(filesq3);
+  snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
+} else usage(1);
+//}
 if (dbconn[0].connect(dsn)) usage(4);
 g.verboselog("connected form  %s", dsn);
+#ifdef nonono
+if (sqlselectr) {
+  /* fill block/fields from args */
+INSERT INTO blocks (form_id, name, seq) VALUES (1, '$TABLE', 50);
+INSERT INTO fields (seq, name, line, key) VALUES ($FLDN, '$COLUMN', $LINE, $KEY);"
+}
+#endif
 
 /* check and open the database connections
  * if simple rw-filepath use sqlite

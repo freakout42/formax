@@ -2,9 +2,11 @@ NCURSESVER=6.3
 include cflags.make
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
+OBJD=emptyfrm.o
 OBJC=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
 OBJB=$(OBJC) membed/libmex.a
 OBJA=$(OBJB) crypt/libmd5.a
+FRMH=form.h rerror.h rblock.h rfield.h rmap.h rpage.h
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
 FORMAXE=../generate/formax.frm ../generate/formax.sq3
 VALGRINDSUP=--gen-suppressions=no #all
@@ -73,6 +75,11 @@ $(CURSESVARANT)/include/curses.h: ../bin/ncurses.tar.gz
 # wget -O../bin/ncurses-win32.zip            https://invisible-island.net/datafiles/release/mingw32.zip
 # wget -O../bin/ncurses-$(NCURSESVER).tar.gz https://invisible-island.net/datafiles/release/ncurses.tar.gz
 
+emptyfrm.h: b2c $(FRMH)
+	rm -f emptyfrm.sq3
+	for H in $(FRMH); do cpp -w -P -DBEGINSQL $$H; done | sqlite3 emptyfrm.sq3
+	./b2c emptyfrm.sq3 $@ emptyfrm
+
 $(EXAMPLE): ../generate/scotty.in2
 	cd ../generate; make clean test
 $(FORMAXE): ../generate/formax.inp
@@ -89,8 +96,8 @@ libncursesw6.dll: ../bin/ncurses-win32.zip scotty.sq3
 
 clean:
 	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
-	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf \
-		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe *.dll scotty.*
+	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf b2c \
+		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe *.dll scotty.* emptyfrm.*
 	rm -rf bin include lib ncurses
 
 mysql:

@@ -161,6 +161,7 @@ extern char *tmpcreat();
 extern int tmpopen();
 extern void tmpclose(int rm);
 extern int tmpread(char *buf, int siz);
+extern int tmpwrite(char *buf, int siz);
 extern char *tmpget(char *buf, int siz);
 extern void tmput(char *v);
 

@@ -64,6 +64,11 @@ void tmpclose(int rm) {
 fclose(tf);
 if (rm) unlink(tfp);
 }
+int tmpwrite(char *buf, int siz) {
+int i;
+i = (int)fwrite(buf, 1, siz, tf);
+return i;
+}
 int tmpread(char *buf, int siz) {
 int i;
 char *taber;
