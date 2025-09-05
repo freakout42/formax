@@ -2,7 +2,6 @@ NCURSESVER=6.3
 include cflags.make
 SRCS=$(wildcard *.cpp)
 OBJS=$(patsubst %.cpp,%.o,$(SRCS))
-OBJD=emptyfrm.o
 OBJC=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
 OBJB=$(OBJC) membed/libmex.a
 OBJA=$(OBJB) crypt/libmd5.a
@@ -14,7 +13,7 @@ VALGRINDSUP=--gen-suppressions=no #all
 all: runform
 	strip runform
 
-$(OBJS): version.h
+$(OBJS): version.h emptyfrm.h
 version.h: runform.h
 	git log -1 | sed -n 's/commit \(.*\)/#define GITCOMMIT "\1"/p' >$@
 runform.h: company.h curkeys.h
@@ -77,7 +76,7 @@ $(CURSESVARANT)/include/curses.h: ../bin/ncurses.tar.gz
 
 emptyfrm.h: b2c $(FRMH)
 	rm -f emptyfrm.sq3
-	for H in $(FRMH); do cpp -w -P -DBEGINSQL $$H; done | sqlite3 emptyfrm.sq3
+	for H in $(FRMH); do cpp -w -P -DBEGINSQL $$H; done | cat - lll | sqlite3 emptyfrm.sq3
 	./b2c emptyfrm.sq3 $@ emptyfrm
 
 $(EXAMPLE): ../generate/scotty.in2

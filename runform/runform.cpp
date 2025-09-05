@@ -8,6 +8,7 @@
 #include <signal.h>
 #include <locale.h>
 #include "runform.h"
+#include "emptyfrm.h"
 
 /* fast keys for different keyboard layouts for -n option */
 char shiftedus[] = "/!@#$%^&*().,";
@@ -126,7 +127,7 @@ char totpresult[8];
 Form *rootform;
 const char *ds;
 char *locl;
-//char *tmpath;
+char *tmpath = NULL;
 
 /* search for the sqlite3 driver */
 #ifdef WIN32
@@ -281,20 +282,18 @@ g.init(argv[optind+1]);
 
 /* open the form database - sqlite3 file named .frm */
 for (i=0; i<5; i++) dbconn[i].id = i;
-#ifdef nonono
 if (sqlselectr) {
   /* fill block/fields from args */
   tmpath = tmpcreat();
-  tmpwrite(emptyfrm, EMPTYFRM_LEN);
+  tmpwrite((char*)emptyfrm, EMPTYFRM_LEN);
   tmpclose(0);
   snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, tmpath);
 } else {
-#endif
 if (argv[optind] && (filesq3 = fopen(argv[optind], "r+"))) {
   fclose(filesq3);
-  snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
+  snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind++]);
 } else usage(1);
-//}
+}
 if (dbconn[0].connect(dsn)) usage(4);
 g.verboselog("connected form  %s", dsn);
 #ifdef nonono
@@ -309,11 +308,12 @@ INSERT INTO fields (seq, name, line, key) VALUES ($FLDN, '$COLUMN', $LINE, $KEY)
  * if simple rw-filepath use sqlite
  */
 j = argc - optind;
-if (j < 2 || j > 5) usage(2);
+if (j < 1 || j > 4) usage(2);
 for (i=0; i<4; i++) {
-  if (j > i + 1) {
-    let(dsn0, argv[optind+i+1]);
+  if (j > i) {
+    let(dsn0, argv[optind+i]);
     parsedsn(dsn, drv, dsn0);
+g.verboselog("connect db[%d] %s", i+1, dsn);
     if (dbconn[i+1].connect(dsn)) usage(8);
         dbconn[i+1].ropen();
     g.verboselog("connected db[%d] %s", i+1, dsn);
@@ -332,7 +332,7 @@ genxorkey(NULL, NULL);
 #endif
 
 rootform = new Form();
-  if ((s = rootform->fill(form_id))) usage(s<19 ? 5 : s);
+  if ((s = rootform->fill(form_id))) usage(s); //(s<19 ? 5 : s);
     if (!redirected) if ((screenclos = y.init())) usage(17);
       g.verboselog("curses initscr");
       if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
@@ -348,6 +348,7 @@ for (i=0; i<5; i++) {
 }
 g.lclose();
 free(lclocale);
+if (sqlselectr) unlink(tmpath);
 
 exit(s==-1 ? 0 : abs(s));
 }
