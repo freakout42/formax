@@ -76,7 +76,7 @@ $(CURSESVARANT)/include/curses.h: ../bin/ncurses.tar.gz
 
 emptyfrm.h: b2c $(FRMH)
 	rm -f emptyfrm.sq3
-	for H in $(FRMH); do cpp -w -P -DBEGINSQL $$H; done | cat - lll | sqlite3 emptyfrm.sq3
+	for H in $(FRMH); do cpp -w -P -DBEGINSQL $$H; done | sqlite3 emptyfrm.sq3
 	./b2c emptyfrm.sq3 $@ emptyfrm
 
 $(EXAMPLE): ../generate/scotty.in2

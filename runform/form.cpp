@@ -28,6 +28,26 @@ f = this;
 connect(dbconn[0]);
 stmt = NULL;
 if ((s = ropen())) return s;
+if (sqlselectr) {
+int status;
+char *sql;
+  /* fill block/fields from args */
+  sql = "INSERT INTO forms (id) VALUES (1)";
+  status = execdirect(sql);
+  if (status) return 2;
+  sql = "INSERT INTO blocks (form_id, name, seq) VALUES (1, 'depts', 50)";
+  status = execdirect(sql);
+  if (status) return 2;
+  sql = "INSERT INTO fields (name, key) VALUES ('id', 1)";
+  status = execdirect(sql);
+  if (status) return 2;
+  sql = "INSERT INTO fields (name, key) VALUES ('dname', 0)";
+  status = execdirect(sql);
+  if (status) return 2;
+  sql = "INSERT INTO fields (name, key) VALUES ('loc', 0)";
+  status = execdirect(sql);
+  if (status) return 2;
+}
 letf(t(where), "id = %d", fid);
 empty(order);
 empty(condition);

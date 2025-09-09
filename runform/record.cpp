@@ -120,10 +120,10 @@ if (dbc) {
 int Record::execdirect(char *sql) {
 ret = SQLExecDirect(stmt, (SQLCHAR*)sql, strlen(sql));                                         FAILEDQ(SQL_HANDLE_STMT);
 ret = SQLNumResultCols(stmt, &querycols);                                                      FAILEDQ(SQL_HANDLE_STMT);
-columni = querycols;
-if (clear()) return 13;
 g.logfmt("SQL: '%s' [%d]", sql, querycols);
-return fetchall();
+/* columni = querycols; NO QUERIES ALLOWED */
+if (clear()) return 13;
+return 0; /* fetchall(); */
 }
 
 /* direct sql with bind support from variable array */
@@ -194,7 +194,7 @@ if (sqlselectr) {
 int Record::fetchall() {
 int i, j;
 if (id > 0) {
-  for (i = 1; i <= columni; i++) print(i, cn(i));
+  for (i = 1; i <= columni; i++) print(i, cn(i - 1));
   for (i = 1; i <= columni; i++) print(i, "---");
 }
 do {

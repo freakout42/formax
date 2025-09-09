@@ -296,13 +296,6 @@ if (argv[optind] && (filesq3 = fopen(argv[optind], "r+"))) {
 }
 if (dbconn[0].connect(dsn)) usage(4);
 g.verboselog("connected form  %s", dsn);
-#ifdef nonono
-if (sqlselectr) {
-  /* fill block/fields from args */
-INSERT INTO blocks (form_id, name, seq) VALUES (1, '$TABLE', 50);
-INSERT INTO fields (seq, name, line, key) VALUES ($FLDN, '$COLUMN', $LINE, $KEY);"
-}
-#endif
 
 /* check and open the database connections
  * if simple rw-filepath use sqlite
