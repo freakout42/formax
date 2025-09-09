@@ -20,6 +20,7 @@ int Form::fill(int fid) {
 int i, s;
 Block *blk;
 Form *runningform;
+char sql[TNYSIZE+1];
 
 runningform = f;
 f = this;
@@ -29,24 +30,17 @@ connect(dbconn[0]);
 stmt = NULL;
 if ((s = ropen())) return s;
 if (sqlselectr) {
-int status;
-char *sql;
-  /* fill block/fields from args */
-  sql = "INSERT INTO forms (id) VALUES (1)";
-  status = execdirect(sql);
-  if (status) return 2;
-  sql = "INSERT INTO blocks (form_id, name, seq) VALUES (1, 'depts', 50)";
-  status = execdirect(sql);
-  if (status) return 2;
-  sql = "INSERT INTO fields (name, key) VALUES ('id', 1)";
-  status = execdirect(sql);
-  if (status) return 2;
-  sql = "INSERT INTO fields (name, key) VALUES ('dname', 0)";
-  status = execdirect(sql);
-  if (status) return 2;
-  sql = "INSERT INTO fields (name, key) VALUES ('loc', 0)";
-  status = execdirect(sql);
-  if (status) return 2;
+  strcpy(sql,"INSERT INTO forms (id) VALUES (1)");
+  s = execdirect(sql);
+  if (s) return 2;
+  letf(sql, TNYSIZE, "INSERT INTO blocks (form_id, name, seq) VALUES (1, '%s', 50)", selectsrc[0]);
+  s = execdirect(sql);
+  if (s) return 2;
+ for (i=1; selectsrc[i]; i++) {
+  letf(sql, TNYSIZE, "INSERT INTO fields (name, key) VALUES ('%s', 1)", selectsrc[i]);
+  s = execdirect(sql);
+  if (s) return 2;
+ }
 }
 letf(t(where), "id = %d", fid);
 empty(order);

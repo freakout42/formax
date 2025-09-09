@@ -507,6 +507,7 @@ if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
       }
       CFi = cf;
     }
+    if (sqlselectr) return 0;
     enter_record(1);
     switch_mode(MOD_UPDATE);
   } else {

@@ -47,6 +47,7 @@ int  screenclos  = 1;
 int  callinguid  = -1;
 char about[SMLSIZE];
 char emptystring[1] = "";
+char **selectsrc;
 
 /* global form dbs screen functions and logger */
 Logger g;
@@ -300,20 +301,21 @@ g.verboselog("connected form  %s", dsn);
 /* check and open the database connections
  * if simple rw-filepath use sqlite
  */
-j = argc - optind;
+j = sqlselectr ? 1 : argc - optind;
 if (j < 1 || j > 4) usage(2);
 for (i=0; i<4; i++) {
   if (j > i) {
     let(dsn0, argv[optind+i]);
     parsedsn(dsn, drv, dsn0);
-g.verboselog("connect db[%d] %s", i+1, dsn);
     if (dbconn[i+1].connect(dsn)) usage(8);
         dbconn[i+1].ropen();
     g.verboselog("connected db[%d] %s", i+1, dsn);
+    if (sqlselectr) break;
   } else {
     dbconn[i+1].connect(NULL);
   }
 }
+selectsrc = argv + optind + 1;
 switch(dbconn[1].drv) {
  case ODR_SQLITE: querycharm = 2; break;
  case ODR_ADS:    querycharm = 0; break;

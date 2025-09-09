@@ -205,3 +205,4 @@ extern int   screenclos;
 extern int   callinguid;
 extern int   usepoorman; 
 extern int   verbose2se; 
+extern char  **selectsrc;
