@@ -118,9 +118,9 @@ if (dbc) {
 
 /* direct sql without orm support */
 int Record::execdirect(char *sql) {
+g.logfmt("SQL: '%s'", sql);
 ret = SQLExecDirect(stmt, (SQLCHAR*)sql, strlen(sql));                                         FAILEDQ(SQL_HANDLE_STMT);
 ret = SQLNumResultCols(stmt, &querycols);                                                      FAILEDQ(SQL_HANDLE_STMT);
-g.logfmt("SQL: '%s' [%d]", sql, querycols);
 /* columni = querycols; NO QUERIES ALLOWED */
 if (clear()) return 13;
 return 0; /* fetchall(); */

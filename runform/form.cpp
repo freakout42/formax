@@ -20,7 +20,10 @@ int Form::fill(int fid) {
 int i, s;
 Block *blk;
 Form *runningform;
-char sql[TNYSIZE+1];
+char sql[SMLSIZE+1];
+char *colon;
+char *colo2;
+char emptys[] = "";
 
 runningform = f;
 f = this;
@@ -31,15 +34,25 @@ stmt = NULL;
 if ((s = ropen())) return s;
 if (sqlselectr) {
   strcpy(sql,"INSERT INTO forms (id) VALUES (1)");
-  s = execdirect(sql);
-  if (s) return 2;
-  letf(sql, TNYSIZE, "INSERT INTO blocks (form_id, name, seq) VALUES (1, '%s', 50)", selectsrc[0]);
-  s = execdirect(sql);
-  if (s) return 2;
+  if ((s = execdirect(sql))) return 2;
+  strtok(selectsrc[0], ":");
+  colon = strtok(NULL, ":");
+ if (colon) {
+  colo2 = strtok(NULL, ":");
+ if (!colo2) colo2 = emptys;
+ } else {    colon = emptys;
+             colo2 = emptys;
+        }
+  letf(sql, SMLSIZE, "INSERT INTO blocks (form_id, name, seq, whereand, orderby)"
+                                " VALUES (1, '%s', 50, '%s', '%s')", selectsrc[0], colon, colo2);
+  if ((s = execdirect(sql))) return 2;
  for (i=1; selectsrc[i]; i++) {
-  letf(sql, TNYSIZE, "INSERT INTO fields (name, key) VALUES ('%s', 1)", selectsrc[i]);
-  s = execdirect(sql);
-  if (s) return 2;
+  strtok(selectsrc[i], ":");
+  colon = strtok(NULL, ":");
+ /* using field valpatn as queryhuman pattern - prepend with : to flag this usage for field.cpp */
+ if (!colon) colon = emptys;
+  letf(sql, SMLSIZE, "INSERT INTO fields (name, key, valpatn) VALUES ('%s', 1, ':%s')", selectsrc[i], colon);
+  if ((s = execdirect(sql))) return 2;
  }
 }
 letf(t(where), "id = %d", fid);
