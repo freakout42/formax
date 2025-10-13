@@ -33,6 +33,7 @@ connect(dbconn[0]);
 stmt = NULL;
 if ((s = ropen())) return s;
 if (sqlselectr) {
+ if (selectsrc[0]) {
   strcpy(sql,"INSERT INTO forms (id) VALUES (1)");
   if ((s = execdirect(sql))) return 2;
   strtok(selectsrc[0], ":");
@@ -53,6 +54,14 @@ if (sqlselectr) {
  if (!colon) colon = emptys;
   letf(sql, SMLSIZE, "INSERT INTO fields (name, key, valpatn) VALUES ('%s', 1, ':%s')", selectsrc[i], colon);
   if ((s = execdirect(sql))) return 2;
+ }
+ } else {
+  blk = &b[i];
+  if (blk->init(rblock.q, i+1)) return 9;
+  blk->connect(dbconn[i+1]);
+  if (blk->ropen()) return 9;
+  while (stdingets(sql, SMLSIZE)) execdirect(sql);
+  return -1;
  }
 }
 letf(t(where), "id = %d", fid);
@@ -132,6 +141,7 @@ forall(block) {
   if (blk->ropen()) return 9;
 }
 rblock.rclose();
+
 
 /* fields */
 if (rfield.init(fid)) return 9;
