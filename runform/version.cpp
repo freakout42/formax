@@ -38,6 +38,13 @@ va_end (args);
 return n;
 }
 
+char *stdingets(char *sql, size_t siz) {
+char *t;
+t = fgets(sql, siz, stdin);
+if (t) *(t + strlen(t) - 1) = '\0';
+return t;
+}
+
 void prnf(char *str) {
 if (sqlselectr) printf("%s", str); else {
 rtrim0white(str);

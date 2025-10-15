@@ -86,8 +86,10 @@ const char *est[] = {
   "form signed with signature",   // 21
   "feature was disabled",         // 22
   "utf8 only with ncursesw lib",  // 23
+  "W SQL executed",               // 24
 };
-fprintf(stderr, USAGE, ecd, est[ecd-1]);
+if (*est[ecd-1] == 'W') g.verboselog("%s", est[ecd-1] + 2);
+else fprintf(stderr, USAGE, ecd, est[ecd-1]);
 exit(ecd);
 }
 
@@ -328,10 +330,12 @@ genxorkey(NULL, NULL);
 
 rootform = new Form();
   if ((s = rootform->fill(form_id))) usage(s); //(s<19 ? 5 : s);
-    if (!redirected) if ((screenclos = y.init())) usage(17);
+    if (!redirected) {
+      if ((screenclos = y.init())) usage(17);
       g.verboselog("curses initscr");
-      if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
-      g.verboselog("run form returns %d", s);
+    }
+    if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
+    if (s >= 0) g.verboselog("run form returns %d", s);
     y.closedisplay();
     screenclos = 1;
   rootform->clear();

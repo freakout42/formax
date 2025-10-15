@@ -56,12 +56,11 @@ if (sqlselectr) {
   if ((s = execdirect(sql))) return 2;
  }
  } else {
-  blk = &b[i];
-  if (blk->init(rblock.q, i+1)) return 9;
-  blk->connect(dbconn[i+1]);
+  blk = &b[0];
+  blk->connect(dbconn[1]);
   if (blk->ropen()) return 9;
-  while (stdingets(sql, SMLSIZE)) execdirect(sql);
-  return -1;
+  while (stdingets(sql, SMLSIZE)) blk->execdirect(sql);
+  return 24;
  }
 }
 letf(t(where), "id = %d", fid);
@@ -141,7 +140,6 @@ forall(block) {
   if (blk->ropen()) return 9;
 }
 rblock.rclose();
-
 
 /* fields */
 if (rfield.init(fid)) return 9;

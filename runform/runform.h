@@ -149,6 +149,7 @@ extern int lastgetch;
 /* helpers from version.cpp */
 extern char *letstrncpy(char *dest, const char *src, size_t n);
 extern char *rtrim0white(char *str);
+extern char *stdingets(char *sql, size_t siz);
 extern int yesno(int c);
 extern int isprintable(int c);
 extern int ispunctation(int c);

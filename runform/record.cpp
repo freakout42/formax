@@ -19,7 +19,7 @@ if (!strcmp(dbmsname, "PostgreSQL"))           drv = ODR_PG;
 if (!strcmp(dbmsname, "oracle"))               drv = ODR_ORACLE;
 if (!strcmp(dbmsname, "Microsoft SQL Server")) drv = ODR_SQLSRVR;
 if (!strcmp(dbmsname, "Advantage"))            drv = ODR_ADS;
-g.logfmt("SQL_DBMS_NAME: %s -> %d", dbmsname, drv);
+g.logfmt("# SQL_DBMS_NAME: %s -> %d", dbmsname, drv);
 }
 
 /* connect to odbc dsn with mode 2 or 3
@@ -118,8 +118,10 @@ if (dbc) {
 
 /* direct sql without orm support */
 int Record::execdirect(char *sql) {
-g.logfmt("SQL: '%s'", sql);
-ret = SQLExecDirect(stmt, (SQLCHAR*)sql, strlen(sql));                                         FAILEDQ(SQL_HANDLE_STMT);
+char *empty0[] = { NULL };
+ret = SQLExecDirect(stmt, (SQLCHAR*)sql, strlen(sql));
+g.logsql(sql, empty0);
+g.verboselog("SQL: %s => %d", sql, ret);                                                       FAILEDQ(SQL_HANDLE_STMT);
 ret = SQLNumResultCols(stmt, &querycols);                                                      FAILEDQ(SQL_HANDLE_STMT);
 /* columni = querycols; NO QUERIES ALLOWED */
 if (clear()) return 13;

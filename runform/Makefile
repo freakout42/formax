@@ -48,6 +48,13 @@ test: clean runform $(EXAMPLE)
 	@test -f $@ -a ! -s $@
 	@sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
 	@mv scotty.sq3 ../generate
+	./runform -s ../generate/scotty.sq3 "depts:id > 20:loc" id loc dname | diff ../generate/depts.rdb -
+	@rm -f /tmp/formax.log
+	-echo "delete from depts where id=40" | ./runform -v -g/tmp/formax.log -s ../generate/scotty.sq3
+	sqlite3 /tmp/formax.log 'select logtext from logs order by id;'
+	grep -v 40 ../generate/depts.rdb >/tmp/depts.rdb
+	./runform -s ../generate/scotty.sq3 "depts:id > 20:loc" id loc dname | diff /tmp/depts.rdb -
+	rm -f /tmp/depts.rdb
 	./runform -zx -g/tmp/formax.log $(EXAMPLE)
 	@echo -e "\033[0;32mOk\\033[0m"
 
