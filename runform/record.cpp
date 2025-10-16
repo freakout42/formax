@@ -123,9 +123,10 @@ ret = SQLExecDirect(stmt, (SQLCHAR*)sql, strlen(sql));
 g.logsql(sql, empty0);
 g.verboselog("SQL: %s => %d", sql, ret);                                                       FAILEDQ(SQL_HANDLE_STMT);
 ret = SQLNumResultCols(stmt, &querycols);                                                      FAILEDQ(SQL_HANDLE_STMT);
-/* columni = querycols; NO QUERIES ALLOWED */
-if (clear()) return 13;
-return 0; /* fetchall(); */
+/* columni = querycols; NO QUERIES ALLOWED
+ * if (clear()) return 13;
+ */
+return 0;
 }
 
 /* direct sql with bind support from variable array */

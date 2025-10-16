@@ -89,9 +89,10 @@ const char *est[] = {
   "W SQL executed",               // 24
 };
 if (*est[ecd-1] == 'W') g.verboselog("%s", est[ecd-1] + 2);
-else fprintf(stderr, USAGE, ecd, est[ecd-1]);
-exit(ecd);
-}
+else {
+  fprintf(stderr, USAGE, ecd, est[ecd-1]);
+  exit(ecd);
+} }
 
 /* disassemble the username:password@dsn connection string
  * and do the decryption when appropriate
@@ -328,18 +329,20 @@ memset(dsn, 'y', MEDSIZE); // remove pw and key from ram
 genxorkey(NULL, NULL);
 #endif
 
-rootform = new Form();
+if (!redirected) {
+  if ((screenclos = y.init())) usage(17);
+  g.verboselog("curses initscr");
+}
+  rootform = new Form();
   if ((s = rootform->fill(form_id))) usage(s); //(s<19 ? 5 : s);
-    if (!redirected) {
-      if ((screenclos = y.init())) usage(17);
-      g.verboselog("curses initscr");
+    if (s) s = 0; else {
+      if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
+      if (s >= 0) g.verboselog("run form returns %d", s);
+      rootform->clear();
     }
-    if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
-    if (s >= 0) g.verboselog("run form returns %d", s);
-    y.closedisplay();
-    screenclos = 1;
-  rootform->clear();
-delete(rootform);
+  delete(rootform);
+y.closedisplay();
+screenclos = 1;
 
 for (i=0; i<5; i++) {
   dbconn[i].rclose();

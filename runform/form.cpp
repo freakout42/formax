@@ -60,6 +60,8 @@ if (sqlselectr) {
   blk->connect(dbconn[1]);
   if (blk->ropen()) return 9;
   while (stdingets(sql, SMLSIZE)) blk->execdirect(sql);
+  blk->rclose();
+  rclose();
   return 24;
  }
 }
