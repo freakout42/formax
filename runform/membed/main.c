@@ -23,6 +23,7 @@
  * MicroEMACS screen editor.
  */
 #include	<setjmp.h>
+#include	<stdlib.h>
 #include	<stdio.h>
 #include	<string.h>
 #include	"ed.h"
@@ -58,7 +59,7 @@ void edmore(char fname[]);
 #define DASTART	990		/* starting the DA	*/
 #define DACLOSE	991		/* closing the DA	*/
 
-char	*rcsid = "$Id: main.c,v 1.47 2025/07/23 14:01:29 axel Exp $";
+char	*rcsid = "$Id: main.c,v 1.49 2026/01/23 08:36:25 axel Exp $";
 jmp_buf loop1;
 int changedandstored;
 int	logit = LOGIT;			/* mb: log keystrokes		*/
@@ -860,8 +861,9 @@ int mainloop(char *fil, WINDOW *scr) {
       return 0;
     }
     fileindex = 1;
-//    addline(fil, curbp);
-//    curwp->w_flag |= WFMOVE|WFHARD|WFFORCE;
+/*    addline(fil, curbp);
+ *    curwp->w_flag |= WFMOVE|WFHARD|WFFORCE;
+ */
   }
 
 	kbdm[0] = CTLX|')';			/* Empty macro		*/

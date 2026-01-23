@@ -6,6 +6,7 @@
  * All operating systems.
  */
 #define TERMC 1
+#define _POSIX_C_SOURCE 1
 #include	"ed.h"
 
 WINDOW *windw1 = NULL;
@@ -101,15 +102,11 @@ void ttreverse()
 struct  sgttyb  ostate;			/* saved tty state */
 struct	sgttyb	nstate;			/* values for editor mode */
 #else
-#if BSD
+#ifndef WIN32
+#if !CURSES
 #include <termios.h>
 struct  termios  ostate;
 struct  termios  nstate;
-#else
-#ifndef WIN32
-#include <termio.h>
-struct  termio  ostate;
-struct  termio  nstate;
 #endif
 #endif
 #endif
