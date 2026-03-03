@@ -23,6 +23,7 @@
  * MicroEMACS screen editor.
  */
 #include	<setjmp.h>
+#include	<stdlib.h>
 #include	<stdio.h>
 #include	<string.h>
 #include	"ed.h"
@@ -58,7 +59,7 @@ void edmore(char fname[]);
 #define DASTART	990		/* starting the DA	*/
 #define DACLOSE	991		/* closing the DA	*/
 
-char	*rcsid = "$Id: main.c,v 1.47 2025/07/23 14:01:29 axel Exp $";
+char	*rcsid = "$Id: main.c,v 1.51 2026/03/01 09:29:53 axel Exp $";
 jmp_buf loop1;
 int changedandstored;
 int	logit = LOGIT;			/* mb: log keystrokes		*/
@@ -860,8 +861,9 @@ int mainloop(char *fil, WINDOW *scr) {
       return 0;
     }
     fileindex = 1;
-//    addline(fil, curbp);
-//    curwp->w_flag |= WFMOVE|WFHARD|WFFORCE;
+/*    addline(fil, curbp);
+ *    curwp->w_flag |= WFMOVE|WFHARD|WFFORCE;
+ */
   }
 
 	kbdm[0] = CTLX|')';			/* Empty macro		*/
@@ -1439,6 +1441,7 @@ logok:
 #endif
 
 	c = (*term.t_getchar)();
+	if (c==127) c = CNTL|'H';
 #ifdef CNTLCH
 	if (c == CNTLCH) {			/* Apply C- prefix	*/
 		c = (*term.t_getchar)();
@@ -1759,7 +1762,7 @@ ctrlg()
   CNTL|'E',   gotoeol,         //  5 KEY_END:         /* END key */        c = (CNTL | 'E')
   CNTL|'F',   forwchar,        //  6 KEY_RIGHT:       /* right arrow */    c = (CNTL | 'F')
   CNTL|'G',   undo,            //  7
-  CNTL|'H',   backdel,         //  8 KEY_BACKSPACE:   /* backspace */      c = (CNTL | 'H')
+  CNTL|'H',   backdel,         //  8 KEY_BACKSPACE:   /* backspace */      c = (CNTL | 'H') \177 0x7f DEL
   CNTL|'I',   tab,             //  9 KEY_NEXT:        /* tabulator */      c = (CNTL | 'I')
   CNTL|'J',   tnewline,        // 10
   CNTL|'K',   killtxt,         // 11
