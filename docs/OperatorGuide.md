@@ -130,6 +130,46 @@ should have mode 2751:
 
     -rwxr-s--x 1 axel devel 266152 Aug 10 16:05 runform
 
+Running
+=======
+
+The runform binary can be customized in behavior by various switches.
+General usage is:
+
+    runform [-3abcdhikmopqvwxz] [-n lg] [-f formid ] [-g logfile] \
+      [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...
+
+The switches and parameters have the following meanings:
+    -V print version info
+    -l sqlite odbc-driver library path
+    -t totpkey -- Time-based One-Time Password Key for 3FA
+    -n [us|uk|de|fr] keyboard layout for shifted number keys
+    -3 use ODBC V3 calls - default is V2 except for SQLite
+    -a no autocommit flag for database connection
+    -b not using bind variables - DISABLED FOR SECURITY - no effect
+    -c curses use_default_colors() call is used
+    -d additional prompt on deleting records
+    -f formid -- run form with id = formid - DISABLED
+    -h query character mode =0 never
+    -i start not in insert mode
+    -x start in update mode
+    -z start without enter macro
+    -j pkid -- global pkid NO NOT USE
+    -k monochrome no colors
+    -m match case insensitive
+    -o use poor mans line drawing
+    -p database password is encrypted
+    -q query only mode - DISABLED
+    -r redirected non interactive mode
+    -s direct sql with arguments
+         table:where column... -- select
+                  without arguments
+         read and execute sql from standard input
+    -g logfile -- path to logfile
+    -v verbose logging
+    -w watch macro execution
+    -y generate encryptet database password ONLY ROOT
+
 Client
 ======
 
