@@ -1,5 +1,5 @@
-SQL_DBMS_NAME: SQLite -> 0
-SQL_DBMS_NAME: SQLite -> 0
+# SQL_DBMS_NAME: SQLite -> 0
+# SQL_DBMS_NAME: SQLite -> 0
 select id,name,title,mnugrp from forms where id = 1
 select num,severity,etext from errors order by num
 select id,seq,name,ysiz,xsiz,vwpy0,vwpx0,popup,border from pages where form_id in (0, 1) order by seq
@@ -9,7 +9,7 @@ select line,mtext from maps where page_id = 2 order by line
 select line,mtext from maps where page_id = 3 order by line
 select line,mtext from maps where page_id = 4 order by line
 select id,name,seq,norec,prikey,whereand,orderby from blocks where form_id in (0, 1) order by seq
-select id,name,blcn,pgen,dlen,align,line,col,key,ftype,len,decl,btab,dflt,query,upd,updnul,mand,lovtit,lov_id,lovi_id,low,high,valpatn,help,id from fields where form_id = 1 order by seq
+select id,name,blcn,pgen,dlen,align,line,col,key,ftype,len,decl,btab,dflt,query,upd,updnul,mand,lovtit,lov_id,lovi_id,low,high,valpatn,help,id from fields where form_id = 1 order by seq,id
 select trgfld,trgtyp,page_id from triggers where form_id = 0 or form_id = 1 order by abs(trgfld),form_id desc
 select line,mtext from maps where page_id = 2005 order by line
 select line,mtext from maps where page_id = 2008 order by line

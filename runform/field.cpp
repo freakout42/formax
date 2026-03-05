@@ -38,10 +38,14 @@ lovi_id       = fld->n(rix,21);
 lowvalue      = fld->n(rix,22);
 highvalue     = fld->n(rix,23);
 let(validreg,   fld->v(rix,24));
-helptext      = fld->c(rix,25);
-field_id      = fld->n(rix,26);
+if (validreg[0] == ':' && validreg[1] != '\0') {
+setcond(validreg+1);
+} else {
 queryhuman[0] = '\0';
 querywhere[0] = '\0';
+}
+helptext      = fld->c(rix,25);
+field_id      = fld->n(rix,26);
 currentval    = NULL;
 trg_postchange = -1;
 sequencenum = bs[blockindex].addattribute(rix-1, this);

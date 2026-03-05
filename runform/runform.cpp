@@ -8,6 +8,7 @@
 #include <signal.h>
 #include <locale.h>
 #include "runform.h"
+#include "emptyfrm.h"
 
 /* fast keys for different keyboard layouts for -n option */
 char shiftedus[] = "/!@#$%^&*().,";
@@ -35,6 +36,7 @@ int  usepoorman  = 0;             // -o
 int  pwdencrypt  = 0;             // -p
 int  queryonlym  = 0;             // -q
 int  redirected  = 0;             // -r
+int  sqlselectr  = 0;             // -s
 int  verbose2se  = 0;             // -v
 int  watchmacro  = 0;             // -w
 int  updatemode  = 0;             // -x
@@ -45,6 +47,7 @@ int  screenclos  = 1;
 int  callinguid  = -1;
 char about[SMLSIZE];
 char emptystring[1] = "";
+char **selectsrc;
 
 /* global form dbs screen functions and logger */
 Logger g;
@@ -83,10 +86,13 @@ const char *est[] = {
   "form signed with signature",   // 21
   "feature was disabled",         // 22
   "utf8 only with ncursesw lib",  // 23
+  "W SQL executed",               // 24
 };
-fprintf(stderr, USAGE, ecd, est[ecd-1]);
-exit(ecd);
-}
+if (*est[ecd-1] == 'W') g.verboselog("%s", est[ecd-1] + 2);
+else {
+  fprintf(stderr, USAGE, ecd, est[ecd-1]);
+  exit(ecd);
+} }
 
 /* disassemble the username:password@dsn connection string
  * and do the decryption when appropriate
@@ -125,6 +131,7 @@ char totpresult[8];
 Form *rootform;
 const char *ds;
 char *locl;
+char *tmpath = NULL;
 
 /* search for the sqlite3 driver */
 #ifdef WIN32
@@ -203,7 +210,7 @@ letf(t(about), "v%s %s " CCOMPILER " ODBC-%s CURS-%s-%c %2.2s%3.3s%2.2s-%5.5s",
 form_id = 1;
 
 /* command-line arguments and options check and process */
-while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrt:Vvwxy:z")) != -1) {
+while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrst:Vvwxy:z")) != -1) {
   switch (i) {
     case 'V': fprintf(stderr, "runform %s\n  (%d) [%s]\n", about, (int)sizeof(Form), GITCOMMIT); exit(2);
     case 'y': ypassword = optarg; break;
@@ -242,6 +249,7 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrt:Vvwxy:z")) != -1) {
               usage(22);
 #endif
     case 'i': squerymode = 1; break;
+    case 's': sqlselectr = 1; updatemode = 1; redirected = 1; noentermac  = 1; break;
     case 'x': updatemode = 1; break;
     case 'b': usebindvar = 0; break;
     case 'h': querycharm = 0; break;
@@ -277,29 +285,40 @@ if (pwdencrypt && (i = genxorkey(argv[optind], runningsignature))) usage(i);
 g.init(argv[optind+1]);
 
 /* open the form database - sqlite3 file named .frm */
+for (i=0; i<5; i++) dbconn[i].id = i;
+if (sqlselectr) {
+  /* fill block/fields from args */
+  tmpath = tmpcreat();
+  tmpwrite((char*)emptyfrm, EMPTYFRM_LEN);
+  tmpclose(0);
+  snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, tmpath);
+} else {
 if (argv[optind] && (filesq3 = fopen(argv[optind], "r+"))) {
   fclose(filesq3);
-  snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind]);
+  snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind++]);
 } else usage(1);
+}
 if (dbconn[0].connect(dsn)) usage(4);
 g.verboselog("connected form  %s", dsn);
 
 /* check and open the database connections
  * if simple rw-filepath use sqlite
  */
-j = argc - optind;
-if (j < 2 || j > 5) usage(2);
+j = sqlselectr ? 1 : argc - optind;
+if (j < 1 || j > 4) usage(2);
 for (i=0; i<4; i++) {
-  if (j > i + 1) {
-    let(dsn0, argv[optind+i+1]);
+  if (j > i) {
+    let(dsn0, argv[optind+i]);
     parsedsn(dsn, drv, dsn0);
     if (dbconn[i+1].connect(dsn)) usage(8);
         dbconn[i+1].ropen();
     g.verboselog("connected db[%d] %s", i+1, dsn);
+    if (sqlselectr) break;
   } else {
     dbconn[i+1].connect(NULL);
   }
 }
+selectsrc = argv + optind + 1;
 switch(dbconn[1].drv) {
  case ODR_SQLITE: querycharm = 2; break;
  case ODR_ADS:    querycharm = 0; break;
@@ -310,16 +329,20 @@ memset(dsn, 'y', MEDSIZE); // remove pw and key from ram
 genxorkey(NULL, NULL);
 #endif
 
-rootform = new Form();
-  if ((s = rootform->fill(form_id))) usage(s<19 ? 5 : s);
-    if (!redirected) if ((screenclos = y.init())) usage(17);
-      g.verboselog("curses initscr");
+if (!redirected) {
+  if ((screenclos = y.init())) usage(17);
+  g.verboselog("curses initscr");
+}
+  rootform = new Form();
+  if ((s = rootform->fill(form_id))) usage(s); //(s<19 ? 5 : s);
+    if (s) s = 0; else {
       if ((s = rootform->run()) < -1) usage(6); /* returns notrunning 0..goon -1..quit <-1..error >0..form_id */
-      g.verboselog("run form returns %d", s);
-    y.closedisplay();
-    screenclos = 1;
-  rootform->clear();
-delete(rootform);
+      if (s >= 0) g.verboselog("run form returns %d", s);
+      rootform->clear();
+    }
+  delete(rootform);
+y.closedisplay();
+screenclos = 1;
 
 for (i=0; i<5; i++) {
   dbconn[i].rclose();
@@ -327,6 +350,7 @@ for (i=0; i<5; i++) {
 }
 g.lclose();
 free(lclocale);
+if (sqlselectr) unlink(tmpath);
 
 exit(s==-1 ? 0 : abs(s));
 }

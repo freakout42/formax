@@ -19,7 +19,7 @@ if (!strcmp(dbmsname, "PostgreSQL"))           drv = ODR_PG;
 if (!strcmp(dbmsname, "oracle"))               drv = ODR_ORACLE;
 if (!strcmp(dbmsname, "Microsoft SQL Server")) drv = ODR_SQLSRVR;
 if (!strcmp(dbmsname, "Advantage"))            drv = ODR_ADS;
-g.logfmt("SQL_DBMS_NAME: %s -> %d", dbmsname, drv);
+g.logfmt("# SQL_DBMS_NAME: %s -> %d", dbmsname, drv);
 }
 
 /* connect to odbc dsn with mode 2 or 3
@@ -63,6 +63,7 @@ return ret;
 
 /* share the connection with another instance */
 int Record::connect(Record r) {
+id = r.id;
 dbc = r.dbc;
 drv = r.drv;
 moreresults = r.moreresults;
@@ -117,12 +118,15 @@ if (dbc) {
 
 /* direct sql without orm support */
 int Record::execdirect(char *sql) {
-ret = SQLExecDirect(stmt, (SQLCHAR*)sql, strlen(sql));                                         FAILEDQ(SQL_HANDLE_STMT);
+char *empty0[] = { NULL };
+ret = SQLExecDirect(stmt, (SQLCHAR*)sql, strlen(sql));
+g.logsql(sql, empty0);
+g.verboselog("SQL: %s => %d", sql, ret);                                                       FAILEDQ(SQL_HANDLE_STMT);
 ret = SQLNumResultCols(stmt, &querycols);                                                      FAILEDQ(SQL_HANDLE_STMT);
-columni = querycols;
-if (clear()) return 13;
-g.logfmt("SQL: '%s' [%d]", sql, querycols);
-return fetchall();
+/* columni = querycols; NO QUERIES ALLOWED
+ * if (clear()) return 13;
+ */
+return 0;
 }
 
 /* direct sql with bind support from variable array */
@@ -177,9 +181,25 @@ if (drv == ODR_ORACLE) {
 return ret;
 }
 
+/* block field column */
+char *Record::cn(int c) {
+return F(l[blockfields[c]]).column;
+}
+
+/* print field */
+void Record::print(int con, char *cos) {
+if (sqlselectr) {
+  prnf(cos);
+  prnf(con == columni ? (char*)"\n" : (char*)"\t");
+} }
+
 /* fetch all rows */
 int Record::fetchall() {
-int j;
+int i, j;
+if (id > 0) {
+  for (i = 1; i <= columni; i++) print(i, cn(i - 1));
+  for (i = 1; i <= columni; i++) print(i, "---");
+}
 do {
   j = fetch(0);
   if (j > 0) return j;
@@ -204,6 +224,7 @@ if (SQL_SUCCEEDED(s = SQLFetch(stmt))) {
       free(*qp);
       if (indicator == SQL_NULL_DATA) *qp = NULL; else {
         rtrim0white(buf);
+        if (id > 0) print(i, buf);
         if (!(*qp = strdup(buf))) return 13;
       }
     }

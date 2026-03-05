@@ -38,10 +38,18 @@ va_end (args);
 return n;
 }
 
+char *stdingets(char *sql, size_t siz) {
+char *t;
+t = fgets(sql, siz, stdin);
+if (t) *(t + strlen(t) - 1) = '\0';
+return t;
+}
+
 void prnf(char *str) {
+if (sqlselectr) printf("%s", str); else {
 rtrim0white(str);
 if (!(str[0] == '\0' || (str[0] == ' ' && str[1] == '\0'))) printf("%s\n", str);
-}
+} }
 
 /* temporary file handling */
 static char tfp[TNYSIZE];
@@ -62,6 +70,11 @@ return tf != NULL;
 void tmpclose(int rm) {
 fclose(tf);
 if (rm) unlink(tfp);
+}
+int tmpwrite(char *buf, int siz) {
+int i;
+i = (int)fwrite(buf, 1, siz, tf);
+return i;
 }
 int tmpread(char *buf, int siz) {
 int i;

@@ -636,6 +636,7 @@ return ch;
 int Screen::getkb() {
 int ch;
 ch = wgetc();
+if (ch == 0x7f) ch = KEY_CTRL('H'); /* DEL always is BACKSPACE */
 if (ch < ' ') switch(abs(ch)) {
 /* KEF_HELP    */  case KEY_CTRL('@'):  return -KEY_F(1);       /* Help                           Help */
 /* KEF_HOME    */  case KEY_CTRL('A'):  return -KEY_HOME;       /* Home / Previous block          BeginningOfLine PreviousBlock */

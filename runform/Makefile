@@ -5,6 +5,7 @@ OBJS=$(patsubst %.cpp,%.o,$(SRCS))
 OBJC=cqerror.o colquery/colquery.o elk/elk.o regex/re.o
 OBJB=$(OBJC) membed/libmex.a
 OBJA=$(OBJB) crypt/libmd5.a
+FRMH=form.h rerror.h rblock.h rfield.h rmap.h rpage.h
 EXAMPLE=../generate/scotty.frm ../generate/scotty.sq3
 FORMAXE=../generate/formax.frm ../generate/formax.sq3
 VALGRINDSUP=--gen-suppressions=no #all
@@ -12,7 +13,7 @@ VALGRINDSUP=--gen-suppressions=no #all
 all: runform
 	strip runform
 
-$(OBJS): version.h
+$(OBJS): version.h emptyfrm.h
 version.h: runform.h
 	git log -1 | sed -n 's/commit \(.*\)/#define GITCOMMIT "\1"/p' >$@
 runform.h: company.h curkeys.h
@@ -47,6 +48,16 @@ test: clean runform $(EXAMPLE)
 	@test -f $@ -a ! -s $@
 	@sqlite3 /tmp/formax.log 'select logtext from logs order by id;' | diff ../generate/scotty.log -
 	@mv scotty.sq3 ../generate
+	./runform -s ../generate/scotty.sq3 "depts:id > 20:loc" id loc dname | diff ../generate/depts.rdb -
+	@rm -f /tmp/formax.log
+	echo "delete from depts where id=40" | \
+		valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
+			./runform -v -g/tmp/formax.log -s ../generate/scotty.sq3
+	sqlite3 /tmp/formax.log 'select logtext from logs order by id;'
+	grep -v 40 ../generate/depts.rdb >/tmp/depts.rdb
+	valgrind --quiet $(VALGRINDSUP) --leak-check=yes --track-origins=yes --suppressions=valgrind.sup \
+		./runform -s ../generate/scotty.sq3 "depts:id > 20:loc" id loc dname | diff /tmp/depts.rdb -
+	rm -f /tmp/depts.rdb
 	./runform -zx -g/tmp/formax.log $(EXAMPLE)
 	@echo -e "\033[0;32mOk\\033[0m"
 
@@ -73,6 +84,11 @@ $(CURSESVARANT)/include/curses.h: ../bin/ncurses.tar.gz
 # wget -O../bin/ncurses-win32.zip            https://invisible-island.net/datafiles/release/mingw32.zip
 # wget -O../bin/ncurses-$(NCURSESVER).tar.gz https://invisible-island.net/datafiles/release/ncurses.tar.gz
 
+emptyfrm.h: b2c $(FRMH)
+	rm -f emptyfrm.sq3
+	for H in $(FRMH); do cpp -w -P -DBEGINSQL $$H; done | sqlite3 emptyfrm.sq3
+	./b2c emptyfrm.sq3 $@ emptyfrm
+
 $(EXAMPLE): ../generate/scotty.in2
 	cd ../generate; make clean test
 $(FORMAXE): ../generate/formax.inp
@@ -89,8 +105,8 @@ libncursesw6.dll: ../bin/ncurses-win32.zip scotty.sq3
 
 clean:
 	for D in colquery crypt membed elk regex ../generate; do ( cd $$D; make clean >/dev/null; ); done
-	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf \
-		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe *.dll scotty.*
+	rm -f *.o a.out *core.* runform runform0 curkeys curkeys.h test afiedt.buf b2c \
+		/tmp/odbc.log ads_* $(EXAMPLE) testelk formax.frm company.h out *.exe *.dll scotty.* emptyfrm.*
 	rm -rf bin include lib ncurses
 
 mysql:

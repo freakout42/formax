@@ -149,6 +149,7 @@ extern int lastgetch;
 /* helpers from version.cpp */
 extern char *letstrncpy(char *dest, const char *src, size_t n);
 extern char *rtrim0white(char *str);
+extern char *stdingets(char *sql, size_t siz);
 extern int yesno(int c);
 extern int isprintable(int c);
 extern int ispunctation(int c);
@@ -161,6 +162,7 @@ extern char *tmpcreat();
 extern int tmpopen();
 extern void tmpclose(int rm);
 extern int tmpread(char *buf, int siz);
+extern int tmpwrite(char *buf, int siz);
 extern char *tmpget(char *buf, int siz);
 extern void tmput(char *v);
 
@@ -186,6 +188,7 @@ extern int   insertmode;
 extern int   pwdencrypt;
 extern int   squerymode;
 extern int   updatemode;
+extern int   sqlselectr;
 extern int   usebindvar;
 extern int   querycharm;
 extern int   autocommit;
@@ -203,3 +206,4 @@ extern int   screenclos;
 extern int   callinguid;
 extern int   usepoorman; 
 extern int   verbose2se; 
+extern char  **selectsrc;

@@ -15,11 +15,9 @@ public:
   int norec;
   int fieldcount;
   int prikeycnt;
-  int blockfields[NFIELD1]; /* array index l[] */
   int primarykeys[NPRIKEY];
   char gotoselector[NORSIZE];
   char searchre[NORSIZE];
-  char *cn(int c);
   fmode rmode;
   int currentrec;
   int toprec;
