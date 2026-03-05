@@ -91,14 +91,6 @@ protection and uses almost no system interfaces.
 The security aspect can be seen as production ready,
 particularly when the three factor authentication is used.
 
-Future roadmap
---------------
- - 2.5 list of values - subforms
- - 3.0 menue multiple forms
- - 3.5 transaction processing
- - cqy.y: 5 shift/reduce conflicts
- - sap-like batchinput
-
 Playground
 ----------
 You can play with an example form simply by connecting ssh
@@ -132,6 +124,14 @@ sudo yum -y install unixODBC-devel
 sudo yum -y install ncurses-devel
 sudo yum -y install sqlite
 rpm -i https://github.com/freakout42/formax/releases/download/v0.9.9/sqliteodbc-0.9998-1.x86_64.rpm
+~~~
+
+On Arch/Gentoo/Linux do the following:
+~~~
+install C-development environment
+install appropriate package unixodbc
+# install sqlite3 ODBC-driver from appropriate package or from formax github
+wget -O/usr/lib64/libsqlite3odbc.so https://github.com/freakout42/formax/releases/download/v0.9.9/libsqlite3odbc.so
 ~~~
 
 Then do the following to build and install **formax** into
@@ -181,7 +181,7 @@ You will be in `Insert-Mode` and can enter data for new
 records. Press Enter without new data will get you into
 `Query-Mode`. Quit from the form after playing around with
 Ctrl-Y. Read the user guide for more information how to use
-the form.
+the form or view the keyboard help screen with Ctrl-K.
 
 Change the form layout and the default behaviour of the form
 with the `editform` utility. This will bring up your editor

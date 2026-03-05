@@ -7,6 +7,9 @@ endif
 ifeq "$(CCVER)" "13"
   DISABLEWARN=-Wno-dangling-pointer
 endif
+ifeq "$(CCVER)" "15"
+  DISABLEWARN=-Wno-dangling-pointer
+endif
 ifeq "$(CCVER)" "3"
 ifeq (run,$(MAKECMDGOALS))
   CXX=g++4
