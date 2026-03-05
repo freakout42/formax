@@ -49,6 +49,7 @@ technologies:
  - localisation and UTF-8 support
  - full logging of all queries
  - no free SQL for the enduser
+ - direct SQL from command line
  - no operating system exits in the engine
  - 3FA security can be setup easily
 
