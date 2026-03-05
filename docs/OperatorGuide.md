@@ -140,6 +140,7 @@ General usage is:
       [-l driverlib] [-t totpkey ] form.frm [user[:pass]@][sq3|dsn]...
 
 The switches and parameters have the following meanings:
+~~~
     -V print version info
     -l sqlite odbc-driver library path
     -t totpkey -- Time-based One-Time Password Key for 3FA
@@ -169,6 +170,7 @@ The switches and parameters have the following meanings:
     -v verbose logging
     -w watch macro execution
     -y generate encryptet database password ONLY ROOT
+~~~
 
 Client
 ======
