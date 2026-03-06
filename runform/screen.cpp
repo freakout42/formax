@@ -734,6 +734,7 @@ c = 0;
 if (pos == -9999) pos = -1;
 else if (pos < 0 && pos > -1000) pos += str_tlen(s) + 1;
 else if (pos < 0) { first = -1 * (pos + 1000); pos = 0; }
+else if (pos == 0) { first = 0; }
 pos = str_pos(s, pos);
 sx = x + pos;
 #ifdef UTF8
