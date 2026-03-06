@@ -842,7 +842,7 @@ while (!done) {              /* input loop */
         if (len < max || pos < len-1) {
           pos++;
           sx++;
-        } else {c = KEF_COMMIT; done = TRUE;}
+        } else {c = -KEY_ENTER; done = TRUE;}
       } else beep();    /* no valid char  */
     } else done = TRUE;
   } /* switch */
