@@ -32,6 +32,7 @@ f = this;
 connect(dbconn[0]);
 stmt = NULL;
 if ((s = ropen())) return s;
+#ifndef WIN32
 if (sqlselectr) {
  if (selectsrc[0]) {
   strcpy(sql,"INSERT INTO forms (id) VALUES (1)");
@@ -65,6 +66,7 @@ if (sqlselectr) {
   return 24;
  }
 }
+#endif
 letf(t(where), "id = %d", fid);
 empty(order);
 empty(condition);

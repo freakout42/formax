@@ -46,7 +46,10 @@ return t;
 }
 
 void prnf(char *str) {
-if (sqlselectr) printf("%s", str); else {
+#ifndef WIN32
+if (sqlselectr) printf("%s", str); else
+#endif
+{
 rtrim0white(str);
 if (!(str[0] == '\0' || (str[0] == ' ' && str[1] == '\0'))) printf("%s\n", str);
 } }

@@ -1,5 +1,5 @@
 /* runform.h - constants macros and central procedures */
-#define VERSION "2.5.1"
+#define VERSION "2.5.2"
 #define VERMSGS 23
 
 /* optional functionality */
@@ -188,7 +188,9 @@ extern int   insertmode;
 extern int   pwdencrypt;
 extern int   squerymode;
 extern int   updatemode;
+#ifndef WIN32
 extern int   sqlselectr;
+#endif
 extern int   usebindvar;
 extern int   querycharm;
 extern int   autocommit;

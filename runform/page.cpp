@@ -71,9 +71,10 @@ if (!screenclos) {
 createwindow(ysiz, xsiz, vwpy0, vwpx0);
 if (border) wbox();
 }
-if (!sqlselectr) {
-for (i=0; i<NLINES; i++) if (map[i]) writes(i+(border?1:0), border?1:0, map[i]);
-}
+#ifndef WIN32
+if (!sqlselectr)
+#endif
+  for (i=0; i<NLINES; i++) if (map[i]) writes(i+(border?1:0), border?1:0, map[i]);
 }
 
 void Page::destroy() {
@@ -158,7 +159,10 @@ switch (CM) {
  case MOD_DELETE: strcpy(commit,            "Delete-Record");                    break;
 }
 wera();
-if (!sqlselectr) {
+#ifndef WIN32
+if (!sqlselectr)
+#endif
+{
 writef(0,  0, 0, 1,  "%c",        y.cursesvariant=='w' ? (cur_utf8 ? 'w' : 'i') : 'n');
 writef(0,  2, 0, 2,  "%2s-",      F(id));
 writes(0,  5,                     F(name));
@@ -183,7 +187,10 @@ return LK ? LK : getkey();
 }
 
 void Page::working() {
-if (!sqlselectr) {
+#ifndef WIN32
+if (!sqlselectr)
+#endif
+{
 writef(0, 67, COL_BUSY,13,"%s", "!! Working...");
 if (!macropointer) refr();
 } }

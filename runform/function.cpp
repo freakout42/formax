@@ -147,7 +147,9 @@ CBi = 4;
 CFi = CB.blockfields[0];
 if (!noentermac && (notrunning = triggern(TRT_ENTERFORM) > 1)) return 0;
 if (updatemode) execute_query(); else if (!squerymode) insert_record();
+#ifndef WIN32
 if (sqlselectr) notrunning = -1;
+#endif
 return 0;
 }
 
@@ -507,7 +509,9 @@ if (CB.select()) MSG1(MSG_SQL, (char*)CB.querystr); else {
       }
       CFi = cf;
     }
+#ifndef WIN32
     if (sqlselectr) return 0;
+#endif
     enter_record(1);
     switch_mode(MOD_UPDATE);
   } else {

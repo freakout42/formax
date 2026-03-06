@@ -8,7 +8,9 @@
 #include <signal.h>
 #include <locale.h>
 #include "runform.h"
+#ifndef WIN32
 #include "emptyfrm.h"
+#endif
 
 /* fast keys for different keyboard layouts for -n option */
 char shiftedus[] = "/!@#$%^&*().,";
@@ -36,7 +38,9 @@ int  usepoorman  = 0;             // -o
 int  pwdencrypt  = 0;             // -p
 int  queryonlym  = 0;             // -q
 int  redirected  = 0;             // -r
+#ifndef WIN32
 int  sqlselectr  = 0;             // -s
+#endif
 int  verbose2se  = 0;             // -v
 int  watchmacro  = 0;             // -w
 int  updatemode  = 0;             // -x
@@ -132,13 +136,13 @@ Form *rootform;
 const char *ds;
 char *locl;
 char *tmpath = NULL;
+FILE *filesq3;
 
 /* search for the sqlite3 driver */
 #ifdef WIN32
 char drv[SMLSIZE] = "SQLite3 ODBC Driver";
 #else
 char drv[SMLSIZE] = "libsqlite3odbc.so";
-FILE *filesq3;
 const char *drvs[] = {
   "/opt/arx/lib/libsqlite3odbc.so",
   "/opt/sqlite/lib/libsqlite3odbc.so",
@@ -249,7 +253,9 @@ while ((i = getopt(argc, argv, "3abcdf:g:hij:kl:mn:opqrst:Vvwxy:z")) != -1) {
               usage(22);
 #endif
     case 'i': squerymode = 1; break;
+#ifndef WIN32
     case 's': sqlselectr = 1; updatemode = 1; redirected = 1; noentermac  = 1; break;
+#endif
     case 'x': updatemode = 1; break;
     case 'b': usebindvar = 0; break;
     case 'h': querycharm = 0; break;
@@ -286,17 +292,22 @@ g.init(argv[optind+1]);
 
 /* open the form database - sqlite3 file named .frm */
 for (i=0; i<5; i++) dbconn[i].id = i;
+#ifndef WIN32
 if (sqlselectr) {
   /* fill block/fields from args */
   tmpath = tmpcreat();
   tmpwrite((char*)emptyfrm, EMPTYFRM_LEN);
   tmpclose(0);
   snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, tmpath);
-} else {
+  j = 1;
+} else
+#endif
+{
 if (argv[optind] && (filesq3 = fopen(argv[optind], "r"))) {
   fclose(filesq3);
   snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind++]);
 } else usage(5);
+j = argc - optind;
 }
 if (dbconn[0].connect(dsn)) usage(4);
 g.verboselog("connected form  %s", dsn);
@@ -304,7 +315,6 @@ g.verboselog("connected form  %s", dsn);
 /* check and open the database connections
  * if simple rw-filepath use sqlite
  */
-j = sqlselectr ? 1 : argc - optind;
 if (j < 1 || j > 4) usage(2);
 for (i=0; i<4; i++) {
   if (j > i) {
@@ -313,7 +323,9 @@ for (i=0; i<4; i++) {
     if (dbconn[i+1].connect(dsn)) usage(8);
         dbconn[i+1].ropen();
     g.verboselog("connected db[%d] %s", i+1, dsn);
+#ifndef WIN32
     if (sqlselectr) break;
+#endif
   } else {
     dbconn[i+1].connect(NULL);
   }
@@ -350,7 +362,9 @@ for (i=0; i<5; i++) {
 }
 g.lclose();
 free(lclocale);
+#ifndef WIN32
 if (sqlselectr) unlink(tmpath);
+#endif
 
 exit(s==-1 ? 0 : abs(s));
 }

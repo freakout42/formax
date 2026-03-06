@@ -188,17 +188,20 @@ return F(l[blockfields[c]]).column;
 
 /* print field */
 void Record::print(int con, char *cos) {
+#ifndef WIN32
 if (sqlselectr) {
   prnf(cos);
   prnf(con == columni ? (char*)"\n" : (char*)"\t");
-} }
+}
+#endif
+}
 
 /* fetch all rows */
 int Record::fetchall() {
 int i, j;
 if (id > 0) {
   for (i = 1; i <= columni; i++) print(i, cn(i - 1));
-  for (i = 1; i <= columni; i++) print(i, "---");
+  for (i = 1; i <= columni; i++) print(i, (char*)"---");
 }
 do {
   j = fetch(0);
