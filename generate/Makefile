@@ -5,6 +5,7 @@ test: all scotty.sq3 scotty.frm formax.frm formax.sq3 depts.dbf emps.dbf
 %.frm: %.inp
 	@rm -f $@
 	sqlite3 $@ <$<
+	chmod -w $@
 
 %.sq3: %.sql
 	@rm -f $@

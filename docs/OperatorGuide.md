@@ -39,7 +39,7 @@ requirements are fundamental for this application:
 
  - Operational excellence
 
-    Central easy to manage logging for every session and
+    Central easy to manage logging for every session including
     every sql command is build into the runtime. Updates are
     a simple copy of the runtime binary (1 (one!) 250kb file).
     New forms are also simple copies of the .frm files. This
@@ -49,8 +49,9 @@ requirements are fundamental for this application:
 
     The runtime is pure C++ with mostly static variables.
     This means that the database calls are the only
-    measurable runtimes. Bandwidth to the client is
-    thousandfold less compared to web clients.
+    measurable payload. Bandwidth need to the client is
+    thousandfold less compared to web clients and even
+    possible with very low-bandwidth connections like GSM.
 
  - Sustainability
 

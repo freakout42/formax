@@ -293,10 +293,10 @@ if (sqlselectr) {
   tmpclose(0);
   snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, tmpath);
 } else {
-if (argv[optind] && (filesq3 = fopen(argv[optind], "r+"))) {
+if (argv[optind] && (filesq3 = fopen(argv[optind], "r"))) {
   fclose(filesq3);
   snprintf(dsn, sizeof(dsn), "Driver=%s;Database=%s;", drv, argv[optind++]);
-} else usage(1);
+} else usage(5);
 }
 if (dbconn[0].connect(dsn)) usage(4);
 g.verboselog("connected form  %s", dsn);
