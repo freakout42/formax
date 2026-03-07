@@ -294,7 +294,7 @@ mvwprintw (wndw, y, x, "%-*s", w, s);
 Screen::Screen() {
 ysiz = 0;
 cursesvariant = CURVARIANT;
-sprintf(cursesrun, "%s-%c", curses_version(), CURVARIANT);
+snprintf(cursesrun, sizeof(cursesrun)-3, "%s-%c", curses_version(), CURVARIANT);
 #ifdef UTF8
 strcat(cursesrun, "=");
 strcat(cursesrun, cur_utf8 ? "1" : "0");
