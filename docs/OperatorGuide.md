@@ -177,16 +177,10 @@ Client
 ======
 
 Standard client is PuTTY on Windows. Easy to install -
-opensource - secure - matured for decades. You must set for
-the session:
-
-    Window->Translation->Remote character set = ISO-8859-15
-    Connection->Data->Terminal-type string = putty
-
-For maximum convenience you can add the following to your
-registry. Then you will find a loadable session which you
-can open in PuTTY or start with "putty -load formax" from
-the command line.
+opensource - secure - matured for decades. For maximum
+convenience you can add the following to your registry. Then
+you will find a loadable session which you can open in PuTTY
+or start with "putty -load formax" from the command line.
 
 ~~~
 REGEDIT4
@@ -196,7 +190,6 @@ REGEDIT4
 "HostName"="formax.toarx.de"
 "TerminalType"="putty"
 "UserName"="scott"
-"LineCodePage"="ISO-8859-15:1999 (Latin-9, \"euro\")"
 
 ~~~
 
