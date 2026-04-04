@@ -40,7 +40,7 @@ extern int cur_utf8; /* UTF8 && CHARSET~utf8/i */
 #define PLATFORM        "FreeBSD"
 #elif __APPLE_CC__
 #define PLATFORM        "MacOS"
-#elif linux
+#elif __linux
 #define PLATFORM        "Linux"
 #elif sparc
 #define PLATFORM        "Solaris"
